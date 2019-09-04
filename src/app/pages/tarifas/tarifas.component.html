@@ -1,0 +1,61 @@
+<div class="row">
+  <nb-card>
+    <nb-card-header>Tarifas vigentes</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="tarifasForm" (ngSubmit)="salvar()">
+        <div class="row form-group">
+          <label class="label col-sm-3 col-form-label">Bandeirada</label>
+          <div class="col-sm-9">
+            <input 
+              class="form-control" 
+              formControlName="bandeirada" 
+              type="number"
+              nbInput 
+              placeholder="Valor da bandeirada">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="label col-sm-3 col-form-label">Km rodado bandeira 1</label>
+          <div class="col-sm-9">
+            <input 
+              class="form-control" 
+              formControlName="kmRodadoBandeira1" 
+              type="number" 
+              nbInput 
+              placeholder="Valor do Km rodado na bandeira 1">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="label col-sm-3 col-form-label">Km rodado bandeira 2</label>
+          <div class="col-sm-9">
+            <input 
+              class="form-control" 
+              formControlName="kmRodadoBandeira2" 
+              type="number" 
+              nbInput 
+              placeholder="Valor do Km rodado na bandeira 1">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="label col-sm-3 col-form-label">Hora parada</label>
+          <div class="col-sm-9">
+            <input 
+              class="form-control" 
+              formControlName="horaParada" 
+              type="number" 
+              nbInput 
+              placeholder="Valor da hora parada">
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="offset-sm-3 col-sm-9">
+            <button type="submit" nbButton status="primary">Salvar</button>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+    <div *ngIf="tarifasForm.errors && (tarifasForm.touched || tarifasForm.dirty)" class="cross-validation-error-message alert alert-danger">
+        Name cannot match alter ego.
+    </div>
+  </nb-card>
+</div>

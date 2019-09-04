@@ -1,0 +1,2972 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "CloudMe ToDeTaxi API"
+  },
+  "paths": {
+    "/api/v1/Corrida": {
+      "get": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Gets all corridas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CorridaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Modifies an existing Corrida.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "corridaSummary",
+            "in": "body",
+            "description": "Modified Corrida list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CorridaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Creates a new Corrida.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "corridaSummary",
+            "in": "body",
+            "description": "Corrida's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CorridaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Corrida/{id}": {
+      "get": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Gets a Corrida.\r\n<param name=\"id\">Corrida's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CorridaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Removes an existing Corrida.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/FaixaDesconto": {
+      "get": {
+        "tags": [
+          "FaixaDesconto"
+        ],
+        "summary": "Gets all faixaDescontos.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FaixaDescontoSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "FaixaDesconto"
+        ],
+        "summary": "Modifies an existing FaixaDesconto.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "faixaDescontoSummary",
+            "in": "body",
+            "description": "Modified FaixaDesconto list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FaixaDescontoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FaixaDesconto"
+        ],
+        "summary": "Creates a new FaixaDesconto.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "faixaDescontoSummary",
+            "in": "body",
+            "description": "FaixaDesconto's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FaixaDescontoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/FaixaDesconto/{id}": {
+      "get": {
+        "tags": [
+          "FaixaDesconto"
+        ],
+        "summary": "Gets a FaixaDesconto.\r\n<param name=\"id\">FaixaDesconto's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/FaixaDescontoSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "FaixaDesconto"
+        ],
+        "summary": "Removes an existing FaixaDesconto.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/FaixaDescontoTaxista": {
+      "get": {
+        "tags": [
+          "FaixaDescontoTaxista"
+        ],
+        "summary": "Gets all faixaDescontoTaxistas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "FaixaDescontoTaxista"
+        ],
+        "summary": "Modifies an existing FaixaDescontoTaxista.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "faixaDescontoTaxistaSummary",
+            "in": "body",
+            "description": "Modified FaixaDescontoTaxista list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FaixaDescontoTaxista"
+        ],
+        "summary": "Creates a new FaixaDescontoTaxista.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "faixaDescontoTaxistaSummary",
+            "in": "body",
+            "description": "FaixaDescontoTaxista's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/FaixaDescontoTaxista/{id}": {
+      "get": {
+        "tags": [
+          "FaixaDescontoTaxista"
+        ],
+        "summary": "Gets a FaixaDescontoTaxista.\r\n<param name=\"id\">FaixaDescontoTaxista's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "FaixaDescontoTaxista"
+        ],
+        "summary": "Removes an existing FaixaDescontoTaxista.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Favorito": {
+      "get": {
+        "tags": [
+          "Favorito"
+        ],
+        "summary": "Gets all favoritos.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FavoritoSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Favorito"
+        ],
+        "summary": "Modifies an existing Favorito.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "favoritoSummary",
+            "in": "body",
+            "description": "Modified Favorito list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FavoritoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Favorito"
+        ],
+        "summary": "Creates a new Favorito.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "favoritoSummary",
+            "in": "body",
+            "description": "Favorito's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FavoritoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Favorito/{id}": {
+      "get": {
+        "tags": [
+          "Favorito"
+        ],
+        "summary": "Gets a Favorito.\r\n<param name=\"id\">Favorito's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/FavoritoSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Favorito"
+        ],
+        "summary": "Removes an existing Favorito.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/FormaPagamento": {
+      "get": {
+        "tags": [
+          "FormaPagamento"
+        ],
+        "summary": "Gets all formaPagamentos.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FormaPagamentoSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "FormaPagamento"
+        ],
+        "summary": "Modifies an existing FormaPagamento.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "formaPagamentoSummary",
+            "in": "body",
+            "description": "Modified FormaPagamento list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FormaPagamentoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FormaPagamento"
+        ],
+        "summary": "Creates a new FormaPagamento.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "formaPagamentoSummary",
+            "in": "body",
+            "description": "FormaPagamento's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FormaPagamentoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/FormaPagamento/{id}": {
+      "get": {
+        "tags": [
+          "FormaPagamento"
+        ],
+        "summary": "Gets a FormaPagamento.\r\n<param name=\"id\">FormaPagamento's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/FormaPagamentoSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "FormaPagamento"
+        ],
+        "summary": "Removes an existing FormaPagamento.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/FormaPagamentoTaxista": {
+      "get": {
+        "tags": [
+          "FormaPagamentoTaxista"
+        ],
+        "summary": "Gets all formaPagamentoTaxistas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "FormaPagamentoTaxista"
+        ],
+        "summary": "Modifies an existing FormaPagamentoTaxista.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "formaPagamentoTaxistaSummary",
+            "in": "body",
+            "description": "Modified FormaPagamentoTaxista list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FormaPagamentoTaxista"
+        ],
+        "summary": "Creates a new FormaPagamentoTaxista.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "formaPagamentoTaxistaSummary",
+            "in": "body",
+            "description": "FormaPagamentoTaxista's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/FormaPagamentoTaxista/{id}": {
+      "get": {
+        "tags": [
+          "FormaPagamentoTaxista"
+        ],
+        "summary": "Gets a FormaPagamentoTaxista.\r\n<param name=\"id\">FormaPagamentoTaxista's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "FormaPagamentoTaxista"
+        ],
+        "summary": "Removes an existing FormaPagamentoTaxista.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/GrupoUsuario": {
+      "get": {
+        "tags": [
+          "GrupoUsuario"
+        ],
+        "summary": "Gets all grupoUsuarios.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GrupoUsuarioSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "GrupoUsuario"
+        ],
+        "summary": "Modifies an existing GrupoUsuario.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "grupoUsuarioSummary",
+            "in": "body",
+            "description": "Modified GrupoUsuario list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GrupoUsuarioSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "GrupoUsuario"
+        ],
+        "summary": "Creates a new GrupoUsuario.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "grupoUsuarioSummary",
+            "in": "body",
+            "description": "GrupoUsuario's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GrupoUsuarioSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/GrupoUsuario/{id}": {
+      "get": {
+        "tags": [
+          "GrupoUsuario"
+        ],
+        "summary": "Gets a GrupoUsuario.\r\n<param name=\"id\">GrupoUsuario's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GrupoUsuarioSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "GrupoUsuario"
+        ],
+        "summary": "Removes an existing GrupoUsuario.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Localizacao": {
+      "get": {
+        "tags": [
+          "Localizacao"
+        ],
+        "summary": "Gets all localizacaos.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/LocalizacaoSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Localizacao"
+        ],
+        "summary": "Modifies an existing Localizacao.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "localizacaoSummary",
+            "in": "body",
+            "description": "Modified Localizacao list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/LocalizacaoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Localizacao"
+        ],
+        "summary": "Creates a new Localizacao.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "localizacaoSummary",
+            "in": "body",
+            "description": "Localizacao's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/LocalizacaoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Localizacao/{id}": {
+      "get": {
+        "tags": [
+          "Localizacao"
+        ],
+        "summary": "Gets a Localizacao.\r\n<param name=\"id\">Localizacao's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LocalizacaoSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Localizacao"
+        ],
+        "summary": "Removes an existing Localizacao.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Passageiro": {
+      "get": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Gets all passageiros.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PassageiroSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Modifies an existing Passageiro.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "passageiroSummary",
+            "in": "body",
+            "description": "Modified Passageiro list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PassageiroSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Creates a new Passageiro.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "passageiroSummary",
+            "in": "body",
+            "description": "Passageiro's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PassageiroSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Passageiro/{id}": {
+      "get": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Gets a Passageiro.\r\n<param name=\"id\">Passageiro's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PassageiroSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Removes an existing Passageiro.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Rota": {
+      "get": {
+        "tags": [
+          "Rota"
+        ],
+        "summary": "Gets all rotas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RotaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Rota"
+        ],
+        "summary": "Modifies an existing Rota.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "rotaSummary",
+            "in": "body",
+            "description": "Modified Rota list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RotaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Rota"
+        ],
+        "summary": "Creates a new Rota.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "rotaSummary",
+            "in": "body",
+            "description": "Rota's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RotaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Rota/{id}": {
+      "get": {
+        "tags": [
+          "Rota"
+        ],
+        "summary": "Gets a Rota.\r\n<param name=\"id\">Rota's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RotaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Rota"
+        ],
+        "summary": "Removes an existing Rota.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/SolicitacaoCorrida": {
+      "get": {
+        "tags": [
+          "SolicitacaoCorrida"
+        ],
+        "summary": "Gets all solicitacaoCorridas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SolicitacaoCorridaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "SolicitacaoCorrida"
+        ],
+        "summary": "Modifies an existing SolicitacaoCorrida.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "solicitacaoCorridaSummary",
+            "in": "body",
+            "description": "Modified SolicitacaoCorrida list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/SolicitacaoCorridaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SolicitacaoCorrida"
+        ],
+        "summary": "Creates a new SolicitacaoCorrida.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "solicitacaoCorridaSummary",
+            "in": "body",
+            "description": "SolicitacaoCorrida's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/SolicitacaoCorridaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/SolicitacaoCorrida/{id}": {
+      "get": {
+        "tags": [
+          "SolicitacaoCorrida"
+        ],
+        "summary": "Gets a SolicitacaoCorrida.\r\n<param name=\"id\">SolicitacaoCorrida's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SolicitacaoCorridaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SolicitacaoCorrida"
+        ],
+        "summary": "Removes an existing SolicitacaoCorrida.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Tarifa": {
+      "get": {
+        "tags": [
+          "Tarifa"
+        ],
+        "summary": "Gets all tarifas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TarifaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tarifa"
+        ],
+        "summary": "Modifies an existing Tarifa.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "tarifaSummary",
+            "in": "body",
+            "description": "Modified Tarifa list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/TarifaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tarifa"
+        ],
+        "summary": "Creates a new Tarifa.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "tarifaSummary",
+            "in": "body",
+            "description": "Tarifa's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/TarifaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Tarifa/{id}": {
+      "get": {
+        "tags": [
+          "Tarifa"
+        ],
+        "summary": "Gets a Tarifa.\r\n<param name=\"id\">Tarifa's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/TarifaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tarifa"
+        ],
+        "summary": "Removes an existing Tarifa.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Taxista": {
+      "get": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Gets all taxistas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TaxistaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Modifies an existing Taxista.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "taxistaSummary",
+            "in": "body",
+            "description": "Modified Taxista list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/TaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Creates a new Taxista.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "taxistaSummary",
+            "in": "body",
+            "description": "Taxista's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/TaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Taxista/{id}": {
+      "get": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Gets a Taxista.\r\n<param name=\"id\">Taxista's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/TaxistaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Removes an existing Taxista.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/UsuarioGrupoUsuario": {
+      "get": {
+        "tags": [
+          "UsuarioGrupoUsuario"
+        ],
+        "summary": "Gets all usuarioGrupoUsuarios.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "UsuarioGrupoUsuario"
+        ],
+        "summary": "Modifies an existing UsuarioGrupoUsuario.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioGrupoUsuarioSummary",
+            "in": "body",
+            "description": "Modified UsuarioGrupoUsuario list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "UsuarioGrupoUsuario"
+        ],
+        "summary": "Creates a new UsuarioGrupoUsuario.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "usuarioGrupoUsuarioSummary",
+            "in": "body",
+            "description": "UsuarioGrupoUsuario's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/UsuarioGrupoUsuario/{id}": {
+      "get": {
+        "tags": [
+          "UsuarioGrupoUsuario"
+        ],
+        "summary": "Gets a UsuarioGrupoUsuario.\r\n<param name=\"id\">UsuarioGrupoUsuario's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "UsuarioGrupoUsuario"
+        ],
+        "summary": "Removes an existing UsuarioGrupoUsuario.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Veiculo": {
+      "get": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Gets all veiculos.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/VeiculoSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Modifies an existing Veiculo.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "veiculoSummary",
+            "in": "body",
+            "description": "Modified Veiculo list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/VeiculoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Creates a new Veiculo.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "veiculoSummary",
+            "in": "body",
+            "description": "Veiculo's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/VeiculoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Veiculo/{id}": {
+      "get": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Gets a Veiculo.\r\n<param name=\"id\">Veiculo's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/VeiculoSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Removes an existing Veiculo.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/VeiculoTaxista": {
+      "get": {
+        "tags": [
+          "VeiculoTaxista"
+        ],
+        "summary": "Gets all veiculoTaxistas.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/VeiculoTaxistaSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "VeiculoTaxista"
+        ],
+        "summary": "Modifies an existing VeiculoTaxista.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "veiculoTaxistaSummary",
+            "in": "body",
+            "description": "Modified VeiculoTaxista list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/VeiculoTaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "VeiculoTaxista"
+        ],
+        "summary": "Creates a new VeiculoTaxista.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "veiculoTaxistaSummary",
+            "in": "body",
+            "description": "VeiculoTaxista's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/VeiculoTaxistaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/VeiculoTaxista/{id}": {
+      "get": {
+        "tags": [
+          "VeiculoTaxista"
+        ],
+        "summary": "Gets a VeiculoTaxista.\r\n<param name=\"id\">VeiculoTaxista's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/VeiculoTaxistaSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "VeiculoTaxista"
+        ],
+        "summary": "Removes an existing VeiculoTaxista.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CorridaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idSolicitacao": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idVeiculo": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idRotaExecutada": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTarifa": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "inicio": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "fim": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "avaliacaoTaxista": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "type": "integer"
+        },
+        "avaliacaoPassageiro": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "type": "integer"
+        },
+        "status": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "type": "integer"
+        },
+        "tempoEmEspera": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "FaixaDescontoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "valor": {
+          "format": "float",
+          "type": "number"
+        },
+        "descricao": {
+          "type": "string"
+        }
+      }
+    },
+    "FaixaDescontoTaxistaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idFaixaDesconto": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        }
+      }
+    },
+    "FavoritoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idPassageiro": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "preferencia": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "FormaPagamentoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "descricao": {
+          "type": "string"
+        }
+      }
+    },
+    "FormaPagamentoTaxistaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idFormaPagamento": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        }
+      }
+    },
+    "GrupoUsuarioSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "descricao": {
+          "type": "string"
+        }
+      }
+    },
+    "LocalizacaoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "endereco": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "nomePublico": {
+          "type": "string"
+        }
+      }
+    },
+    "PassageiroSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idUsuario": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "cpf": {
+          "type": "string"
+        },
+        "idEndereco": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idLocalizacaoAtual": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "foto": {
+          "format": "byte",
+          "type": "string"
+        }
+      }
+    },
+    "RotaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        }
+      }
+    },
+    "SolicitacaoCorridaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idPassageiro": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idLocalizacaoOrigem": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idLocalizacaoDestino": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idRota": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idFormaPagamento": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idFaixaDesconto": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "tipoAtendimento": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2
+          ],
+          "type": "integer"
+        },
+        "data": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "eta": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "tempoDisponivel": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "valorEstimado": {
+          "format": "float",
+          "type": "number"
+        },
+        "valorProposto": {
+          "format": "float",
+          "type": "number"
+        },
+        "situacao": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "type": "integer"
+        }
+      }
+    },
+    "TarifaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "bandeirada": {
+          "format": "float",
+          "type": "number"
+        },
+        "kmRodadoBandeira1": {
+          "format": "float",
+          "type": "number"
+        },
+        "kmRodadoBandeira2": {
+          "format": "float",
+          "type": "number"
+        },
+        "horaParada": {
+          "format": "float",
+          "type": "number"
+        }
+      }
+    },
+    "TaxistaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idUsuario": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idEndereco": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idLocalizacaoAtual": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "foto": {
+          "format": "byte",
+          "type": "string"
+        }
+      }
+    },
+    "UsuarioGrupoUsuarioSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idUsuario": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idGrupoUsuario": {
+          "format": "uuid",
+          "type": "string"
+        }
+      }
+    },
+    "VeiculoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "placa": {
+          "type": "string"
+        },
+        "modelo": {
+          "type": "string"
+        },
+        "capacidade": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "cor": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "foto": {
+          "format": "byte",
+          "type": "string"
+        }
+      }
+    },
+    "VeiculoTaxistaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idVeiculo": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "ativo": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "name": "Authorization",
+      "in": "header",
+      "type": "apiKey",
+      "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}

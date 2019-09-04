@@ -1,0 +1,16 @@
+export { CorridaService } from './services/corrida.service';
+export { FaixaDescontoService } from './services/faixa-desconto.service';
+export { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
+export { FavoritoService } from './services/favorito.service';
+export { FormaPagamentoService } from './services/forma-pagamento.service';
+export { FormaPagamentoTaxistaService } from './services/forma-pagamento-taxista.service';
+export { GrupoUsuarioService } from './services/grupo-usuario.service';
+export { LocalizacaoService } from './services/localizacao.service';
+export { PassageiroService } from './services/passageiro.service';
+export { RotaService } from './services/rota.service';
+export { SolicitacaoCorridaService } from './services/solicitacao-corrida.service';
+export { TarifaService } from './services/tarifa.service';
+export { TaxistaService } from './services/taxista.service';
+export { UsuarioGrupoUsuarioService } from './services/usuario-grupo-usuario.service';
+export { VeiculoService } from './services/veiculo.service';
+export { VeiculoTaxistaService } from './services/veiculo-taxista.service';

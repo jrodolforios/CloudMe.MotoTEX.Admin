@@ -69,3 +69,7 @@ Visit [our homepage](http://akveo.com/) or simply leave us a message to [contact
 ### From Developers
 Made with :heart: by [Akveo team](http://akveo.com/). Follow us on [Twitter](https://twitter.com/akveo_inc) to get the latest news first!
 We're always happy to receive your feedback!
+
+### NG-SWAGGER-GEN
+Para sincronizar o modelo de dados com a API do backend, executar o seguinte comando na raiz do projeto:
+`.\node_modules\.bin\ng-swagger-gen --config ng-swagger-gen.json`
