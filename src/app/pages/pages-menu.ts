@@ -8,8 +8,13 @@ export const MENU_ITEMS: NbMenuItem[] = [
 	},
 	{
 		title: 'Taxistas',
-		icon: 'car',
+		icon: 'taxi',
 		link: '/pages/taxistas',
+	},
+	{
+		title: 'Veículos',
+		icon: 'car',
+		link: '/pages/veiculos',
 	},
 	{
 		title: 'E-commerce',

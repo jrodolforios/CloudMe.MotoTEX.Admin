@@ -2918,6 +2918,9 @@
         "placa": {
           "type": "string"
         },
+        "marca": {
+          "type": "string"
+        },
         "modelo": {
           "type": "string"
         },

@@ -21,6 +21,11 @@ const routes: Routes = [{
 				.then(m => m.TaxistasModule),
 		},
 		{
+			path: 'veiculos',
+			loadChildren: () => import('./veiculos/veiculos.module')
+				.then(m => m.VeiculosModule),
+		},
+		{
 			path: 'dashboard',
 			component: ECommerceComponent,
 		},

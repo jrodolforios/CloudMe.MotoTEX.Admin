@@ -8,6 +8,7 @@ import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { TarifasModule } from './tarifas/tarifas.module';
+import { VeiculosModule } from './veiculos/veiculos.module';
 
 @NgModule({
 	imports: [
@@ -17,7 +18,8 @@ import { TarifasModule } from './tarifas/tarifas.module';
 		DashboardModule,
 		ECommerceModule,
 		MiscellaneousModule,
-		TarifasModule
+		TarifasModule,
+		VeiculosModule
 	],
 	declarations: [
 		PagesComponent,

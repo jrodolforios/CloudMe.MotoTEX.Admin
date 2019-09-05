@@ -21,6 +21,7 @@ import {
 	NbWindowModule,
 } from '@nebular/theme';
 import { ApiModule } from '../api/api.module';
+import { FipeApiModule } from '../api/fipe/fipe-api.module';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -43,6 +44,7 @@ import { ApiModule } from '../api/api.module';
 		}),
 		CoreModule.forRoot(),
 
+		FipeApiModule.forRoot({rootUrl: 'https://parallelum.com.br/fipe'}),
 		ApiModule.forRoot({rootUrl: 'https://localhost:44315'}),
 	],
 	bootstrap: [AppComponent],
