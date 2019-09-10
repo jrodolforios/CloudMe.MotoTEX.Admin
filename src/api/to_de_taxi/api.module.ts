@@ -9,6 +9,7 @@ import { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.s
 import { FavoritoService } from './services/favorito.service';
 import { FormaPagamentoService } from './services/forma-pagamento.service';
 import { FormaPagamentoTaxistaService } from './services/forma-pagamento-taxista.service';
+import { FotoService } from './services/foto.service';
 import { GrupoUsuarioService } from './services/grupo-usuario.service';
 import { LocalizacaoService } from './services/localizacao.service';
 import { PassageiroService } from './services/passageiro.service';
@@ -39,6 +40,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     FavoritoService,
     FormaPagamentoService,
     FormaPagamentoTaxistaService,
+    FotoService,
     GrupoUsuarioService,
     LocalizacaoService,
     PassageiroService,

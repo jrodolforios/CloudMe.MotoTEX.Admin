@@ -4,5 +4,5 @@ export interface TaxistaSummary {
   idUsuario?: string;
   idEndereco?: string;
   idLocalizacaoAtual?: string;
-  foto?: string;
+  idFoto?: string;
 }

@@ -5,6 +5,7 @@ import { TarifasComponent } from './tarifas.component';
 import { ThemeModule } from '../../@theme/theme.module';
 import { NbCardModule, NbInputModule, NbButtonModule, NbRadioModule } from '@nebular/theme';
 import { TarifasRoutingModule } from './tarifas-routing.module';
+import { CommonViewsModule } from '../../common-views/common-views.module';
 
 @NgModule({
 	declarations: [TarifasComponent],
@@ -13,6 +14,7 @@ import { TarifasRoutingModule } from './tarifas-routing.module';
 		FormsModule,
 		ReactiveFormsModule,
 		ThemeModule,
+		CommonViewsModule,
 		NbCardModule,
 		NbInputModule,
 		NbButtonModule,

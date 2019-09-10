@@ -62,7 +62,7 @@ class VeiculoService extends __BaseService {
    * @param veiculoSummary Modified Veiculo list's properties summary
    * @return Success
    */
-  PutResponse(veiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<boolean>> {
+  PutResponse(veiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -80,7 +80,7 @@ class VeiculoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<string>;
       })
     );
   }
@@ -88,16 +88,17 @@ class VeiculoService extends __BaseService {
    * @param veiculoSummary Modified Veiculo list's properties summary
    * @return Success
    */
-  Put(veiculoSummary?: VeiculoSummary): __Observable<boolean> {
+  Put(veiculoSummary?: VeiculoSummary): __Observable<string> {
     return this.PutResponse(veiculoSummary).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as string)
     );
   }
 
   /**
    * @param veiculoSummary Veiculo's summary
+   * @return Success
    */
-  PostResponse(veiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<null>> {
+  PostResponse(veiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -109,22 +110,23 @@ class VeiculoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'json'
+        responseType: 'text'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<string>;
       })
     );
   }
   /**
    * @param veiculoSummary Veiculo's summary
+   * @return Success
    */
-  Post(veiculoSummary?: VeiculoSummary): __Observable<null> {
+  Post(veiculoSummary?: VeiculoSummary): __Observable<string> {
     return this.PostResponse(veiculoSummary).pipe(
-      __map(_r => _r.body as null)
+      __map(_r => _r.body as string)
     );
   }
 

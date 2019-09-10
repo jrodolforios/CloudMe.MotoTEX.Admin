@@ -1,0 +1,11 @@
+<nb-card>
+    <nb-card-header>{{title}}</nb-card-header>
+    <nb-card-body>
+        <div class="prompt_message">{{prompt}}</div>
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton status="success" (click)="onOk()">OK</button>
+        <button nbButton status="danget" (click)="onCancel()">Cancelar</button>
+    </nb-card-footer>
+</nb-card>
+  

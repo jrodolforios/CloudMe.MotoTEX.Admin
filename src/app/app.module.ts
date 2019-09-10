@@ -20,8 +20,12 @@ import {
 	NbToastrModule,
 	NbWindowModule,
 } from '@nebular/theme';
-import { ApiModule } from '../api/api.module';
 import { FipeApiModule } from '../api/fipe/fipe-api.module';
+import { ApiModule } from '../api/to_de_taxi/api.module';
+import {NgxMaskModule, IConfig} from 'ngx-mask';
+
+/*export const options: Partial<IConfig> = {
+};*/
 
 @NgModule({
 	declarations: [AppComponent],
@@ -33,6 +37,7 @@ import { FipeApiModule } from '../api/fipe/fipe-api.module';
 
 		ThemeModule.forRoot(),
 
+		NgxMaskModule.forRoot(/*options*/),
 		NbSidebarModule.forRoot(),
 		NbMenuModule.forRoot(),
 		NbDatepickerModule.forRoot(),

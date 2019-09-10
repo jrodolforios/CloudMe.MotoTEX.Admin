@@ -1,0 +1,22 @@
+<div>
+    <button nbButton shape="semi-round" [nbSpinner]="loading" class="btn-primary" size="medium" (click)="listarItems(lista_items)">{{ selected_item ? getItemLabel(selected_item) : 'SELECIONE'}}</button>
+</div>
+
+<ng-template #lista_items let-ref="dialogRef">
+    <nb-card size="medium">
+        <nb-card-header class='text-center' header>
+            <h3>{{title}}</h3>
+            <input class="filtro" type="text" nbInput fullWidth status="primary" placeholder="Filtrar" (input)="filterLabel($event.target.value)">
+        </nb-card-header>
+        <nb-card-body>
+            <nb-list>
+				<nb-list-item class="list_item" (click)="selectItem(item)" *ngFor="let item of itemsPesquisa; trackBy:getItemHash(item)">
+					{{ getItemLabel(item) }}
+				</nb-list-item>
+            </nb-list>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton [shape]="semi-round" class="btn-primary" size="medium" (click)="desassociar()">LIMPAR</button>
+        </nb-card-footer>
+    </nb-card>	
+</ng-template>

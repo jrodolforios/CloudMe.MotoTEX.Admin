@@ -6,7 +6,7 @@ import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
-import { ModeloVeiculo } from '../models/modelo-veiculo';
+import { InfoMarca } from '../models/info-marca';
 
 @Injectable({
   providedIn: 'root',
@@ -24,13 +24,13 @@ class ModeloVeiculoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(codigo_modelo: string): __Observable<__StrictHttpResponse<Array<ModeloVeiculo>>> {
+  GetAllResponse(codigo_marca: string): __Observable<__StrictHttpResponse<InfoMarca>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/v1/carros/marcas/${codigo_modelo}/modelos`,
+      this.rootUrl + `/api/v1/carros/marcas/${codigo_marca}/modelos`,
       __body,
       {
         headers: __headers,
@@ -41,16 +41,16 @@ class ModeloVeiculoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<ModeloVeiculo>>;
+        return _r as __StrictHttpResponse<InfoMarca>;
       })
     );
   }
   /**
    * @return Success
    */
-  GetAll(codigo_modelo: string): __Observable<Array<ModeloVeiculo>> {
-    return this.GetAllResponse(codigo_modelo).pipe(
-      __map(_r => _r.body as Array<ModeloVeiculo>)
+  GetAll(codigo_marca: string): __Observable<InfoMarca> {
+    return this.GetAllResponse(codigo_marca).pipe(
+      __map(_r => _r.body as InfoMarca)
     );
   }
 }

@@ -32,6 +32,12 @@
     align-items: center;
     width: auto;
 
+    .logo-img {
+      padding: 0.25rem;
+      width: 50px;
+      height: auto;
+    }
+
     .sidebar-toggle {
       @include nb-ltr(padding-right, 1.25rem);
       @include nb-rtl(padding-left, 1.25rem);
@@ -42,11 +48,9 @@
       }
     }
 
-    .logo {
+    .title {
       padding: 0 1.25rem;
       font-size: 1.75rem;
-      @include nb-ltr(border-left, 1px solid nb-theme(divider-color));
-      @include nb-rtl(border-right, 1px solid nb-theme(divider-color));
       white-space: nowrap;
       text-decoration: none;
     }

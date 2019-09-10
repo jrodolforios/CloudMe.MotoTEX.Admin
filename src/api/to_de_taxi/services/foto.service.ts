@@ -7,16 +7,17 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
-import { TarifaSummary } from '../models/tarifa-summary';
+import { FotoSummary } from '../models/foto-summary';
 @Injectable({
   providedIn: 'root',
 })
-class TarifaService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Tarifa';
-  static readonly PutPath = '/api/v1/Tarifa';
-  static readonly PostPath = '/api/v1/Tarifa';
-  static readonly GetPath = '/api/v1/Tarifa/{id}';
-  static readonly DeletePath = '/api/v1/Tarifa/{id}';
+class FotoService extends __BaseService {
+  static readonly GetAllPath = '/api/v1/Foto';
+  static readonly PutPath = '/api/v1/Foto';
+  static readonly PostPath = '/api/v1/Foto';
+  static readonly GetPath = '/api/v1/Foto/{id}';
+  static readonly DeletePath = '/api/v1/Foto/{id}';
+  static readonly UploadPath = '/api/v1/Foto/upload';
 
   constructor(
     config: __Configuration,
@@ -28,13 +29,13 @@ class TarifaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<TarifaSummary>>> {
+  GetAllResponse(): __Observable<__StrictHttpResponse<Array<FotoSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/v1/Tarifa`,
+      this.rootUrl + `/api/v1/Foto`,
       __body,
       {
         headers: __headers,
@@ -45,31 +46,31 @@ class TarifaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<TarifaSummary>>;
+        return _r as __StrictHttpResponse<Array<FotoSummary>>;
       })
     );
   }
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<TarifaSummary>> {
+  GetAll(): __Observable<Array<FotoSummary>> {
     return this.GetAllResponse().pipe(
-      __map(_r => _r.body as Array<TarifaSummary>)
+      __map(_r => _r.body as Array<FotoSummary>)
     );
   }
 
   /**
-   * @param tarifaSummary Modified Tarifa list's properties summary
+   * @param FotoSummary Modified Foto list's properties summary
    * @return Success
    */
-  PutResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  PutResponse(FotoSummary?: FotoSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = tarifaSummary;
+    __body = FotoSummary;
     let req = new HttpRequest<any>(
       'PUT',
-      this.rootUrl + `/api/v1/Tarifa`,
+      this.rootUrl + `/api/v1/Foto`,
       __body,
       {
         headers: __headers,
@@ -80,51 +81,53 @@ class TarifaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<string>;
       })
     );
   }
   /**
-   * @param tarifaSummary Modified Tarifa list's properties summary
+   * @param FotoSummary Modified Foto list's properties summary
    * @return Success
    */
-  Put(tarifaSummary?: TarifaSummary): __Observable<boolean> {
-    return this.PutResponse(tarifaSummary).pipe(
-      __map(_r => _r.body as boolean)
+  Put(FotoSummary?: FotoSummary): __Observable<string> {
+    return this.PutResponse(FotoSummary).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
   /**
-   * @param tarifaSummary Tarifa's summary
+   * @param fotoSummary Corrida's summary
+   * @return Success
    */
-  PostResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<null>> {
+  PostResponse(fotoSummary?: FotoSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = tarifaSummary;
+    __body = fotoSummary;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/api/v1/Tarifa`,
+      this.rootUrl + `/api/v1/Foto`,
       __body,
       {
         headers: __headers,
         params: __params,
-        responseType: 'json'
+        responseType: 'text'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<string>;
       })
     );
   }
   /**
-   * @param tarifaSummary Tarifa's summary
+   * @param fotoSummary Corrida's summary
+   * @return Success
    */
-  Post(tarifaSummary?: TarifaSummary): __Observable<null> {
-    return this.PostResponse(tarifaSummary).pipe(
-      __map(_r => _r.body as null)
+  Post(fotoSummary?: FotoSummary): __Observable<string> {
+    return this.PostResponse(fotoSummary).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
@@ -132,14 +135,14 @@ class TarifaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<TarifaSummary>> {
+  GetResponse(id: string): __Observable<__StrictHttpResponse<FotoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/v1/Tarifa/${id}`,
+      this.rootUrl + `/api/v1/Foto/${id}`,
       __body,
       {
         headers: __headers,
@@ -150,7 +153,7 @@ class TarifaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<TarifaSummary>;
+        return _r as __StrictHttpResponse<FotoSummary>;
       })
     );
   }
@@ -158,9 +161,9 @@ class TarifaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<TarifaSummary> {
+  Get(id: string): __Observable<FotoSummary> {
     return this.GetResponse(id).pipe(
-      __map(_r => _r.body as TarifaSummary)
+      __map(_r => _r.body as FotoSummary)
     );
   }
 
@@ -175,7 +178,7 @@ class TarifaService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/api/v1/Tarifa/${id}`,
+      this.rootUrl + `/api/v1/Foto/${id}`,
       __body,
       {
         headers: __headers,
@@ -199,9 +202,47 @@ class TarifaService extends __BaseService {
       __map(_r => _r.body as boolean)
     );
   }
+
+  /**
+   * @param arquivo Upload File
+   * @return Success
+   */
+  UploadResponse(arquivo: Blob): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let __formData = new FormData();
+    __body = __formData;
+    if (arquivo != null) { __formData.append('arquivo', arquivo as string | Blob);}
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Foto/upload`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param arquivo Upload File
+   * @return Success
+   */
+  Upload(arquivo: Blob): __Observable<string> {
+    return this.UploadResponse(arquivo).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
 }
 
-module TarifaService {
+module FotoService {
 }
 
-export { TarifaService }
+export { FotoService }

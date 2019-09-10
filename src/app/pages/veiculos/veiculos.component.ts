@@ -1,16 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
+import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
 import { MarcaVeiculoService, ModeloVeiculoService } from '../../../api/fipe/services';
-import { MarcaVeiculo } from '../../../api/fipe/models';
+import { VeiculoSummary, FotoSummary } from '../../../api/to_de_taxi/models';
+import { VeiculoService, FotoService } from '../../../api/to_de_taxi/services';
+import { UUID } from 'angular2-uuid';
+import { VeiculosService, VeiculoSummaryExt } from './veiculos.service';
+import { SeletorMarcaViewComponent } from './seletor-marca/seletor-marca-view.component';
+import { SeletorMarcaEditorComponent } from './seletor-marca/seletor-marca-editor.component';
+import { SeletorModeloViewComponent } from './seletor-modelo/seletor-modelo-view.component';
+import { SeletorModeloEditorComponent } from './seletor-modelo/seletor-modelo-editor.component';
+import { PlacaEditorComponent } from './placa/placa-editor.component';
+import { CapacidadeEditorComponent } from './capacidade/capacidade-editor.component';
+import { FotoEditorComponent } from './foto/foto-editor.component';
+import { FotoViewComponent } from './foto/foto-view.component';
+import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
 
 @Component({
 	selector: 'ngx-veiculos',
 	templateUrl: './veiculos.component.html',
-	styleUrls: ['./veiculos.component.scss']
+	styleUrls: ['./veiculos.component.scss'],
+	entryComponents: [
+		SeletorMarcaEditorComponent,
+		SeletorMarcaViewComponent,
+		SeletorModeloEditorComponent,
+		SeletorModeloViewComponent,
+		PlacaEditorComponent,
+		CapacidadeEditorComponent,
+		FotoEditorComponent,
+		FotoViewComponent
+	]
 })
 export class VeiculosComponent implements OnInit {
 
+	@ViewChild('base_card', null) baseCard: BaseCardComponent;
+	@ViewChild('table', null) table: Ng2SmartTableComponent;
+
 	grid_settings = {
+		noDataMessage: 'Sem registros para exibição.',
 		actions:
 		{
 			columnTitle: 'Ações',
@@ -37,148 +64,217 @@ export class VeiculosComponent implements OnInit {
 			confirmDelete: true,
 		},
 		columns: {
-			/*viewDashboard:
-			{
-				title:'Visualizar',
-				type:'html',
-				valuePrepareFunction:(cell,row) => {
-					return row.idCli ? `<span class="nb-bar-chart" (click)="visualizarDashboardCliente(${row})"></span>` : ""
-				},
-				editable: false,
-				filter:false
-			},*/
 			marca: {
 				title: 'Marca',
-				type: 'custom',
-				/*renderComponent: SeletorClienteViewComponent,
+				type: 'text',
 				editor:
 				{
 					type: 'custom',
-					component: SeletorClienteEditorComponent
-				}*/
+					component: SeletorMarcaEditorComponent
+				}
 			},
 			modelo: {
 				title: 'Modelo',
-				type: 'custom',
-				/*renderComponent: SeletorClienteViewComponent,
+				type: 'text',
 				editor:
 				{
 					type: 'custom',
-					component: SeletorClienteEditorComponent
-				}*/
+					component: SeletorModeloEditorComponent
+				}
 			},
 			placa: {
 				title: 'Placa',
 				type: 'text',
+				editor:
+				{
+					type: 'custom',
+					component: PlacaEditorComponent
+				}
 			},
 			capacidade: {
-				title: 'Capacidade',
+				title: 'Passageiros',
 				type: 'text',
-			},
-			cor: {
-				title: 'Cor',
-				type: 'text',
+				editor:
+				{
+					type: 'custom',
+					component: CapacidadeEditorComponent
+				}
 			},
 			foto: {
 				title: 'Foto',
 				type: 'custom',
-				/*renderComponent: SeletorClienteViewComponent,
+				renderComponent: FotoViewComponent,
 				editor:
 				{
 					type: 'custom',
-					component: SeletorClienteEditorComponent
-				}*/
+					component: FotoEditorComponent
+				}
 			},
 		},
 	};
 
 	source: LocalDataSource = new LocalDataSource();
 
-	marcas: MarcaVeiculo[] = [];
-
-	constructor(private marcasVeicSrv: MarcaVeiculoService, private modelosVeicSrv: ModeloVeiculoService)
+	constructor(
+		private marcasVeicSrv: MarcaVeiculoService,
+		private veiculoSrv: VeiculoService,
+		private fotoSrv: FotoService,
+		private veiculosSrv: VeiculosService)
 	{
 		const data = [];
 		this.source.load(data);
 	}
 
-	ngOnInit()
+	async ngOnInit()
 	{
 		const self = this;
-		self.marcasVeicSrv.GetAll().toPromise().then(marcas => {
-			self.marcas = marcas;
+		await self.marcasVeicSrv.GetAll().toPromise().then(marcas => {
+			self.veiculosSrv.marcasVeiculos.next(marcas);
 		});
+
+		await self.veiculoSrv.GetAll().toPromise().then(veics => {
+			/*const veicsEx: VeiculoSummaryExt[] = [];
+			veics.forEach(veic => {
+				veicsEx.push();
+			});
+			this.source.load(veicsEx);*/
+			this.source.load(veics);
+		});
+	}
+
+	async enviarFoto(veiculoSummary: VeiculoSummaryExt)
+	{
+		const self = this;
+
+		if (!veiculoSummary.veicRef)
+		{
+			return;
+		}
+
+		if (veiculoSummary.fotoSummaryRef.id)
+		{
+			await self.fotoSrv.Put(veiculoSummary.fotoSummaryRef).toPromise().then(_ => {});
+		}
+		else
+		{
+			/*veiculoSummary.fotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
+			await self.fotoSrv.Post(veiculoSummary.fotoSummaryRef).toPromise().then(id_foto => {
+				veiculoSummary.idFoto = id_foto;
+			});*/
+
+			await self.fotoSrv.Upload(veiculoSummary.arquivoFoto).toPromise().then(id_foto => {
+				veiculoSummary.veicRef.idFoto = id_foto;
+			});
+		}
+	}
+
+	async removerFoto(fotoSummary: FotoSummary, veiculoSummary: VeiculoSummary)
+	{
+		const self = this;
+		if (fotoSummary && fotoSummary.id)
+		{
+			await self.fotoSrv.Delete(fotoSummary.id).toPromise().then(_ => {
+				veiculoSummary.idFoto = '';
+			});
+		}
 	}
 
 	async onCreateConfirm(event)
 	{
-		/*
 		const self = this;
 
-		const novo_usr = event.newData as InfoUsuarioEx;
-		const resultado = await self.usrMsrMgr.criarUsuario(novo_usr);
 
-		if (resultado.sucesso)
-		{
-			event.confirm.resolve(novo_usr);
-		}
-		else
-		{
-			const alert = await this.alertController.create({
-				header: 'Gerenciamento de usuários',
-				subHeader: 'Cadastro não realizado',
-				message: resultado.msg,
-				buttons: ['OK']
-			});
+		await this.enviarFoto(event.newData.veicExt);
 
-			await alert.present();
+		const novo_veic = event.newData as VeiculoSummary;
+		novo_veic.id = UUID.UUID();
 
-			event.confirm.reject();
-		}
-		*/
+		const sumarioVeic: VeiculoSummary = {
+			id: novo_veic.id,
+			marca: novo_veic.marca,
+			modelo: novo_veic.modelo,
+			placa: novo_veic.placa,
+			capacidade: novo_veic.capacidade,
+			cor: novo_veic.cor,
+			idFoto: novo_veic.idFoto
+		};
+
+
+		await self.veiculoSrv.Post(sumarioVeic).toPromise().then(async id_veic => {
+			if (id_veic)
+			{
+				novo_veic.id = id_veic;
+				/*await self.fotoSrv.Post(data).toPromise().then*/
+				event.confirm.resolve(novo_veic);
+			}
+			else
+			{
+				/*const alert = await this.alertController.create({
+					header: 'Gerenciamento de usuários',
+					subHeader: 'Cadastro não realizado',
+					message: resultado.msg,
+					buttons: ['OK']
+				});
+
+				await alert.present();*/
+
+				event.confirm.reject();
+			}
+		});
 	}
 
 	async onEditConfirm(event)
 	{
-		/*
 		// altera informações do usuário (login, senha, admin)
-		const oldUsr = event.data as InfoUsuarioEx;
-		const newUsr = new InfoUsuarioEx(event.newData);
-
 		const self = this;
 
-		const resultado = await self.usrMsrMgr.alterarUsuario(oldUsr, newUsr);
-		if (resultado.sucesso)
-		{
-			event.confirm.resolve();
-		}
-		else
-		{
-			event.confirm.reject();
-		}
-		*/
-	}
+		await this.enviarFoto(event.newData.veicExt);
 
-	async onDeleteConfirm(event)
-	{
-		/*
-		const self = this;
+		const newVeic = event.newData as VeiculoSummary;
 
-		const info_usr = event.data as InfoUsuarioEx;
+		const sumarioVeic: VeiculoSummary = {
+			id: newVeic.id,
+			marca: newVeic.marca,
+			modelo: newVeic.modelo,
+			placa: newVeic.placa,
+			capacidade: newVeic.capacidade,
+			cor: newVeic.cor,
+			idFoto: newVeic.idFoto
+		};
 
-		if (window.confirm('Confirma exclusão do usuário?'))
-		{
-			const resultado = await self.usrMsrMgr.removerUsuario(info_usr);
-			if (resultado.sucesso)
+		await self.veiculoSrv.Put(sumarioVeic).toPromise().then(async resultado => {
+			if (resultado)
 			{
+				// TODO: tem que usar event.newData!!!
+
 				event.confirm.resolve();
 			}
 			else
 			{
 				event.confirm.reject();
 			}
+		});
+	}
+
+	async onDeleteConfirm(event)
+	{
+		const self = this;
+
+		const veic = event.data as VeiculoSummary;
+
+		if (window.confirm('Confirma exclusão do veículo?'))
+		{
+			await self.veiculoSrv.Delete(veic.id).toPromise().then(resultado => {
+				if (resultado)
+				{
+					event.confirm.resolve();
+				}
+				else
+				{
+					event.confirm.reject();
+				}
+			});
 		}
-		*/
 	}
 
 	onCustomAction(event)

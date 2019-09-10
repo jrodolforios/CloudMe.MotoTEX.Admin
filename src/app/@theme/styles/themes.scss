@@ -86,3 +86,75 @@ $nb-themes: nb-register-theme((
   slide-out-shadow-color: 0 4px 14px 0 #8f9bb3,
   slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3,
 ), dark, dark);
+
+$nb-themes: nb-register-theme((
+
+  color-primary-100: #e0e0e0,
+  color-primary-200: #d0d0d0,
+  color-primary-300: #c0c0c0,
+  color-primary-400: #b0b0b0,
+  color-primary-500: #a0a0a0,
+  color-primary-600: #909090,
+  color-primary-700: #808080,
+  color-primary-800: #707070,
+  color-primary-900: #606060,
+  color-primary-1000: #505050,
+  color-primary-1100: #404040,
+    
+  color-success-100: #ffffaa,
+  color-success-200: #ffff88,
+  color-success-300: #ffff66,
+  color-success-400: #ffff44,
+  color-success-500: #ffff22,
+  color-success-600: #ffff00,
+  color-success-700: #eeee00,
+  color-success-800: #d0d000,
+  color-success-900: #b3b300,
+  color-success-1000: #969600,
+  color-success-1100: #797900,
+
+  header-background-color: #000000,
+  header-text-color: #ffff00,
+
+  sidebar-background-color: #404040,
+  sidebar-text-color: #f0d600,
+  sidebar-menu-item-highlight-color: header-text-color,
+  sidebar-scrollbar-background-color: #303030,
+  sidebar-scrollbar-color: #505050,
+  
+  text-hint-color: #E0E0E0,
+
+  card-header-primary-text-color: #ffff00,
+  card-header-primary-background-color: #404040,
+
+  menu-background-color: transparent,
+  menu-text-color: text-hint-color,
+  menu-item-active-text-color: #ffff00,
+  menu-item-icon-active-color: #ffff00,
+  menu-item-divider-color:#303030,
+
+  menu-item-hover-text-color: #ffff00,
+  menu-item-icon-hover-color: #ffff00,
+
+  footer-background-color: #404040,
+  footer-text-color: #ffff00,
+
+  layout-padding-top: 2.25rem,
+
+  menu-item-icon-margin: 0 0.5rem 0 0,
+
+  card-height-tiny: 13.5rem,
+  card-height-small: 21.1875rem,
+  card-height-medium: 28.875rem,
+  card-height-large: 36.5625rem,
+  card-height-giant: 44.25rem,
+  card-margin-bottom: 1.875rem,
+  card-header-with-select-padding-top: 0.5rem,
+  card-header-with-select-padding-bottom: 0.5rem,
+
+  select-min-width: 6rem,
+
+  slide-out-background: linear-gradient(270deg, #edf1f7 0%, #e4e9f2 100%),
+  slide-out-shadow-color: 0 4px 14px 0 #8f9bb3,
+  slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3,
+), to_de_taxi, corporate);

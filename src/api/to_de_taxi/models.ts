@@ -4,6 +4,7 @@ export { FaixaDescontoTaxistaSummary } from './models/faixa-desconto-taxista-sum
 export { FavoritoSummary } from './models/favorito-summary';
 export { FormaPagamentoSummary } from './models/forma-pagamento-summary';
 export { FormaPagamentoTaxistaSummary } from './models/forma-pagamento-taxista-summary';
+export { FotoSummary } from './models/foto-summary';
 export { GrupoUsuarioSummary } from './models/grupo-usuario-summary';
 export { LocalizacaoSummary } from './models/localizacao-summary';
 export { PassageiroSummary } from './models/passageiro-summary';

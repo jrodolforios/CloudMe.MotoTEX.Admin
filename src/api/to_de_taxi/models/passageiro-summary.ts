@@ -5,5 +5,5 @@ export interface PassageiroSummary {
   cpf?: string;
   idEndereco?: string;
   idLocalizacaoAtual?: string;
-  foto?: string;
+  idFoto?: string;
 }
