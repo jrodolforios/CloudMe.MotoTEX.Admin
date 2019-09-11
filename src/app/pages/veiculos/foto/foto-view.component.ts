@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Component({
 	template:
 `
-	<img [src]="veicExt ? veicExt.fotoSummaryRef.dados : null" height="50"/>
+	<img [src]="imgSrc" height="50"/>
 `,
 })
 export class FotoViewComponent implements AfterViewInit{
@@ -39,7 +39,6 @@ export class FotoViewComponent implements AfterViewInit{
 				// obtém do servidor
 				await self.fotoSrv.Get(self.rowData.idFoto).toPromise().then(foto_summary => {
 					self.veicExt.fotoSummaryRef = foto_summary;
-					self.veicExt.fotoSummaryRef.dados = 'data:image/png;base64,' + self.veicExt.fotoSummaryRef.dados;
 				});
 			}
 			else
@@ -47,5 +46,6 @@ export class FotoViewComponent implements AfterViewInit{
 				return;
 			}
 		}
+		self.imgSrc = atob(self.veicExt.fotoSummaryRef.dados);
 	}
 }

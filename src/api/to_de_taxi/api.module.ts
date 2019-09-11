@@ -17,6 +17,7 @@ import { RotaService } from './services/rota.service';
 import { SolicitacaoCorridaService } from './services/solicitacao-corrida.service';
 import { TarifaService } from './services/tarifa.service';
 import { TaxistaService } from './services/taxista.service';
+import { UsuarioService } from './services/usuario.service';
 import { UsuarioGrupoUsuarioService } from './services/usuario-grupo-usuario.service';
 import { VeiculoService } from './services/veiculo.service';
 import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
@@ -48,6 +49,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     SolicitacaoCorridaService,
     TarifaService,
     TaxistaService,
+    UsuarioService,
     UsuarioGrupoUsuarioService,
     VeiculoService,
     VeiculoTaxistaService

@@ -2268,6 +2268,196 @@
         }
       }
     },
+    "/api/v1/Usuario": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Gets all Usuarios.",
+        "operationId": "GetAll",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "uniqueItems": false,
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UsuarioSummary"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Modifies an existing Usuario.",
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "UsuarioSummary",
+            "in": "body",
+            "description": "Modified Usuario list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UsuarioSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Creates a new Usuario.",
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "UsuarioSummary",
+            "in": "body",
+            "description": "Usuario's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UsuarioSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/Usuario/{id}": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Gets a Usuario.\r\n<param name=\"id\">Usuario's ID</param>",
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UsuarioSummary"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Removes an existing Usuario.",
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Usuario/login": {
+      "post": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Removes an existing Usuario.",
+        "operationId": "Login",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "usuario",
+            "in": "body",
+            "description": "Resumo do usuário",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UsuarioSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/v1/UsuarioGrupoUsuario": {
       "get": {
         "tags": [
@@ -2976,14 +3166,10 @@
           "format": "uuid",
           "type": "string"
         },
-        "idUsuario": {
-          "format": "uuid",
-          "type": "string"
-        },
         "cpf": {
           "type": "string"
         },
-        "idEndereco": {
+        "idFoto": {
           "format": "uuid",
           "type": "string"
         },
@@ -2991,9 +3177,39 @@
           "format": "uuid",
           "type": "string"
         },
-        "idFoto": {
+        "usuario": {
+          "$ref": "#/definitions/UsuarioSummary"
+        },
+        "endereco": {
+          "$ref": "#/definitions/LocalizacaoSummary"
+        }
+      }
+    },
+    "UsuarioSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
           "format": "uuid",
           "type": "string"
+        },
+        "login": {
+          "type": "string"
+        },
+        "senha": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "tipo": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "type": "integer"
         }
       }
     },
@@ -3110,11 +3326,13 @@
           "format": "uuid",
           "type": "string"
         },
-        "idUsuario": {
-          "format": "uuid",
+        "cpf": {
           "type": "string"
         },
-        "idEndereco": {
+        "rg": {
+          "type": "string"
+        },
+        "idFoto": {
           "format": "uuid",
           "type": "string"
         },
@@ -3122,9 +3340,15 @@
           "format": "uuid",
           "type": "string"
         },
-        "idFoto": {
+        "idPontoTaxi": {
           "format": "uuid",
           "type": "string"
+        },
+        "usuario": {
+          "$ref": "#/definitions/UsuarioSummary"
+        },
+        "endereco": {
+          "$ref": "#/definitions/LocalizacaoSummary"
         }
       }
     },

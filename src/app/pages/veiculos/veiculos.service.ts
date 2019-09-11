@@ -10,6 +10,7 @@ export class VeiculoSummaryExt
 	marcaRef = new BehaviorSubject<MarcaVeiculo>(null);
 	modeloRef = new BehaviorSubject<ModeloVeiculo>(null);
 	fotoSummaryRef: FotoSummary = {};
+	novaFotoSummaryRef: FotoSummary = {};
 
 	arquivoFoto: File = null;
 

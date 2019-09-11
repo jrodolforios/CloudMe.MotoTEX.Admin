@@ -108,7 +108,7 @@ export class VeiculosComponent implements OnInit {
 				{
 					type: 'custom',
 					component: FotoEditorComponent
-				}
+				},
 			},
 		},
 	};
@@ -151,30 +151,31 @@ export class VeiculosComponent implements OnInit {
 			return;
 		}
 
-		if (veiculoSummary.fotoSummaryRef.id)
+		if (veiculoSummary.fotoSummaryRef.id &&
+			veiculoSummary.novaFotoSummaryRef.nomeArquivo !== veiculoSummary.fotoSummaryRef.nomeArquivo)
 		{
-			await self.fotoSrv.Put(veiculoSummary.fotoSummaryRef).toPromise().then(_ => {});
+			await self.fotoSrv.Put(veiculoSummary.novaFotoSummaryRef).toPromise().then(_ => {});
 		}
 		else
 		{
-			/*veiculoSummary.fotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
-			await self.fotoSrv.Post(veiculoSummary.fotoSummaryRef).toPromise().then(id_foto => {
-				veiculoSummary.idFoto = id_foto;
-			});*/
-
-			await self.fotoSrv.Upload(veiculoSummary.arquivoFoto).toPromise().then(id_foto => {
+			veiculoSummary.novaFotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
+			await self.fotoSrv.Post(veiculoSummary.novaFotoSummaryRef).toPromise().then(id_foto => {
 				veiculoSummary.veicRef.idFoto = id_foto;
 			});
+
+			/*await self.fotoSrv.Upload(veiculoSummary.arquivoFoto).toPromise().then(id_foto => {
+				veiculoSummary.veicRef.idFoto = id_foto;
+			});*/
 		}
 	}
 
-	async removerFoto(fotoSummary: FotoSummary, veiculoSummary: VeiculoSummary)
+	async removerFoto(veiculoSummary: VeiculoSummaryExt)
 	{
 		const self = this;
-		if (fotoSummary && fotoSummary.id)
+		if (veiculoSummary.fotoSummaryRef.id)
 		{
-			await self.fotoSrv.Delete(fotoSummary.id).toPromise().then(_ => {
-				veiculoSummary.idFoto = '';
+			await self.fotoSrv.Delete(veiculoSummary.fotoSummaryRef.id).toPromise().then(_ => {
+				veiculoSummary.veicRef.idFoto = '';
 			});
 		}
 	}
@@ -230,6 +231,7 @@ export class VeiculosComponent implements OnInit {
 
 		await this.enviarFoto(event.newData.veicExt);
 
+		const origVeic = event.data as VeiculoSummary;
 		const newVeic = event.newData as VeiculoSummary;
 
 		const sumarioVeic: VeiculoSummary = {
@@ -239,14 +241,12 @@ export class VeiculosComponent implements OnInit {
 			placa: newVeic.placa,
 			capacidade: newVeic.capacidade,
 			cor: newVeic.cor,
-			idFoto: newVeic.idFoto
+			idFoto: origVeic.idFoto
 		};
 
 		await self.veiculoSrv.Put(sumarioVeic).toPromise().then(async resultado => {
 			if (resultado)
 			{
-				// TODO: tem que usar event.newData!!!
-
 				event.confirm.resolve();
 			}
 			else

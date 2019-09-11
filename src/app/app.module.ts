@@ -23,9 +23,13 @@ import {
 import { FipeApiModule } from '../api/fipe/fipe-api.module';
 import { ApiModule } from '../api/to_de_taxi/api.module';
 import {NgxMaskModule, IConfig} from 'ngx-mask';
+import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken } from '@nebular/auth';
+import { AuthGuard } from './auth/auth-guard.service';
 
 /*export const options: Partial<IConfig> = {
 };*/
+const toDeTaxiAPIBaseURL = 'https://localhost:44315';
+const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -49,9 +53,52 @@ import {NgxMaskModule, IConfig} from 'ngx-mask';
 		}),
 		CoreModule.forRoot(),
 
-		FipeApiModule.forRoot({rootUrl: 'https://parallelum.com.br/fipe'}),
-		ApiModule.forRoot({rootUrl: 'https://localhost:44315'}),
+		FipeApiModule.forRoot({rootUrl: fipeAPIBaseURL}),
+		ApiModule.forRoot({rootUrl: toDeTaxiAPIBaseURL}),
+
+		NbAuthModule.forRoot({
+			strategies:
+			[
+				NbPasswordAuthStrategy.setup(
+				{
+					name: 'email',
+					baseEndpoint: `${toDeTaxiAPIBaseURL}/api/v1`,
+					token:
+					{
+						class: NbAuthJWTToken,
+						key: 'accessToken',
+					},
+					login:
+					{
+						endpoint: '/usuario/login',
+						method: 'post',
+					},
+					register:
+					{
+						endpoint: '/usuario/registrar',
+						method: 'post',
+					},
+					logout:
+					{
+						endpoint: '/usuario/logout',
+						method: 'post',
+					},
+					requestPass:
+					{
+						endpoint: '/usuario/solicitar_senha',
+						method: 'post',
+					},
+					resetPass:
+					{
+						endpoint: '/usuario/trocar_senha',
+						method: 'post',
+					},
+				})
+			],
+			forms: {}
+		})
 	],
+	providers: [AuthGuard],
 	bootstrap: [AppComponent],
 })
 export class AppModule {

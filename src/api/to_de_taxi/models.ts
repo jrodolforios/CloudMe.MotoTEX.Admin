@@ -8,6 +8,7 @@ export { FotoSummary } from './models/foto-summary';
 export { GrupoUsuarioSummary } from './models/grupo-usuario-summary';
 export { LocalizacaoSummary } from './models/localizacao-summary';
 export { PassageiroSummary } from './models/passageiro-summary';
+export { UsuarioSummary } from './models/usuario-summary';
 export { RotaSummary } from './models/rota-summary';
 export { SolicitacaoCorridaSummary } from './models/solicitacao-corrida-summary';
 export { TarifaSummary } from './models/tarifa-summary';

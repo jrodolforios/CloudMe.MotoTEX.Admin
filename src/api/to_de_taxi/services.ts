@@ -12,6 +12,7 @@ export { RotaService } from './services/rota.service';
 export { SolicitacaoCorridaService } from './services/solicitacao-corrida.service';
 export { TarifaService } from './services/tarifa.service';
 export { TaxistaService } from './services/taxista.service';
+export { UsuarioService } from './services/usuario.service';
 export { UsuarioGrupoUsuarioService } from './services/usuario-grupo-usuario.service';
 export { VeiculoService } from './services/veiculo.service';
 export { VeiculoTaxistaService } from './services/veiculo-taxista.service';

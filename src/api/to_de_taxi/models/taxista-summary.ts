@@ -1,8 +1,13 @@
 /* tslint:disable */
+import { UsuarioSummary } from './usuario-summary';
+import { LocalizacaoSummary } from './localizacao-summary';
 export interface TaxistaSummary {
   id?: string;
-  idUsuario?: string;
-  idEndereco?: string;
-  idLocalizacaoAtual?: string;
+  cpf?: string;
+  rg?: string;
   idFoto?: string;
+  idLocalizacaoAtual?: string;
+  idPontoTaxi?: string;
+  usuario?: UsuarioSummary;
+  endereco?: LocalizacaoSummary;
 }
