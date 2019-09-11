@@ -3,8 +3,14 @@ import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
 import { BehaviorSubject } from 'rxjs';
 import { UsuarioSummary } from '../../api/to_de_taxi/models';
 
-export class Usuario
+export class Usuario implements UsuarioSummary
 {
+	id?: string;
+	login?: string;
+	senha?: string;
+	nome?: string;
+	tipo?: any;
+
 	public constructor(init?: Partial<UsuarioSummary>)
 	{
 		Object.assign(this, init);
@@ -15,6 +21,7 @@ export class Usuario
 export class UsuarioService
 {
 	public usuario = new BehaviorSubject<Usuario>(null);
+	public id_usuario = new BehaviorSubject<string>(null);
 
 	constructor(private authService: NbAuthService){
 
@@ -22,7 +29,8 @@ export class UsuarioService
 		{
 			if (token.isValid())
 			{
-				this.usuario.next(new Usuario(token.getPayload())); // here we receive a payload from the token and assigns it to our `user` variable 
+				//this.usuario.next(new Usuario(token.getPayload())); // here we receive a payload from the token and assigns it to our `user` variable 
+				this.id_usuario.next(token.getPayload()); // here we receive a payload from the token and assigns it to our `user` variable 
 			}
 		});
 	}

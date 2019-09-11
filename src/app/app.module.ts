@@ -6,7 +6,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpRequest } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
@@ -23,13 +23,15 @@ import {
 import { FipeApiModule } from '../api/fipe/fipe-api.module';
 import { ApiModule } from '../api/to_de_taxi/api.module';
 import {NgxMaskModule, IConfig} from 'ngx-mask';
-import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken } from '@nebular/auth';
+import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken, NbAuthJWTInterceptor, NB_AUTH_TOKEN_INTERCEPTOR_FILTER } from '@nebular/auth';
 import { AuthGuard } from './auth/auth-guard.service';
+import { UsuarioService } from './auth/usuario.service';
 
 /*export const options: Partial<IConfig> = {
 };*/
 const toDeTaxiAPIBaseURL = 'https://localhost:44315';
 const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
+const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/`;
 
 @NgModule({
 	declarations: [AppComponent],
@@ -62,7 +64,7 @@ const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
 				NbPasswordAuthStrategy.setup(
 				{
 					name: 'email',
-					baseEndpoint: `${toDeTaxiAPIBaseURL}/api/v1`,
+					baseEndpoint: authBaseEndpoint,
 					token:
 					{
 						class: NbAuthJWTToken,
@@ -70,27 +72,27 @@ const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
 					},
 					login:
 					{
-						endpoint: '/usuario/login',
+						endpoint: 'usuario/login',
 						method: 'post',
 					},
 					register:
 					{
-						endpoint: '/usuario/registrar',
+						endpoint: 'usuario/registrar',
 						method: 'post',
 					},
 					logout:
 					{
-						endpoint: '/usuario/logout',
+						endpoint: 'usuario/logout',
 						method: 'post',
 					},
 					requestPass:
 					{
-						endpoint: '/usuario/solicitar_senha',
+						endpoint: 'usuario/solicitar_senha',
 						method: 'post',
 					},
 					resetPass:
 					{
-						endpoint: '/usuario/trocar_senha',
+						endpoint: 'usuario/trocar_senha',
 						method: 'post',
 					},
 				})
@@ -98,7 +100,26 @@ const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
 			forms: {}
 		})
 	],
-	providers: [AuthGuard],
+	providers: [
+		AuthGuard,
+		UsuarioService,
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: NbAuthJWTInterceptor,
+			multi: true
+		},
+		{
+			provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER,
+			useValue: function (req: HttpRequest<any>)
+			{
+				if (req.url === `${authBaseEndpoint}refresh-token`)
+				{
+					return true;
+				}
+				return false;
+			},
+		},
+	],
 	bootstrap: [AppComponent],
 })
 export class AppModule {

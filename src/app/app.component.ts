@@ -6,6 +6,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from './@core/utils/analytics.service';
 import { NbIconLibraries } from '@nebular/theme';
+import { UsuarioService } from './auth/usuario.service';
 
 @Component({
 	selector: 'ngx-app',
@@ -13,8 +14,15 @@ import { NbIconLibraries } from '@nebular/theme';
 })
 export class AppComponent implements OnInit {
 
-	constructor( private analytics: AnalyticsService, private iconLibraries: NbIconLibraries)
+	constructor(
+		private analytics: AnalyticsService,
+		private iconLibraries: NbIconLibraries,
+		private usuarioSrv: UsuarioService)
 	{
+		this.usuarioSrv.id_usuario.subscribe(id_usr => {
+			alert(`Novo usuario: ${id_usr}`);
+		});
+
 		this.iconLibraries.registerFontPack('font-awesome', { iconClassPrefix: 'fa' });
 	}
 
