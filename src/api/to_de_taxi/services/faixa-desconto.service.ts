@@ -12,11 +12,11 @@ import { FaixaDescontoSummary } from '../models/faixa-desconto-summary';
   providedIn: 'root',
 })
 class FaixaDescontoService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/FaixaDesconto';
-  static readonly PutPath = '/api/v1/FaixaDesconto';
-  static readonly PostPath = '/api/v1/FaixaDesconto';
-  static readonly GetPath = '/api/v1/FaixaDesconto/{id}';
-  static readonly DeletePath = '/api/v1/FaixaDesconto/{id}';
+  static readonly ApiV1FaixaDescontoGetPath = '/api/v1/FaixaDesconto';
+  static readonly ApiV1FaixaDescontoPutPath = '/api/v1/FaixaDesconto';
+  static readonly ApiV1FaixaDescontoPostPath = '/api/v1/FaixaDesconto';
+  static readonly ApiV1FaixaDescontoByIdGetPath = '/api/v1/FaixaDesconto/{id}';
+  static readonly ApiV1FaixaDescontoByIdDeletePath = '/api/v1/FaixaDesconto/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class FaixaDescontoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<FaixaDescontoSummary>>> {
+  ApiV1FaixaDescontoGetResponse(): __Observable<__StrictHttpResponse<Array<FaixaDescontoSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class FaixaDescontoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<FaixaDescontoSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1FaixaDescontoGet(): __Observable<Array<FaixaDescontoSummary>> {
+    return this.ApiV1FaixaDescontoGetResponse().pipe(
       __map(_r => _r.body as Array<FaixaDescontoSummary>)
     );
   }
@@ -62,7 +62,7 @@ class FaixaDescontoService extends __BaseService {
    * @param faixaDescontoSummary Modified FaixaDesconto list's properties summary
    * @return Success
    */
-  PutResponse(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FaixaDescontoPutResponse(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,16 +88,17 @@ class FaixaDescontoService extends __BaseService {
    * @param faixaDescontoSummary Modified FaixaDesconto list's properties summary
    * @return Success
    */
-  Put(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<boolean> {
-    return this.PutResponse(faixaDescontoSummary).pipe(
+  ApiV1FaixaDescontoPut(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<boolean> {
+    return this.ApiV1FaixaDescontoPutResponse(faixaDescontoSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
 
   /**
    * @param faixaDescontoSummary FaixaDesconto's summary
+   * @return Success
    */
-  PostResponse(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1FaixaDescontoPostResponse(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -109,22 +110,23 @@ class FaixaDescontoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'json'
+        responseType: 'text'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<string>;
       })
     );
   }
   /**
    * @param faixaDescontoSummary FaixaDesconto's summary
+   * @return Success
    */
-  Post(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<null> {
-    return this.PostResponse(faixaDescontoSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1FaixaDescontoPost(faixaDescontoSummary?: FaixaDescontoSummary): __Observable<string> {
+    return this.ApiV1FaixaDescontoPostResponse(faixaDescontoSummary).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
@@ -132,7 +134,7 @@ class FaixaDescontoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<FaixaDescontoSummary>> {
+  ApiV1FaixaDescontoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<FaixaDescontoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -158,8 +160,8 @@ class FaixaDescontoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<FaixaDescontoSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1FaixaDescontoByIdGet(id: string): __Observable<FaixaDescontoSummary> {
+    return this.ApiV1FaixaDescontoByIdGetResponse(id).pipe(
       __map(_r => _r.body as FaixaDescontoSummary)
     );
   }
@@ -168,7 +170,7 @@ class FaixaDescontoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FaixaDescontoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -194,8 +196,8 @@ class FaixaDescontoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1FaixaDescontoByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1FaixaDescontoByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

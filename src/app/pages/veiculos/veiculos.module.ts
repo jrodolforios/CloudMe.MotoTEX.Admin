@@ -15,6 +15,8 @@ import { CapacidadeEditorComponent } from './capacidade/capacidade-editor.compon
 import { FotoEditorComponent } from './foto/foto-editor.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { FotoViewComponent } from './foto/foto-view.component';
+import { ListagemComponent } from './listagem/listagem.component';
+import { DetalhesComponent } from './detalhes/detalhes.component';
 
 const COMPONENTS = [
 	VeiculosComponent,
@@ -30,7 +32,9 @@ const COMPONENTS = [
 
 @NgModule({
 	declarations: [
-		...COMPONENTS
+		...COMPONENTS,
+		ListagemComponent,
+		DetalhesComponent
 	],
 	imports: [
 		CommonModule,

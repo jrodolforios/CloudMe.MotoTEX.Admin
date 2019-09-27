@@ -12,11 +12,11 @@ import { RotaSummary } from '../models/rota-summary';
   providedIn: 'root',
 })
 class RotaService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Rota';
-  static readonly PutPath = '/api/v1/Rota';
-  static readonly PostPath = '/api/v1/Rota';
-  static readonly GetPath = '/api/v1/Rota/{id}';
-  static readonly DeletePath = '/api/v1/Rota/{id}';
+  static readonly ApiV1RotaGetPath = '/api/v1/Rota';
+  static readonly ApiV1RotaPutPath = '/api/v1/Rota';
+  static readonly ApiV1RotaPostPath = '/api/v1/Rota';
+  static readonly ApiV1RotaByIdGetPath = '/api/v1/Rota/{id}';
+  static readonly ApiV1RotaByIdDeletePath = '/api/v1/Rota/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class RotaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<RotaSummary>>> {
+  ApiV1RotaGetResponse(): __Observable<__StrictHttpResponse<Array<RotaSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class RotaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<RotaSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1RotaGet(): __Observable<Array<RotaSummary>> {
+    return this.ApiV1RotaGetResponse().pipe(
       __map(_r => _r.body as Array<RotaSummary>)
     );
   }
@@ -62,7 +62,7 @@ class RotaService extends __BaseService {
    * @param rotaSummary Modified Rota list's properties summary
    * @return Success
    */
-  PutResponse(rotaSummary?: RotaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1RotaPutResponse(rotaSummary?: RotaSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,8 +88,8 @@ class RotaService extends __BaseService {
    * @param rotaSummary Modified Rota list's properties summary
    * @return Success
    */
-  Put(rotaSummary?: RotaSummary): __Observable<boolean> {
-    return this.PutResponse(rotaSummary).pipe(
+  ApiV1RotaPut(rotaSummary?: RotaSummary): __Observable<boolean> {
+    return this.ApiV1RotaPutResponse(rotaSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
@@ -97,7 +97,7 @@ class RotaService extends __BaseService {
   /**
    * @param rotaSummary Rota's summary
    */
-  PostResponse(rotaSummary?: RotaSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1RotaPostResponse(rotaSummary?: RotaSummary): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -122,8 +122,8 @@ class RotaService extends __BaseService {
   /**
    * @param rotaSummary Rota's summary
    */
-  Post(rotaSummary?: RotaSummary): __Observable<null> {
-    return this.PostResponse(rotaSummary).pipe(
+  ApiV1RotaPost(rotaSummary?: RotaSummary): __Observable<null> {
+    return this.ApiV1RotaPostResponse(rotaSummary).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -132,7 +132,7 @@ class RotaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<RotaSummary>> {
+  ApiV1RotaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<RotaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -158,8 +158,8 @@ class RotaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<RotaSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1RotaByIdGet(id: string): __Observable<RotaSummary> {
+    return this.ApiV1RotaByIdGetResponse(id).pipe(
       __map(_r => _r.body as RotaSummary)
     );
   }
@@ -168,7 +168,7 @@ class RotaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1RotaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -194,8 +194,8 @@ class RotaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1RotaByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1RotaByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

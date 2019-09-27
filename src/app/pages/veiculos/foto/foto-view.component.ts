@@ -37,7 +37,7 @@ export class FotoViewComponent implements AfterViewInit{
 			if (self.rowData.idFoto)
 			{
 				// obtém do servidor
-				await self.fotoSrv.Get(self.rowData.idFoto).toPromise().then(foto_summary => {
+				await self.fotoSrv.ApiV1FotoByIdGet(self.rowData.idFoto).toPromise().then(foto_summary => {
 					self.veicExt.fotoSummaryRef = foto_summary;
 				});
 			}

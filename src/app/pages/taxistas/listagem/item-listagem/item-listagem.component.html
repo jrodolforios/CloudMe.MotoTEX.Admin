@@ -1,5 +1,17 @@
-<article>
-  <h2>{{post.title}}</h2>
-  <p>{{post.text}}</p>
-  <a [attr.href]="post.link">Read full article</a>
-</article>
+<div class="container">
+  <div class="row">{{taxista && taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}</div>
+  <div class="row sumario">
+    <div>
+      <div>RG</div>
+      <div class="h6">{{ taxista ? taxista.rg : "N/I" }}</div>
+    </div>
+    <div>
+      <div>CPF</div>
+      <div class="h6">{{ taxista ? taxista.cpf : "N/I" }}</div>
+    </div>
+    <div>
+      <div>TELEFONE</div>
+      <div class="h6">{{ taxista ? taxista.telefone : "N/I" }}</div>
+    </div>
+  </div>
+</div>

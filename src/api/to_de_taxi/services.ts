@@ -6,6 +6,7 @@ export { FormaPagamentoService } from './services/forma-pagamento.service';
 export { FormaPagamentoTaxistaService } from './services/forma-pagamento-taxista.service';
 export { FotoService } from './services/foto.service';
 export { GrupoUsuarioService } from './services/grupo-usuario.service';
+export { IdentityService } from './services/identity.service';
 export { LocalizacaoService } from './services/localizacao.service';
 export { PassageiroService } from './services/passageiro.service';
 export { RotaService } from './services/rota.service';

@@ -12,11 +12,11 @@ import { TarifaSummary } from '../models/tarifa-summary';
   providedIn: 'root',
 })
 class TarifaService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Tarifa';
-  static readonly PutPath = '/api/v1/Tarifa';
-  static readonly PostPath = '/api/v1/Tarifa';
-  static readonly GetPath = '/api/v1/Tarifa/{id}';
-  static readonly DeletePath = '/api/v1/Tarifa/{id}';
+  static readonly ApiV1TarifaGetPath = '/api/v1/Tarifa';
+  static readonly ApiV1TarifaPutPath = '/api/v1/Tarifa';
+  static readonly ApiV1TarifaPostPath = '/api/v1/Tarifa';
+  static readonly ApiV1TarifaByIdGetPath = '/api/v1/Tarifa/{id}';
+  static readonly ApiV1TarifaByIdDeletePath = '/api/v1/Tarifa/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class TarifaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<TarifaSummary>>> {
+  ApiV1TarifaGetResponse(): __Observable<__StrictHttpResponse<Array<TarifaSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class TarifaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<TarifaSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1TarifaGet(): __Observable<Array<TarifaSummary>> {
+    return this.ApiV1TarifaGetResponse().pipe(
       __map(_r => _r.body as Array<TarifaSummary>)
     );
   }
@@ -62,7 +62,7 @@ class TarifaService extends __BaseService {
    * @param tarifaSummary Modified Tarifa list's properties summary
    * @return Success
    */
-  PutResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1TarifaPutResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,8 +88,8 @@ class TarifaService extends __BaseService {
    * @param tarifaSummary Modified Tarifa list's properties summary
    * @return Success
    */
-  Put(tarifaSummary?: TarifaSummary): __Observable<string> {
-    return this.PutResponse(tarifaSummary).pipe(
+  ApiV1TarifaPut(tarifaSummary?: TarifaSummary): __Observable<string> {
+    return this.ApiV1TarifaPutResponse(tarifaSummary).pipe(
       __map(_r => _r.body as string)
     );
   }
@@ -98,7 +98,7 @@ class TarifaService extends __BaseService {
    * @param tarifaSummary Tarifa's summary
    * @return Success
    */
-  PostResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1TarifaPostResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -124,8 +124,8 @@ class TarifaService extends __BaseService {
    * @param tarifaSummary Tarifa's summary
    * @return Success
    */
-  Post(tarifaSummary?: TarifaSummary): __Observable<string> {
-    return this.PostResponse(tarifaSummary).pipe(
+  ApiV1TarifaPost(tarifaSummary?: TarifaSummary): __Observable<string> {
+    return this.ApiV1TarifaPostResponse(tarifaSummary).pipe(
       __map(_r => _r.body as string)
     );
   }
@@ -134,7 +134,7 @@ class TarifaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<TarifaSummary>> {
+  ApiV1TarifaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<TarifaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -160,8 +160,8 @@ class TarifaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<TarifaSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1TarifaByIdGet(id: string): __Observable<TarifaSummary> {
+    return this.ApiV1TarifaByIdGetResponse(id).pipe(
       __map(_r => _r.body as TarifaSummary)
     );
   }
@@ -170,7 +170,7 @@ class TarifaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1TarifaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -196,8 +196,8 @@ class TarifaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1TarifaByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1TarifaByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { UsuarioSummary } from './usuario-summary';
-import { LocalizacaoSummary } from './localizacao-summary';
+import { EnderecoSummary } from './endereco-summary';
 export interface TaxistaSummary {
   id?: string;
   cpf?: string;
@@ -9,5 +9,5 @@ export interface TaxistaSummary {
   idLocalizacaoAtual?: string;
   idPontoTaxi?: string;
   usuario?: UsuarioSummary;
-  endereco?: LocalizacaoSummary;
+  endereco?: EnderecoSummary;
 }

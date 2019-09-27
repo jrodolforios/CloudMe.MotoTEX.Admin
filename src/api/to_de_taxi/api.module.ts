@@ -11,6 +11,7 @@ import { FormaPagamentoService } from './services/forma-pagamento.service';
 import { FormaPagamentoTaxistaService } from './services/forma-pagamento-taxista.service';
 import { FotoService } from './services/foto.service';
 import { GrupoUsuarioService } from './services/grupo-usuario.service';
+import { IdentityService } from './services/identity.service';
 import { LocalizacaoService } from './services/localizacao.service';
 import { PassageiroService } from './services/passageiro.service';
 import { RotaService } from './services/rota.service';
@@ -43,6 +44,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     FormaPagamentoTaxistaService,
     FotoService,
     GrupoUsuarioService,
+    IdentityService,
     LocalizacaoService,
     PassageiroService,
     RotaService,

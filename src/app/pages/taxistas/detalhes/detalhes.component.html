@@ -1,19 +1,175 @@
-<nb-card>
-    <nb-card-header>Detalhes</nb-card-header>
-    <nb-card-body>
-      <input type="text" nbInput fullWidth placeholder="Project">
-      <div class="full-name-inputs">
-        <input type="text" nbInput fullWidth placeholder="Nick">
-        <input type="text" nbInput fullWidth placeholder="Last Name">
-      </div>
-      <input type="password" nbInput fullWidth placeholder="Password">
-      <input type="text" nbInput fullWidth shape="rectangle" placeholder="Rectangle border">
-      <input type="text" nbInput fullWidth shape="semi-round" placeholder="Semi-round border">
-      <input type="text" nbInput fullWidth shape="round" placeholder="Rounded border">
-      <input type="text" nbInput fullWidth placeholder="Disabled input" disabled/>
-      <textarea rows="5" nbInput fullWidth shape="round"  placeholder="Text Area"></textarea>
-      <input type="text" nbInput fullWidth fieldSize="small"  placeholder="Small Input">
-      <input type="text" nbInput fullWidth fieldSize="medium"  placeholder="Medium Input">
-      <input type="text" nbInput fullWidth fieldSize="large"  placeholder="Large Input">
-    </nb-card-body>
-  </nb-card>
+<base-card #base_card>
+  <div header>Detalhes</div>
+  <div class="body container" body>
+    <nb-actions size="medium" fullWidth>
+      <nb-action [disabled]="!podeCriar" icon="plus-outline" (click)="criar()"></nb-action>
+      <nb-action [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar()"></nb-action>
+      <nb-action [disabled]="!podeConfirmar" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+      <nb-action [disabled]="!podeCancelar" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+    </nb-actions>
+
+    <nb-card>
+      <nb-card-header>Informações pessoais</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="formInformacoesPessoais" class="container">
+          <fieldset [disabled]="desabilitarControles">
+            <div class="row">
+              <div class="col">
+                <label>Nome*</label>
+                <input type="text" nbInput fullWidth placeholder="Nome" class="form-control" formControlName="nome">
+                <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
+                  <div *ngIf="nome.errors.required">Nome é obrigatório.</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label>RG*</label>
+                <input type="text" nbInput fullWidth placeholder="RG" class="form-control" formControlName="rg">
+                <div *ngIf="rg.invalid && (rg.dirty || rg.touched)" class="alert alert-danger">
+                  <div *ngIf="rg.errors.required">RG é obrigatório.</div>
+                </div>
+              </div>
+              <div class="col">
+                <label>CPF*</label>
+                <input type="text" nbInput mask='000.000.000-00' fullWidth placeholder="CPF" class="form-control" formControlName="cpf">
+                <div *ngIf="cpf.invalid && (cpf.dirty || cpf.touched)" class="alert alert-danger">
+                  <div *ngIf="cpf.errors.required">CPF é obrigatório.</div>
+                </div>
+              </div>
+            </div>  
+            <div class="row">
+              <div class="col">
+                <label>Email</label>
+                <input type="text" nbInput fullWidth placeholder="Email" class="form-control" formControlName="email">
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                  <div *ngIf="email.errors.required">Email é obrigatório.</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label>Telefone*</label>
+                <input type="text" nbInput fullWidth placeholder="Telefone" class="form-control" formControlName="telefone">
+                <div *ngIf="telefone.invalid && (telefone.dirty || telefone.touched)" class="alert alert-danger">
+                  <div *ngIf="telefone.errors.required">Telefone é obrigatório.</div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card>
+      <nb-card-header>Endereço</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="formEndereco" class="container">
+            <fieldset [disabled]="desabilitarControles">
+              
+              <div class="row">
+                <div class="col-3">
+                  <label>CEP*</label>
+                  <input type="text" nbInput fullWidth placeholder="Ex.: Centro" class="form-control" formControlName="cep" (keyup)="cepAlterado.next($event.target.value)">
+                  <div *ngIf="cep.invalid && (cep.dirty || cep.touched)" class="alert alert-danger">
+                    <div *ngIf="cep.errors.required">Informe CEP.</div>
+                  </div>
+                </div>
+              </div>  
+
+              <div class="row">
+                <div class="col-7">
+                  <label>Logradouro*</label>
+                  <input type="text" nbInput fullWidth placeholder="Ex.: Rua Ipatinga" class="form-control" formControlName="logradouro">
+                  <div *ngIf="logradouro.invalid && (logradouro.dirty || logradouro.touched)" class="alert alert-danger">
+                    <div *ngIf="logradouro.errors.required">Logradouro obrigatório.</div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <label>Número*</label>
+                  <input type="text" nbInput fullWidth placeholder="Ex.: 762" class="form-control" formControlName="numero">
+                  <div *ngIf="numero.invalid && (numero.dirty || numero.touched)" class="alert alert-danger">
+                    <div *ngIf="numero.errors.required">Número obrigatório.</div>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label>Complemento</label>
+                  <input type="text" nbInput fullWidth placeholder="Ex.: 762" class="form-control" formControlName="complemento">
+                </div>
+              </div>  
+
+              <div class="row">
+                <div class="col-5">
+                  <label>Bairro*</label>
+                  <input type="text" nbInput fullWidth placeholder="Ex.: Centro" class="form-control" formControlName="bairro">
+                  <div *ngIf="bairro.invalid && (bairro.dirty || bairro.touched)" class="alert alert-danger">
+                    <div *ngIf="bairro.errors.required">Bairro obrigatório.</div>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <label>Localidade*</label>
+                  <input type="text" nbInput fullWidth class="form-control" formControlName="localidade" disabled>
+                </div>
+                <div class="col-2">
+                  <label>UF*</label>
+                  <input type="text" nbInput fullWidth class="form-control" formControlName="uf" disabled>
+                </div>
+              </div>  
+
+            </fieldset>
+        </form>
+      </nb-card-body>
+    </nb-card>
+    
+    <nb-card>
+      <nb-card-header>Credenciais</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="formCredenciais" class="container">
+          <fieldset>
+            <div class="col">
+              <label>Login*</label>
+              <input type="text" nbInput fullWidth placeholder="Login" class="form-control" formControlName="login">
+              <div *ngIf="login.invalid && (login.dirty || login.touched)" class="alert alert-danger">
+                <div *ngIf="login.errors.required">Informe um login.</div>
+              </div>
+
+              <label>Senha*</label>
+              <show-hide-password size="md" btnStyle="primary" [btnOutline]="false">
+                <input type="password" nbInput placeholder="Senha"  class="form-control" formControlName="senha">
+              </show-hide-password>
+              <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="alert alert-danger">
+                <div *ngIf="senha.errors.required">Informe a senha.</div>
+              </div>
+      
+              <label>Conferir senha*</label>
+              <show-hide-password size="md" btnStyle="primary" [btnOutline]="false">
+                <input type="password" nbInput placeholder="Conferir senha" class="form-control" formControlName="conferirSenha">
+              </show-hide-password>
+              <div *ngIf="conferirSenha.invalid && (conferirSenha.dirty || conferirSenha.touched)" class="alert alert-danger">
+                <div *ngIf="conferirSenha.errors.required">Repita a senha.</div>
+              </div>
+              <div *ngIf="formCredenciais.errors?.senhasDiferentes && (formCredenciais.touched || formCredenciais.dirty)" class="alert alert-danger">
+                Senhas não são equivalentes.
+              </div>
+            </div>  
+          </fieldset>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <div class="row">
+      <img [src]="imgSrc" height="50"/>
+      <label class="image-upload-container btn btn-bwm">
+        <span>Select Image</span>
+        <input #imageInput
+              type="file"
+              accept="image/*"
+              (change)="processFile(imageInput)">
+      </label>
+    </div>  
+
+  </div>
+  <div footer>
+    <span>* (campo obrigatório)</span>
+  </div>
+</base-card>

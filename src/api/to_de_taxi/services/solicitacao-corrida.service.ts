@@ -12,11 +12,11 @@ import { SolicitacaoCorridaSummary } from '../models/solicitacao-corrida-summary
   providedIn: 'root',
 })
 class SolicitacaoCorridaService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/SolicitacaoCorrida';
-  static readonly PutPath = '/api/v1/SolicitacaoCorrida';
-  static readonly PostPath = '/api/v1/SolicitacaoCorrida';
-  static readonly GetPath = '/api/v1/SolicitacaoCorrida/{id}';
-  static readonly DeletePath = '/api/v1/SolicitacaoCorrida/{id}';
+  static readonly ApiV1SolicitacaoCorridaGetPath = '/api/v1/SolicitacaoCorrida';
+  static readonly ApiV1SolicitacaoCorridaPutPath = '/api/v1/SolicitacaoCorrida';
+  static readonly ApiV1SolicitacaoCorridaPostPath = '/api/v1/SolicitacaoCorrida';
+  static readonly ApiV1SolicitacaoCorridaByIdGetPath = '/api/v1/SolicitacaoCorrida/{id}';
+  static readonly ApiV1SolicitacaoCorridaByIdDeletePath = '/api/v1/SolicitacaoCorrida/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class SolicitacaoCorridaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<SolicitacaoCorridaSummary>>> {
+  ApiV1SolicitacaoCorridaGetResponse(): __Observable<__StrictHttpResponse<Array<SolicitacaoCorridaSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class SolicitacaoCorridaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<SolicitacaoCorridaSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1SolicitacaoCorridaGet(): __Observable<Array<SolicitacaoCorridaSummary>> {
+    return this.ApiV1SolicitacaoCorridaGetResponse().pipe(
       __map(_r => _r.body as Array<SolicitacaoCorridaSummary>)
     );
   }
@@ -62,7 +62,7 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param solicitacaoCorridaSummary Modified SolicitacaoCorrida list's properties summary
    * @return Success
    */
-  PutResponse(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1SolicitacaoCorridaPutResponse(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,8 +88,8 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param solicitacaoCorridaSummary Modified SolicitacaoCorrida list's properties summary
    * @return Success
    */
-  Put(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<boolean> {
-    return this.PutResponse(solicitacaoCorridaSummary).pipe(
+  ApiV1SolicitacaoCorridaPut(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<boolean> {
+    return this.ApiV1SolicitacaoCorridaPutResponse(solicitacaoCorridaSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
@@ -97,7 +97,7 @@ class SolicitacaoCorridaService extends __BaseService {
   /**
    * @param solicitacaoCorridaSummary SolicitacaoCorrida's summary
    */
-  PostResponse(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1SolicitacaoCorridaPostResponse(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -122,8 +122,8 @@ class SolicitacaoCorridaService extends __BaseService {
   /**
    * @param solicitacaoCorridaSummary SolicitacaoCorrida's summary
    */
-  Post(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<null> {
-    return this.PostResponse(solicitacaoCorridaSummary).pipe(
+  ApiV1SolicitacaoCorridaPost(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<null> {
+    return this.ApiV1SolicitacaoCorridaPostResponse(solicitacaoCorridaSummary).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -132,7 +132,7 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<SolicitacaoCorridaSummary>> {
+  ApiV1SolicitacaoCorridaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<SolicitacaoCorridaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -158,8 +158,8 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<SolicitacaoCorridaSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1SolicitacaoCorridaByIdGet(id: string): __Observable<SolicitacaoCorridaSummary> {
+    return this.ApiV1SolicitacaoCorridaByIdGetResponse(id).pipe(
       __map(_r => _r.body as SolicitacaoCorridaSummary)
     );
   }
@@ -168,7 +168,7 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1SolicitacaoCorridaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -194,8 +194,8 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1SolicitacaoCorridaByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1SolicitacaoCorridaByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

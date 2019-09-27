@@ -1,18 +1,12 @@
 import { Component, Input } from '@angular/core';
-
-export class NewsPost
-{
-	title: string;
-	link: string;
-	creator: string;
-	text: string;
-}
+import { TaxistaExt, TaxistasControllerService } from '../../taxistas-controller.service';
 
 @Component({
-	selector: 'ngx-item-listagem',
-	templateUrl: 'item-listagem.component.html',
+	selector: 'ngx-item-listagem-taxista',
+	templateUrl: './item-listagem.component.html',
+	styleUrls: ['./item-listagem.component.scss']
 })
-export class ItemListagemComponent {
-
-	@Input() post: NewsPost;
+export class ItemListagemComponent
+{
+	@Input() taxista: TaxistaExt = null;
 }

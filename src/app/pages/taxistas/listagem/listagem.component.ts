@@ -1,40 +1,55 @@
-import { Component } from '@angular/core';
-import { NewsService } from '../../layout/news.service';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { TaxistasControllerService, TaxistaExt } from '../taxistas-controller.service';
+import { Subscription } from 'rxjs';
+import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
 
 @Component({
 	selector: 'ngx-listagem-taxistas',
 	templateUrl: './listagem.component.html',
 	styleUrls: ['./listagem.component.scss']
 })
-export class ListagemComponent {
+export class ListagemComponent implements OnInit, AfterViewInit, OnDestroy {
 
-	firstCard = {
-		news: [],
-		placeholders: [],
-		loading: false,
-		pageToLoadNext: 1,
-	};
-	secondCard = {
-		news: [],
-		placeholders: [],
-		loading: false,
-		pageToLoadNext: 1,
-	};
-	pageSize = 10;
+	@ViewChild('base_card', null) baseCard: BaseCardComponent;
 
-	constructor(private newsService: NewsService) {}
+	constructor(private taxistasCtrl: TaxistasControllerService) {}
 
-	loadNext(cardData)
+	taxistas: TaxistaExt[] = [];
+	taxistasSub: Subscription;
+
+	busyStackAtualizarSub: Subscription = null;
+	busyStackRemoverSub: Subscription = null;
+
+	ngOnInit(): void
 	{
-		if (cardData.loading) { return; }
+	}
 
-		cardData.loading = true;
-		cardData.placeholders = new Array(this.pageSize);
-		this.newsService.load(cardData.pageToLoadNext, this.pageSize).subscribe(nextNews => {
-			cardData.placeholders = [];
-			cardData.news.push(...nextNews);
-			cardData.loading = false;
-			cardData.pageToLoadNext++;
+	ngAfterViewInit(): void
+	{
+		const self = this;
+
+		const refreshingCallback = () =>
+		{
+			if (self.baseCard)
+			{
+				self.baseCard.toggleRefresh(
+					self.taxistasCtrl.busyStackAtualizar.busy.value > 0 &&
+					self.taxistasCtrl.busyStackRemover.busy.value > 0);
+			}
+		};
+
+		self.busyStackAtualizarSub = self.taxistasCtrl.busyStackAtualizar.busy.subscribe(refreshingCallback);
+		self.busyStackRemoverSub = self.taxistasCtrl.busyStackRemover.busy.subscribe(refreshingCallback);
+
+		self.taxistasSub = self.taxistasCtrl.taxistas.subscribe(novos_taxistas =>
+		{
+			self.taxistas = novos_taxistas;
 		});
+	}
+
+	ngOnDestroy(): void
+	{
+		const self = this;
+		self.taxistasSub.unsubscribe();
 	}
 }

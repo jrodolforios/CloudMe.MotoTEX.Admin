@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TarifaService } from '../../../api/to_de_taxi/services';
-import { TarifaSummary } from '../../../api/to_de_taxi/models';
 import { UUID } from 'angular2-uuid';
-import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
+import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
+import { TarifaService } from '../../../../api/to_de_taxi/services';
+import { TarifaSummary } from '../../../../api/to_de_taxi/models';
 
 @Component({
 	selector: 'ngx-tarifas',
@@ -34,7 +34,7 @@ export class TarifasComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
-		self.sub_tarifas = self.tarifaSrv.GetAll().subscribe(tarifas => {
+		self.sub_tarifas = self.tarifaSrv.ApiV1TarifaGet().subscribe(tarifas => {
 			const tarifa = tarifas ? tarifas[0] : {};
 			this.tarifasForm.setValue(tarifa);
 
@@ -70,14 +70,14 @@ export class TarifasComponent implements OnInit, OnDestroy {
 		let sucesso = false;
 		if (tarifa.id)
 		{
-			await self.tarifaSrv.Put(tarifa).toPromise().then( result => {
+			await self.tarifaSrv.ApiV1TarifaPut(tarifa).toPromise().then( result => {
 				sucesso = result !== null;
 			});
 		}
 		else
 		{
 			tarifa.id = UUID.UUID(); // para permitir a serialização
-			await self.tarifaSrv.Post(tarifa).toPromise().then( id_tarifa => {
+			await self.tarifaSrv.ApiV1TarifaPost(tarifa).toPromise().then( id_tarifa => {
 				self.tarifasForm.patchValue({id: id_tarifa});
 				sucesso = true;
 			}).catch(reason => {

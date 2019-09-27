@@ -11,7 +11,7 @@
           "Corrida"
         ],
         "summary": "Gets all corridas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1CorridaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -23,21 +23,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/CorridaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Corrida"
         ],
         "summary": "Modifies an existing Corrida.",
-        "operationId": "Put",
+        "operationId": "ApiV1CorridaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -66,15 +78,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Corrida"
         ],
         "summary": "Creates a new Corrida.",
-        "operationId": "Post",
+        "operationId": "ApiV1CorridaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -96,8 +121,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Corrida/{id}": {
@@ -106,7 +144,7 @@
           "Corrida"
         ],
         "summary": "Gets a Corrida.\r\n<param name=\"id\">Corrida's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1CorridaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -128,15 +166,28 @@
             "schema": {
               "$ref": "#/definitions/CorridaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Corrida"
         ],
         "summary": "Removes an existing Corrida.",
-        "operationId": "Delete",
+        "operationId": "ApiV1CorridaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -159,8 +210,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FaixaDesconto": {
@@ -169,7 +233,7 @@
           "FaixaDesconto"
         ],
         "summary": "Gets all faixaDescontos.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1FaixaDescontoGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -181,21 +245,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/FaixaDescontoSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "FaixaDesconto"
         ],
         "summary": "Modifies an existing FaixaDesconto.",
-        "operationId": "Put",
+        "operationId": "ApiV1FaixaDescontoPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -224,22 +300,39 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "FaixaDesconto"
         ],
         "summary": "Creates a new FaixaDesconto.",
-        "operationId": "Post",
+        "operationId": "ApiV1FaixaDescontoPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
             "name": "faixaDescontoSummary",
@@ -253,9 +346,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FaixaDesconto/{id}": {
@@ -264,7 +374,7 @@
           "FaixaDesconto"
         ],
         "summary": "Gets a FaixaDesconto.\r\n<param name=\"id\">FaixaDesconto's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1FaixaDescontoByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -286,15 +396,28 @@
             "schema": {
               "$ref": "#/definitions/FaixaDescontoSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "FaixaDesconto"
         ],
         "summary": "Removes an existing FaixaDesconto.",
-        "operationId": "Delete",
+        "operationId": "ApiV1FaixaDescontoByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -317,8 +440,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FaixaDescontoTaxista": {
@@ -327,7 +463,7 @@
           "FaixaDescontoTaxista"
         ],
         "summary": "Gets all faixaDescontoTaxistas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1FaixaDescontoTaxistaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -339,21 +475,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "FaixaDescontoTaxista"
         ],
         "summary": "Modifies an existing FaixaDescontoTaxista.",
-        "operationId": "Put",
+        "operationId": "ApiV1FaixaDescontoTaxistaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -382,15 +530,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "FaixaDescontoTaxista"
         ],
         "summary": "Creates a new FaixaDescontoTaxista.",
-        "operationId": "Post",
+        "operationId": "ApiV1FaixaDescontoTaxistaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -412,8 +573,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FaixaDescontoTaxista/{id}": {
@@ -422,7 +596,7 @@
           "FaixaDescontoTaxista"
         ],
         "summary": "Gets a FaixaDescontoTaxista.\r\n<param name=\"id\">FaixaDescontoTaxista's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1FaixaDescontoTaxistaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -444,15 +618,28 @@
             "schema": {
               "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "FaixaDescontoTaxista"
         ],
         "summary": "Removes an existing FaixaDescontoTaxista.",
-        "operationId": "Delete",
+        "operationId": "ApiV1FaixaDescontoTaxistaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -475,8 +662,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Favorito": {
@@ -485,7 +685,7 @@
           "Favorito"
         ],
         "summary": "Gets all favoritos.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1FavoritoGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -497,21 +697,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/FavoritoSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Favorito"
         ],
         "summary": "Modifies an existing Favorito.",
-        "operationId": "Put",
+        "operationId": "ApiV1FavoritoPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -540,15 +752,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Favorito"
         ],
         "summary": "Creates a new Favorito.",
-        "operationId": "Post",
+        "operationId": "ApiV1FavoritoPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -570,8 +795,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Favorito/{id}": {
@@ -580,7 +818,7 @@
           "Favorito"
         ],
         "summary": "Gets a Favorito.\r\n<param name=\"id\">Favorito's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1FavoritoByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -602,15 +840,28 @@
             "schema": {
               "$ref": "#/definitions/FavoritoSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Favorito"
         ],
         "summary": "Removes an existing Favorito.",
-        "operationId": "Delete",
+        "operationId": "ApiV1FavoritoByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -633,8 +884,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FormaPagamento": {
@@ -643,7 +907,7 @@
           "FormaPagamento"
         ],
         "summary": "Gets all formaPagamentos.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1FormaPagamentoGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -655,21 +919,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/FormaPagamentoSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "FormaPagamento"
         ],
         "summary": "Modifies an existing FormaPagamento.",
-        "operationId": "Put",
+        "operationId": "ApiV1FormaPagamentoPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -698,15 +974,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "FormaPagamento"
         ],
         "summary": "Creates a new FormaPagamento.",
-        "operationId": "Post",
+        "operationId": "ApiV1FormaPagamentoPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -728,8 +1017,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FormaPagamento/{id}": {
@@ -738,7 +1040,7 @@
           "FormaPagamento"
         ],
         "summary": "Gets a FormaPagamento.\r\n<param name=\"id\">FormaPagamento's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1FormaPagamentoByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -760,15 +1062,28 @@
             "schema": {
               "$ref": "#/definitions/FormaPagamentoSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "FormaPagamento"
         ],
         "summary": "Removes an existing FormaPagamento.",
-        "operationId": "Delete",
+        "operationId": "ApiV1FormaPagamentoByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -791,8 +1106,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FormaPagamentoTaxista": {
@@ -801,7 +1129,7 @@
           "FormaPagamentoTaxista"
         ],
         "summary": "Gets all formaPagamentoTaxistas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1FormaPagamentoTaxistaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -813,21 +1141,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "FormaPagamentoTaxista"
         ],
         "summary": "Modifies an existing FormaPagamentoTaxista.",
-        "operationId": "Put",
+        "operationId": "ApiV1FormaPagamentoTaxistaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -856,15 +1196,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "FormaPagamentoTaxista"
         ],
         "summary": "Creates a new FormaPagamentoTaxista.",
-        "operationId": "Post",
+        "operationId": "ApiV1FormaPagamentoTaxistaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -886,8 +1239,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/FormaPagamentoTaxista/{id}": {
@@ -896,7 +1262,7 @@
           "FormaPagamentoTaxista"
         ],
         "summary": "Gets a FormaPagamentoTaxista.\r\n<param name=\"id\">FormaPagamentoTaxista's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1FormaPagamentoTaxistaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -918,15 +1284,28 @@
             "schema": {
               "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "FormaPagamentoTaxista"
         ],
         "summary": "Removes an existing FormaPagamentoTaxista.",
-        "operationId": "Delete",
+        "operationId": "ApiV1FormaPagamentoTaxistaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -949,8 +1328,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Foto": {
@@ -959,7 +1351,7 @@
           "Foto"
         ],
         "summary": "Gets all Fotos.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1FotoGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -971,21 +1363,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/FotoSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Foto"
         ],
         "summary": "Modifies an existing Foto.",
-        "operationId": "Put",
+        "operationId": "ApiV1FotoPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1014,15 +1418,28 @@
             "schema": {
               "type": "string"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Foto"
         ],
         "summary": "Creates a new Corrida.",
-        "operationId": "Post",
+        "operationId": "ApiV1FotoPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1051,8 +1468,21 @@
             "schema": {
               "type": "string"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Foto/{id}": {
@@ -1061,7 +1491,7 @@
           "Foto"
         ],
         "summary": "Gets a Foto.\r\n<param name=\"id\">Foto's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1FotoByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1083,15 +1513,28 @@
             "schema": {
               "$ref": "#/definitions/FotoSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Foto"
         ],
         "summary": "Removes an existing Foto.",
-        "operationId": "Delete",
+        "operationId": "ApiV1FotoByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1114,8 +1557,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Foto/upload": {
@@ -1124,9 +1580,8 @@
           "Foto"
         ],
         "summary": "Creates a new Foto.",
-        "operationId": "Upload",
+        "operationId": "ApiV1FotoUploadPost",
         "consumes": [
-          "multipart/form-data",
           "multipart/form-data"
         ],
         "produces": [
@@ -1137,10 +1592,8 @@
         "parameters": [
           {
             "name": "arquivo",
-            "in": "formData",
-            "description": "Upload File",
-            "required": true,
-            "type": "file"
+            "in": "query",
+            "required": false
           }
         ],
         "responses": {
@@ -1149,8 +1602,21 @@
             "schema": {
               "type": "string"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/GrupoUsuario": {
@@ -1159,7 +1625,7 @@
           "GrupoUsuario"
         ],
         "summary": "Gets all grupoUsuarios.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1GrupoUsuarioGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1171,21 +1637,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/GrupoUsuarioSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "GrupoUsuario"
         ],
         "summary": "Modifies an existing GrupoUsuario.",
-        "operationId": "Put",
+        "operationId": "ApiV1GrupoUsuarioPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1214,15 +1692,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "GrupoUsuario"
         ],
         "summary": "Creates a new GrupoUsuario.",
-        "operationId": "Post",
+        "operationId": "ApiV1GrupoUsuarioPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1244,8 +1735,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/GrupoUsuario/{id}": {
@@ -1254,7 +1758,7 @@
           "GrupoUsuario"
         ],
         "summary": "Gets a GrupoUsuario.\r\n<param name=\"id\">GrupoUsuario's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1GrupoUsuarioByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1276,15 +1780,28 @@
             "schema": {
               "$ref": "#/definitions/GrupoUsuarioSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "GrupoUsuario"
         ],
         "summary": "Removes an existing GrupoUsuario.",
-        "operationId": "Delete",
+        "operationId": "ApiV1GrupoUsuarioByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1307,8 +1824,57 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Identity/error": {
+      "get": {
+        "tags": [
+          "Identity"
+        ],
+        "operationId": "ApiV1IdentityErrorGet",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "errorId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Localizacao": {
@@ -1317,7 +1883,7 @@
           "Localizacao"
         ],
         "summary": "Gets all localizacaos.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1LocalizacaoGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1329,21 +1895,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/LocalizacaoSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Localizacao"
         ],
         "summary": "Modifies an existing Localizacao.",
-        "operationId": "Put",
+        "operationId": "ApiV1LocalizacaoPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1372,15 +1950,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Localizacao"
         ],
         "summary": "Creates a new Localizacao.",
-        "operationId": "Post",
+        "operationId": "ApiV1LocalizacaoPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1402,8 +1993,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Localizacao/{id}": {
@@ -1412,7 +2016,7 @@
           "Localizacao"
         ],
         "summary": "Gets a Localizacao.\r\n<param name=\"id\">Localizacao's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1LocalizacaoByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1434,15 +2038,28 @@
             "schema": {
               "$ref": "#/definitions/LocalizacaoSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Localizacao"
         ],
         "summary": "Removes an existing Localizacao.",
-        "operationId": "Delete",
+        "operationId": "ApiV1LocalizacaoByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1465,8 +2082,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Passageiro": {
@@ -1475,7 +2105,7 @@
           "Passageiro"
         ],
         "summary": "Gets all passageiros.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1PassageiroGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1487,21 +2117,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/PassageiroSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Passageiro"
         ],
         "summary": "Modifies an existing Passageiro.",
-        "operationId": "Put",
+        "operationId": "ApiV1PassageiroPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1530,15 +2172,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Passageiro"
         ],
         "summary": "Creates a new Passageiro.",
-        "operationId": "Post",
+        "operationId": "ApiV1PassageiroPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1560,8 +2215,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Passageiro/{id}": {
@@ -1570,7 +2238,7 @@
           "Passageiro"
         ],
         "summary": "Gets a Passageiro.\r\n<param name=\"id\">Passageiro's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1PassageiroByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1592,15 +2260,28 @@
             "schema": {
               "$ref": "#/definitions/PassageiroSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Passageiro"
         ],
         "summary": "Removes an existing Passageiro.",
-        "operationId": "Delete",
+        "operationId": "ApiV1PassageiroByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1623,8 +2304,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Rota": {
@@ -1633,7 +2327,7 @@
           "Rota"
         ],
         "summary": "Gets all rotas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1RotaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1645,21 +2339,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/RotaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Rota"
         ],
         "summary": "Modifies an existing Rota.",
-        "operationId": "Put",
+        "operationId": "ApiV1RotaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1688,15 +2394,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Rota"
         ],
         "summary": "Creates a new Rota.",
-        "operationId": "Post",
+        "operationId": "ApiV1RotaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1718,8 +2437,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Rota/{id}": {
@@ -1728,7 +2460,7 @@
           "Rota"
         ],
         "summary": "Gets a Rota.\r\n<param name=\"id\">Rota's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1RotaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1750,15 +2482,28 @@
             "schema": {
               "$ref": "#/definitions/RotaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Rota"
         ],
         "summary": "Removes an existing Rota.",
-        "operationId": "Delete",
+        "operationId": "ApiV1RotaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1781,8 +2526,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/SolicitacaoCorrida": {
@@ -1791,7 +2549,7 @@
           "SolicitacaoCorrida"
         ],
         "summary": "Gets all solicitacaoCorridas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1SolicitacaoCorridaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1803,21 +2561,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/SolicitacaoCorridaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "SolicitacaoCorrida"
         ],
         "summary": "Modifies an existing SolicitacaoCorrida.",
-        "operationId": "Put",
+        "operationId": "ApiV1SolicitacaoCorridaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1846,15 +2616,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "SolicitacaoCorrida"
         ],
         "summary": "Creates a new SolicitacaoCorrida.",
-        "operationId": "Post",
+        "operationId": "ApiV1SolicitacaoCorridaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -1876,8 +2659,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/SolicitacaoCorrida/{id}": {
@@ -1886,7 +2682,7 @@
           "SolicitacaoCorrida"
         ],
         "summary": "Gets a SolicitacaoCorrida.\r\n<param name=\"id\">SolicitacaoCorrida's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1SolicitacaoCorridaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1908,15 +2704,28 @@
             "schema": {
               "$ref": "#/definitions/SolicitacaoCorridaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "SolicitacaoCorrida"
         ],
         "summary": "Removes an existing SolicitacaoCorrida.",
-        "operationId": "Delete",
+        "operationId": "ApiV1SolicitacaoCorridaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1939,8 +2748,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Tarifa": {
@@ -1949,7 +2771,7 @@
           "Tarifa"
         ],
         "summary": "Gets all tarifas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1TarifaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -1961,21 +2783,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/TarifaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Tarifa"
         ],
         "summary": "Modifies an existing Tarifa.",
-        "operationId": "Put",
+        "operationId": "ApiV1TarifaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2005,15 +2839,28 @@
               "format": "uuid",
               "type": "string"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Tarifa"
         ],
         "summary": "Creates a new Tarifa.",
-        "operationId": "Post",
+        "operationId": "ApiV1TarifaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2043,8 +2890,21 @@
               "format": "uuid",
               "type": "string"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Tarifa/{id}": {
@@ -2053,7 +2913,7 @@
           "Tarifa"
         ],
         "summary": "Gets a Tarifa.\r\n<param name=\"id\">Tarifa's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1TarifaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2075,15 +2935,28 @@
             "schema": {
               "$ref": "#/definitions/TarifaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Tarifa"
         ],
         "summary": "Removes an existing Tarifa.",
-        "operationId": "Delete",
+        "operationId": "ApiV1TarifaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2106,8 +2979,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Taxista": {
@@ -2116,7 +3002,7 @@
           "Taxista"
         ],
         "summary": "Gets all taxistas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1TaxistaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2128,21 +3014,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/TaxistaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Taxista"
         ],
         "summary": "Modifies an existing Taxista.",
-        "operationId": "Put",
+        "operationId": "ApiV1TaxistaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2171,22 +3069,39 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Taxista"
         ],
         "summary": "Creates a new Taxista.",
-        "operationId": "Post",
+        "operationId": "ApiV1TaxistaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
             "name": "taxistaSummary",
@@ -2200,9 +3115,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Taxista/{id}": {
@@ -2211,7 +3143,7 @@
           "Taxista"
         ],
         "summary": "Gets a Taxista.\r\n<param name=\"id\">Taxista's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1TaxistaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2233,15 +3165,28 @@
             "schema": {
               "$ref": "#/definitions/TaxistaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Taxista"
         ],
         "summary": "Removes an existing Taxista.",
-        "operationId": "Delete",
+        "operationId": "ApiV1TaxistaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2264,8 +3209,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Usuario": {
@@ -2274,33 +3232,66 @@
           "Usuario"
         ],
         "summary": "Gets all Usuarios.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1UsuarioGet",
         "consumes": [],
         "produces": [
           "text/plain",
           "application/json",
           "text/json"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/UsuarioSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Usuario"
         ],
         "summary": "Modifies an existing Usuario.",
-        "operationId": "Put",
+        "operationId": "ApiV1UsuarioPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2329,22 +3320,39 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Usuario"
         ],
         "summary": "Creates a new Usuario.",
-        "operationId": "Post",
+        "operationId": "ApiV1UsuarioPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
             "name": "UsuarioSummary",
@@ -2358,9 +3366,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Usuario/{id}": {
@@ -2369,7 +3394,7 @@
           "Usuario"
         ],
         "summary": "Gets a Usuario.\r\n<param name=\"id\">Usuario's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1UsuarioByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2391,15 +3416,28 @@
             "schema": {
               "$ref": "#/definitions/UsuarioSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Usuario"
         ],
         "summary": "Removes an existing Usuario.",
-        "operationId": "Delete",
+        "operationId": "ApiV1UsuarioByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2422,40 +3460,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
-      }
-    },
-    "/api/v1/Usuario/login": {
-      "post": {
-        "tags": [
-          "Usuario"
-        ],
-        "summary": "Removes an existing Usuario.",
-        "operationId": "Login",
-        "consumes": [
-          "application/json-patch+json",
-          "application/json",
-          "text/json",
-          "application/*+json"
-        ],
-        "produces": [],
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "usuario",
-            "in": "body",
-            "description": "Resumo do usuário",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/UsuarioSummary"
-            }
+            "oauth2": [
+              "demo_api"
+            ]
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
+        ]
       }
     },
     "/api/v1/UsuarioGrupoUsuario": {
@@ -2464,7 +3483,7 @@
           "UsuarioGrupoUsuario"
         ],
         "summary": "Gets all usuarioGrupoUsuarios.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1UsuarioGrupoUsuarioGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2476,21 +3495,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "UsuarioGrupoUsuario"
         ],
         "summary": "Modifies an existing UsuarioGrupoUsuario.",
-        "operationId": "Put",
+        "operationId": "ApiV1UsuarioGrupoUsuarioPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2519,15 +3550,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "UsuarioGrupoUsuario"
         ],
         "summary": "Creates a new UsuarioGrupoUsuario.",
-        "operationId": "Post",
+        "operationId": "ApiV1UsuarioGrupoUsuarioPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2549,8 +3593,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/UsuarioGrupoUsuario/{id}": {
@@ -2559,7 +3616,7 @@
           "UsuarioGrupoUsuario"
         ],
         "summary": "Gets a UsuarioGrupoUsuario.\r\n<param name=\"id\">UsuarioGrupoUsuario's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1UsuarioGrupoUsuarioByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2581,15 +3638,28 @@
             "schema": {
               "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "UsuarioGrupoUsuario"
         ],
         "summary": "Removes an existing UsuarioGrupoUsuario.",
-        "operationId": "Delete",
+        "operationId": "ApiV1UsuarioGrupoUsuarioByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2612,8 +3682,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Veiculo": {
@@ -2622,7 +3705,7 @@
           "Veiculo"
         ],
         "summary": "Gets all veiculos.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1VeiculoGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2634,21 +3717,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/VeiculoSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "Veiculo"
         ],
         "summary": "Modifies an existing Veiculo.",
-        "operationId": "Put",
+        "operationId": "ApiV1VeiculoPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2678,15 +3773,28 @@
               "format": "uuid",
               "type": "string"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "Veiculo"
         ],
         "summary": "Creates a new Veiculo.",
-        "operationId": "Post",
+        "operationId": "ApiV1VeiculoPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2716,8 +3824,21 @@
               "format": "uuid",
               "type": "string"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/Veiculo/{id}": {
@@ -2726,7 +3847,7 @@
           "Veiculo"
         ],
         "summary": "Gets a Veiculo.\r\n<param name=\"id\">Veiculo's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1VeiculoByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2748,15 +3869,28 @@
             "schema": {
               "$ref": "#/definitions/VeiculoSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Veiculo"
         ],
         "summary": "Removes an existing Veiculo.",
-        "operationId": "Delete",
+        "operationId": "ApiV1VeiculoByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2779,8 +3913,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/VeiculoTaxista": {
@@ -2789,7 +3936,7 @@
           "VeiculoTaxista"
         ],
         "summary": "Gets all veiculoTaxistas.",
-        "operationId": "GetAll",
+        "operationId": "ApiV1VeiculoTaxistaGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2801,21 +3948,33 @@
           "200": {
             "description": "Success",
             "schema": {
-              "uniqueItems": false,
               "type": "array",
               "items": {
                 "$ref": "#/definitions/VeiculoTaxistaSummary"
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "put": {
         "tags": [
           "VeiculoTaxista"
         ],
         "summary": "Modifies an existing VeiculoTaxista.",
-        "operationId": "Put",
+        "operationId": "ApiV1VeiculoTaxistaPut",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2844,15 +4003,28 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "VeiculoTaxista"
         ],
         "summary": "Creates a new VeiculoTaxista.",
-        "operationId": "Post",
+        "operationId": "ApiV1VeiculoTaxistaPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -2874,8 +4046,21 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     },
     "/api/v1/VeiculoTaxista/{id}": {
@@ -2884,7 +4069,7 @@
           "VeiculoTaxista"
         ],
         "summary": "Gets a VeiculoTaxista.\r\n<param name=\"id\">VeiculoTaxista's ID</param>",
-        "operationId": "Get",
+        "operationId": "ApiV1VeiculoTaxistaByIdGet",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2906,15 +4091,28 @@
             "schema": {
               "$ref": "#/definitions/VeiculoTaxistaSummary"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "VeiculoTaxista"
         ],
         "summary": "Removes an existing VeiculoTaxista.",
-        "operationId": "Delete",
+        "operationId": "ApiV1VeiculoTaxistaByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2937,8 +4135,21 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
       }
     }
   },
@@ -3123,6 +4334,42 @@
         }
       }
     },
+    "IFormFile": {
+      "type": "object",
+      "properties": {
+        "contentType": {
+          "type": "string",
+          "readOnly": true
+        },
+        "contentDisposition": {
+          "type": "string",
+          "readOnly": true
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "readOnly": true
+        },
+        "length": {
+          "format": "int64",
+          "type": "integer",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "readOnly": true
+        },
+        "fileName": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
     "GrupoUsuarioSummary": {
       "type": "object",
       "properties": {
@@ -3166,6 +4413,10 @@
           "format": "uuid",
           "type": "string"
         },
+        "idUsuario": {
+          "format": "uuid",
+          "type": "string"
+        },
         "cpf": {
           "type": "string"
         },
@@ -3177,39 +4428,8 @@
           "format": "uuid",
           "type": "string"
         },
-        "usuario": {
-          "$ref": "#/definitions/UsuarioSummary"
-        },
         "endereco": {
           "$ref": "#/definitions/LocalizacaoSummary"
-        }
-      }
-    },
-    "UsuarioSummary": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "format": "uuid",
-          "type": "string"
-        },
-        "login": {
-          "type": "string"
-        },
-        "senha": {
-          "type": "string"
-        },
-        "nome": {
-          "type": "string"
-        },
-        "tipo": {
-          "format": "int32",
-          "enum": [
-            0,
-            1,
-            2,
-            3
-          ],
-          "type": "integer"
         }
       }
     },
@@ -3348,7 +4568,68 @@
           "$ref": "#/definitions/UsuarioSummary"
         },
         "endereco": {
-          "$ref": "#/definitions/LocalizacaoSummary"
+          "$ref": "#/definitions/EnderecoSummary"
+        }
+      }
+    },
+    "UsuarioSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "login": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "telefone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "senha": {
+          "type": "string"
+        },
+        "confirmarSenha": {
+          "type": "string"
+        }
+      }
+    },
+    "EnderecoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "cep": {
+          "type": "string"
+        },
+        "logradouro": {
+          "type": "string"
+        },
+        "numero": {
+          "type": "string"
+        },
+        "complemento": {
+          "type": "string"
+        },
+        "bairro": {
+          "type": "string"
+        },
+        "localidade": {
+          "type": "string"
+        },
+        "uf": {
+          "type": "string"
+        },
+        "idLocalizacao": {
+          "format": "uuid",
+          "type": "string"
         }
       }
     },
@@ -3421,16 +4702,13 @@
     }
   },
   "securityDefinitions": {
-    "Bearer": {
-      "name": "Authorization",
-      "in": "header",
-      "type": "apiKey",
-      "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+    "oauth2": {
+      "flow": "implicit",
+      "authorizationUrl": "http://localhost:5000/connect/authorize",
+      "scopes": {
+        "todetaxiapi": "TOdeTaxiAPI"
+      },
+      "type": "oauth2"
     }
-  },
-  "security": [
-    {
-      "Bearer": []
-    }
-  ]
+  }
 }

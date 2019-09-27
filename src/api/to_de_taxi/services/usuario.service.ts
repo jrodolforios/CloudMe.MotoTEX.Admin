@@ -12,12 +12,11 @@ import { UsuarioSummary } from '../models/usuario-summary';
   providedIn: 'root',
 })
 class UsuarioService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Usuario';
-  static readonly PutPath = '/api/v1/Usuario';
-  static readonly PostPath = '/api/v1/Usuario';
-  static readonly GetPath = '/api/v1/Usuario/{id}';
-  static readonly DeletePath = '/api/v1/Usuario/{id}';
-  static readonly LoginPath = '/api/v1/Usuario/login';
+  static readonly ApiV1UsuarioGetPath = '/api/v1/Usuario';
+  static readonly ApiV1UsuarioPutPath = '/api/v1/Usuario';
+  static readonly ApiV1UsuarioPostPath = '/api/v1/Usuario';
+  static readonly ApiV1UsuarioByIdGetPath = '/api/v1/Usuario/{id}';
+  static readonly ApiV1UsuarioByIdDeletePath = '/api/v1/Usuario/{id}';
 
   constructor(
     config: __Configuration,
@@ -27,12 +26,23 @@ class UsuarioService extends __BaseService {
   }
 
   /**
+   * @param params The `UsuarioService.ApiV1UsuarioGetParams` containing the following parameters:
+   *
+   * - `search`:
+   *
+   * - `pageSize`:
+   *
+   * - `page`:
+   *
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<UsuarioSummary>>> {
+  ApiV1UsuarioGetResponse(params: UsuarioService.ApiV1UsuarioGetParams): __Observable<__StrictHttpResponse<Array<UsuarioSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.search != null) __params = __params.set('search', params.search.toString());
+    if (params.pageSize != null) __params = __params.set('pageSize', params.pageSize.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/api/v1/Usuario`,
@@ -51,10 +61,18 @@ class UsuarioService extends __BaseService {
     );
   }
   /**
+   * @param params The `UsuarioService.ApiV1UsuarioGetParams` containing the following parameters:
+   *
+   * - `search`:
+   *
+   * - `pageSize`:
+   *
+   * - `page`:
+   *
    * @return Success
    */
-  GetAll(): __Observable<Array<UsuarioSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1UsuarioGet(params: UsuarioService.ApiV1UsuarioGetParams): __Observable<Array<UsuarioSummary>> {
+    return this.ApiV1UsuarioGetResponse(params).pipe(
       __map(_r => _r.body as Array<UsuarioSummary>)
     );
   }
@@ -63,7 +81,7 @@ class UsuarioService extends __BaseService {
    * @param UsuarioSummary Modified Usuario list's properties summary
    * @return Success
    */
-  PutResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1UsuarioPutResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -89,16 +107,17 @@ class UsuarioService extends __BaseService {
    * @param UsuarioSummary Modified Usuario list's properties summary
    * @return Success
    */
-  Put(UsuarioSummary?: UsuarioSummary): __Observable<boolean> {
-    return this.PutResponse(UsuarioSummary).pipe(
+  ApiV1UsuarioPut(UsuarioSummary?: UsuarioSummary): __Observable<boolean> {
+    return this.ApiV1UsuarioPutResponse(UsuarioSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
 
   /**
    * @param UsuarioSummary Usuario's summary
+   * @return Success
    */
-  PostResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1UsuarioPostResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<string>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -110,22 +129,23 @@ class UsuarioService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'json'
+        responseType: 'text'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<string>;
       })
     );
   }
   /**
    * @param UsuarioSummary Usuario's summary
+   * @return Success
    */
-  Post(UsuarioSummary?: UsuarioSummary): __Observable<null> {
-    return this.PostResponse(UsuarioSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1UsuarioPost(UsuarioSummary?: UsuarioSummary): __Observable<string> {
+    return this.ApiV1UsuarioPostResponse(UsuarioSummary).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
@@ -133,7 +153,7 @@ class UsuarioService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<UsuarioSummary>> {
+  ApiV1UsuarioByIdGetResponse(id: string): __Observable<__StrictHttpResponse<UsuarioSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -159,8 +179,8 @@ class UsuarioService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<UsuarioSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1UsuarioByIdGet(id: string): __Observable<UsuarioSummary> {
+    return this.ApiV1UsuarioByIdGetResponse(id).pipe(
       __map(_r => _r.body as UsuarioSummary)
     );
   }
@@ -169,7 +189,7 @@ class UsuarioService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1UsuarioByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -195,48 +215,23 @@ class UsuarioService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1UsuarioByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1UsuarioByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
-    );
-  }
-
-  /**
-   * @param usuario Resumo do usuário
-   */
-  LoginResponse(usuario?: UsuarioSummary): __Observable<__StrictHttpResponse<null>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = usuario;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/v1/Usuario/login`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
-      })
-    );
-  }
-  /**
-   * @param usuario Resumo do usuário
-   */
-  Login(usuario?: UsuarioSummary): __Observable<null> {
-    return this.LoginResponse(usuario).pipe(
-      __map(_r => _r.body as null)
     );
   }
 }
 
 module UsuarioService {
+
+  /**
+   * Parameters for ApiV1UsuarioGet
+   */
+  export interface ApiV1UsuarioGetParams {
+    search?: string;
+    pageSize?: number;
+    page?: number;
+  }
 }
 
 export { UsuarioService }

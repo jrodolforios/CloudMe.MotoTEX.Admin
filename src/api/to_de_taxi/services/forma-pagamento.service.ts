@@ -12,11 +12,11 @@ import { FormaPagamentoSummary } from '../models/forma-pagamento-summary';
   providedIn: 'root',
 })
 class FormaPagamentoService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/FormaPagamento';
-  static readonly PutPath = '/api/v1/FormaPagamento';
-  static readonly PostPath = '/api/v1/FormaPagamento';
-  static readonly GetPath = '/api/v1/FormaPagamento/{id}';
-  static readonly DeletePath = '/api/v1/FormaPagamento/{id}';
+  static readonly ApiV1FormaPagamentoGetPath = '/api/v1/FormaPagamento';
+  static readonly ApiV1FormaPagamentoPutPath = '/api/v1/FormaPagamento';
+  static readonly ApiV1FormaPagamentoPostPath = '/api/v1/FormaPagamento';
+  static readonly ApiV1FormaPagamentoByIdGetPath = '/api/v1/FormaPagamento/{id}';
+  static readonly ApiV1FormaPagamentoByIdDeletePath = '/api/v1/FormaPagamento/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class FormaPagamentoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<FormaPagamentoSummary>>> {
+  ApiV1FormaPagamentoGetResponse(): __Observable<__StrictHttpResponse<Array<FormaPagamentoSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class FormaPagamentoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<FormaPagamentoSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1FormaPagamentoGet(): __Observable<Array<FormaPagamentoSummary>> {
+    return this.ApiV1FormaPagamentoGetResponse().pipe(
       __map(_r => _r.body as Array<FormaPagamentoSummary>)
     );
   }
@@ -62,7 +62,7 @@ class FormaPagamentoService extends __BaseService {
    * @param formaPagamentoSummary Modified FormaPagamento list's properties summary
    * @return Success
    */
-  PutResponse(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FormaPagamentoPutResponse(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,8 +88,8 @@ class FormaPagamentoService extends __BaseService {
    * @param formaPagamentoSummary Modified FormaPagamento list's properties summary
    * @return Success
    */
-  Put(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<boolean> {
-    return this.PutResponse(formaPagamentoSummary).pipe(
+  ApiV1FormaPagamentoPut(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<boolean> {
+    return this.ApiV1FormaPagamentoPutResponse(formaPagamentoSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
@@ -97,7 +97,7 @@ class FormaPagamentoService extends __BaseService {
   /**
    * @param formaPagamentoSummary FormaPagamento's summary
    */
-  PostResponse(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1FormaPagamentoPostResponse(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -122,8 +122,8 @@ class FormaPagamentoService extends __BaseService {
   /**
    * @param formaPagamentoSummary FormaPagamento's summary
    */
-  Post(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<null> {
-    return this.PostResponse(formaPagamentoSummary).pipe(
+  ApiV1FormaPagamentoPost(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<null> {
+    return this.ApiV1FormaPagamentoPostResponse(formaPagamentoSummary).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -132,7 +132,7 @@ class FormaPagamentoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<FormaPagamentoSummary>> {
+  ApiV1FormaPagamentoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<FormaPagamentoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -158,8 +158,8 @@ class FormaPagamentoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<FormaPagamentoSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1FormaPagamentoByIdGet(id: string): __Observable<FormaPagamentoSummary> {
+    return this.ApiV1FormaPagamentoByIdGetResponse(id).pipe(
       __map(_r => _r.body as FormaPagamentoSummary)
     );
   }
@@ -168,7 +168,7 @@ class FormaPagamentoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FormaPagamentoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -194,8 +194,8 @@ class FormaPagamentoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1FormaPagamentoByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1FormaPagamentoByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

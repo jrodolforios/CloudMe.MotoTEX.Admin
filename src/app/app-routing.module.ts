@@ -19,7 +19,9 @@ const routes: Routes = [
 	},
 	{
 		path: 'auth',
-		component: NbAuthComponent,
+		loadChildren: () => import('./pages/oauth2/oauth2.module')
+			.then(m => m.OAuth2Module),
+		/*component: NbAuthComponent,
 		children: [
 			{
 				path: '',
@@ -45,7 +47,7 @@ const routes: Routes = [
 				path: 'reset-password',
 				component: NbResetPasswordComponent,
 			},
-		],
+		],*/
 	},
 	{ path: '', redirectTo: 'pages', pathMatch: 'full' },
 	{ path: '**', redirectTo: 'pages' },

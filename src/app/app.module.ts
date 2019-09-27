@@ -23,15 +23,18 @@ import {
 import { FipeApiModule } from '../api/fipe/fipe-api.module';
 import { ApiModule } from '../api/to_de_taxi/api.module';
 import {NgxMaskModule, IConfig} from 'ngx-mask';
-import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken, NbAuthJWTInterceptor, NB_AUTH_TOKEN_INTERCEPTOR_FILTER } from '@nebular/auth';
+import { NbAuthJWTInterceptor, NB_AUTH_TOKEN_INTERCEPTOR_FILTER } from '@nebular/auth';
 import { AuthGuard } from './auth/auth-guard.service';
 import { UsuarioService } from './auth/usuario.service';
+import { OAuth2Module } from './pages/oauth2/oauth2.module';
+import { ViaCEPModule } from '../api/viacep/viacep.module';
 
 /*export const options: Partial<IConfig> = {
 };*/
-const toDeTaxiAPIBaseURL = 'https://localhost:44315';
+const toDeTaxiAPIBaseURL = 'http://localhost:5002';
 const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
-const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/`;
+const viaCEPAPIBaseURL = 'https://viacep.com.br';
+const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
 
 @NgModule({
 	declarations: [AppComponent],
@@ -57,48 +60,10 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/`;
 
 		FipeApiModule.forRoot({rootUrl: fipeAPIBaseURL}),
 		ApiModule.forRoot({rootUrl: toDeTaxiAPIBaseURL}),
+		ViaCEPModule.forRoot({rootUrl: viaCEPAPIBaseURL}),
 
-		NbAuthModule.forRoot({
-			strategies:
-			[
-				NbPasswordAuthStrategy.setup(
-				{
-					name: 'email',
-					baseEndpoint: authBaseEndpoint,
-					token:
-					{
-						class: NbAuthJWTToken,
-						key: 'accessToken',
-					},
-					login:
-					{
-						endpoint: 'usuario/login',
-						method: 'post',
-					},
-					register:
-					{
-						endpoint: 'usuario/registrar',
-						method: 'post',
-					},
-					logout:
-					{
-						endpoint: 'usuario/logout',
-						method: 'post',
-					},
-					requestPass:
-					{
-						endpoint: 'usuario/solicitar_senha',
-						method: 'post',
-					},
-					resetPass:
-					{
-						endpoint: 'usuario/trocar_senha',
-						method: 'post',
-					},
-				})
-			],
-			forms: {}
-		})
+		OAuth2Module
+
 	],
 	providers: [
 		AuthGuard,
@@ -108,7 +73,8 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/`;
 			useClass: NbAuthJWTInterceptor,
 			multi: true
 		},
-		{
+		{ provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: (req) => {return false;}},
+		/*{
 			provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER,
 			useValue: function (req: HttpRequest<any>)
 			{
@@ -118,7 +84,7 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/`;
 				}
 				return false;
 			},
-		},
+		},*/
 	],
 	bootstrap: [AppComponent],
 })

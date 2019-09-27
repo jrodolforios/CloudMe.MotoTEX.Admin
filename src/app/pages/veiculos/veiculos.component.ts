@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
 import { MarcaVeiculoService, ModeloVeiculoService } from '../../../api/fipe/services';
@@ -31,7 +31,7 @@ import { BaseCardComponent } from '../../common-views/base-card/base-card.compon
 		FotoViewComponent
 	]
 })
-export class VeiculosComponent implements OnInit {
+export class VeiculosComponent implements OnInit, AfterViewInit {
 
 	@ViewChild('base_card', null) baseCard: BaseCardComponent;
 	@ViewChild('table', null) table: Ng2SmartTableComponent;
@@ -100,7 +100,7 @@ export class VeiculosComponent implements OnInit {
 					component: CapacidadeEditorComponent
 				}
 			},
-			foto: {
+			/*foto: {
 				title: 'Foto',
 				type: 'custom',
 				renderComponent: FotoViewComponent,
@@ -109,7 +109,7 @@ export class VeiculosComponent implements OnInit {
 					type: 'custom',
 					component: FotoEditorComponent
 				},
-			},
+			},*/
 		},
 	};
 
@@ -132,7 +132,7 @@ export class VeiculosComponent implements OnInit {
 			self.veiculosSrv.marcasVeiculos.next(marcas);
 		});
 
-		await self.veiculoSrv.GetAll().toPromise().then(veics => {
+		await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(veics => {
 			/*const veicsEx: VeiculoSummaryExt[] = [];
 			veics.forEach(veic => {
 				veicsEx.push();
@@ -140,6 +140,10 @@ export class VeiculosComponent implements OnInit {
 			this.source.load(veicsEx);*/
 			this.source.load(veics);
 		});
+	}
+
+	ngAfterViewInit(): void
+	{
 	}
 
 	async enviarFoto(veiculoSummary: VeiculoSummaryExt)
@@ -154,12 +158,12 @@ export class VeiculosComponent implements OnInit {
 		if (veiculoSummary.fotoSummaryRef.id &&
 			veiculoSummary.novaFotoSummaryRef.nomeArquivo !== veiculoSummary.fotoSummaryRef.nomeArquivo)
 		{
-			await self.fotoSrv.Put(veiculoSummary.novaFotoSummaryRef).toPromise().then(_ => {});
+			await self.fotoSrv.ApiV1FotoPut(veiculoSummary.novaFotoSummaryRef).toPromise().then(_ => {});
 		}
 		else
 		{
 			veiculoSummary.novaFotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
-			await self.fotoSrv.Post(veiculoSummary.novaFotoSummaryRef).toPromise().then(id_foto => {
+			await self.fotoSrv.ApiV1FotoPost(veiculoSummary.novaFotoSummaryRef).toPromise().then(id_foto => {
 				veiculoSummary.veicRef.idFoto = id_foto;
 			});
 
@@ -174,7 +178,7 @@ export class VeiculosComponent implements OnInit {
 		const self = this;
 		if (veiculoSummary.fotoSummaryRef.id)
 		{
-			await self.fotoSrv.Delete(veiculoSummary.fotoSummaryRef.id).toPromise().then(_ => {
+			await self.fotoSrv.ApiV1FotoByIdGet(veiculoSummary.fotoSummaryRef.id).toPromise().then(_ => {
 				veiculoSummary.veicRef.idFoto = '';
 			});
 		}
@@ -185,7 +189,7 @@ export class VeiculosComponent implements OnInit {
 		const self = this;
 
 
-		await this.enviarFoto(event.newData.veicExt);
+		//await this.enviarFoto(event.newData.veicExt);
 
 		const novo_veic = event.newData as VeiculoSummary;
 		novo_veic.id = UUID.UUID();
@@ -201,7 +205,7 @@ export class VeiculosComponent implements OnInit {
 		};
 
 
-		await self.veiculoSrv.Post(sumarioVeic).toPromise().then(async id_veic => {
+		await self.veiculoSrv.ApiV1VeiculoPost(sumarioVeic).toPromise().then(async id_veic => {
 			if (id_veic)
 			{
 				novo_veic.id = id_veic;
@@ -229,7 +233,7 @@ export class VeiculosComponent implements OnInit {
 		// altera informações do usuário (login, senha, admin)
 		const self = this;
 
-		await this.enviarFoto(event.newData.veicExt);
+		//await this.enviarFoto(event.newData.veicExt);
 
 		const origVeic = event.data as VeiculoSummary;
 		const newVeic = event.newData as VeiculoSummary;
@@ -244,7 +248,7 @@ export class VeiculosComponent implements OnInit {
 			idFoto: origVeic.idFoto
 		};
 
-		await self.veiculoSrv.Put(sumarioVeic).toPromise().then(async resultado => {
+		await self.veiculoSrv.ApiV1VeiculoPut(sumarioVeic).toPromise().then(async resultado => {
 			if (resultado)
 			{
 				event.confirm.resolve();
@@ -264,7 +268,7 @@ export class VeiculosComponent implements OnInit {
 
 		if (window.confirm('Confirma exclusão do veículo?'))
 		{
-			await self.veiculoSrv.Delete(veic.id).toPromise().then(resultado => {
+			await self.veiculoSrv.ApiV1VeiculoByIdDelete(veic.id).toPromise().then(resultado => {
 				if (resultado)
 				{
 					event.confirm.resolve();

@@ -12,11 +12,11 @@ import { UsuarioGrupoUsuarioSummary } from '../models/usuario-grupo-usuario-summ
   providedIn: 'root',
 })
 class UsuarioGrupoUsuarioService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/UsuarioGrupoUsuario';
-  static readonly PutPath = '/api/v1/UsuarioGrupoUsuario';
-  static readonly PostPath = '/api/v1/UsuarioGrupoUsuario';
-  static readonly GetPath = '/api/v1/UsuarioGrupoUsuario/{id}';
-  static readonly DeletePath = '/api/v1/UsuarioGrupoUsuario/{id}';
+  static readonly ApiV1UsuarioGrupoUsuarioGetPath = '/api/v1/UsuarioGrupoUsuario';
+  static readonly ApiV1UsuarioGrupoUsuarioPutPath = '/api/v1/UsuarioGrupoUsuario';
+  static readonly ApiV1UsuarioGrupoUsuarioPostPath = '/api/v1/UsuarioGrupoUsuario';
+  static readonly ApiV1UsuarioGrupoUsuarioByIdGetPath = '/api/v1/UsuarioGrupoUsuario/{id}';
+  static readonly ApiV1UsuarioGrupoUsuarioByIdDeletePath = '/api/v1/UsuarioGrupoUsuario/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class UsuarioGrupoUsuarioService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<UsuarioGrupoUsuarioSummary>>> {
+  ApiV1UsuarioGrupoUsuarioGetResponse(): __Observable<__StrictHttpResponse<Array<UsuarioGrupoUsuarioSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class UsuarioGrupoUsuarioService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<UsuarioGrupoUsuarioSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1UsuarioGrupoUsuarioGet(): __Observable<Array<UsuarioGrupoUsuarioSummary>> {
+    return this.ApiV1UsuarioGrupoUsuarioGetResponse().pipe(
       __map(_r => _r.body as Array<UsuarioGrupoUsuarioSummary>)
     );
   }
@@ -62,7 +62,7 @@ class UsuarioGrupoUsuarioService extends __BaseService {
    * @param usuarioGrupoUsuarioSummary Modified UsuarioGrupoUsuario list's properties summary
    * @return Success
    */
-  PutResponse(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1UsuarioGrupoUsuarioPutResponse(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,8 +88,8 @@ class UsuarioGrupoUsuarioService extends __BaseService {
    * @param usuarioGrupoUsuarioSummary Modified UsuarioGrupoUsuario list's properties summary
    * @return Success
    */
-  Put(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<boolean> {
-    return this.PutResponse(usuarioGrupoUsuarioSummary).pipe(
+  ApiV1UsuarioGrupoUsuarioPut(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<boolean> {
+    return this.ApiV1UsuarioGrupoUsuarioPutResponse(usuarioGrupoUsuarioSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
@@ -97,7 +97,7 @@ class UsuarioGrupoUsuarioService extends __BaseService {
   /**
    * @param usuarioGrupoUsuarioSummary UsuarioGrupoUsuario's summary
    */
-  PostResponse(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1UsuarioGrupoUsuarioPostResponse(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -122,8 +122,8 @@ class UsuarioGrupoUsuarioService extends __BaseService {
   /**
    * @param usuarioGrupoUsuarioSummary UsuarioGrupoUsuario's summary
    */
-  Post(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<null> {
-    return this.PostResponse(usuarioGrupoUsuarioSummary).pipe(
+  ApiV1UsuarioGrupoUsuarioPost(usuarioGrupoUsuarioSummary?: UsuarioGrupoUsuarioSummary): __Observable<null> {
+    return this.ApiV1UsuarioGrupoUsuarioPostResponse(usuarioGrupoUsuarioSummary).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -132,7 +132,7 @@ class UsuarioGrupoUsuarioService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<UsuarioGrupoUsuarioSummary>> {
+  ApiV1UsuarioGrupoUsuarioByIdGetResponse(id: string): __Observable<__StrictHttpResponse<UsuarioGrupoUsuarioSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -158,8 +158,8 @@ class UsuarioGrupoUsuarioService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<UsuarioGrupoUsuarioSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1UsuarioGrupoUsuarioByIdGet(id: string): __Observable<UsuarioGrupoUsuarioSummary> {
+    return this.ApiV1UsuarioGrupoUsuarioByIdGetResponse(id).pipe(
       __map(_r => _r.body as UsuarioGrupoUsuarioSummary)
     );
   }
@@ -168,7 +168,7 @@ class UsuarioGrupoUsuarioService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1UsuarioGrupoUsuarioByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -194,8 +194,8 @@ class UsuarioGrupoUsuarioService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1UsuarioGrupoUsuarioByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1UsuarioGrupoUsuarioByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

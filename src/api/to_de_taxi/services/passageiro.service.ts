@@ -12,11 +12,11 @@ import { PassageiroSummary } from '../models/passageiro-summary';
   providedIn: 'root',
 })
 class PassageiroService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Passageiro';
-  static readonly PutPath = '/api/v1/Passageiro';
-  static readonly PostPath = '/api/v1/Passageiro';
-  static readonly GetPath = '/api/v1/Passageiro/{id}';
-  static readonly DeletePath = '/api/v1/Passageiro/{id}';
+  static readonly ApiV1PassageiroGetPath = '/api/v1/Passageiro';
+  static readonly ApiV1PassageiroPutPath = '/api/v1/Passageiro';
+  static readonly ApiV1PassageiroPostPath = '/api/v1/Passageiro';
+  static readonly ApiV1PassageiroByIdGetPath = '/api/v1/Passageiro/{id}';
+  static readonly ApiV1PassageiroByIdDeletePath = '/api/v1/Passageiro/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class PassageiroService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<PassageiroSummary>>> {
+  ApiV1PassageiroGetResponse(): __Observable<__StrictHttpResponse<Array<PassageiroSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class PassageiroService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<PassageiroSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1PassageiroGet(): __Observable<Array<PassageiroSummary>> {
+    return this.ApiV1PassageiroGetResponse().pipe(
       __map(_r => _r.body as Array<PassageiroSummary>)
     );
   }
@@ -62,7 +62,7 @@ class PassageiroService extends __BaseService {
    * @param passageiroSummary Modified Passageiro list's properties summary
    * @return Success
    */
-  PutResponse(passageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1PassageiroPutResponse(passageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,8 +88,8 @@ class PassageiroService extends __BaseService {
    * @param passageiroSummary Modified Passageiro list's properties summary
    * @return Success
    */
-  Put(passageiroSummary?: PassageiroSummary): __Observable<boolean> {
-    return this.PutResponse(passageiroSummary).pipe(
+  ApiV1PassageiroPut(passageiroSummary?: PassageiroSummary): __Observable<boolean> {
+    return this.ApiV1PassageiroPutResponse(passageiroSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
@@ -97,7 +97,7 @@ class PassageiroService extends __BaseService {
   /**
    * @param passageiroSummary Passageiro's summary
    */
-  PostResponse(passageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1PassageiroPostResponse(passageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -122,8 +122,8 @@ class PassageiroService extends __BaseService {
   /**
    * @param passageiroSummary Passageiro's summary
    */
-  Post(passageiroSummary?: PassageiroSummary): __Observable<null> {
-    return this.PostResponse(passageiroSummary).pipe(
+  ApiV1PassageiroPost(passageiroSummary?: PassageiroSummary): __Observable<null> {
+    return this.ApiV1PassageiroPostResponse(passageiroSummary).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -132,7 +132,7 @@ class PassageiroService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<PassageiroSummary>> {
+  ApiV1PassageiroByIdGetResponse(id: string): __Observable<__StrictHttpResponse<PassageiroSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -158,8 +158,8 @@ class PassageiroService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<PassageiroSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1PassageiroByIdGet(id: string): __Observable<PassageiroSummary> {
+    return this.ApiV1PassageiroByIdGetResponse(id).pipe(
       __map(_r => _r.body as PassageiroSummary)
     );
   }
@@ -168,7 +168,7 @@ class PassageiroService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1PassageiroByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -194,8 +194,8 @@ class PassageiroService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1PassageiroByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1PassageiroByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

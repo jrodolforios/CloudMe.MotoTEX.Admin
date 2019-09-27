@@ -1,0 +1,13 @@
+<base-card>
+	<div header>FAIXAS DE DESCONTO</div>
+	<div body>
+		<ng2-smart-table #table
+			[settings]="grid_settings" 
+			[source]="source" 
+			(createConfirm)="onCreateConfirm($event)"
+			(editConfirm)="onEditConfirm($event)"
+			(deleteConfirm)="onDeleteConfirm($event)"
+			(custom)="onCustomAction($event)">
+		</ng2-smart-table>
+	</div>
+</base-card>

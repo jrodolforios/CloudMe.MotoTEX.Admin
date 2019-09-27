@@ -2,9 +2,9 @@ import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
 	{
-		title: 'Tarifas',
-		icon: 'percent',
-		link: '/pages/tarifas',
+		title: 'Configurações',
+		icon: 'settings-outline',
+		link: '/pages/configuracoes',
 	},
 	{
 		title: 'Taxistas',

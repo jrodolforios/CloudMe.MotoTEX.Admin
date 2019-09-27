@@ -12,11 +12,11 @@ import { FavoritoSummary } from '../models/favorito-summary';
   providedIn: 'root',
 })
 class FavoritoService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Favorito';
-  static readonly PutPath = '/api/v1/Favorito';
-  static readonly PostPath = '/api/v1/Favorito';
-  static readonly GetPath = '/api/v1/Favorito/{id}';
-  static readonly DeletePath = '/api/v1/Favorito/{id}';
+  static readonly ApiV1FavoritoGetPath = '/api/v1/Favorito';
+  static readonly ApiV1FavoritoPutPath = '/api/v1/Favorito';
+  static readonly ApiV1FavoritoPostPath = '/api/v1/Favorito';
+  static readonly ApiV1FavoritoByIdGetPath = '/api/v1/Favorito/{id}';
+  static readonly ApiV1FavoritoByIdDeletePath = '/api/v1/Favorito/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +28,7 @@ class FavoritoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<FavoritoSummary>>> {
+  ApiV1FavoritoGetResponse(): __Observable<__StrictHttpResponse<Array<FavoritoSummary>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -52,8 +52,8 @@ class FavoritoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<FavoritoSummary>> {
-    return this.GetAllResponse().pipe(
+  ApiV1FavoritoGet(): __Observable<Array<FavoritoSummary>> {
+    return this.ApiV1FavoritoGetResponse().pipe(
       __map(_r => _r.body as Array<FavoritoSummary>)
     );
   }
@@ -62,7 +62,7 @@ class FavoritoService extends __BaseService {
    * @param favoritoSummary Modified Favorito list's properties summary
    * @return Success
    */
-  PutResponse(favoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FavoritoPutResponse(favoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -88,8 +88,8 @@ class FavoritoService extends __BaseService {
    * @param favoritoSummary Modified Favorito list's properties summary
    * @return Success
    */
-  Put(favoritoSummary?: FavoritoSummary): __Observable<boolean> {
-    return this.PutResponse(favoritoSummary).pipe(
+  ApiV1FavoritoPut(favoritoSummary?: FavoritoSummary): __Observable<boolean> {
+    return this.ApiV1FavoritoPutResponse(favoritoSummary).pipe(
       __map(_r => _r.body as boolean)
     );
   }
@@ -97,7 +97,7 @@ class FavoritoService extends __BaseService {
   /**
    * @param favoritoSummary Favorito's summary
    */
-  PostResponse(favoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1FavoritoPostResponse(favoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -122,8 +122,8 @@ class FavoritoService extends __BaseService {
   /**
    * @param favoritoSummary Favorito's summary
    */
-  Post(favoritoSummary?: FavoritoSummary): __Observable<null> {
-    return this.PostResponse(favoritoSummary).pipe(
+  ApiV1FavoritoPost(favoritoSummary?: FavoritoSummary): __Observable<null> {
+    return this.ApiV1FavoritoPostResponse(favoritoSummary).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -132,7 +132,7 @@ class FavoritoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<FavoritoSummary>> {
+  ApiV1FavoritoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<FavoritoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -158,8 +158,8 @@ class FavoritoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<FavoritoSummary> {
-    return this.GetResponse(id).pipe(
+  ApiV1FavoritoByIdGet(id: string): __Observable<FavoritoSummary> {
+    return this.ApiV1FavoritoByIdGetResponse(id).pipe(
       __map(_r => _r.body as FavoritoSummary)
     );
   }
@@ -168,7 +168,7 @@ class FavoritoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FavoritoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -194,8 +194,8 @@ class FavoritoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
+  ApiV1FavoritoByIdDelete(id: string): __Observable<boolean> {
+    return this.ApiV1FavoritoByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as boolean)
     );
   }

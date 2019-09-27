@@ -1,4 +1,7 @@
-nb-card-body {
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+.body {
     overflow: visible;
     padding-top: 0;
   
@@ -33,6 +36,11 @@ nb-card-body {
     }
   }
   
+  .action-icon {
+    @include nb-ltr(margin-right, 0.5rem);
+    @include nb-rtl(margin-left, 0.5rem);
+  }
+
   .full-name-inputs,
   .validation-checkboxes {
     display: flex;
@@ -50,4 +58,4 @@ nb-card-body {
   .demo-items {
     flex: 1 0 33%;
   }
-    
+}

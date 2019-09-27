@@ -1,24 +1,21 @@
-<nb-card>
-	<nb-card-header>Taxistas</nb-card-header>
-	<div class="container actions">
-		<nb-actions size="medium" class="row">
-				<nb-action class="col">
-					<input type="text" nbInput fullWidth shape="semi-round" placeholder="Pesquisar...">
-				</nb-action>
-				<nb-action class="col-auto" icon="search-outline"></nb-action>
-		</nb-actions>
+<base-card>
+	<div header>Taxistas</div>
+	<div body>
+		<div class="container actions">
+			<nb-actions size="medium" class="row">
+					<nb-action class="col">
+						<input type="text" nbInput fullWidth shape="semi-round" placeholder="Pesquisar...">
+					</nb-action>
+					<nb-action class="col-auto" icon="search-outline"></nb-action>
+					<nb-action class="col-auto" icon="plus-outline"></nb-action>
+			</nb-actions>
+		</div>
+		<nb-list class="own-scroll"
+			nbInfiniteList
+			[threshold]="500">
+			<nb-list-item *ngFor="let taxista of taxistas">
+				<ngx-item-listagem-taxista [taxista]="taxista"></ngx-item-listagem-taxista>
+			</nb-list-item>		
+		</nb-list>
 	</div>
-	<nb-list class="own-scroll"
-		nbInfiniteList
-		[threshold]="500"
-		(bottomThreshold)="loadNext(secondCard)">
-		<nb-list-item *ngFor="let newsPost of secondCard.news">
-			<ngx-item-listagem [post]="newsPost"></ngx-item-listagem>
-		</nb-list-item>		
-<!--
-		<nb-list-item *ngFor="let _ of secondCard.placeholders">
-			<ngx-news-post-placeholder></ngx-news-post-placeholder>
-		</nb-list-item>
--->		
-	</nb-list>
-</nb-card>
+</base-card>

@@ -11,9 +11,9 @@ const routes: Routes = [{
 	component: PagesComponent,
 	children: [
 		{
-			path: 'tarifas',
-			loadChildren: () => import('./tarifas/tarifas.module')
-				.then(m => m.TarifasModule),
+			path: 'configuracoes',
+			loadChildren: () => import('./configuracoes/configuracoes.module')
+				.then(m => m.ConfiguracoesModule),
 		},
 		{
 			path: 'taxistas',
