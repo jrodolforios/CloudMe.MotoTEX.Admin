@@ -1,4 +1,5 @@
 export { CorridaService } from './services/corrida.service';
+export { EnderecoService } from './services/endereco.service';
 export { FaixaDescontoService } from './services/faixa-desconto.service';
 export { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
 export { FavoritoService } from './services/favorito.service';

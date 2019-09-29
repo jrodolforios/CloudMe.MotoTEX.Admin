@@ -7,7 +7,11 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableFotoSummary } from '../models/response-ienumerable-foto-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { FotoSummary } from '../models/foto-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseFotoSummary } from '../models/response-foto-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +33,7 @@ class FotoService extends __BaseService {
   /**
    * @return Success
    */
-  ApiV1FotoGetResponse(): __Observable<__StrictHttpResponse<Array<FotoSummary>>> {
+  ApiV1FotoGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableFotoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -46,16 +50,16 @@ class FotoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<FotoSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableFotoSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  ApiV1FotoGet(): __Observable<Array<FotoSummary>> {
+  ApiV1FotoGet(): __Observable<ResponseIEnumerableFotoSummary> {
     return this.ApiV1FotoGetResponse().pipe(
-      __map(_r => _r.body as Array<FotoSummary>)
+      __map(_r => _r.body as ResponseIEnumerableFotoSummary)
     );
   }
 
@@ -63,7 +67,7 @@ class FotoService extends __BaseService {
    * @param FotoSummary Modified Foto list's properties summary
    * @return Success
    */
-  ApiV1FotoPutResponse(FotoSummary?: FotoSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1FotoPutResponse(FotoSummary?: FotoSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -75,13 +79,13 @@ class FotoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -89,21 +93,21 @@ class FotoService extends __BaseService {
    * @param FotoSummary Modified Foto list's properties summary
    * @return Success
    */
-  ApiV1FotoPut(FotoSummary?: FotoSummary): __Observable<string> {
+  ApiV1FotoPut(FotoSummary?: FotoSummary): __Observable<ResponseBoolean> {
     return this.ApiV1FotoPutResponse(FotoSummary).pipe(
-      __map(_r => _r.body as string)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param fotoSummary Corrida's summary
+   * @param FotoSummary Foto's summary
    * @return Success
    */
-  ApiV1FotoPostResponse(fotoSummary?: FotoSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1FotoPostResponse(FotoSummary?: FotoSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = fotoSummary;
+    __body = FotoSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/Foto`,
@@ -111,23 +115,23 @@ class FotoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param fotoSummary Corrida's summary
+   * @param FotoSummary Foto's summary
    * @return Success
    */
-  ApiV1FotoPost(fotoSummary?: FotoSummary): __Observable<string> {
-    return this.ApiV1FotoPostResponse(fotoSummary).pipe(
-      __map(_r => _r.body as string)
+  ApiV1FotoPost(FotoSummary?: FotoSummary): __Observable<ResponseGuid> {
+    return this.ApiV1FotoPostResponse(FotoSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -135,7 +139,7 @@ class FotoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1FotoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<FotoSummary>> {
+  ApiV1FotoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseFotoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -153,7 +157,7 @@ class FotoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<FotoSummary>;
+        return _r as __StrictHttpResponse<ResponseFotoSummary>;
       })
     );
   }
@@ -161,9 +165,9 @@ class FotoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1FotoByIdGet(id: string): __Observable<FotoSummary> {
+  ApiV1FotoByIdGet(id: string): __Observable<ResponseFotoSummary> {
     return this.ApiV1FotoByIdGetResponse(id).pipe(
-      __map(_r => _r.body as FotoSummary)
+      __map(_r => _r.body as ResponseFotoSummary)
     );
   }
 
@@ -171,7 +175,7 @@ class FotoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1FotoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FotoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -183,13 +187,13 @@ class FotoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -197,9 +201,9 @@ class FotoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1FotoByIdDelete(id: string): __Observable<boolean> {
+  ApiV1FotoByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1FotoByIdDeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 

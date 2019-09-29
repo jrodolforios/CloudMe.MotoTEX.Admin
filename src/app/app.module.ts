@@ -28,6 +28,7 @@ import { AuthGuard } from './auth/auth-guard.service';
 import { UsuarioService } from './auth/usuario.service';
 import { OAuth2Module } from './pages/oauth2/oauth2.module';
 import { ViaCEPModule } from '../api/viacep/viacep.module';
+import { ErrorInterceptor } from './@core/utils/error-interceptor';
 
 /*export const options: Partial<IConfig> = {
 };*/
@@ -73,8 +74,13 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
 			useClass: NbAuthJWTInterceptor,
 			multi: true
 		},
-		{ provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: (req) => {return false;}},
-		/*{
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: ErrorInterceptor,
+			multi: true
+		},
+		//{ provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: (req) => {return false;}},
+		{
 			provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER,
 			useValue: function (req: HttpRequest<any>)
 			{
@@ -84,7 +90,7 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
 				}
 				return false;
 			},
-		},*/
+		},
 	],
 	bootstrap: [AppComponent],
 })

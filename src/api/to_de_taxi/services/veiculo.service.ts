@@ -7,7 +7,11 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableVeiculoSummary } from '../models/response-ienumerable-veiculo-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { VeiculoSummary } from '../models/veiculo-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseVeiculoSummary } from '../models/response-veiculo-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +32,7 @@ class VeiculoService extends __BaseService {
   /**
    * @return Success
    */
-  ApiV1VeiculoGetResponse(): __Observable<__StrictHttpResponse<Array<VeiculoSummary>>> {
+  ApiV1VeiculoGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableVeiculoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +49,28 @@ class VeiculoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<VeiculoSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableVeiculoSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  ApiV1VeiculoGet(): __Observable<Array<VeiculoSummary>> {
+  ApiV1VeiculoGet(): __Observable<ResponseIEnumerableVeiculoSummary> {
     return this.ApiV1VeiculoGetResponse().pipe(
-      __map(_r => _r.body as Array<VeiculoSummary>)
+      __map(_r => _r.body as ResponseIEnumerableVeiculoSummary)
     );
   }
 
   /**
-   * @param veiculoSummary Modified Veiculo list's properties summary
+   * @param VeiculoSummary Modified Veiculo list's properties summary
    * @return Success
    */
-  ApiV1VeiculoPutResponse(veiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1VeiculoPutResponse(VeiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = veiculoSummary;
+    __body = VeiculoSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/Veiculo`,
@@ -74,35 +78,35 @@ class VeiculoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param veiculoSummary Modified Veiculo list's properties summary
+   * @param VeiculoSummary Modified Veiculo list's properties summary
    * @return Success
    */
-  ApiV1VeiculoPut(veiculoSummary?: VeiculoSummary): __Observable<string> {
-    return this.ApiV1VeiculoPutResponse(veiculoSummary).pipe(
-      __map(_r => _r.body as string)
+  ApiV1VeiculoPut(VeiculoSummary?: VeiculoSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1VeiculoPutResponse(VeiculoSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param veiculoSummary Veiculo's summary
+   * @param VeiculoSummary Veiculo's summary
    * @return Success
    */
-  ApiV1VeiculoPostResponse(veiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1VeiculoPostResponse(VeiculoSummary?: VeiculoSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = veiculoSummary;
+    __body = VeiculoSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/Veiculo`,
@@ -110,23 +114,23 @@ class VeiculoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param veiculoSummary Veiculo's summary
+   * @param VeiculoSummary Veiculo's summary
    * @return Success
    */
-  ApiV1VeiculoPost(veiculoSummary?: VeiculoSummary): __Observable<string> {
-    return this.ApiV1VeiculoPostResponse(veiculoSummary).pipe(
-      __map(_r => _r.body as string)
+  ApiV1VeiculoPost(VeiculoSummary?: VeiculoSummary): __Observable<ResponseGuid> {
+    return this.ApiV1VeiculoPostResponse(VeiculoSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -134,7 +138,7 @@ class VeiculoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1VeiculoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<VeiculoSummary>> {
+  ApiV1VeiculoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseVeiculoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -152,7 +156,7 @@ class VeiculoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<VeiculoSummary>;
+        return _r as __StrictHttpResponse<ResponseVeiculoSummary>;
       })
     );
   }
@@ -160,9 +164,9 @@ class VeiculoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1VeiculoByIdGet(id: string): __Observable<VeiculoSummary> {
+  ApiV1VeiculoByIdGet(id: string): __Observable<ResponseVeiculoSummary> {
     return this.ApiV1VeiculoByIdGetResponse(id).pipe(
-      __map(_r => _r.body as VeiculoSummary)
+      __map(_r => _r.body as ResponseVeiculoSummary)
     );
   }
 
@@ -170,7 +174,7 @@ class VeiculoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1VeiculoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1VeiculoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -182,13 +186,13 @@ class VeiculoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -196,9 +200,9 @@ class VeiculoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1VeiculoByIdDelete(id: string): __Observable<boolean> {
+  ApiV1VeiculoByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1VeiculoByIdDeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

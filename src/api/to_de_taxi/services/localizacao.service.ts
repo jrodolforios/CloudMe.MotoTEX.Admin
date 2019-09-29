@@ -7,7 +7,11 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableLocalizacaoSummary } from '../models/response-ienumerable-localizacao-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { LocalizacaoSummary } from '../models/localizacao-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseLocalizacaoSummary } from '../models/response-localizacao-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +32,7 @@ class LocalizacaoService extends __BaseService {
   /**
    * @return Success
    */
-  ApiV1LocalizacaoGetResponse(): __Observable<__StrictHttpResponse<Array<LocalizacaoSummary>>> {
+  ApiV1LocalizacaoGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableLocalizacaoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +49,28 @@ class LocalizacaoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<LocalizacaoSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableLocalizacaoSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  ApiV1LocalizacaoGet(): __Observable<Array<LocalizacaoSummary>> {
+  ApiV1LocalizacaoGet(): __Observable<ResponseIEnumerableLocalizacaoSummary> {
     return this.ApiV1LocalizacaoGetResponse().pipe(
-      __map(_r => _r.body as Array<LocalizacaoSummary>)
+      __map(_r => _r.body as ResponseIEnumerableLocalizacaoSummary)
     );
   }
 
   /**
-   * @param localizacaoSummary Modified Localizacao list's properties summary
+   * @param LocalizacaoSummary Modified Localizacao list's properties summary
    * @return Success
    */
-  ApiV1LocalizacaoPutResponse(localizacaoSummary?: LocalizacaoSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1LocalizacaoPutResponse(LocalizacaoSummary?: LocalizacaoSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = localizacaoSummary;
+    __body = LocalizacaoSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/Localizacao`,
@@ -74,34 +78,35 @@ class LocalizacaoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param localizacaoSummary Modified Localizacao list's properties summary
+   * @param LocalizacaoSummary Modified Localizacao list's properties summary
    * @return Success
    */
-  ApiV1LocalizacaoPut(localizacaoSummary?: LocalizacaoSummary): __Observable<boolean> {
-    return this.ApiV1LocalizacaoPutResponse(localizacaoSummary).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1LocalizacaoPut(LocalizacaoSummary?: LocalizacaoSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1LocalizacaoPutResponse(LocalizacaoSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param localizacaoSummary Localizacao's summary
+   * @param LocalizacaoSummary Localizacao's summary
+   * @return Success
    */
-  ApiV1LocalizacaoPostResponse(localizacaoSummary?: LocalizacaoSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1LocalizacaoPostResponse(LocalizacaoSummary?: LocalizacaoSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = localizacaoSummary;
+    __body = LocalizacaoSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/Localizacao`,
@@ -115,16 +120,17 @@ class LocalizacaoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param localizacaoSummary Localizacao's summary
+   * @param LocalizacaoSummary Localizacao's summary
+   * @return Success
    */
-  ApiV1LocalizacaoPost(localizacaoSummary?: LocalizacaoSummary): __Observable<null> {
-    return this.ApiV1LocalizacaoPostResponse(localizacaoSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1LocalizacaoPost(LocalizacaoSummary?: LocalizacaoSummary): __Observable<ResponseGuid> {
+    return this.ApiV1LocalizacaoPostResponse(LocalizacaoSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +138,7 @@ class LocalizacaoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1LocalizacaoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<LocalizacaoSummary>> {
+  ApiV1LocalizacaoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseLocalizacaoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +156,7 @@ class LocalizacaoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<LocalizacaoSummary>;
+        return _r as __StrictHttpResponse<ResponseLocalizacaoSummary>;
       })
     );
   }
@@ -158,9 +164,9 @@ class LocalizacaoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1LocalizacaoByIdGet(id: string): __Observable<LocalizacaoSummary> {
+  ApiV1LocalizacaoByIdGet(id: string): __Observable<ResponseLocalizacaoSummary> {
     return this.ApiV1LocalizacaoByIdGetResponse(id).pipe(
-      __map(_r => _r.body as LocalizacaoSummary)
+      __map(_r => _r.body as ResponseLocalizacaoSummary)
     );
   }
 
@@ -168,7 +174,7 @@ class LocalizacaoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1LocalizacaoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1LocalizacaoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +186,13 @@ class LocalizacaoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,9 +200,9 @@ class LocalizacaoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1LocalizacaoByIdDelete(id: string): __Observable<boolean> {
+  ApiV1LocalizacaoByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1LocalizacaoByIdDeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

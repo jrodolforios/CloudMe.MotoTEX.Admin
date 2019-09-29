@@ -7,7 +7,11 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableCorridaSummary } from '../models/response-ienumerable-corrida-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { CorridaSummary } from '../models/corrida-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseCorridaSummary } from '../models/response-corrida-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +32,7 @@ class CorridaService extends __BaseService {
   /**
    * @return Success
    */
-  ApiV1CorridaGetResponse(): __Observable<__StrictHttpResponse<Array<CorridaSummary>>> {
+  ApiV1CorridaGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableCorridaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,16 +49,16 @@ class CorridaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<CorridaSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableCorridaSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  ApiV1CorridaGet(): __Observable<Array<CorridaSummary>> {
+  ApiV1CorridaGet(): __Observable<ResponseIEnumerableCorridaSummary> {
     return this.ApiV1CorridaGetResponse().pipe(
-      __map(_r => _r.body as Array<CorridaSummary>)
+      __map(_r => _r.body as ResponseIEnumerableCorridaSummary)
     );
   }
 
@@ -62,7 +66,7 @@ class CorridaService extends __BaseService {
    * @param corridaSummary Modified Corrida list's properties summary
    * @return Success
    */
-  ApiV1CorridaPutResponse(corridaSummary?: CorridaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1CorridaPutResponse(corridaSummary?: CorridaSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -74,13 +78,13 @@ class CorridaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -88,16 +92,17 @@ class CorridaService extends __BaseService {
    * @param corridaSummary Modified Corrida list's properties summary
    * @return Success
    */
-  ApiV1CorridaPut(corridaSummary?: CorridaSummary): __Observable<boolean> {
+  ApiV1CorridaPut(corridaSummary?: CorridaSummary): __Observable<ResponseBoolean> {
     return this.ApiV1CorridaPutResponse(corridaSummary).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
    * @param corridaSummary Corrida's summary
+   * @return Success
    */
-  ApiV1CorridaPostResponse(corridaSummary?: CorridaSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1CorridaPostResponse(corridaSummary?: CorridaSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -115,16 +120,17 @@ class CorridaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
    * @param corridaSummary Corrida's summary
+   * @return Success
    */
-  ApiV1CorridaPost(corridaSummary?: CorridaSummary): __Observable<null> {
+  ApiV1CorridaPost(corridaSummary?: CorridaSummary): __Observable<ResponseGuid> {
     return this.ApiV1CorridaPostResponse(corridaSummary).pipe(
-      __map(_r => _r.body as null)
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +138,7 @@ class CorridaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1CorridaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<CorridaSummary>> {
+  ApiV1CorridaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseCorridaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +156,7 @@ class CorridaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<CorridaSummary>;
+        return _r as __StrictHttpResponse<ResponseCorridaSummary>;
       })
     );
   }
@@ -158,9 +164,9 @@ class CorridaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1CorridaByIdGet(id: string): __Observable<CorridaSummary> {
+  ApiV1CorridaByIdGet(id: string): __Observable<ResponseCorridaSummary> {
     return this.ApiV1CorridaByIdGetResponse(id).pipe(
-      __map(_r => _r.body as CorridaSummary)
+      __map(_r => _r.body as ResponseCorridaSummary)
     );
   }
 
@@ -168,7 +174,7 @@ class CorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1CorridaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1CorridaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +186,13 @@ class CorridaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,9 +200,9 @@ class CorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1CorridaByIdDelete(id: string): __Observable<boolean> {
+  ApiV1CorridaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1CorridaByIdDeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

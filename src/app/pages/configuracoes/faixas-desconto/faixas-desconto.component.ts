@@ -71,9 +71,12 @@ export class FaixasDescontoComponent implements OnInit {
 	async ngOnInit()
 	{
 		const self = this;
-		await self.faixaDescSrv.ApiV1FaixaDescontoGet().toPromise().then(veics =>
+		await self.faixaDescSrv.ApiV1FaixaDescontoGet().toPromise().then(resp =>
 		{
-			this.source.load(veics);
+			if (resp.success)
+			{
+				this.source.load(resp.data);
+			}
 		});
 	}
 
@@ -91,10 +94,10 @@ export class FaixasDescontoComponent implements OnInit {
 		};
 
 
-		await self.faixaDescSrv.ApiV1FaixaDescontoPost(sumarioVeic).toPromise().then(async id_veic => {
-			if (id_veic)
+		await self.faixaDescSrv.ApiV1FaixaDescontoPost(sumarioVeic).toPromise().then(async resp => {
+			if (resp.success)
 			{
-				nova_faixa_desc.id = id_veic;
+				nova_faixa_desc.id = resp.data;
 				event.confirm.resolve(nova_faixa_desc);
 			}
 			else

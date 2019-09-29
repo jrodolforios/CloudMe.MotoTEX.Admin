@@ -1,17 +1,18 @@
 <div class="container">
-  <div class="row">{{taxista && taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}</div>
+  <div class="row h4 nome" (click)="selecionar()">{{taxista && taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}</div>
   <div class="row sumario">
-    <div>
-      <div>RG</div>
-      <div class="h6">{{ taxista ? taxista.rg : "N/I" }}</div>
+    <div class="propriedade">
+      <div class="nome_propriedade">RG</div>
+      <div class="valor_propriedade">{{ taxista ? taxista.rg : "N/I" }}</div>
     </div>
-    <div>
-      <div>CPF</div>
-      <div class="h6">{{ taxista ? taxista.cpf : "N/I" }}</div>
+    <div class="propriedade">
+      <div class="nome_propriedade">CPF</div>
+      <div class="valor_propriedade">{{ taxista ? taxista.cpf : "N/I" }}</div>
     </div>
-    <div>
-      <div>TELEFONE</div>
-      <div class="h6">{{ taxista ? taxista.telefone : "N/I" }}</div>
+    <div class="propriedade">
+      <div class="nome_propriedade">TELEFONE</div>
+      <div class="valor_propriedade">{{ taxista ? taxista.usuario.telefone : "N/I" }}</div>
     </div>
   </div>
+  <nb-icon class="deletar" icon="trash-2-outline" [options]="{ animation: { type: 'zoom' } }" (click)="deletar()"></nb-icon>
 </div>

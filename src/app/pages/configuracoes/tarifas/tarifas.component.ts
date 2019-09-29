@@ -34,18 +34,22 @@ export class TarifasComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
-		self.sub_tarifas = self.tarifaSrv.ApiV1TarifaGet().subscribe(tarifas => {
-			const tarifa = tarifas ? tarifas[0] : {};
-			this.tarifasForm.setValue(tarifa);
+		self.sub_tarifas = self.tarifaSrv.ApiV1TarifaGet().subscribe(resp => 
+		{
+			if (resp.success)
+			{
+				const tarifa = resp.data.length > 0 ? resp.data[0] : {};
+				this.tarifasForm.setValue(tarifa);
 
-			/*
-			this.tarifasForm.patchValue( {
-				bandeirada: tarifa ? tarifa.bandeirada : 0,
-				kmRodadoBandeira1: tarifa ? tarifa.kmRodadoBandeira1 : 0,
-				kmRodadoBandeira2: tarifa ? tarifa.kmRodadoBandeira2 : 0,
-				horaParada: tarifa ? tarifa.horaParada : 0
-			});
-			*/
+				/*
+				this.tarifasForm.patchValue( {
+					bandeirada: tarifa ? tarifa.bandeirada : 0,
+					kmRodadoBandeira1: tarifa ? tarifa.kmRodadoBandeira1 : 0,
+					kmRodadoBandeira2: tarifa ? tarifa.kmRodadoBandeira2 : 0,
+					horaParada: tarifa ? tarifa.horaParada : 0
+				});
+				*/
+			}
 		});
 	}
 
@@ -67,25 +71,31 @@ export class TarifasComponent implements OnInit, OnDestroy {
 			horaParada: self.tarifasForm.get('horaParada').value
 		};
 
-		let sucesso = false;
+		let successo = false;
 		if (tarifa.id)
 		{
-			await self.tarifaSrv.ApiV1TarifaPut(tarifa).toPromise().then( result => {
-				sucesso = result !== null;
+			await self.tarifaSrv.ApiV1TarifaPut(tarifa).toPromise().then( resp => {
+				successo = resp.success;
 			});
 		}
 		else
 		{
 			tarifa.id = UUID.UUID(); // para permitir a serialização
-			await self.tarifaSrv.ApiV1TarifaPost(tarifa).toPromise().then( id_tarifa => {
-				self.tarifasForm.patchValue({id: id_tarifa});
-				sucesso = true;
+			await self.tarifaSrv.ApiV1TarifaPost(tarifa).toPromise().then( resp => {
+				if (resp.success)
+				{
+					self.tarifasForm.patchValue(
+					{
+						id: resp.data
+					});
+					successo = true;
+				}
 			}).catch(reason => {
-				sucesso = false;
+				successo = false;
 			});
 		}
 
-		if (sucesso)
+		if (successo)
 		{
 			alert('Valores atualizados!');
 		}

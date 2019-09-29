@@ -120,6 +120,7 @@ export class TaxistasControllerService
 			rg: taxista.rg,
 			endereco:
 			{
+				id: taxista.endereco.id,
 				cep: taxista.endereco.cep,
 				logradouro: taxista.endereco.logradouro,
 				numero: taxista.endereco.numero,
@@ -150,11 +151,13 @@ export class TaxistasControllerService
 		const taxistas: TaxistaExt[] = [];
 
 		// obtém informações de acesso dos usuários
-		await self.taxistasSrv.ApiV1TaxistaGet().toPromise().then(async res_taxistas => {
-
-			res_taxistas.forEach(taxista_sum => {
-				taxistas.push(self.instanciarTaxista(taxista_sum));
-			});
+		await self.taxistasSrv.ApiV1TaxistaGet().toPromise().then(async resp => {
+			if (resp.success)
+			{
+				resp.data.forEach(taxista_sum => {
+					taxistas.push(self.instanciarTaxista(taxista_sum));
+				});
+			}
 		});
 
 		self.taxistas.next(taxistas);
@@ -173,9 +176,12 @@ export class TaxistasControllerService
 		else
 		{
 			fotoSummary.id = emptyUUID; // para serializalçao do parâmetro
-			await self.fotoSrv.ApiV1FotoPost(fotoSummary).toPromise().then(id_foto =>
+			await self.fotoSrv.ApiV1FotoPost(fotoSummary).toPromise().then(resp =>
 			{
-				fotoSummary.id = id_foto;
+				if (resp.success)
+				{
+					fotoSummary.id = resp.data;
+				}
 			});
 		}
 	}
@@ -183,7 +189,7 @@ export class TaxistasControllerService
 	async removerFoto(fotoSummary: FotoSummary)
 	{
 		const self = this;
-		if (fotoSummary.id)
+		if (fotoSummary.id && fotoSummary.id !== emptyUUID)
 		{
 			await self.fotoSrv.ApiV1FotoByIdGet(fotoSummary.id).toPromise().then(_ =>
 			{
@@ -192,9 +198,10 @@ export class TaxistasControllerService
 		}
 	}
 
-	async criarTaxista(novo_taxista: TaxistaExt)
+	async criarTaxista(novo_taxista: TaxistaExt): Promise<boolean>
 	{
 		const self = this;
+		let result = false;
 
 		try
 		{
@@ -203,15 +210,14 @@ export class TaxistasControllerService
 			const taxistaSummary = this.criarSumario(novo_taxista);
 
 			// cria o registro do taxista
-			await self.taxistasSrv.ApiV1TaxistaPost(taxistaSummary).toPromise().then(async id_taxista =>
+			await self.taxistasSrv.ApiV1TaxistaPost(taxistaSummary).toPromise().then(async resp =>
 			{
-				if (id_taxista)
+				if (resp.success)
 				{
-					novo_taxista.id = id_taxista;
+					novo_taxista.id = resp.data;
 					await self.enviarFoto(novo_taxista.fotoSummary);
-				}
-				else
-				{
+
+					result = true;
 				}
 			})
 			.catch(reason =>
@@ -222,23 +228,30 @@ export class TaxistasControllerService
 		finally
 		{
 			self.busyStackCriar.pop();
-			self.atualizar();
+			return result;
 		}
 	}
 
-	async alterarTaxista(oldTaxista: TaxistaExt, newTaxista: TaxistaExt)
+	async alterarTaxista(oldTaxista: TaxistaExt, newTaxista: TaxistaExt): Promise<boolean>
 	{
 		const self = this;
+
+		let result = false;
 
 		try
 		{
 			self.busyStackAlterar.push();
 
-			await self.taxistasSrv.ApiV1TaxistaPut(newTaxista).toPromise().then(async res_edit_usr =>
+			await self.taxistasSrv.ApiV1TaxistaPut(newTaxista).toPromise().then(async resp =>
 			{
-				if (newTaxista.fotoSummary.nomeArquivo !== oldTaxista.fotoSummary.nomeArquivo)
+				if (resp.success)
 				{
-					await self.enviarFoto(newTaxista.fotoSummary);
+					if (newTaxista.fotoSummary.nomeArquivo !== oldTaxista.fotoSummary.nomeArquivo)
+					{
+						await self.enviarFoto(newTaxista.fotoSummary);
+					}
+
+					result = true;
 				}
 			})
 			.catch(reason =>
@@ -249,13 +262,14 @@ export class TaxistasControllerService
 		finally
 		{
 			self.busyStackAlterar.pop();
-			self.atualizar();
+			return result;
 		}
 	}
 
-	async removerTaxista(taxista: TaxistaExt)
+	async removerTaxista(taxista: TaxistaExt): Promise<boolean>
 	{
 		const self = this;
+		let result = false;
 
 		try
 		{
@@ -263,11 +277,18 @@ export class TaxistasControllerService
 
 			await self.removerFoto(taxista.fotoSummary);
 
-			await self.taxistasSrv.ApiV1TaxistaByIdDelete(taxista.id).toPromise().then(_ => {});
+			await self.taxistasSrv.ApiV1TaxistaByIdDelete(taxista.id).toPromise().then(resp =>
+			{
+				if (resp.success)
+				{
+					result = true;
+				}
+			});
 		}
 		finally
 		{
 			self.busyStackRemover.pop();
+			return result;
 		}
 	}
 }

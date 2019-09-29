@@ -7,7 +7,11 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableUsuarioSummary } from '../models/response-ienumerable-usuario-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { UsuarioSummary } from '../models/usuario-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseUsuarioSummary } from '../models/response-usuario-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,23 +30,12 @@ class UsuarioService extends __BaseService {
   }
 
   /**
-   * @param params The `UsuarioService.ApiV1UsuarioGetParams` containing the following parameters:
-   *
-   * - `search`:
-   *
-   * - `pageSize`:
-   *
-   * - `page`:
-   *
    * @return Success
    */
-  ApiV1UsuarioGetResponse(params: UsuarioService.ApiV1UsuarioGetParams): __Observable<__StrictHttpResponse<Array<UsuarioSummary>>> {
+  ApiV1UsuarioGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableUsuarioSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.search != null) __params = __params.set('search', params.search.toString());
-    if (params.pageSize != null) __params = __params.set('pageSize', params.pageSize.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/api/v1/Usuario`,
@@ -56,24 +49,16 @@ class UsuarioService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<UsuarioSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableUsuarioSummary>;
       })
     );
   }
   /**
-   * @param params The `UsuarioService.ApiV1UsuarioGetParams` containing the following parameters:
-   *
-   * - `search`:
-   *
-   * - `pageSize`:
-   *
-   * - `page`:
-   *
    * @return Success
    */
-  ApiV1UsuarioGet(params: UsuarioService.ApiV1UsuarioGetParams): __Observable<Array<UsuarioSummary>> {
-    return this.ApiV1UsuarioGetResponse(params).pipe(
-      __map(_r => _r.body as Array<UsuarioSummary>)
+  ApiV1UsuarioGet(): __Observable<ResponseIEnumerableUsuarioSummary> {
+    return this.ApiV1UsuarioGetResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableUsuarioSummary)
     );
   }
 
@@ -81,7 +66,7 @@ class UsuarioService extends __BaseService {
    * @param UsuarioSummary Modified Usuario list's properties summary
    * @return Success
    */
-  ApiV1UsuarioPutResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1UsuarioPutResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -93,13 +78,13 @@ class UsuarioService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -107,9 +92,9 @@ class UsuarioService extends __BaseService {
    * @param UsuarioSummary Modified Usuario list's properties summary
    * @return Success
    */
-  ApiV1UsuarioPut(UsuarioSummary?: UsuarioSummary): __Observable<boolean> {
+  ApiV1UsuarioPut(UsuarioSummary?: UsuarioSummary): __Observable<ResponseBoolean> {
     return this.ApiV1UsuarioPutResponse(UsuarioSummary).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
@@ -117,7 +102,7 @@ class UsuarioService extends __BaseService {
    * @param UsuarioSummary Usuario's summary
    * @return Success
    */
-  ApiV1UsuarioPostResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1UsuarioPostResponse(UsuarioSummary?: UsuarioSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -129,13 +114,13 @@ class UsuarioService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
@@ -143,9 +128,9 @@ class UsuarioService extends __BaseService {
    * @param UsuarioSummary Usuario's summary
    * @return Success
    */
-  ApiV1UsuarioPost(UsuarioSummary?: UsuarioSummary): __Observable<string> {
+  ApiV1UsuarioPost(UsuarioSummary?: UsuarioSummary): __Observable<ResponseGuid> {
     return this.ApiV1UsuarioPostResponse(UsuarioSummary).pipe(
-      __map(_r => _r.body as string)
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -153,7 +138,7 @@ class UsuarioService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1UsuarioByIdGetResponse(id: string): __Observable<__StrictHttpResponse<UsuarioSummary>> {
+  ApiV1UsuarioByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseUsuarioSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -171,7 +156,7 @@ class UsuarioService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<UsuarioSummary>;
+        return _r as __StrictHttpResponse<ResponseUsuarioSummary>;
       })
     );
   }
@@ -179,9 +164,9 @@ class UsuarioService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1UsuarioByIdGet(id: string): __Observable<UsuarioSummary> {
+  ApiV1UsuarioByIdGet(id: string): __Observable<ResponseUsuarioSummary> {
     return this.ApiV1UsuarioByIdGetResponse(id).pipe(
-      __map(_r => _r.body as UsuarioSummary)
+      __map(_r => _r.body as ResponseUsuarioSummary)
     );
   }
 
@@ -189,7 +174,7 @@ class UsuarioService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1UsuarioByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1UsuarioByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -201,13 +186,13 @@ class UsuarioService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -215,23 +200,14 @@ class UsuarioService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1UsuarioByIdDelete(id: string): __Observable<boolean> {
+  ApiV1UsuarioByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1UsuarioByIdDeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }
 
 module UsuarioService {
-
-  /**
-   * Parameters for ApiV1UsuarioGet
-   */
-  export interface ApiV1UsuarioGetParams {
-    search?: string;
-    pageSize?: number;
-    page?: number;
-  }
 }
 
 export { UsuarioService }

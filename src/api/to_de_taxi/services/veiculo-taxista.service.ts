@@ -7,7 +7,11 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableVeiculoTaxistaSummary } from '../models/response-ienumerable-veiculo-taxista-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { VeiculoTaxistaSummary } from '../models/veiculo-taxista-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseVeiculoTaxistaSummary } from '../models/response-veiculo-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +32,7 @@ class VeiculoTaxistaService extends __BaseService {
   /**
    * @return Success
    */
-  ApiV1VeiculoTaxistaGetResponse(): __Observable<__StrictHttpResponse<Array<VeiculoTaxistaSummary>>> {
+  ApiV1VeiculoTaxistaGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +49,28 @@ class VeiculoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<VeiculoTaxistaSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  ApiV1VeiculoTaxistaGet(): __Observable<Array<VeiculoTaxistaSummary>> {
+  ApiV1VeiculoTaxistaGet(): __Observable<ResponseIEnumerableVeiculoTaxistaSummary> {
     return this.ApiV1VeiculoTaxistaGetResponse().pipe(
-      __map(_r => _r.body as Array<VeiculoTaxistaSummary>)
+      __map(_r => _r.body as ResponseIEnumerableVeiculoTaxistaSummary)
     );
   }
 
   /**
-   * @param veiculoTaxistaSummary Modified VeiculoTaxista list's properties summary
+   * @param VeiculoTaxistaSummary Modified VeiculoTaxista list's properties summary
    * @return Success
    */
-  ApiV1VeiculoTaxistaPutResponse(veiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1VeiculoTaxistaPutResponse(VeiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = veiculoTaxistaSummary;
+    __body = VeiculoTaxistaSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/VeiculoTaxista`,
@@ -74,34 +78,35 @@ class VeiculoTaxistaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param veiculoTaxistaSummary Modified VeiculoTaxista list's properties summary
+   * @param VeiculoTaxistaSummary Modified VeiculoTaxista list's properties summary
    * @return Success
    */
-  ApiV1VeiculoTaxistaPut(veiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<boolean> {
-    return this.ApiV1VeiculoTaxistaPutResponse(veiculoTaxistaSummary).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1VeiculoTaxistaPut(VeiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1VeiculoTaxistaPutResponse(VeiculoTaxistaSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param veiculoTaxistaSummary VeiculoTaxista's summary
+   * @param VeiculoTaxistaSummary VeiculoTaxista's summary
+   * @return Success
    */
-  ApiV1VeiculoTaxistaPostResponse(veiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1VeiculoTaxistaPostResponse(VeiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = veiculoTaxistaSummary;
+    __body = VeiculoTaxistaSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/VeiculoTaxista`,
@@ -115,16 +120,17 @@ class VeiculoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param veiculoTaxistaSummary VeiculoTaxista's summary
+   * @param VeiculoTaxistaSummary VeiculoTaxista's summary
+   * @return Success
    */
-  ApiV1VeiculoTaxistaPost(veiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<null> {
-    return this.ApiV1VeiculoTaxistaPostResponse(veiculoTaxistaSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1VeiculoTaxistaPost(VeiculoTaxistaSummary?: VeiculoTaxistaSummary): __Observable<ResponseGuid> {
+    return this.ApiV1VeiculoTaxistaPostResponse(VeiculoTaxistaSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +138,7 @@ class VeiculoTaxistaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1VeiculoTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<VeiculoTaxistaSummary>> {
+  ApiV1VeiculoTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseVeiculoTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +156,7 @@ class VeiculoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<VeiculoTaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseVeiculoTaxistaSummary>;
       })
     );
   }
@@ -158,9 +164,9 @@ class VeiculoTaxistaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1VeiculoTaxistaByIdGet(id: string): __Observable<VeiculoTaxistaSummary> {
+  ApiV1VeiculoTaxistaByIdGet(id: string): __Observable<ResponseVeiculoTaxistaSummary> {
     return this.ApiV1VeiculoTaxistaByIdGetResponse(id).pipe(
-      __map(_r => _r.body as VeiculoTaxistaSummary)
+      __map(_r => _r.body as ResponseVeiculoTaxistaSummary)
     );
   }
 
@@ -168,7 +174,7 @@ class VeiculoTaxistaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1VeiculoTaxistaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1VeiculoTaxistaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +186,13 @@ class VeiculoTaxistaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,9 +200,9 @@ class VeiculoTaxistaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1VeiculoTaxistaByIdDelete(id: string): __Observable<boolean> {
+  ApiV1VeiculoTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1VeiculoTaxistaByIdDeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

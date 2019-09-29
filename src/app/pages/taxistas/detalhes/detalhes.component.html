@@ -1,7 +1,7 @@
 <base-card #base_card>
   <div header>Detalhes</div>
   <div class="body container" body>
-    <nb-actions size="medium" fullWidth>
+    <nb-actions size="small" fullWidth>
       <nb-action [disabled]="!podeCriar" icon="plus-outline" (click)="criar()"></nb-action>
       <nb-action [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar()"></nb-action>
       <nb-action [disabled]="!podeConfirmar" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>

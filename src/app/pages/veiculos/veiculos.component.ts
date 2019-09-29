@@ -132,13 +132,12 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 			self.veiculosSrv.marcasVeiculos.next(marcas);
 		});
 
-		await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(veics => {
-			/*const veicsEx: VeiculoSummaryExt[] = [];
-			veics.forEach(veic => {
-				veicsEx.push();
-			});
-			this.source.load(veicsEx);*/
-			this.source.load(veics);
+		await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(resp =>
+		{
+			if (resp)
+			{
+				this.source.load(resp.data);
+			}
 		});
 	}
 
@@ -163,8 +162,12 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 		else
 		{
 			veiculoSummary.novaFotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
-			await self.fotoSrv.ApiV1FotoPost(veiculoSummary.novaFotoSummaryRef).toPromise().then(id_foto => {
-				veiculoSummary.veicRef.idFoto = id_foto;
+			await self.fotoSrv.ApiV1FotoPost(veiculoSummary.novaFotoSummaryRef).toPromise().then(resp =>
+			{
+				if (resp.success)
+				{
+					veiculoSummary.veicRef.idFoto = resp.data;
+				}
 			});
 
 			/*await self.fotoSrv.Upload(veiculoSummary.arquivoFoto).toPromise().then(id_foto => {
@@ -205,10 +208,10 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 		};
 
 
-		await self.veiculoSrv.ApiV1VeiculoPost(sumarioVeic).toPromise().then(async id_veic => {
-			if (id_veic)
+		await self.veiculoSrv.ApiV1VeiculoPost(sumarioVeic).toPromise().then(async resp => {
+			if (resp.success)
 			{
-				novo_veic.id = id_veic;
+				novo_veic.id = resp.data;
 				/*await self.fotoSrv.Post(data).toPromise().then*/
 				event.confirm.resolve(novo_veic);
 			}

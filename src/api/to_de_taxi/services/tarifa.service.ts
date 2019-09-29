@@ -7,7 +7,11 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableTarifaSummary } from '../models/response-ienumerable-tarifa-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { TarifaSummary } from '../models/tarifa-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseTarifaSummary } from '../models/response-tarifa-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +32,7 @@ class TarifaService extends __BaseService {
   /**
    * @return Success
    */
-  ApiV1TarifaGetResponse(): __Observable<__StrictHttpResponse<Array<TarifaSummary>>> {
+  ApiV1TarifaGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableTarifaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +49,28 @@ class TarifaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<TarifaSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableTarifaSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  ApiV1TarifaGet(): __Observable<Array<TarifaSummary>> {
+  ApiV1TarifaGet(): __Observable<ResponseIEnumerableTarifaSummary> {
     return this.ApiV1TarifaGetResponse().pipe(
-      __map(_r => _r.body as Array<TarifaSummary>)
+      __map(_r => _r.body as ResponseIEnumerableTarifaSummary)
     );
   }
 
   /**
-   * @param tarifaSummary Modified Tarifa list's properties summary
+   * @param TarifaSummary Modified Tarifa list's properties summary
    * @return Success
    */
-  ApiV1TarifaPutResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1TarifaPutResponse(TarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = tarifaSummary;
+    __body = TarifaSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/Tarifa`,
@@ -74,35 +78,35 @@ class TarifaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param tarifaSummary Modified Tarifa list's properties summary
+   * @param TarifaSummary Modified Tarifa list's properties summary
    * @return Success
    */
-  ApiV1TarifaPut(tarifaSummary?: TarifaSummary): __Observable<string> {
-    return this.ApiV1TarifaPutResponse(tarifaSummary).pipe(
-      __map(_r => _r.body as string)
+  ApiV1TarifaPut(TarifaSummary?: TarifaSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1TarifaPutResponse(TarifaSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param tarifaSummary Tarifa's summary
+   * @param TarifaSummary Tarifa's summary
    * @return Success
    */
-  ApiV1TarifaPostResponse(tarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<string>> {
+  ApiV1TarifaPostResponse(TarifaSummary?: TarifaSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = tarifaSummary;
+    __body = TarifaSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/Tarifa`,
@@ -110,23 +114,23 @@ class TarifaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param tarifaSummary Tarifa's summary
+   * @param TarifaSummary Tarifa's summary
    * @return Success
    */
-  ApiV1TarifaPost(tarifaSummary?: TarifaSummary): __Observable<string> {
-    return this.ApiV1TarifaPostResponse(tarifaSummary).pipe(
-      __map(_r => _r.body as string)
+  ApiV1TarifaPost(TarifaSummary?: TarifaSummary): __Observable<ResponseGuid> {
+    return this.ApiV1TarifaPostResponse(TarifaSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -134,7 +138,7 @@ class TarifaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1TarifaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<TarifaSummary>> {
+  ApiV1TarifaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseTarifaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -152,7 +156,7 @@ class TarifaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<TarifaSummary>;
+        return _r as __StrictHttpResponse<ResponseTarifaSummary>;
       })
     );
   }
@@ -160,9 +164,9 @@ class TarifaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  ApiV1TarifaByIdGet(id: string): __Observable<TarifaSummary> {
+  ApiV1TarifaByIdGet(id: string): __Observable<ResponseTarifaSummary> {
     return this.ApiV1TarifaByIdGetResponse(id).pipe(
-      __map(_r => _r.body as TarifaSummary)
+      __map(_r => _r.body as ResponseTarifaSummary)
     );
   }
 
@@ -170,7 +174,7 @@ class TarifaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1TarifaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1TarifaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -182,13 +186,13 @@ class TarifaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -196,9 +200,9 @@ class TarifaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1TarifaByIdDelete(id: string): __Observable<boolean> {
+  ApiV1TarifaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1TarifaByIdDeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

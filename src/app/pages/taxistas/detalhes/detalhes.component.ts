@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { TaxistasControllerService, TaxistaExt } from '../taxistas-controller.service';
-import { NbDialogService } from '@nebular/theme';
+import { NbDialogService, NbToastrService, NbPosition, NbGlobalPhysicalPosition } from '@nebular/theme';
 import { Subscription, Subject, EMPTY } from 'rxjs';
 import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, Form } from '@angular/forms';
 import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
@@ -109,7 +109,8 @@ export class DetalhesComponent implements OnInit, AfterViewInit, OnDestroy {
 		private taxistasCtrl: TaxistasControllerService,
 		private dialogSrv: NbDialogService,
 		private fotoSrv: FotoService,
-		private enderecoSrv: EnderecoService)
+		private enderecoSrv: EnderecoService,
+		private toastSrv: NbToastrService)
 	{
 	}
 
@@ -160,22 +161,25 @@ export class DetalhesComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		self.taxistaSelSub = self.taxistasCtrl.taxistaSelecionado.subscribe(async tax_sel =>
 		{
-			let descartar = false;
-			if (self.alterado)
+			/*if (self.alterado)
 			{
-				self.dialogSrv.open(ConfirmDialogComponent)
-					.onClose.subscribe(result =>
+				let descartar = false;
+
+				await self.dialogSrv.open(ConfirmDialogComponent)
+					.onClose.toPromise().then(result =>
 					{
 						descartar = result;
 					});
-			}
 
-			if (descartar)
-			{
-				self.taxista = tax_sel;
-				self.formInformacoesPessoais.reset();
-				this.visualizar();
-			}
+				if (!descartar)
+				{
+					return;
+				}
+			}*/
+
+			self.taxista = tax_sel;
+			self.limparCampos();
+			this.visualizar();
 		});
 	}
 
@@ -256,13 +260,16 @@ export class DetalhesComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (self.taxista.idFoto && !self.taxista.fotoSummary.dados)
 		{
 			// obtém foto do servidor
-			await self.fotoSrv.ApiV1FotoByIdGet(self.taxista.idFoto).toPromise().then(foto_summary =>
+			await self.fotoSrv.ApiV1FotoByIdGet(self.taxista.idFoto).toPromise().then(resp =>
 			{
-				self.taxista.fotoSummary.id = foto_summary.id;
-				self.taxista.fotoSummary.nome = foto_summary.nome;
-				self.taxista.fotoSummary.nomeArquivo = foto_summary.nomeArquivo;
-				self.taxista.fotoSummary.dados = foto_summary.dados;
-				self.imgSrc = atob(self.taxista.fotoSummary.dados);
+				if (resp.success)
+				{
+					self.taxista.fotoSummary.id = resp.data.id;
+					self.taxista.fotoSummary.nome = resp.data.nome;
+					self.taxista.fotoSummary.nomeArquivo = resp.data.nomeArquivo;
+					self.taxista.fotoSummary.dados = resp.data.dados;
+					self.imgSrc = atob(self.taxista.fotoSummary.dados);
+				}
 			});
 		}
 }
@@ -286,7 +293,7 @@ export class DetalhesComponent implements OnInit, AfterViewInit, OnDestroy {
 		self.modo = Modo.mdCriacao;
 	}
 
-	public confirmarEdicao()
+	public async confirmarEdicao()
 	{
 		const self = this;
 		if (!self.podeConfirmar) return; // sanity check
@@ -309,18 +316,42 @@ export class DetalhesComponent implements OnInit, AfterViewInit, OnDestroy {
 		novoTaxista.usuario.senha = self.senha.value;
 		novoTaxista.usuario.confirmarSenha = self.conferirSenha.value;
 
+		let sucesso = false;
 		switch (self.modo)
 		{
 			case Modo.mdCriacao:
-				self.taxistasCtrl.criarTaxista(novoTaxista);
+				sucesso = await self.taxistasCtrl.criarTaxista(novoTaxista);
+				if (sucesso)
+				{
+					self.toastSrv.success("Taxista criado com sucesso!", "Taxistas", {
+						destroyByClick: true,
+						duration: 0,
+						position: NbGlobalPhysicalPosition.TOP_RIGHT
+					});
+
+					self.limparCampos();
+				}
 				break;
-			case Modo.mdCriacao:
-				self.taxistasCtrl.alterarTaxista(self.taxista, novoTaxista);
+			case Modo.mdEdicao:
+				sucesso = await self.taxistasCtrl.alterarTaxista(self.taxista, novoTaxista);
+				if (sucesso)
+				{
+					self.toastSrv.success("Taxista alterado com sucesso!", "Taxistas", {
+						destroyByClick: true,
+						duration: 0,
+						position: NbGlobalPhysicalPosition.TOP_RIGHT
+					});
+				}
 				break;
 			default:
 				break;
 		}
-		self.visualizar();
+
+		if (sucesso)
+		{
+			self.taxistasCtrl.atualizar();
+		}
+		//self.visualizar();
 	}
 
 	public cancelarEdicao()
@@ -328,8 +359,15 @@ export class DetalhesComponent implements OnInit, AfterViewInit, OnDestroy {
 		const self = this;
 		if (!self.podeCancelar) return; // sanity check
 
-		self.formInformacoesPessoais.reset();
 		self.visualizar();
+	}
+
+	private limparCampos()
+	{
+		const self = this;
+		self.formInformacoesPessoais.reset();
+		self.formEndereco.reset();
+		self.formCredenciais.reset();
 	}
 
 	processFile(imageInput: any)

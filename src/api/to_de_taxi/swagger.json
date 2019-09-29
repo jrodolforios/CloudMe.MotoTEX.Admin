@@ -23,10 +23,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/CorridaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[CorridaSummary]]"
             }
           },
           "401": {
@@ -76,7 +73,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -106,7 +103,11 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
             "name": "corridaSummary",
@@ -120,7 +121,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -164,7 +168,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/CorridaSummary"
+              "$ref": "#/definitions/Response[CorridaSummary]"
             }
           },
           "401": {
@@ -208,7 +212,233 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Endereco": {
+      "get": {
+        "tags": [
+          "Endereco"
+        ],
+        "summary": "Gets all Enderecos.",
+        "operationId": "ApiV1EnderecoGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[EnderecoSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Endereco"
+        ],
+        "summary": "Modifies an existing Endereco.",
+        "operationId": "ApiV1EnderecoPut",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "EnderecoSummary",
+            "in": "body",
+            "description": "Modified Endereco list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/EnderecoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Endereco"
+        ],
+        "summary": "Creates a new Endereco.",
+        "operationId": "ApiV1EnderecoPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "EnderecoSummary",
+            "in": "body",
+            "description": "Endereco's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/EnderecoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Endereco/{id}": {
+      "get": {
+        "tags": [
+          "Endereco"
+        ],
+        "summary": "Gets a Endereco.\r\n<param name=\"id\">Endereco's ID</param>",
+        "operationId": "ApiV1EnderecoByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[EnderecoSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Endereco"
+        ],
+        "summary": "Removes an existing Endereco.",
+        "operationId": "ApiV1EnderecoByIdDelete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -232,7 +462,7 @@
         "tags": [
           "FaixaDesconto"
         ],
-        "summary": "Gets all faixaDescontos.",
+        "summary": "Gets all FaixaDescontos.",
         "operationId": "ApiV1FaixaDescontoGet",
         "consumes": [],
         "produces": [
@@ -245,10 +475,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FaixaDescontoSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[FaixaDescontoSummary]]"
             }
           },
           "401": {
@@ -285,7 +512,7 @@
         ],
         "parameters": [
           {
-            "name": "faixaDescontoSummary",
+            "name": "FaixaDescontoSummary",
             "in": "body",
             "description": "Modified FaixaDesconto list's properties summary",
             "required": false,
@@ -298,7 +525,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -335,7 +562,7 @@
         ],
         "parameters": [
           {
-            "name": "faixaDescontoSummary",
+            "name": "FaixaDescontoSummary",
             "in": "body",
             "description": "FaixaDesconto's summary",
             "required": false,
@@ -348,8 +575,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "format": "uuid",
-              "type": "string"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -394,7 +620,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/FaixaDescontoSummary"
+              "$ref": "#/definitions/Response[FaixaDescontoSummary]"
             }
           },
           "401": {
@@ -438,7 +664,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -462,7 +688,7 @@
         "tags": [
           "FaixaDescontoTaxista"
         ],
-        "summary": "Gets all faixaDescontoTaxistas.",
+        "summary": "Gets all FaixaDescontoTaxistas.",
         "operationId": "ApiV1FaixaDescontoTaxistaGet",
         "consumes": [],
         "produces": [
@@ -475,10 +701,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[FaixaDescontoTaxistaSummary]]"
             }
           },
           "401": {
@@ -515,7 +738,7 @@
         ],
         "parameters": [
           {
-            "name": "faixaDescontoTaxistaSummary",
+            "name": "FaixaDescontoTaxistaSummary",
             "in": "body",
             "description": "Modified FaixaDescontoTaxista list's properties summary",
             "required": false,
@@ -528,7 +751,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -558,10 +781,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "faixaDescontoTaxistaSummary",
+            "name": "FaixaDescontoTaxistaSummary",
             "in": "body",
             "description": "FaixaDescontoTaxista's summary",
             "required": false,
@@ -572,7 +799,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -616,7 +846,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
+              "$ref": "#/definitions/Response[FaixaDescontoTaxistaSummary]"
             }
           },
           "401": {
@@ -660,7 +890,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -684,7 +914,7 @@
         "tags": [
           "Favorito"
         ],
-        "summary": "Gets all favoritos.",
+        "summary": "Gets all Favoritos.",
         "operationId": "ApiV1FavoritoGet",
         "consumes": [],
         "produces": [
@@ -697,10 +927,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FavoritoSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[FavoritoSummary]]"
             }
           },
           "401": {
@@ -737,7 +964,7 @@
         ],
         "parameters": [
           {
-            "name": "favoritoSummary",
+            "name": "FavoritoSummary",
             "in": "body",
             "description": "Modified Favorito list's properties summary",
             "required": false,
@@ -750,7 +977,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -780,10 +1007,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "favoritoSummary",
+            "name": "FavoritoSummary",
             "in": "body",
             "description": "Favorito's summary",
             "required": false,
@@ -794,7 +1025,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -838,7 +1072,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/FavoritoSummary"
+              "$ref": "#/definitions/Response[FavoritoSummary]"
             }
           },
           "401": {
@@ -882,7 +1116,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -906,7 +1140,7 @@
         "tags": [
           "FormaPagamento"
         ],
-        "summary": "Gets all formaPagamentos.",
+        "summary": "Gets all FormaPagamentos.",
         "operationId": "ApiV1FormaPagamentoGet",
         "consumes": [],
         "produces": [
@@ -919,10 +1153,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FormaPagamentoSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[FormaPagamentoSummary]]"
             }
           },
           "401": {
@@ -959,7 +1190,7 @@
         ],
         "parameters": [
           {
-            "name": "formaPagamentoSummary",
+            "name": "FormaPagamentoSummary",
             "in": "body",
             "description": "Modified FormaPagamento list's properties summary",
             "required": false,
@@ -972,7 +1203,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1002,10 +1233,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "formaPagamentoSummary",
+            "name": "FormaPagamentoSummary",
             "in": "body",
             "description": "FormaPagamento's summary",
             "required": false,
@@ -1016,7 +1251,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -1060,7 +1298,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/FormaPagamentoSummary"
+              "$ref": "#/definitions/Response[FormaPagamentoSummary]"
             }
           },
           "401": {
@@ -1104,7 +1342,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1128,7 +1366,7 @@
         "tags": [
           "FormaPagamentoTaxista"
         ],
-        "summary": "Gets all formaPagamentoTaxistas.",
+        "summary": "Gets all FormaPagamentoTaxistas.",
         "operationId": "ApiV1FormaPagamentoTaxistaGet",
         "consumes": [],
         "produces": [
@@ -1141,10 +1379,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[FormaPagamentoTaxistaSummary]]"
             }
           },
           "401": {
@@ -1181,7 +1416,7 @@
         ],
         "parameters": [
           {
-            "name": "formaPagamentoTaxistaSummary",
+            "name": "FormaPagamentoTaxistaSummary",
             "in": "body",
             "description": "Modified FormaPagamentoTaxista list's properties summary",
             "required": false,
@@ -1194,7 +1429,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1224,10 +1459,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "formaPagamentoTaxistaSummary",
+            "name": "FormaPagamentoTaxistaSummary",
             "in": "body",
             "description": "FormaPagamentoTaxista's summary",
             "required": false,
@@ -1238,7 +1477,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -1282,7 +1524,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
+              "$ref": "#/definitions/Response[FormaPagamentoTaxistaSummary]"
             }
           },
           "401": {
@@ -1326,7 +1568,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1363,10 +1605,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/FotoSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[FotoSummary]]"
             }
           },
           "401": {
@@ -1416,7 +1655,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1438,7 +1677,7 @@
         "tags": [
           "Foto"
         ],
-        "summary": "Creates a new Corrida.",
+        "summary": "Creates a new Foto.",
         "operationId": "ApiV1FotoPost",
         "consumes": [
           "application/json-patch+json",
@@ -1453,9 +1692,9 @@
         ],
         "parameters": [
           {
-            "name": "fotoSummary",
+            "name": "FotoSummary",
             "in": "body",
-            "description": "Corrida's summary",
+            "description": "Foto's summary",
             "required": false,
             "schema": {
               "$ref": "#/definitions/FotoSummary"
@@ -1466,7 +1705,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -1511,7 +1750,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/FotoSummary"
+              "$ref": "#/definitions/Response[FotoSummary]"
             }
           },
           "401": {
@@ -1555,7 +1794,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1600,6 +1839,7 @@
           "200": {
             "description": "Success",
             "schema": {
+              "format": "uuid",
               "type": "string"
             }
           },
@@ -1624,7 +1864,7 @@
         "tags": [
           "GrupoUsuario"
         ],
-        "summary": "Gets all grupoUsuarios.",
+        "summary": "Gets all GrupoUsuarios.",
         "operationId": "ApiV1GrupoUsuarioGet",
         "consumes": [],
         "produces": [
@@ -1637,10 +1877,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/GrupoUsuarioSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[GrupoUsuarioSummary]]"
             }
           },
           "401": {
@@ -1677,7 +1914,7 @@
         ],
         "parameters": [
           {
-            "name": "grupoUsuarioSummary",
+            "name": "GrupoUsuarioSummary",
             "in": "body",
             "description": "Modified GrupoUsuario list's properties summary",
             "required": false,
@@ -1690,7 +1927,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1720,10 +1957,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "grupoUsuarioSummary",
+            "name": "GrupoUsuarioSummary",
             "in": "body",
             "description": "GrupoUsuario's summary",
             "required": false,
@@ -1734,7 +1975,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -1778,7 +2022,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/GrupoUsuarioSummary"
+              "$ref": "#/definitions/Response[GrupoUsuarioSummary]"
             }
           },
           "401": {
@@ -1822,7 +2066,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1882,7 +2126,7 @@
         "tags": [
           "Localizacao"
         ],
-        "summary": "Gets all localizacaos.",
+        "summary": "Gets all Localizacaos.",
         "operationId": "ApiV1LocalizacaoGet",
         "consumes": [],
         "produces": [
@@ -1895,10 +2139,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/LocalizacaoSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[LocalizacaoSummary]]"
             }
           },
           "401": {
@@ -1935,7 +2176,7 @@
         ],
         "parameters": [
           {
-            "name": "localizacaoSummary",
+            "name": "LocalizacaoSummary",
             "in": "body",
             "description": "Modified Localizacao list's properties summary",
             "required": false,
@@ -1948,7 +2189,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -1978,10 +2219,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "localizacaoSummary",
+            "name": "LocalizacaoSummary",
             "in": "body",
             "description": "Localizacao's summary",
             "required": false,
@@ -1992,7 +2237,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -2036,7 +2284,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/LocalizacaoSummary"
+              "$ref": "#/definitions/Response[LocalizacaoSummary]"
             }
           },
           "401": {
@@ -2080,7 +2328,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2104,7 +2352,7 @@
         "tags": [
           "Passageiro"
         ],
-        "summary": "Gets all passageiros.",
+        "summary": "Gets all Passageiros.",
         "operationId": "ApiV1PassageiroGet",
         "consumes": [],
         "produces": [
@@ -2117,10 +2365,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/PassageiroSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[PassageiroSummary]]"
             }
           },
           "401": {
@@ -2157,7 +2402,7 @@
         ],
         "parameters": [
           {
-            "name": "passageiroSummary",
+            "name": "PassageiroSummary",
             "in": "body",
             "description": "Modified Passageiro list's properties summary",
             "required": false,
@@ -2170,7 +2415,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2200,10 +2445,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "passageiroSummary",
+            "name": "PassageiroSummary",
             "in": "body",
             "description": "Passageiro's summary",
             "required": false,
@@ -2214,7 +2463,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -2258,7 +2510,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/PassageiroSummary"
+              "$ref": "#/definitions/Response[PassageiroSummary]"
             }
           },
           "401": {
@@ -2302,7 +2554,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2326,7 +2578,7 @@
         "tags": [
           "Rota"
         ],
-        "summary": "Gets all rotas.",
+        "summary": "Gets all Rotas.",
         "operationId": "ApiV1RotaGet",
         "consumes": [],
         "produces": [
@@ -2339,10 +2591,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/RotaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[RotaSummary]]"
             }
           },
           "401": {
@@ -2379,7 +2628,7 @@
         ],
         "parameters": [
           {
-            "name": "rotaSummary",
+            "name": "RotaSummary",
             "in": "body",
             "description": "Modified Rota list's properties summary",
             "required": false,
@@ -2392,7 +2641,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2422,10 +2671,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "rotaSummary",
+            "name": "RotaSummary",
             "in": "body",
             "description": "Rota's summary",
             "required": false,
@@ -2436,7 +2689,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -2480,7 +2736,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/RotaSummary"
+              "$ref": "#/definitions/Response[RotaSummary]"
             }
           },
           "401": {
@@ -2524,7 +2780,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2548,7 +2804,7 @@
         "tags": [
           "SolicitacaoCorrida"
         ],
-        "summary": "Gets all solicitacaoCorridas.",
+        "summary": "Gets all SolicitacaoCorridas.",
         "operationId": "ApiV1SolicitacaoCorridaGet",
         "consumes": [],
         "produces": [
@@ -2561,10 +2817,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SolicitacaoCorridaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[SolicitacaoCorridaSummary]]"
             }
           },
           "401": {
@@ -2601,7 +2854,7 @@
         ],
         "parameters": [
           {
-            "name": "solicitacaoCorridaSummary",
+            "name": "SolicitacaoCorridaSummary",
             "in": "body",
             "description": "Modified SolicitacaoCorrida list's properties summary",
             "required": false,
@@ -2614,7 +2867,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2644,10 +2897,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "solicitacaoCorridaSummary",
+            "name": "SolicitacaoCorridaSummary",
             "in": "body",
             "description": "SolicitacaoCorrida's summary",
             "required": false,
@@ -2658,7 +2915,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -2702,7 +2962,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/SolicitacaoCorridaSummary"
+              "$ref": "#/definitions/Response[SolicitacaoCorridaSummary]"
             }
           },
           "401": {
@@ -2746,7 +3006,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2770,7 +3030,7 @@
         "tags": [
           "Tarifa"
         ],
-        "summary": "Gets all tarifas.",
+        "summary": "Gets all Tarifas.",
         "operationId": "ApiV1TarifaGet",
         "consumes": [],
         "produces": [
@@ -2783,10 +3043,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/TarifaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[TarifaSummary]]"
             }
           },
           "401": {
@@ -2823,7 +3080,7 @@
         ],
         "parameters": [
           {
-            "name": "tarifaSummary",
+            "name": "TarifaSummary",
             "in": "body",
             "description": "Modified Tarifa list's properties summary",
             "required": false,
@@ -2836,8 +3093,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "format": "uuid",
-              "type": "string"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2874,7 +3130,7 @@
         ],
         "parameters": [
           {
-            "name": "tarifaSummary",
+            "name": "TarifaSummary",
             "in": "body",
             "description": "Tarifa's summary",
             "required": false,
@@ -2887,8 +3143,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "format": "uuid",
-              "type": "string"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -2933,7 +3188,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/TarifaSummary"
+              "$ref": "#/definitions/Response[TarifaSummary]"
             }
           },
           "401": {
@@ -2977,7 +3232,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3001,7 +3256,7 @@
         "tags": [
           "Taxista"
         ],
-        "summary": "Gets all taxistas.",
+        "summary": "Gets all Taxistas.",
         "operationId": "ApiV1TaxistaGet",
         "consumes": [],
         "produces": [
@@ -3014,10 +3269,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/TaxistaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[TaxistaSummary]]"
             }
           },
           "401": {
@@ -3067,7 +3319,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3117,8 +3369,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "format": "uuid",
-              "type": "string"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -3163,7 +3414,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/TaxistaSummary"
+              "$ref": "#/definitions/Response[TaxistaSummary]"
             }
           },
           "401": {
@@ -3207,7 +3458,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3239,36 +3490,12 @@
           "application/json",
           "text/json"
         ],
-        "parameters": [
-          {
-            "name": "search",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UsuarioSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[UsuarioSummary]]"
             }
           },
           "401": {
@@ -3318,7 +3545,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3368,8 +3595,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "format": "uuid",
-              "type": "string"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -3414,7 +3640,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/UsuarioSummary"
+              "$ref": "#/definitions/Response[UsuarioSummary]"
             }
           },
           "401": {
@@ -3458,7 +3684,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3482,7 +3708,7 @@
         "tags": [
           "UsuarioGrupoUsuario"
         ],
-        "summary": "Gets all usuarioGrupoUsuarios.",
+        "summary": "Gets all UsuarioGrupoUsuarios.",
         "operationId": "ApiV1UsuarioGrupoUsuarioGet",
         "consumes": [],
         "produces": [
@@ -3495,10 +3721,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[UsuarioGrupoUsuarioSummary]]"
             }
           },
           "401": {
@@ -3535,7 +3758,7 @@
         ],
         "parameters": [
           {
-            "name": "usuarioGrupoUsuarioSummary",
+            "name": "UsuarioGrupoUsuarioSummary",
             "in": "body",
             "description": "Modified UsuarioGrupoUsuario list's properties summary",
             "required": false,
@@ -3548,7 +3771,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3578,10 +3801,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "usuarioGrupoUsuarioSummary",
+            "name": "UsuarioGrupoUsuarioSummary",
             "in": "body",
             "description": "UsuarioGrupoUsuario's summary",
             "required": false,
@@ -3592,7 +3819,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -3636,7 +3866,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
+              "$ref": "#/definitions/Response[UsuarioGrupoUsuarioSummary]"
             }
           },
           "401": {
@@ -3680,7 +3910,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3704,7 +3934,7 @@
         "tags": [
           "Veiculo"
         ],
-        "summary": "Gets all veiculos.",
+        "summary": "Gets all Veiculos.",
         "operationId": "ApiV1VeiculoGet",
         "consumes": [],
         "produces": [
@@ -3717,10 +3947,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/VeiculoSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[VeiculoSummary]]"
             }
           },
           "401": {
@@ -3757,7 +3984,7 @@
         ],
         "parameters": [
           {
-            "name": "veiculoSummary",
+            "name": "VeiculoSummary",
             "in": "body",
             "description": "Modified Veiculo list's properties summary",
             "required": false,
@@ -3770,8 +3997,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "format": "uuid",
-              "type": "string"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3808,7 +4034,7 @@
         ],
         "parameters": [
           {
-            "name": "veiculoSummary",
+            "name": "VeiculoSummary",
             "in": "body",
             "description": "Veiculo's summary",
             "required": false,
@@ -3821,8 +4047,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "format": "uuid",
-              "type": "string"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -3867,7 +4092,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/VeiculoSummary"
+              "$ref": "#/definitions/Response[VeiculoSummary]"
             }
           },
           "401": {
@@ -3911,7 +4136,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3935,7 +4160,7 @@
         "tags": [
           "VeiculoTaxista"
         ],
-        "summary": "Gets all veiculoTaxistas.",
+        "summary": "Gets all VeiculoTaxistas.",
         "operationId": "ApiV1VeiculoTaxistaGet",
         "consumes": [],
         "produces": [
@@ -3948,10 +4173,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/VeiculoTaxistaSummary"
-              }
+              "$ref": "#/definitions/Response[IEnumerable[VeiculoTaxistaSummary]]"
             }
           },
           "401": {
@@ -3988,7 +4210,7 @@
         ],
         "parameters": [
           {
-            "name": "veiculoTaxistaSummary",
+            "name": "VeiculoTaxistaSummary",
             "in": "body",
             "description": "Modified VeiculoTaxista list's properties summary",
             "required": false,
@@ -4001,7 +4223,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -4031,10 +4253,14 @@
           "text/json",
           "application/*+json"
         ],
-        "produces": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "parameters": [
           {
-            "name": "veiculoTaxistaSummary",
+            "name": "VeiculoTaxistaSummary",
             "in": "body",
             "description": "VeiculoTaxista's summary",
             "required": false,
@@ -4045,7 +4271,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -4089,7 +4318,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/VeiculoTaxistaSummary"
+              "$ref": "#/definitions/Response[VeiculoTaxistaSummary]"
             }
           },
           "401": {
@@ -4133,7 +4362,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -4154,6 +4383,29 @@
     }
   },
   "definitions": {
+    "Response[IEnumerable[CorridaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CorridaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "CorridaSummary": {
       "type": "object",
       "properties": {
@@ -4232,6 +4484,180 @@
         }
       }
     },
+    "Notification": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "type": "string",
+          "readOnly": true
+        },
+        "message": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "Response[Guid]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "format": "uuid",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "string"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[Boolean]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "boolean"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[CorridaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/CorridaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[EnderecoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EnderecoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "EnderecoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "cep": {
+          "type": "string"
+        },
+        "logradouro": {
+          "type": "string"
+        },
+        "numero": {
+          "type": "string"
+        },
+        "complemento": {
+          "type": "string"
+        },
+        "bairro": {
+          "type": "string"
+        },
+        "localidade": {
+          "type": "string"
+        },
+        "uf": {
+          "type": "string"
+        },
+        "idLocalizacao": {
+          "format": "uuid",
+          "type": "string"
+        }
+      }
+    },
+    "Response[EnderecoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/EnderecoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[FaixaDescontoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FaixaDescontoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "FaixaDescontoSummary": {
       "type": "object",
       "properties": {
@@ -4245,6 +4671,49 @@
         },
         "descricao": {
           "type": "string"
+        }
+      }
+    },
+    "Response[FaixaDescontoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/FaixaDescontoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[FaixaDescontoTaxistaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4262,6 +4731,49 @@
         "idTaxista": {
           "format": "uuid",
           "type": "string"
+        }
+      }
+    },
+    "Response[FaixaDescontoTaxistaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/FaixaDescontoTaxistaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[FavoritoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FavoritoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4286,6 +4798,49 @@
         }
       }
     },
+    "Response[FavoritoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/FavoritoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[FormaPagamentoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FormaPagamentoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "FormaPagamentoSummary": {
       "type": "object",
       "properties": {
@@ -4295,6 +4850,49 @@
         },
         "descricao": {
           "type": "string"
+        }
+      }
+    },
+    "Response[FormaPagamentoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/FormaPagamentoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[FormaPagamentoTaxistaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4315,6 +4913,49 @@
         }
       }
     },
+    "Response[FormaPagamentoTaxistaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/FormaPagamentoTaxistaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[FotoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FotoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "FotoSummary": {
       "type": "object",
       "properties": {
@@ -4331,6 +4972,26 @@
         "dados": {
           "format": "byte",
           "type": "string"
+        }
+      }
+    },
+    "Response[FotoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/FotoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4370,6 +5031,29 @@
         }
       }
     },
+    "Response[IEnumerable[GrupoUsuarioSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GrupoUsuarioSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "GrupoUsuarioSummary": {
       "type": "object",
       "properties": {
@@ -4382,6 +5066,49 @@
         },
         "descricao": {
           "type": "string"
+        }
+      }
+    },
+    "Response[GrupoUsuarioSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/GrupoUsuarioSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[LocalizacaoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LocalizacaoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4403,6 +5130,49 @@
         },
         "nomePublico": {
           "type": "string"
+        }
+      }
+    },
+    "Response[LocalizacaoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/LocalizacaoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[PassageiroSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PassageiroSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4433,12 +5203,98 @@
         }
       }
     },
+    "Response[PassageiroSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/PassageiroSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[RotaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RotaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "RotaSummary": {
       "type": "object",
       "properties": {
         "id": {
           "format": "uuid",
           "type": "string"
+        }
+      }
+    },
+    "Response[RotaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/RotaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[SolicitacaoCorridaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SolicitacaoCorridaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4514,6 +5370,49 @@
         }
       }
     },
+    "Response[SolicitacaoCorridaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/SolicitacaoCorridaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[TarifaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TarifaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "TarifaSummary": {
       "type": "object",
       "properties": {
@@ -4536,6 +5435,49 @@
         "horaParada": {
           "format": "float",
           "type": "number"
+        }
+      }
+    },
+    "Response[TarifaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/TarifaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[TaxistaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaxistaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4599,37 +5541,89 @@
         }
       }
     },
-    "EnderecoSummary": {
+    "Response[TaxistaSummary]": {
       "type": "object",
       "properties": {
-        "id": {
-          "format": "uuid",
-          "type": "string"
+        "data": {
+          "$ref": "#/definitions/TaxistaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
-        "cep": {
-          "type": "string"
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
         },
-        "logradouro": {
-          "type": "string"
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[UsuarioSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UsuarioSummary"
+          }
         },
-        "numero": {
-          "type": "string"
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
         },
-        "complemento": {
-          "type": "string"
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[UsuarioSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/UsuarioSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
-        "bairro": {
-          "type": "string"
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
         },
-        "localidade": {
-          "type": "string"
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[UsuarioGrupoUsuarioSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
+          }
         },
-        "uf": {
-          "type": "string"
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
         },
-        "idLocalizacao": {
-          "format": "uuid",
-          "type": "string"
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4647,6 +5641,49 @@
         "idGrupoUsuario": {
           "format": "uuid",
           "type": "string"
+        }
+      }
+    },
+    "Response[UsuarioGrupoUsuarioSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/UsuarioGrupoUsuarioSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[VeiculoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VeiculoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -4680,6 +5717,49 @@
         }
       }
     },
+    "Response[VeiculoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/VeiculoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[VeiculoTaxistaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VeiculoTaxistaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "VeiculoTaxistaSummary": {
       "type": "object",
       "properties": {
@@ -4697,6 +5777,26 @@
         },
         "ativo": {
           "type": "boolean"
+        }
+      }
+    },
+    "Response[VeiculoTaxistaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/VeiculoTaxistaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     }
