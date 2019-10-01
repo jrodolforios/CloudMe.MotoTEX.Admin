@@ -13,7 +13,27 @@
 			nbInfiniteList
 			[threshold]="500">
 			<nb-list-item *ngFor="let taxista of taxistas">
-				<ngx-item-listagem-taxista [taxista]="taxista"></ngx-item-listagem-taxista>
+        <div class="container">
+          <div class="row h4 nome" (click)="visualizar(taxista)">{{taxista && taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}</div>
+          <div class="row sumario">
+            <div class="propriedade">
+              <div class="nome_propriedade">RG</div>
+              <div class="valor_propriedade">{{ taxista ? taxista.usuario.rg : "N/I" }}</div>
+            </div>
+            <div class="propriedade">
+              <div class="nome_propriedade">CPF</div>
+              <div class="valor_propriedade">{{ taxista ? taxista.usuario.cpf : "N/I" }}</div>
+            </div>
+            <div class="propriedade">
+              <div class="nome_propriedade">TELEFONE</div>
+              <div class="valor_propriedade">{{ taxista ? taxista.usuario.telefone : "N/I" }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <nb-icon icon="trash-2-outline" [options]="{ animation: { type: 'zoom' } }" (click)="deletar(taxista)"></nb-icon>
+            <nb-icon icon="edit-outline" [options]="{ animation: { type: 'zoom' } }" (click)="editar(taxista)"></nb-icon>
+          </div>
+        </div>
 			</nb-list-item>		
 		</nb-list>
 	</div>
@@ -33,163 +53,45 @@
     <nb-card>
       <nb-card-header>Informações pessoais</nb-card-header>
       <nb-card-body>
-        <form [formGroup]="formInformacoesPessoais" class="container">
-          <fieldset [disabled]="desabilitarControles">
-            <div class="row">
-              <div class="col">
-                <label>Nome*</label>
-                <input type="text" nbInput fullWidth placeholder="Nome" class="form-control" formControlName="nome">
-                <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
-                  <div *ngIf="nome.errors.required">Nome é obrigatório.</div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <label>RG*</label>
-                <input type="text" nbInput fullWidth placeholder="RG" class="form-control" formControlName="rg">
-                <div *ngIf="rg.invalid && (rg.dirty || rg.touched)" class="alert alert-danger">
-                  <div *ngIf="rg.errors.required">RG é obrigatório.</div>
-                </div>
-              </div>
-              <div class="col">
-                <label>CPF*</label>
-                <input type="text" nbInput mask='000.000.000-00' fullWidth placeholder="CPF" class="form-control" formControlName="cpf">
-                <div *ngIf="cpf.invalid && (cpf.dirty || cpf.touched)" class="alert alert-danger">
-                  <div *ngIf="cpf.errors.required">CPF é obrigatório.</div>
-                </div>
-              </div>
-            </div>  
-            <div class="row">
-              <div class="col">
-                <label>Email</label>
-                <input type="text" nbInput fullWidth placeholder="Email" class="form-control" formControlName="email">
-                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-                  <div *ngIf="email.errors.required">Email é obrigatório.</div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <label>Telefone*</label>
-                <input type="text" nbInput fullWidth placeholder="Telefone" class="form-control" formControlName="telefone">
-                <div *ngIf="telefone.invalid && (telefone.dirty || telefone.touched)" class="alert alert-danger">
-                  <div *ngIf="telefone.errors.required">Telefone é obrigatório.</div>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-        </form>
+        <ngx-form-usuario #formUsuario
+          [desabilitarControles]="desabilitarControles"
+          [usuario]="usuario">
+        </ngx-form-usuario>
       </nb-card-body>
     </nb-card>
 
     <nb-card>
       <nb-card-header>Endereço</nb-card-header>
       <nb-card-body>
-        <form [formGroup]="formEndereco" class="container">
-            <fieldset [disabled]="desabilitarControles">
-              
-              <div class="row">
-                <div class="col-3">
-                  <label>CEP*</label>
-                  <input type="text" nbInput fullWidth placeholder="Ex.: Centro" class="form-control" formControlName="cep" (keyup)="cepAlterado.next($event.target.value)">
-                  <div *ngIf="cep.invalid && (cep.dirty || cep.touched)" class="alert alert-danger">
-                    <div *ngIf="cep.errors.required">Informe CEP.</div>
-                  </div>
-                </div>
-              </div>  
-
-              <div class="row">
-                <div class="col-7">
-                  <label>Logradouro*</label>
-                  <input type="text" nbInput fullWidth placeholder="Ex.: Rua Ipatinga" class="form-control" formControlName="logradouro">
-                  <div *ngIf="logradouro.invalid && (logradouro.dirty || logradouro.touched)" class="alert alert-danger">
-                    <div *ngIf="logradouro.errors.required">Logradouro obrigatório.</div>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <label>Número*</label>
-                  <input type="text" nbInput fullWidth placeholder="Ex.: 762" class="form-control" formControlName="numero">
-                  <div *ngIf="numero.invalid && (numero.dirty || numero.touched)" class="alert alert-danger">
-                    <div *ngIf="numero.errors.required">Número obrigatório.</div>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <label>Complemento</label>
-                  <input type="text" nbInput fullWidth placeholder="Ex.: 762" class="form-control" formControlName="complemento">
-                </div>
-              </div>  
-
-              <div class="row">
-                <div class="col-5">
-                  <label>Bairro*</label>
-                  <input type="text" nbInput fullWidth placeholder="Ex.: Centro" class="form-control" formControlName="bairro">
-                  <div *ngIf="bairro.invalid && (bairro.dirty || bairro.touched)" class="alert alert-danger">
-                    <div *ngIf="bairro.errors.required">Bairro obrigatório.</div>
-                  </div>
-                </div>
-                <div class="col-5">
-                  <label>Localidade*</label>
-                  <input type="text" nbInput fullWidth class="form-control" formControlName="localidade" disabled>
-                </div>
-                <div class="col-2">
-                  <label>UF*</label>
-                  <input type="text" nbInput fullWidth class="form-control" formControlName="uf" disabled>
-                </div>
-              </div>  
-
-            </fieldset>
-        </form>
+        <ngx-form-endereco #formEndereco
+          [desabilitarControles]="desabilitarControles"
+          [endereco]="endereco">
+        </ngx-form-endereco>
       </nb-card-body>
     </nb-card>
     
     <nb-card>
       <nb-card-header>Credenciais</nb-card-header>
       <nb-card-body>
-        <form [formGroup]="formCredenciais" class="container">
-          <fieldset>
-            <div class="col">
-              <label>Login*</label>
-              <input type="text" nbInput fullWidth placeholder="Login" class="form-control" formControlName="login">
-              <div *ngIf="login.invalid && (login.dirty || login.touched)" class="alert alert-danger">
-                <div *ngIf="login.errors.required">Informe um login.</div>
-              </div>
-
-              <label>Senha*</label>
-              <show-hide-password size="md" btnStyle="primary" [btnOutline]="false">
-                <input type="password" nbInput placeholder="Senha"  class="form-control" formControlName="senha">
-              </show-hide-password>
-              <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="alert alert-danger">
-                <div *ngIf="senha.errors.required">Informe a senha.</div>
-              </div>
-      
-              <label>Conferir senha*</label>
-              <show-hide-password size="md" btnStyle="primary" [btnOutline]="false">
-                <input type="password" nbInput placeholder="Conferir senha" class="form-control" formControlName="conferirSenha">
-              </show-hide-password>
-              <div *ngIf="conferirSenha.invalid && (conferirSenha.dirty || conferirSenha.touched)" class="alert alert-danger">
-                <div *ngIf="conferirSenha.errors.required">Repita a senha.</div>
-              </div>
-              <div *ngIf="formCredenciais.errors?.senhasDiferentes && (formCredenciais.touched || formCredenciais.dirty)" class="alert alert-danger">
-                Senhas não são equivalentes.
-              </div>
-            </div>  
-          </fieldset>
-        </form>
+        <ngx-form-credenciais #formCredenciais
+          [desabilitarControles]="desabilitarControles"
+          [validarSenhaAnterior]="false"
+          [credenciais]="credenciais">
+        </ngx-form-credenciais>
       </nb-card-body>
     </nb-card>
 
-    <div class="row">
-      <img [src]="imgSrc" height="50"/>
-      <label class="image-upload-container btn btn-bwm">
-        <span>Select Image</span>
-        <input #imageInput
-              type="file"
-              accept="image/*"
-              (change)="processFile(imageInput)">
-      </label>
-    </div>  
-
+    <nb-card>
+      <nb-card-header>Foto</nb-card-header>
+      <nb-card-body>
+        <ngx-form-foto #formFoto
+          [alturaImagem]="200"
+          [desabilitarControles]="desabilitarControles"
+          [foto]="foto">
+        </ngx-form-foto>
+      </nb-card-body>
+    </nb-card>
+  
   </div>
   <div footer>
     <span>* (campo obrigatório)</span>

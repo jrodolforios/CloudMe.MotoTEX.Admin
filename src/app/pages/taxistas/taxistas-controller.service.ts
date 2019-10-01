@@ -7,7 +7,6 @@ import { BusyStack } from '../../@core/utils/busy_stack';
 export interface TaxistaExt extends TaxistaSummary
 {
 	fotoSummary: FotoSummary;
-	arquivoFoto: File;
 }
 
 export const emptyUUID = '00000000-0000-0000-0000-000000000000';
@@ -40,8 +39,6 @@ export class TaxistasControllerService
 			taxista =
 			{
 				id: sumario.id,
-				rg: sumario.rg,
-				cpf: sumario.cpf,
 				usuario: sumario.usuario,
 				endereco: sumario.endereco,
 				idPontoTaxi: sumario.idPontoTaxi,
@@ -54,7 +51,6 @@ export class TaxistasControllerService
 					nome: '',
 					nomeArquivo: ''
 				},
-				arquivoFoto: null
 			};
 		}
 		else
@@ -62,17 +58,21 @@ export class TaxistasControllerService
 			taxista =
 			{
 				id: emptyUUID,
-				rg: '',
-				cpf: '',
 				usuario:
 				{
 					id: emptyUUID,
 					nome: '',
-					login: '',
+					rg: '',
+					cpf: '',
 					email: '',
-					senha: '',
-					confirmarSenha: '',
-					telefone: ''
+					telefone: '',
+					credenciais:
+					{
+						login: '',
+						senha: '',
+						confirmarSenha: '',
+						senhaAnterior: ''
+					}
 				},
 				endereco:
 				{
@@ -88,7 +88,6 @@ export class TaxistasControllerService
 				idLocalizacaoAtual: null,
 				idPontoTaxi: null,
 				idFoto: '',
-				arquivoFoto: null,
 				fotoSummary:
 				{
 					id: emptyUUID,
@@ -110,14 +109,18 @@ export class TaxistasControllerService
 			{
 				id: taxista.usuario.id,
 				nome: taxista.usuario.nome,
+				cpf: taxista.usuario.cpf,
+				rg: taxista.usuario.rg,
 				email: taxista.usuario.email,
 				telefone: taxista.usuario.telefone,
-				login: taxista.usuario.login,
-				senha: taxista.usuario.senha,
-				confirmarSenha: taxista.usuario.confirmarSenha
+				credenciais:
+				{
+					login: taxista.usuario.credenciais.login,
+					senha: taxista.usuario.credenciais.senha,
+					confirmarSenha: taxista.usuario.credenciais.confirmarSenha,
+					senhaAnterior: taxista.usuario.credenciais.senhaAnterior
+				}
 			},
-			cpf: taxista.cpf,
-			rg: taxista.rg,
 			endereco:
 			{
 				id: taxista.endereco.id,
@@ -140,6 +143,19 @@ export class TaxistasControllerService
 	{
 		const self = this;
 		await self.obterTaxistas();
+
+		let taxistaSel = self.taxistaSelecionado.value;
+		const taxistas = self.taxistas.value;
+
+		if (taxistaSel && !taxistas.find(tx => tx.id === taxistaSel.id))
+		{
+			taxistaSel = null;
+		}
+
+		if (!taxistaSel)
+		{
+			self.taxistaSelecionado.next(taxistas.length > 0 ? taxistas[0] : null);
+		}
 	}
 
 	private async obterTaxistas()

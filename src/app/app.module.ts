@@ -29,6 +29,7 @@ import { UsuarioService } from './auth/usuario.service';
 import { OAuth2Module } from './pages/oauth2/oauth2.module';
 import { ViaCEPModule } from '../api/viacep/viacep.module';
 import { ErrorInterceptor } from './@core/utils/error-interceptor';
+import { CommonViewsModule } from './common-views/common-views.module';
 
 /*export const options: Partial<IConfig> = {
 };*/
@@ -44,6 +45,7 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
 		BrowserAnimationsModule,
 		HttpClientModule,
 		AppRoutingModule,
+		CommonViewsModule,
 
 		ThemeModule.forRoot(),
 

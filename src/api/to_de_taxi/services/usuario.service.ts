@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { UsuarioSummary } from '../models/usuario-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseUsuarioSummary } from '../models/response-usuario-summary';
+import { CredenciaisUsuario } from '../models/credenciais-usuario';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +22,8 @@ class UsuarioService extends __BaseService {
   static readonly ApiV1UsuarioPostPath = '/api/v1/Usuario';
   static readonly ApiV1UsuarioByIdGetPath = '/api/v1/Usuario/{id}';
   static readonly ApiV1UsuarioByIdDeletePath = '/api/v1/Usuario/{id}';
+  static readonly ApiV1UsuarioAlteraSenhaByIdPostPath = '/api/v1/Usuario/altera_senha/{id}';
+  static readonly ApiV1UsuarioBloquearByIdPostPath = '/api/v1/Usuario/bloquear/{id}';
 
   constructor(
     config: __Configuration,
@@ -205,9 +208,127 @@ class UsuarioService extends __BaseService {
       __map(_r => _r.body as ResponseBoolean)
     );
   }
+
+  /**
+   * @param params The `UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams` containing the following parameters:
+   *
+   * - `id`: DialList's ID
+   *
+   * - `credenciais`:
+   *
+   * @return Success
+   */
+  ApiV1UsuarioAlteraSenhaByIdPostResponse(params: UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.credenciais;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Usuario/altera_senha/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams` containing the following parameters:
+   *
+   * - `id`: DialList's ID
+   *
+   * - `credenciais`:
+   *
+   * @return Success
+   */
+  ApiV1UsuarioAlteraSenhaByIdPost(params: UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1UsuarioAlteraSenhaByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param params The `UsuarioService.ApiV1UsuarioBloquearByIdPostParams` containing the following parameters:
+   *
+   * - `id`: DialList's ID
+   *
+   * - `bloquear`:
+   *
+   * @return Success
+   */
+  ApiV1UsuarioBloquearByIdPostResponse(params: UsuarioService.ApiV1UsuarioBloquearByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.bloquear != null) __params = __params.set('bloquear', params.bloquear.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Usuario/bloquear/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `UsuarioService.ApiV1UsuarioBloquearByIdPostParams` containing the following parameters:
+   *
+   * - `id`: DialList's ID
+   *
+   * - `bloquear`:
+   *
+   * @return Success
+   */
+  ApiV1UsuarioBloquearByIdPost(params: UsuarioService.ApiV1UsuarioBloquearByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1UsuarioBloquearByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
 }
 
 module UsuarioService {
+
+  /**
+   * Parameters for ApiV1UsuarioAlteraSenhaByIdPost
+   */
+  export interface ApiV1UsuarioAlteraSenhaByIdPostParams {
+
+    /**
+     * DialList's ID
+     */
+    id: string;
+    credenciais?: CredenciaisUsuario;
+  }
+
+  /**
+   * Parameters for ApiV1UsuarioBloquearByIdPost
+   */
+  export interface ApiV1UsuarioBloquearByIdPostParams {
+
+    /**
+     * DialList's ID
+     */
+    id: string;
+    bloquear?: boolean;
+  }
 }
 
 export { UsuarioService }

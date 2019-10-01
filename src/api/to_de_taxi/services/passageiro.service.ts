@@ -63,14 +63,14 @@ class PassageiroService extends __BaseService {
   }
 
   /**
-   * @param PassageiroSummary Modified Passageiro list's properties summary
+   * @param passageiroSummary Modified Passageiro list's properties summary
    * @return Success
    */
-  ApiV1PassageiroPutResponse(PassageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+  ApiV1PassageiroPutResponse(passageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = PassageiroSummary;
+    __body = passageiroSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/Passageiro`,
@@ -89,24 +89,24 @@ class PassageiroService extends __BaseService {
     );
   }
   /**
-   * @param PassageiroSummary Modified Passageiro list's properties summary
+   * @param passageiroSummary Modified Passageiro list's properties summary
    * @return Success
    */
-  ApiV1PassageiroPut(PassageiroSummary?: PassageiroSummary): __Observable<ResponseBoolean> {
-    return this.ApiV1PassageiroPutResponse(PassageiroSummary).pipe(
+  ApiV1PassageiroPut(passageiroSummary?: PassageiroSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1PassageiroPutResponse(passageiroSummary).pipe(
       __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param PassageiroSummary Passageiro's summary
+   * @param passageiroSummary Passageiro's summary
    * @return Success
    */
-  ApiV1PassageiroPostResponse(PassageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
+  ApiV1PassageiroPostResponse(passageiroSummary?: PassageiroSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = PassageiroSummary;
+    __body = passageiroSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/Passageiro`,
@@ -125,11 +125,11 @@ class PassageiroService extends __BaseService {
     );
   }
   /**
-   * @param PassageiroSummary Passageiro's summary
+   * @param passageiroSummary Passageiro's summary
    * @return Success
    */
-  ApiV1PassageiroPost(PassageiroSummary?: PassageiroSummary): __Observable<ResponseGuid> {
-    return this.ApiV1PassageiroPostResponse(PassageiroSummary).pipe(
+  ApiV1PassageiroPost(passageiroSummary?: PassageiroSummary): __Observable<ResponseGuid> {
+    return this.ApiV1PassageiroPostResponse(passageiroSummary).pipe(
       __map(_r => _r.body as ResponseGuid)
     );
   }
