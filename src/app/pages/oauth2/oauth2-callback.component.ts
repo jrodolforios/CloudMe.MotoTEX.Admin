@@ -13,7 +13,7 @@ import { takeWhile } from 'rxjs/operators';
 	selector: 'nb-oauth2-callback',
 	template: `
 		<nb-layout>
-			<nb-layout-column>Authenticating...</nb-layout-column>
+			<nb-layout-column>Autenticando...</nb-layout-column>
 		</nb-layout>
 	`,
 })

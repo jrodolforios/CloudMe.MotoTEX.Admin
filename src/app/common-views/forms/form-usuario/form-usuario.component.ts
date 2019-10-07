@@ -66,6 +66,7 @@ export class FormUsuarioComponent implements OnInit, OnDestroy {
 		else if (self.cpf.value !== self._usuario.cpf) return true;
 		else if (self.email.value !== self._usuario.email) return true;
 		else if (self.telefone.value !== self._usuario.telefone) return true;
+		return false;
 	}
 
 	constructor() { }

@@ -1,99 +1,109 @@
-<base-card #card_listagem>
-	<div header>Taxistas</div>
-	<div body>
-		<div class="container actions">
-			<nb-actions size="small" class="row">
-					<nb-action class="col">
-						<input type="text" nbInput fullWidth shape="semi-round" placeholder="Pesquisar...">
-					</nb-action>
-					<nb-action class="col-auto" icon="search-outline"></nb-action>
-			</nb-actions>
-		</div>
-		<nb-list class="own-scroll"
-			nbInfiniteList
-			[threshold]="500">
-			<nb-list-item *ngFor="let taxista of taxistas">
-        <div class="container">
-          <div class="row h4 nome" (click)="visualizar(taxista)">{{taxista && taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}</div>
-          <div class="row sumario">
-            <div class="propriedade">
-              <div class="nome_propriedade">RG</div>
-              <div class="valor_propriedade">{{ taxista ? taxista.usuario.rg : "N/I" }}</div>
+<div class="row">
+  <base-card #card_listagem class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
+    <div header>Taxistas</div>
+    <div body>
+      <div class="container actions">
+        <nb-actions size="small" class="row">
+            <nb-action class="col">
+              <input type="text" nbInput fullWidth shape="semi-round" placeholder="Pesquisar...">
+            </nb-action>
+            <nb-action class="col-auto" icon="search-outline"></nb-action>
+            <nb-action nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
+        </nb-actions>
+      </div>
+      <nb-list class="own-scroll"
+        nbInfiniteList
+        [threshold]="500">
+        <nb-list-item *ngFor="let taxista of taxistas">
+          <div class="container">
+            <div class="row h4 nome">
+              <div class="col-8 nome_taxista" (click)="visualizar(taxista)">
+                {{taxista && taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}
+              </div>
+              <div class="col-4">
+                <nb-actions class="actions_taxista" size="small">
+                  <nb-action icon="trash-2-outline" (click)="deletar(taxista)"></nb-action>
+                  <nb-action [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(taxista)"></nb-action>
+                </nb-actions>
+              </div>
             </div>
-            <div class="propriedade">
-              <div class="nome_propriedade">CPF</div>
-              <div class="valor_propriedade">{{ taxista ? taxista.usuario.cpf : "N/I" }}</div>
-            </div>
-            <div class="propriedade">
-              <div class="nome_propriedade">TELEFONE</div>
-              <div class="valor_propriedade">{{ taxista ? taxista.usuario.telefone : "N/I" }}</div>
+            <div class="row sumario">
+              <div class="col propriedade">
+                <div class="nome_propriedade">RG</div>
+                <div class="valor_propriedade">{{ taxista ? taxista.usuario.rg : "N/I" }}</div>
+              </div>
+              <div class="col propriedade">
+                <div class="nome_propriedade">CPF</div>
+                <div class="valor_propriedade">{{ taxista ? taxista.usuario.cpf : "N/I" }}</div>
+              </div>
+              <div class="col propriedade">
+                <div class="nome_propriedade">TELEFONE</div>
+                <div class="valor_propriedade">{{ taxista ? taxista.usuario.telefone : "N/I" }}</div>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <nb-icon icon="trash-2-outline" [options]="{ animation: { type: 'zoom' } }" (click)="deletar(taxista)"></nb-icon>
-            <nb-icon icon="edit-outline" [options]="{ animation: { type: 'zoom' } }" (click)="editar(taxista)"></nb-icon>
-          </div>
-        </div>
-			</nb-list-item>		
-		</nb-list>
-	</div>
-</base-card>
+        </nb-list-item>		
+      </nb-list>
+    </div>
+  </base-card>
 
 
-<base-card #card_detalhes>
-  <div header>Detalhes</div>
-  <div class="body container" body>
-    <nb-actions size="small" fullWidth>
-      <nb-action [disabled]="!podeCriar" icon="plus-outline" (click)="criar()"></nb-action>
-      <nb-action [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar()"></nb-action>
-      <nb-action [disabled]="!podeConfirmar" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
-      <nb-action [disabled]="!podeCancelar" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
-    </nb-actions>
+  <base-card #card_detalhes class="col-xxxl-9 col-xxl-8 col-lg-7 col-md-6">
+    <div header>Detalhes</div>
+    <div class="body container" body>
+      <nb-actions size="large" >
+        <nb-action [disabled]="!podeConfirmar" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+        <nb-action [disabled]="!podeCancelar" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+      </nb-actions>
 
-    <nb-card>
-      <nb-card-header>Informações pessoais</nb-card-header>
-      <nb-card-body>
-        <ngx-form-usuario #formUsuario
-          [desabilitarControles]="desabilitarControles"
-          [usuario]="usuario">
-        </ngx-form-usuario>
-      </nb-card-body>
-    </nb-card>
+      <nb-card>
+        <nb-card-header>Informações pessoais</nb-card-header>
+        <nb-card-body>
+          <ngx-form-usuario #formUsuario
+            [desabilitarControles]="desabilitarControles"
+            [usuario]="usuario">
+          </ngx-form-usuario>
+        </nb-card-body>
+      </nb-card>
 
-    <nb-card>
-      <nb-card-header>Endereço</nb-card-header>
-      <nb-card-body>
-        <ngx-form-endereco #formEndereco
-          [desabilitarControles]="desabilitarControles"
-          [endereco]="endereco">
-        </ngx-form-endereco>
-      </nb-card-body>
-    </nb-card>
-    
-    <nb-card>
-      <nb-card-header>Credenciais</nb-card-header>
-      <nb-card-body>
-        <ngx-form-credenciais #formCredenciais
-          [desabilitarControles]="desabilitarControles"
-          [validarSenhaAnterior]="false"
-          [credenciais]="credenciais">
-        </ngx-form-credenciais>
-      </nb-card-body>
-    </nb-card>
+      <nb-card>
+        <nb-card-header>Endereço</nb-card-header>
+        <nb-card-body>
+          <ngx-form-endereco #formEndereco
+            [desabilitarControles]="desabilitarControles"
+            [endereco]="endereco">
+          </ngx-form-endereco>
+        </nb-card-body>
+      </nb-card>
+      
+      <nb-card>
+        <nb-card-header>Credenciais</nb-card-header>
+        <nb-card-body>
+          <ngx-form-credenciais #formCredenciais
+            [desabilitarControles]="desabilitarControles"
+            [validarSenhaAnterior]="false"
+            [credenciais]="credenciais">
+          </ngx-form-credenciais>
+        </nb-card-body>
+      </nb-card>
 
-    <nb-card>
-      <nb-card-header>Foto</nb-card-header>
-      <nb-card-body>
-        <ngx-form-foto #formFoto
-          [alturaImagem]="200"
-          [desabilitarControles]="desabilitarControles"
-          [foto]="foto">
-        </ngx-form-foto>
-      </nb-card-body>
-    </nb-card>
-  
-  </div>
-  <div footer>
-    <span>* (campo obrigatório)</span>
-  </div>
-</base-card>
+      <nb-card>
+        <nb-card-header>Foto</nb-card-header>
+        <nb-card-body>
+          <ngx-form-foto #formFoto
+            [alturaImagem]="200"
+            [desabilitarControles]="desabilitarControles"
+            [foto]="foto">
+          </ngx-form-foto>
+        </nb-card-body>
+      </nb-card>
+
+    </div>
+    <div footer>
+      <span>* (campo obrigatório)</span>
+    </div>
+  </base-card>
+</div>
+
+
+

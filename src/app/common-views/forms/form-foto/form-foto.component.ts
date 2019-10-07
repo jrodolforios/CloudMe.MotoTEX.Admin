@@ -67,7 +67,7 @@ export class FormFotoComponent implements OnInit {
 					// obtém do servidor
 					await self.fotoSrv.ApiV1FotoByIdGet(self._foto.id).toPromise().then(resp =>
 					{
-						if (resp.success)
+						if (resp && resp.success)
 						{
 							self._foto.dados = resp.data.dados;
 							self._foto.nome = resp.data.nome;

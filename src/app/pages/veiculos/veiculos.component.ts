@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
 import { MarcaVeiculoService, ModeloVeiculoService } from '../../../api/fipe/services';
@@ -15,6 +15,10 @@ import { CapacidadeEditorComponent } from './capacidade/capacidade-editor.compon
 import { FotoEditorComponent } from './foto/foto-editor.component';
 import { FotoViewComponent } from './foto/foto-view.component';
 import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
+import { BusyStack } from '../../@core/utils/busy_stack';
+import { Subscription } from 'rxjs';
+import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'ngx-veiculos',
@@ -31,10 +35,13 @@ import { BaseCardComponent } from '../../common-views/base-card/base-card.compon
 		FotoViewComponent
 	]
 })
-export class VeiculosComponent implements OnInit, AfterViewInit {
+export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 
-	@ViewChild('base_card', null) baseCard: BaseCardComponent;
+	@ViewChild('baseCard', null) baseCard: BaseCardComponent;
 	@ViewChild('table', null) table: Ng2SmartTableComponent;
+
+	busyStack = new BusyStack();
+	busyStackSub: Subscription = null;
 
 	grid_settings = {
 		noDataMessage: 'Sem registros para exibição.',
@@ -119,15 +126,34 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 		private marcasVeicSrv: MarcaVeiculoService,
 		private veiculoSrv: VeiculoService,
 		private fotoSrv: FotoService,
-		private veiculosSrv: VeiculosService)
+		private veiculosSrv: VeiculosService,
+		private dialogSrv: NbDialogService,
+		private toastSrv: NbToastrService)
 	{
 		const data = [];
 		this.source.load(data);
 	}
 
+
 	async ngOnInit()
 	{
 		const self = this;
+
+		self.busyStackSub = self.busyStack.busy.subscribe(count =>
+		{
+			if (self.baseCard)
+			{
+				self.baseCard.toggleRefresh(count > 0);
+			}
+		});
+	}
+
+	async ngAfterViewInit()
+	{
+		const self = this;
+
+		self.busyStack.push();
+
 		await self.marcasVeicSrv.GetAll().toPromise().then(marcas => {
 			self.veiculosSrv.marcasVeiculos.next(marcas);
 		});
@@ -139,10 +165,14 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 				this.source.load(resp.data);
 			}
 		});
+
+		self.busyStack.pop();
 	}
 
-	ngAfterViewInit(): void
+	ngOnDestroy(): void
 	{
+		const self = this;
+		self.busyStackSub.unsubscribe();
 	}
 
 	async enviarFoto(veiculoSummary: VeiculoSummaryExt)
@@ -154,6 +184,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 			return;
 		}
 
+		self.busyStack.push();
 		if (veiculoSummary.fotoSummaryRef.id &&
 			veiculoSummary.novaFotoSummaryRef.nomeArquivo !== veiculoSummary.fotoSummaryRef.nomeArquivo)
 		{
@@ -164,7 +195,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 			veiculoSummary.novaFotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
 			await self.fotoSrv.ApiV1FotoPost(veiculoSummary.novaFotoSummaryRef).toPromise().then(resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					veiculoSummary.veicRef.idFoto = resp.data;
 				}
@@ -174,17 +205,20 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 				veiculoSummary.veicRef.idFoto = id_foto;
 			});*/
 		}
+		self.busyStack.pop();
 	}
 
 	async removerFoto(veiculoSummary: VeiculoSummaryExt)
 	{
 		const self = this;
+		self.busyStack.push();
 		if (veiculoSummary.fotoSummaryRef.id)
 		{
 			await self.fotoSrv.ApiV1FotoByIdGet(veiculoSummary.fotoSummaryRef.id).toPromise().then(_ => {
 				veiculoSummary.veicRef.idFoto = '';
 			});
 		}
+		self.busyStack.pop();
 	}
 
 	async onCreateConfirm(event)
@@ -207,9 +241,9 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 			idFoto: novo_veic.idFoto
 		};
 
-
+		self.busyStack.push();
 		await self.veiculoSrv.ApiV1VeiculoPost(sumarioVeic).toPromise().then(async resp => {
-			if (resp.success)
+			if (resp && resp.success)
 			{
 				novo_veic.id = resp.data;
 				/*await self.fotoSrv.Post(data).toPromise().then*/
@@ -229,6 +263,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 				event.confirm.reject();
 			}
 		});
+		self.busyStack.pop();
 	}
 
 	async onEditConfirm(event)
@@ -251,6 +286,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 			idFoto: origVeic.idFoto
 		};
 
+		self.busyStack.push();
 		await self.veiculoSrv.ApiV1VeiculoPut(sumarioVeic).toPromise().then(async resultado => {
 			if (resultado)
 			{
@@ -261,6 +297,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 				event.confirm.reject();
 			}
 		});
+		self.busyStack.pop();
 	}
 
 	async onDeleteConfirm(event)
@@ -269,19 +306,38 @@ export class VeiculosComponent implements OnInit, AfterViewInit {
 
 		const veic = event.data as VeiculoSummary;
 
-		if (window.confirm('Confirma exclusão do veículo?'))
-		{
-			await self.veiculoSrv.ApiV1VeiculoByIdDelete(veic.id).toPromise().then(resultado => {
-				if (resultado)
+		await self.dialogSrv.open(
+			ConfirmDialogComponent,
+			{
+				context:
 				{
-					event.confirm.resolve();
+					title: 'Veículos',
+					prompt: 'Confirma remoção?'
+				},
+			})
+			.onClose.toPromise().then(async result =>
+			{
+				if (result)
+				{
+					self.busyStack.push();
+					await self.veiculoSrv.ApiV1VeiculoByIdDelete(veic.id).toPromise().then(resultado => {
+						if (resultado)
+						{
+							event.confirm.resolve();
+							self.toastSrv.success('Registro removido com sucesso!', 'Veículos');
+						}
+						else
+						{
+							event.confirm.reject();
+						}
+					});
+					self.busyStack.pop();
 				}
 				else
 				{
 					event.confirm.reject();
 				}
 			});
-		}
 	}
 
 	onCustomAction(event)

@@ -1,21 +1,28 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
 import { TarifaService } from '../../../../api/to_de_taxi/services';
 import { TarifaSummary } from '../../../../api/to_de_taxi/models';
+import { BusyStack } from '../../../@core/utils/busy_stack';
+import { NbDialogService, NbToastrService } from '@nebular/theme';
 
 @Component({
 	selector: 'ngx-tarifas',
 	templateUrl: './tarifas.component.html',
 	styleUrls: ['./tarifas.component.scss'],
 })
-export class TarifasComponent implements OnInit, OnDestroy {
+export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 
-	@ViewChild('base_card', null) baseCard: BaseCardComponent;
+	@ViewChild('baseCard', null) baseCard: BaseCardComponent;
+	busyStack = new BusyStack();
+	busyStackSub: Subscription = null;
 
-	constructor(private tarifaSrv: TarifaService) { }
+	constructor(
+		private tarifaSrv: TarifaService,
+		private dialogSrv: NbDialogService,
+		private toastSrv: NbToastrService) { }
 
 	private sub_tarifas: Subscription;
 
@@ -34,23 +41,35 @@ export class TarifasComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
-		self.sub_tarifas = self.tarifaSrv.ApiV1TarifaGet().subscribe(resp => 
+		self.busyStackSub = self.busyStack.busy.subscribe(count =>
 		{
-			if (resp.success)
+			if (self.baseCard)
+			{
+				self.baseCard.toggleRefresh(count > 0);
+			}
+		});
+	}
+
+	ngAfterViewInit()
+	{
+		const self = this;
+
+		self.busyStack.push();
+		self.sub_tarifas = self.tarifaSrv.ApiV1TarifaGet().subscribe(resp =>
+		{
+			if (resp && resp.success)
 			{
 				const tarifa = resp.data.length > 0 ? resp.data[0] : {};
 				this.tarifasForm.setValue(tarifa);
-
-				/*
-				this.tarifasForm.patchValue( {
-					bandeirada: tarifa ? tarifa.bandeirada : 0,
-					kmRodadoBandeira1: tarifa ? tarifa.kmRodadoBandeira1 : 0,
-					kmRodadoBandeira2: tarifa ? tarifa.kmRodadoBandeira2 : 0,
-					horaParada: tarifa ? tarifa.horaParada : 0
-				});
-				*/
 			}
 		});
+		self.busyStack.pop();
+	}
+
+	ngOnDestroy(): void
+	{
+		const self = this;
+		self.sub_tarifas.unsubscribe();
 	}
 
 	async salvar()
@@ -71,43 +90,30 @@ export class TarifasComponent implements OnInit, OnDestroy {
 			horaParada: self.tarifasForm.get('horaParada').value
 		};
 
-		let successo = false;
+		self.busyStack.push();
 		if (tarifa.id)
 		{
 			await self.tarifaSrv.ApiV1TarifaPut(tarifa).toPromise().then( resp => {
-				successo = resp.success;
+				if (resp && resp.success)
+				{
+					self.toastSrv.success('Registro atualizado com sucesso!', 'Tarifas');
+				}
 			});
 		}
 		else
 		{
 			tarifa.id = UUID.UUID(); // para permitir a serialização
 			await self.tarifaSrv.ApiV1TarifaPost(tarifa).toPromise().then( resp => {
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					self.tarifasForm.patchValue(
 					{
 						id: resp.data
 					});
-					successo = true;
+					self.toastSrv.success('Registro inserido com sucesso!', 'Tarifas');
 				}
-			}).catch(reason => {
-				successo = false;
 			});
 		}
-
-		if (successo)
-		{
-			alert('Valores atualizados!');
-		}
-		else
-		{
-			alert('Erro ao atualizar valores!');
-		}
-	}
-
-	ngOnDestroy(): void
-	{
-		const self = this;
-		self.sub_tarifas.unsubscribe();
+		self.busyStack.pop();
 	}
 }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VeiculosComponent } from './veiculos.component';
-import { NbCardModule, NbDialogModule, NbInputModule } from '@nebular/theme';
+import { NbCardModule, NbDialogModule, NbInputModule, NbSpinnerModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { VeiculosRoutingModule } from './veiculos-routing.module';
 import { CommonViewsModule } from '../../common-views/common-views.module';
@@ -44,7 +44,8 @@ const COMPONENTS = [
 		NbCardModule,
 		Ng2SmartTableModule,
 		NbInputModule,
-		NgxMaskModule
+		NgxMaskModule,
+		NbSpinnerModule
 	]
 })
 export class VeiculosModule { }

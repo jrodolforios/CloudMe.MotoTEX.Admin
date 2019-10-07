@@ -46,7 +46,7 @@ export class TaxistasControllerService
 				idFoto: sumario.idFoto,
 				fotoSummary:
 				{
-					id: emptyUUID,
+					id: null,
 					dados: null,
 					nome: '',
 					nomeArquivo: ''
@@ -57,10 +57,10 @@ export class TaxistasControllerService
 		{
 			taxista =
 			{
-				id: emptyUUID,
+				id: undefined,
 				usuario:
 				{
-					id: emptyUUID,
+					id: undefined,
 					nome: '',
 					rg: '',
 					cpf: '',
@@ -76,7 +76,7 @@ export class TaxistasControllerService
 				},
 				endereco:
 				{
-					id: emptyUUID,
+					id: undefined,
 					cep: '',
 					logradouro: '',
 					numero: '',
@@ -85,12 +85,12 @@ export class TaxistasControllerService
 					localidade: '',
 					uf: ''
 				},
-				idLocalizacaoAtual: null,
-				idPontoTaxi: null,
-				idFoto: '',
+				idLocalizacaoAtual: undefined,
+				idPontoTaxi: undefined,
+				idFoto: undefined,
 				fotoSummary:
 				{
-					id: emptyUUID,
+					id: null,
 					dados: null,
 					nome: '',
 					nomeArquivo: ''
@@ -168,7 +168,7 @@ export class TaxistasControllerService
 
 		// obtém informações de acesso dos usuários
 		await self.taxistasSrv.ApiV1TaxistaGet().toPromise().then(async resp => {
-			if (resp.success)
+			if (resp && resp.success)
 			{
 				resp.data.forEach(taxista_sum => {
 					taxistas.push(self.instanciarTaxista(taxista_sum));
@@ -194,7 +194,7 @@ export class TaxistasControllerService
 			fotoSummary.id = emptyUUID; // para serializalçao do parâmetro
 			await self.fotoSrv.ApiV1FotoPost(fotoSummary).toPromise().then(resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					fotoSummary.id = resp.data;
 				}
@@ -228,7 +228,7 @@ export class TaxistasControllerService
 			// cria o registro do taxista
 			await self.taxistasSrv.ApiV1TaxistaPost(taxistaSummary).toPromise().then(async resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					novo_taxista.id = resp.data;
 					await self.enviarFoto(novo_taxista.fotoSummary);
@@ -260,7 +260,7 @@ export class TaxistasControllerService
 
 			await self.taxistasSrv.ApiV1TaxistaPut(newTaxista).toPromise().then(async resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					if (newTaxista.fotoSummary.nomeArquivo !== oldTaxista.fotoSummary.nomeArquivo)
 					{
@@ -295,7 +295,7 @@ export class TaxistasControllerService
 
 			await self.taxistasSrv.ApiV1TaxistaByIdDelete(taxista.id).toPromise().then(resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					result = true;
 				}

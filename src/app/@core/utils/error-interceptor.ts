@@ -37,9 +37,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 			{
 				if (err instanceof HttpErrorResponse)
 				{
-					this.toastSrv.danger(err.error.message, err.error.title,
+					this.toastSrv.danger(err.message, err.statusText,
 					{
-						position: NbGlobalPhysicalPosition.BOTTOM_RIGHT,
+						position: NbGlobalPhysicalPosition.TOP_RIGHT,
 						destroyByClick: true,
 						duration: 0,
 						preventDuplicates: true

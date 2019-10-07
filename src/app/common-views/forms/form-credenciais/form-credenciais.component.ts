@@ -78,6 +78,7 @@ export class FormCredenciaisComponent implements OnInit, OnDestroy {
 		if (!self._credenciais) return false;
 		else if (self.login.value !== self._credenciais.login) return true;
 		else if (self.senha.value !== self._credenciais.senha) return true;
+		return false;
 	}
 
 	public obterAlteracoes(): CredenciaisUsuario

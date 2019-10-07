@@ -81,8 +81,8 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
 			useClass: ErrorInterceptor,
 			multi: true
 		},
-		//{ provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: (req) => {return false;}},
-		{
+		{ provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: (req) => {return false;}},
+		/*{
 			provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER,
 			useValue: function (req: HttpRequest<any>)
 			{
@@ -92,7 +92,7 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
 				}
 				return false;
 			},
-		},
+		},*/
 	],
 	bootstrap: [AppComponent],
 })

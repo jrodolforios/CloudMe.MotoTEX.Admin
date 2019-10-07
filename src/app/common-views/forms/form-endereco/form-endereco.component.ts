@@ -103,6 +103,7 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 		else if (self.bairro.value !== self._endereco.bairro) return true;
 		else if (self.localidade.value !== self._endereco.localidade) return true;
 		else if (self.uf.value !== self._endereco.uf) return true;
+		return false;
 	}
 
 	private async obterEndereco(cep: string)
