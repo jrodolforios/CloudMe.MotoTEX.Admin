@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { FaixaDescontoService } from '../../../../api/to_de_taxi/services';
 import { FaixaDescontoSummary } from '../../../../api/to_de_taxi/models';
 import { UUID } from 'angular2-uuid';
 import { ValorEditorComponent } from './valor/valor-editor.component';
+import { BusyStack } from '../../../@core/utils/busy_stack';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogComponent } from '../../../common-views/confirm-dialog/confirm-dialog.component';
+import { NbDialogService, NbToastrService } from '@nebular/theme';
 
 @Component({
 	selector: 'ngx-faixas-desconto',
@@ -14,9 +18,11 @@ import { ValorEditorComponent } from './valor/valor-editor.component';
 		ValorEditorComponent,
 	]
 })
-export class FaixasDescontoComponent implements OnInit {
+export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy {
 
-	@ViewChild('base_card', null) baseCard: BaseCardComponent;
+	@ViewChild('baseCard', null) baseCard: BaseCardComponent;
+	busyStack = new BusyStack();
+	busyStackSub: Subscription = null;
 
 	grid_settings = {
 		noDataMessage: 'Sem registros para exibição.',
@@ -66,18 +72,41 @@ export class FaixasDescontoComponent implements OnInit {
 
 	constructor(
 		private faixaDescSrv: FaixaDescontoService,
+		private dialogSrv: NbDialogService,
+		private toastSrv: NbToastrService
 	) { }
 
 	async ngOnInit()
 	{
 		const self = this;
+
+		self.busyStackSub = self.busyStack.busy.subscribe(count =>
+		{
+			if (self.baseCard)
+			{
+				self.baseCard.toggleRefresh(count > 0);
+			}
+		});
+	}
+
+	async ngAfterViewInit()
+	{
+		const self = this;
+		self.busyStack.push();
 		await self.faixaDescSrv.ApiV1FaixaDescontoGet().toPromise().then(resp =>
 		{
-			if (resp.success)
+			if (resp && resp.success)
 			{
 				this.source.load(resp.data);
 			}
 		});
+		self.busyStack.pop();
+	}
+
+	ngOnDestroy()
+	{
+		const self = this;
+		self.busyStackSub.unsubscribe();
 	}
 
 	async onCreateConfirm(event)
@@ -93,9 +122,9 @@ export class FaixasDescontoComponent implements OnInit {
 			descricao: nova_faixa_desc.descricao
 		};
 
-
+		self.busyStack.push();
 		await self.faixaDescSrv.ApiV1FaixaDescontoPost(sumarioVeic).toPromise().then(async resp => {
-			if (resp.success)
+			if (resp && resp.success)
 			{
 				nova_faixa_desc.id = resp.data;
 				event.confirm.resolve(nova_faixa_desc);
@@ -105,6 +134,7 @@ export class FaixasDescontoComponent implements OnInit {
 				event.confirm.reject();
 			}
 		});
+		self.busyStack.pop();
 	}
 
 	async onEditConfirm(event)
@@ -123,6 +153,7 @@ export class FaixasDescontoComponent implements OnInit {
 			descricao: newFxDsc.descricao
 		};
 
+		self.busyStack.push();
 		await self.faixaDescSrv.ApiV1FaixaDescontoPut(sumarioVeic).toPromise().then(async resultado => {
 			if (resultado)
 			{
@@ -133,6 +164,7 @@ export class FaixasDescontoComponent implements OnInit {
 				event.confirm.reject();
 			}
 		});
+		self.busyStack.pop();
 	}
 
 	async onDeleteConfirm(event)
@@ -141,18 +173,37 @@ export class FaixasDescontoComponent implements OnInit {
 
 		const veic = event.data as FaixaDescontoSummary;
 
-		if (window.confirm('Confirma exclusão?'))
-		{
-			await self.faixaDescSrv.ApiV1FaixaDescontoByIdDelete(veic.id).toPromise().then(resultado => {
-				if (resultado)
+		await self.dialogSrv.open(
+			ConfirmDialogComponent,
+			{
+				context:
 				{
-					event.confirm.resolve();
+					title: 'Faixas de desconto',
+					prompt: 'Confirma remoção?'
+				},
+			})
+			.onClose.toPromise().then(async result =>
+			{
+				if (result)
+				{
+					self.busyStack.push();
+					await self.faixaDescSrv.ApiV1FaixaDescontoByIdDelete(veic.id).toPromise().then(resultado => {
+						if (resultado)
+						{
+							event.confirm.resolve();
+							self.toastSrv.success('Registro removido com sucesso!', 'Faixas de desconto');
+						}
+						else
+						{
+							event.confirm.reject();
+						}
+					});
+					self.busyStack.pop();
 				}
 				else
 				{
 					event.confirm.reject();
 				}
 			});
-		}
 	}
 }

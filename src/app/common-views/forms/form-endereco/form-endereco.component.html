@@ -1,0 +1,53 @@
+<form [formGroup]="form" class="container">
+    <fieldset [disabled]="desabilitarControles">
+      
+      <div class="row">
+        <div class="col-3">
+          <label>CEP*</label>
+          <input type="text" nbInput fullWidth placeholder="Ex.: Centro" class="form-control" formControlName="cep" (keyup)="cepAlterado.next($event.target.value)">
+          <div *ngIf="cep.invalid && (cep.dirty || cep.touched)" class="alert alert-danger">
+            <div *ngIf="cep.errors.required">Informe CEP.</div>
+          </div>
+        </div>
+      </div>  
+
+      <div class="row">
+        <div class="col-7">
+          <label>Logradouro*</label>
+          <input type="text" nbInput fullWidth placeholder="Ex.: Rua Ipatinga" class="form-control" formControlName="logradouro">
+          <div *ngIf="logradouro.invalid && (logradouro.dirty || logradouro.touched)" class="alert alert-danger">
+            <div *ngIf="logradouro.errors.required">Logradouro obrigatório.</div>
+          </div>
+        </div>
+        <div class="col-2">
+          <label>Número*</label>
+          <input type="text" nbInput fullWidth placeholder="Ex.: 762" class="form-control" formControlName="numero">
+          <div *ngIf="numero.invalid && (numero.dirty || numero.touched)" class="alert alert-danger">
+            <div *ngIf="numero.errors.required">Número obrigatório.</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <label>Complemento</label>
+          <input type="text" nbInput fullWidth placeholder="Ex.: 762" class="form-control" formControlName="complemento">
+        </div>
+      </div>  
+
+      <div class="row">
+        <div class="col-5">
+          <label>Bairro*</label>
+          <input type="text" nbInput fullWidth placeholder="Ex.: Centro" class="form-control" formControlName="bairro">
+          <div *ngIf="bairro.invalid && (bairro.dirty || bairro.touched)" class="alert alert-danger">
+            <div *ngIf="bairro.errors.required">Bairro obrigatório.</div>
+          </div>
+        </div>
+        <div class="col-5">
+          <label>Localidade*</label>
+          <input type="text" nbInput fullWidth class="form-control" formControlName="localidade" disabled>
+        </div>
+        <div class="col-2">
+          <label>UF*</label>
+          <input type="text" nbInput fullWidth class="form-control" formControlName="uf" disabled>
+        </div>
+      </div>  
+    </fieldset>
+</form>

@@ -19,10 +19,6 @@ export class AppComponent implements OnInit {
 		private iconLibraries: NbIconLibraries,
 		private usuarioSrv: UsuarioService)
 	{
-		this.usuarioSrv.id_usuario.subscribe(id_usr => {
-			//alert(`Novo usuario: ${id_usr}`);
-		});
-
 		this.iconLibraries.registerFontPack('font-awesome', { iconClassPrefix: 'fa' });
 	}
 

@@ -1,19 +1,16 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { TaxistasControllerService, TaxistaExt } from './taxistas-controller.service';
 import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
-import { Subscription, Subject, EMPTY } from 'rxjs';
-import { ValidatorFn, FormGroup, ValidationErrors, FormControl, Validators } from '@angular/forms';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { NbDialogService, NbToastrService, NbGlobalPhysicalPosition } from '@nebular/theme';
-import { FotoService } from '../../../api/to_de_taxi/services';
-import { EnderecoService } from '../../../api/viacep/services';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-
-export const conferirSenhaValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null =>
-{
-	const senha = control.get('senha');
-	const conferirSenha = control.get('conferirSenha');
-	return senha && conferirSenha && senha.value !== conferirSenha.value ? { 'senhasDiferentes': true } : null;
-};
+import { FotoService, UsuarioService, TaxistaService, EnderecoService } from '../../../api/to_de_taxi/services';
+import { FormEnderecoComponent } from '../../common-views/forms/form-endereco/form-endereco.component';
+import { FormCredenciaisComponent } from '../../common-views/forms/form-credenciais/form-credenciais.component';
+import { FormFotoComponent } from '../../common-views/forms/form-foto/form-foto.component';
+import { FormUsuarioComponent } from '../../common-views/forms/form-usuario/form-usuario.component';
+import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
+import { TaxistaSummary } from '../../../api/to_de_taxi/models';
+import { BusyStack } from '../../@core/utils/busy_stack';
 
 enum Modo
 {
@@ -25,21 +22,39 @@ enum Modo
 @Component({
 	selector: 'ngx-taxistas',
 	templateUrl: './taxistas.component.html',
-	styleUrls: ['./taxistas.component.scss']
+	styleUrls: ['./taxistas.component.scss'],
 })
 export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 {
 	@ViewChild('card_listagem', null) cardListagem: BaseCardComponent;
 	@ViewChild('card_detalhes', null) cardDetalhes: BaseCardComponent;
 
-	modo: Modo = Modo.mdVisualizacao;
+	@ViewChild('formUsuario', null) formUsuario: FormUsuarioComponent;
+	@ViewChild('formEndereco', null) formEndereco: FormEnderecoComponent;
+	@ViewChild('formCredenciais', null) formCredenciais: FormCredenciaisComponent;
+	@ViewChild('formFoto', null) formFoto: FormFotoComponent;
+
+	_modo: Modo = Modo.mdVisualizacao;
+	get modo(): Modo
+	{
+		return this._modo;
+	}
+
+	taxistaSelecionado = new BehaviorSubject<TaxistaExt>(null);
+
+	// indicação de carregamento de dados da API em background
+	busyStackAtualizar = new BusyStack();
+	busyStackDelete = new BusyStack();
+	busyStackCriar = new BusyStack();
+	busyStackAlterar = new BusyStack();
 
 	taxista: TaxistaExt = null;
 	taxistas: TaxistaExt[] = [];
-	taxistasSub: Subscription;
 
-	cepAlterado = new Subject<string>();
-	private cepAlteradoSub: Subscription;
+	get credenciais() { return this.taxista ? this.taxista.usuario.credenciais : null; }
+	get endereco() { return this.taxista ? this.taxista.endereco : null; }
+	get foto() { return this.taxista ? this.taxista.fotoSummary : null; }
+	get usuario() { return this.taxista ? this.taxista.usuario : null; }
 
 	taxistaSelSub: Subscription;
 	busyStackCriarSub: Subscription = null;
@@ -47,81 +62,22 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	busyStackAtualizarSub: Subscription = null;
 	busyStackRemoverSub: Subscription = null;
 
-	imgSrc: any = null;
-
-	formInformacoesPessoais: FormGroup = new FormGroup(
-	{
-		'nome': new FormControl('', [Validators.required]),
-		'rg': new FormControl('', [Validators.required]),
-		'cpf': new FormControl('', [Validators.required]),
-		'email': new FormControl('', [Validators.required]),
-		'telefone': new FormControl('', [Validators.required]),
-	}, { validators: conferirSenhaValidator });
-
-	formEndereco: FormGroup = new FormGroup(
-	{
-		'cep': new FormControl('', [Validators.required]),
-		'logradouro': new FormControl('', [Validators.required]),
-		'numero': new FormControl('', [Validators.required]),
-		'complemento': new FormControl(''),
-		'bairro': new FormControl('', [Validators.required]),
-		'localidade': new FormControl('', [Validators.required]),
-		'uf': new FormControl('', [Validators.required])
-	});
-
-	formCredenciais: FormGroup = new FormGroup(
-	{
-		'login': new FormControl('', [Validators.required]),
-		'senha': new FormControl('', [Validators.required]),
-		'conferirSenha': new FormControl('', [Validators.required])
-	}, { validators: conferirSenhaValidator });
-
-	get nome() { return this.formInformacoesPessoais.get('nome'); }
-	get rg() { return this.formInformacoesPessoais.get('rg'); }
-	get cpf() { return this.formInformacoesPessoais.get('cpf'); }
-	get email() { return this.formInformacoesPessoais.get('email'); }
-	get telefone() { return this.formInformacoesPessoais.get('telefone'); }
-
-	get cep() { return this.formEndereco.get('cep'); }
-	get logradouro() { return this.formEndereco.get('logradouro'); }
-	get numero() { return this.formEndereco.get('numero'); }
-	get complemento() { return this.formEndereco.get('complemento'); }
-	get bairro() { return this.formEndereco.get('bairro'); }
-	get localidade() { return this.formEndereco.get('localidade'); }
-	get uf() { return this.formEndereco.get('uf'); }
-
-	get login() { return this.formCredenciais.get('login'); }
-	get senha() { return this.formCredenciais.get('senha'); }
-	get conferirSenha() { return this.formCredenciais.get('conferirSenha'); }
-
-	get alterado(): boolean
+	get registroAlterado(): boolean
 	{
 		const self = this;
 
 		if (!self.taxista) return false;
-		else if (self.nome.value !== self.taxista.usuario.nome) return true;
-		else if (self.rg.value !== self.taxista.rg) return true;
-		else if (self.cpf.value !== self.taxista.cpf) return true;
-		else if (self.login.value !== self.taxista.usuario.login) return true;
-		else if (self.senha.value !== self.taxista.usuario.senha) return true;
-		else if (self.email.value !== self.taxista.usuario.email) return true;
-		else if (self.telefone.value !== self.taxista.usuario.telefone) return true;
-		else if (self.cep.value !== self.taxista.endereco.cep) return true;
-		else if (self.logradouro.value !== self.taxista.endereco.logradouro) return true;
-		else if (self.numero.value !== self.taxista.endereco.numero) return true;
-		else if (self.complemento.value !== self.taxista.endereco.complemento) return true;
-		else if (self.bairro.value !== self.taxista.endereco.bairro) return true;
-		else if (self.localidade.value !== self.taxista.endereco.localidade) return true;
-		else if (self.uf.value !== self.taxista.endereco.uf) return true;
-
-		//if (self.taxista.fotoSummary.nome !== self.taxista.fotoSummary.nome) return true;
-		//if (self.taxista.fotoSummary.nomeArquivo !== self.taxista.fotoSummary.nomeArquivo) return true;
-		//if (self.taxista.idPontoTaxi !== self.taxista.idPontoTaxi) return true;
+		return (
+			self.formUsuario.alterado ||
+			self.formEndereco.alterado ||
+			self.formCredenciais.alterado ||
+			self.formFoto.alterado);
 	}
 
 	constructor(
-		private taxistasCtrl: TaxistasControllerService,
 		private dialogSrv: NbDialogService,
+		private usuarioSrv: UsuarioService,
+		private taxistaSrv: TaxistaService,
 		private fotoSrv: FotoService,
 		private enderecoSrv: EnderecoService,
 		private toastSrv: NbToastrService)
@@ -131,37 +87,26 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	ngOnInit(): void
 	{
 		const self = this;
-		self.cepAlteradoSub = self.cepAlterado.pipe(
-			debounceTime(1000),
-			distinctUntilChanged(),
-			switchMap(term =>
-			{
-				self.obterEndereco(term);
-				return EMPTY;
-			})
-		).subscribe();
 	}
 
 	ngOnDestroy(): void
 	{
 		const self = this;
-		self.taxistasSub.unsubscribe();
-		self.cepAlteradoSub.unsubscribe();
 	}
 
 	ngAfterViewInit(): void
 	{
 		const self = this;
 
-		this.taxistasCtrl.atualizar();
+		self.atualizar();
 
 		const atualizarRemoverCallback = () =>
 		{
 			if (self.cardListagem)
 			{
 				self.cardListagem.toggleRefresh(
-					self.taxistasCtrl.busyStackAtualizar.busy.value > 0 &&
-					self.taxistasCtrl.busyStackRemover.busy.value > 0);
+					self.busyStackAtualizar.busy.value > 0 &&
+					self.busyStackDelete.busy.value > 0);
 			}
 		};
 
@@ -170,28 +115,44 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			if (self.cardDetalhes)
 			{
 				self.cardDetalhes.toggleRefresh(
-					self.taxistasCtrl.busyStackAtualizar.busy.value > 0 &&
-					self.taxistasCtrl.busyStackRemover.busy.value > 0);
+					self.busyStackAtualizar.busy.value > 0 &&
+					self.busyStackDelete.busy.value > 0);
 			}
 		};
 
-		self.busyStackAtualizarSub = self.taxistasCtrl.busyStackAtualizar.busy.subscribe(atualizarRemoverCallback);
-		self.busyStackRemoverSub = self.taxistasCtrl.busyStackRemover.busy.subscribe(atualizarRemoverCallback);
-		self.busyStackCriarSub = self.taxistasCtrl.busyStackCriar.busy.subscribe(criarAlterarCallback);
-		self.busyStackAlterarSub = self.taxistasCtrl.busyStackAlterar.busy.subscribe(criarAlterarCallback);
+		self.busyStackAtualizarSub = self.busyStackAtualizar.busy.subscribe(atualizarRemoverCallback);
+		self.busyStackRemoverSub = self.busyStackDelete.busy.subscribe(atualizarRemoverCallback);
+		self.busyStackCriarSub = self.busyStackCriar.busy.subscribe(criarAlterarCallback);
+		self.busyStackAlterarSub = self.busyStackAlterar.busy.subscribe(criarAlterarCallback);
 
-		self.taxistasSub = self.taxistasCtrl.taxistas.subscribe(novos_taxistas =>
+		self.taxistaSelSub = self.taxistaSelecionado.subscribe(async tax_sel =>
 		{
-			self.taxistas = novos_taxistas;
+			if (self.taxista !== tax_sel)
+			{
+				self.limparCampos();
+				self.taxista = tax_sel;
+			}
 		});
+	}
 
-		self.taxistaSelSub = self.taxistasCtrl.taxistaSelecionado.subscribe(async tax_sel =>
+	async setModo(value: Modo): Promise<boolean>
+	{
+		const self = this;
+		if (self._modo !== value)
 		{
-			/*if (self.alterado)
+			if (self.registroAlterado)
 			{
 				let descartar = false;
 
-				await self.dialogSrv.open(ConfirmDialogComponent)
+				await self.dialogSrv.open(
+					ConfirmDialogComponent,
+					{
+						context:
+						{
+							title: 'Taxistas',
+							prompt: 'Existem alterações não salvas para o registro atual. Deseja descartá-las?'
+						},
+					})
 					.onClose.toPromise().then(result =>
 					{
 						descartar = result;
@@ -199,14 +160,13 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 				if (!descartar)
 				{
-					return;
+					return false;
 				}
-			}*/
+			}
 
-			self.taxista = tax_sel;
-			self.limparCampos();
-			this.visualizar();
-		});
+			self._modo = value;
+		}
+		return true;
 	}
 
 	get desabilitarControles(): boolean
@@ -224,13 +184,13 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	get podeEditar(): boolean
 	{
 		const self = this;
-		return self.modo !== Modo.mdEdicao && self.taxista !== null;
+		return self.modo === Modo.mdVisualizacao && self.taxista !== null && self.taxista.id.length > 0;
 	}
 
 	get podeConfirmar(): boolean
 	{
 		const self = this;
-		return (self.modo === Modo.mdCriacao || self.modo === Modo.mdEdicao) && self.alterado && self.formInformacoesPessoais.valid;
+		return (self.modo === Modo.mdCriacao || self.modo === Modo.mdEdicao) && self.registroAlterado && self.formUsuario.form.valid;
 	}
 
 	get podeCancelar(): boolean
@@ -239,84 +199,241 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		return self.modo === Modo.mdCriacao || self.modo === Modo.mdEdicao;
 	}
 
-	private async obterEndereco(cep: string)
+	public instanciarTaxista(sumario?: TaxistaSummary): TaxistaExt
 	{
-		const self = this;
-		await self.enderecoSrv.Get(cep).toPromise().then(endereco => 
+		let taxista: TaxistaExt;
+		if (sumario)
 		{
-			self.formEndereco.patchValue(endereco);
-		});
+			taxista =
+			{
+				id: sumario.id,
+				usuario: sumario.usuario,
+				endereco: sumario.endereco,
+				idPontoTaxi: sumario.idPontoTaxi,
+				idLocalizacaoAtual: sumario.idLocalizacaoAtual,
+				idFoto: sumario.idFoto,
+				fotoSummary:
+				{
+					id: null,
+					dados: null,
+					nome: '',
+					nomeArquivo: ''
+				},
+			};
+		}
+		else
+		{
+			taxista =
+			{
+				id: undefined,
+				usuario:
+				{
+					id: undefined,
+					nome: '',
+					rg: '',
+					cpf: '',
+					email: '',
+					telefone: '',
+					credenciais:
+					{
+						login: '',
+						senha: '',
+						confirmarSenha: '',
+						senhaAnterior: ''
+					}
+				},
+				endereco:
+				{
+					id: undefined,
+					cep: '',
+					logradouro: '',
+					numero: '',
+					complemento: '',
+					bairro: '',
+					localidade: '',
+					uf: ''
+				},
+				idLocalizacaoAtual: undefined,
+				idPontoTaxi: undefined,
+				idFoto: undefined,
+				fotoSummary:
+				{
+					id: null,
+					dados: null,
+					nome: '',
+					nomeArquivo: ''
+				}
+			};
+		}
+
+		return taxista;
 	}
 
-	private async visualizar()
+	private criarSumario(taxista: TaxistaExt): TaxistaSummary
+	{
+		const summary: TaxistaSummary = {
+			id: taxista.id,
+			usuario:
+			{
+				id: taxista.usuario.id,
+				nome: taxista.usuario.nome,
+				cpf: taxista.usuario.cpf,
+				rg: taxista.usuario.rg,
+				email: taxista.usuario.email,
+				telefone: taxista.usuario.telefone,
+				credenciais:
+				{
+					login: taxista.usuario.credenciais.login,
+					senha: taxista.usuario.credenciais.senha,
+					confirmarSenha: taxista.usuario.credenciais.confirmarSenha,
+					senhaAnterior: taxista.usuario.credenciais.senhaAnterior
+				}
+			},
+			endereco:
+			{
+				id: taxista.endereco.id,
+				cep: taxista.endereco.cep,
+				logradouro: taxista.endereco.logradouro,
+				numero: taxista.endereco.numero,
+				complemento: taxista.endereco.complemento,
+				bairro: taxista.endereco.bairro,
+				localidade: taxista.endereco.localidade,
+				uf: taxista.endereco.uf
+			},
+			idFoto: taxista.idFoto,
+			idPontoTaxi: taxista.idPontoTaxi
+		};
+
+		return summary;
+	}
+
+	public async atualizar()
 	{
 		const self = this;
+		await self.obterTaxistas();
 
-		self.modo = Modo.mdVisualizacao;
+		let taxistaSel = self.taxistaSelecionado.value;
 
-		if (!self.taxista) return;
-
-		self.formInformacoesPessoais.patchValue(
+		if (taxistaSel)
 		{
-			nome: self.taxista.usuario.nome,
-			rg: self.taxista.rg,
-			cpf: self.taxista.cpf,
-			email: self.taxista.usuario.email,
-			telefone: self.taxista.usuario.telefone,
-		});
-
-		self.formEndereco.patchValue(
-		{
-			cep: self.taxista.endereco.cep,
-			logradouro: self.taxista.endereco.logradouro,
-			numero: self.taxista.endereco.numero,
-			complemento: self.taxista.endereco.complemento,
-			bairro: self.taxista.endereco.bairro,
-			localidade: self.taxista.endereco.localidade,
-			uf: self.taxista.endereco.uf
-		});
-
-		self.formCredenciais.patchValue(
-		{
-			login: self.taxista.usuario.login,
-			senha: self.taxista.usuario.senha,
-			conferirSenha: self.taxista.usuario.confirmarSenha
-		});
-
-		if (self.taxista.idFoto && !self.taxista.fotoSummary.dados)
-		{
-			// obtém foto do servidor
-			await self.fotoSrv.ApiV1FotoByIdGet(self.taxista.idFoto).toPromise().then(resp =>
+			taxistaSel = self.taxistas.find(tx => tx.id === taxistaSel.id);
+			if (taxistaSel)
 			{
-				if (resp.success)
-				{
-					self.taxista.fotoSummary.id = resp.data.id;
-					self.taxista.fotoSummary.nome = resp.data.nome;
-					self.taxista.fotoSummary.nomeArquivo = resp.data.nomeArquivo;
-					self.taxista.fotoSummary.dados = resp.data.dados;
-					self.imgSrc = atob(self.taxista.fotoSummary.dados);
-				}
-			});
+				self.taxistaSelecionado.next(taxistaSel);
+			}
+		}
+
+		if (!taxistaSel)
+		{
+			self.taxistaSelecionado.next(self.taxistas.length > 0 ? self.taxistas[0] : null);
 		}
 	}
 
-	public editar()
+	private async obterTaxistas()
+	{
+		const self = this;
+
+		self.busyStackAtualizar.push();
+
+		const novos_taxistas: TaxistaExt[] = [];
+
+		// obtém informações de acesso dos usuários
+		await self.taxistaSrv.ApiV1TaxistaGet().toPromise().then(async resp => {
+			if (resp && resp.success)
+			{
+				resp.data.forEach(taxista_sum => {
+					novos_taxistas.push(self.instanciarTaxista(taxista_sum));
+				});
+			}
+		});
+
+		self.taxistas = novos_taxistas;
+
+		self.busyStackAtualizar.pop();
+	}
+
+	selecionar(taxista: TaxistaExt)
+	{
+		this.taxistaSelecionado.next(taxista);
+	}
+
+	async visualizar(taxista: TaxistaExt)
+	{
+		const self = this;
+		await self.setModo(Modo.mdVisualizacao).then(result =>
+		{
+			if (result)
+			{
+				self.selecionar(taxista);
+			}
+		});
+	}
+
+	async editar(taxista: TaxistaExt)
 	{
 		const self = this;
 		if (!self.podeEditar) return; // sanity check
 
-		self.modo = Modo.mdEdicao;
+		await self.setModo(Modo.mdEdicao).then(result =>
+		{
+			if (result)
+			{
+				self.selecionar(taxista);
+			}
+		});
 	}
 
-	public criar()
+	async deletar(taxista: TaxistaExt)
+	{
+		const self = this;
+
+		let confirmaRemocao = false;
+
+		await self.dialogSrv.open(
+			ConfirmDialogComponent,
+			{
+				context:
+				{
+					title: 'Taxistas',
+					prompt: 'Confirma remoção?'
+				},
+			})
+			.onClose.toPromise().then(result =>
+			{
+				confirmaRemocao = result;
+			});
+
+		if (confirmaRemocao)
+		{
+			self.busyStackDelete.push();
+
+			//await self.removerFoto(taxista.fotoSummary);
+
+			await self.taxistaSrv.ApiV1TaxistaByIdDelete(taxista.id).toPromise().then(resp =>
+			{
+				if (resp && resp.success)
+				{
+					self.toastSrv.success('Registro removido com sucesso!', 'Taxistas');
+					self.atualizar();
+				}
+			});
+
+			self.busyStackDelete.pop();
+		}
+	}
+
+	async criar()
 	{
 		const self = this;
 		if (!self.podeCriar) return; // sanity check
 
-		self.taxista = self.taxistasCtrl.instanciarTaxista();
-		self.visualizar();
-
-		self.modo = Modo.mdCriacao;
+		await self.setModo(Modo.mdCriacao).then(result =>
+		{
+			if (result)
+			{
+				self.selecionar(self.instanciarTaxista());
+			}
+		});
 	}
 
 	public async confirmarEdicao()
@@ -324,95 +441,146 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 		if (!self.podeConfirmar) return; // sanity check
 
-		const novoTaxista = self.taxistasCtrl.instanciarTaxista();
-
-		novoTaxista.usuario.nome = self.nome.value;
-		novoTaxista.endereco.cep = self.cep.value;
-		novoTaxista.endereco.logradouro = self.logradouro.value;
-		novoTaxista.endereco.numero = self.numero.value;
-		novoTaxista.endereco.complemento = self.complemento.value;
-		novoTaxista.endereco.bairro = self.bairro.value;
-		novoTaxista.endereco.localidade = self.localidade.value;
-		novoTaxista.endereco.uf = self.uf.value;
-		novoTaxista.rg = self.rg.value;
-		novoTaxista.cpf = self.cpf.value;
-		novoTaxista.usuario.email = self.email.value;
-		novoTaxista.usuario.telefone = self.telefone.value;
-		novoTaxista.usuario.login = self.login.value;
-		novoTaxista.usuario.senha = self.senha.value;
-		novoTaxista.usuario.confirmarSenha = self.conferirSenha.value;
-
-		let sucesso = false;
-		switch (self.modo)
+		if (self.modo === Modo.mdCriacao)
 		{
-			case Modo.mdCriacao:
-				sucesso = await self.taxistasCtrl.criarTaxista(novoTaxista);
-				if (sucesso)
-				{
-					self.toastSrv.success("Taxista criado com sucesso!", "Taxistas", {
-						destroyByClick: true,
-						duration: 0,
-						position: NbGlobalPhysicalPosition.TOP_RIGHT
-					});
+			const novoTaxista = self.instanciarTaxista();
+			novoTaxista.usuario = self.formUsuario.obterAlteracoes();
+			novoTaxista.endereco = self.formEndereco.obterAlteracoes();
+			novoTaxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
+			novoTaxista.fotoSummary = self.formFoto.obterAlteracoes();
 
-					self.limparCampos();
-				}
-				break;
-			case Modo.mdEdicao:
-				sucesso = await self.taxistasCtrl.alterarTaxista(self.taxista, novoTaxista);
-				if (sucesso)
+			self.busyStackCriar.push();
+
+			// cria o registro do taxista
+			await self.taxistaSrv.ApiV1TaxistaPost(novoTaxista).toPromise().then(async resp_cria_tx =>
+			{
+				if (resp_cria_tx && resp_cria_tx.success)
 				{
-					self.toastSrv.success("Taxista alterado com sucesso!", "Taxistas", {
-						destroyByClick: true,
-						duration: 0,
-						position: NbGlobalPhysicalPosition.TOP_RIGHT
-					});
+					novoTaxista.id = resp_cria_tx.data;
+
+					if (self.formFoto.alterado)
+					{
+						// cria o registro da foto
+						await self.fotoSrv.ApiV1FotoPost(self.formFoto.obterAlteracoes()).toPromise().then(async resp_cria_foto =>
+						{
+							if (resp_cria_foto && resp_cria_foto.success)
+							{
+								// associa a foto ao taxista
+								novoTaxista.idFoto = resp_cria_foto.data;
+
+								// atualiza o registro do taxista
+								await self.taxistaSrv.ApiV1TaxistaPut(novoTaxista).toPromise();
+							}
+						});
+					}
+
+					self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
 				}
-				break;
-			default:
-				break;
+			});
+
+			self.busyStackCriar.pop();
+		}
+		else if (self.modo === Modo.mdEdicao)
+		{
+			if (self.formUsuario.alterado)
+			{
+				await self.usuarioSrv.ApiV1UsuarioPut(self.formUsuario.obterAlteracoes()).toPromise().then(resp =>
+				{
+					if (resp && resp.success)
+					{
+						self.toastSrv.success('Informações pessoais alteradas com sucesso!', 'Taxistas');
+					}
+				});
+			}
+
+			if (self.formEndereco.alterado)
+			{
+				await self.enderecoSrv.ApiV1EnderecoPut(self.formEndereco.obterAlteracoes()).toPromise().then(resp =>
+				{
+					if (resp && resp.success)
+					{
+						self.toastSrv.success('Endereço alterado com sucesso!', 'Taxistas');
+					}
+				});
+			}
+
+			if (self.formCredenciais.alterado)
+			{
+				await self.usuarioSrv.ApiV1UsuarioAlteraSenhaByIdPost({
+					id: self.taxista.usuario.id,
+					credenciais: self.formCredenciais.obterAlteracoes()
+				}).toPromise().then(resp =>
+				{
+					if (resp && resp.success)
+					{
+						self.toastSrv.success('Credenciais alteradas com sucesso!', 'Taxistas');
+					}
+				});
+			}
+
+			if (self.formFoto.alterado)
+			{
+				await self.fotoSrv.ApiV1FotoPut(self.formFoto.obterAlteracoes()).toPromise().then(resp =>
+				{
+					if (resp && resp.success)
+					{
+						self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
+					}
+				});
+			}
 		}
 
-		if (sucesso)
-		{
-			self.taxistasCtrl.atualizar();
-		}
-		//self.visualizar();
+		self.redefinir();
+		self.atualizar();
+		self.setModo(Modo.mdVisualizacao);
 	}
 
-	public cancelarEdicao()
+	async cancelarEdicao()
 	{
 		const self = this;
 		if (!self.podeCancelar) return; // sanity check
 
-		self.visualizar();
+		let cancelar = true;
+
+		if (self.registroAlterado)
+		{
+			await self.dialogSrv.open(
+				ConfirmDialogComponent,
+				{
+					context:
+					{
+						title: 'Taxistas',
+						prompt: 'Cancelar alterações?'
+					},
+				})
+				.onClose.toPromise().then(async result =>
+				{
+					cancelar = result;
+				});
+		}
+
+		if (cancelar)
+		{
+			this.redefinir();
+			await self.setModo(Modo.mdVisualizacao);
+		}
 	}
 
 	private limparCampos()
 	{
 		const self = this;
-		self.formInformacoesPessoais.reset();
-		self.formEndereco.reset();
-		self.formCredenciais.reset();
+		self.formUsuario.form.reset();
+		self.formEndereco.form.reset();
+		self.formCredenciais.form.reset();
+		self.formFoto.form.reset();
 	}
 
-	processFile(imageInput: any)
+	private redefinir()
 	{
 		const self = this;
-
-		const file: File = imageInput.files[0];
-		const reader = new FileReader();
-
-		self.taxista.arquivoFoto = file;
-
-		const listenAsURL = (event: any) => {
-			self.imgSrc = event.target.result;
-			self.taxista.fotoSummary.dados = btoa(event.target.result);
-			self.taxista.fotoSummary.nomeArquivo = file.name;
-			self.taxista.fotoSummary.nome = file.name;
-		};
-
-		reader.addEventListener('load', listenAsURL);
-		reader.readAsDataURL(file);
+		self.formUsuario.redefinir();
+		self.formEndereco.redefinir();
+		self.formCredenciais.redefinir();
+		self.formFoto.redefinir();
 	}
 }

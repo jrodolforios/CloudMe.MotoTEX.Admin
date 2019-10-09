@@ -7,7 +7,6 @@ import { BusyStack } from '../../@core/utils/busy_stack';
 export interface TaxistaExt extends TaxistaSummary
 {
 	fotoSummary: FotoSummary;
-	arquivoFoto: File;
 }
 
 export const emptyUUID = '00000000-0000-0000-0000-000000000000';
@@ -40,8 +39,6 @@ export class TaxistasControllerService
 			taxista =
 			{
 				id: sumario.id,
-				rg: sumario.rg,
-				cpf: sumario.cpf,
 				usuario: sumario.usuario,
 				endereco: sumario.endereco,
 				idPontoTaxi: sumario.idPontoTaxi,
@@ -49,34 +46,37 @@ export class TaxistasControllerService
 				idFoto: sumario.idFoto,
 				fotoSummary:
 				{
-					id: emptyUUID,
+					id: null,
 					dados: null,
 					nome: '',
 					nomeArquivo: ''
 				},
-				arquivoFoto: null
 			};
 		}
 		else
 		{
 			taxista =
 			{
-				id: emptyUUID,
-				rg: '',
-				cpf: '',
+				id: undefined,
 				usuario:
 				{
-					id: emptyUUID,
+					id: undefined,
 					nome: '',
-					login: '',
+					rg: '',
+					cpf: '',
 					email: '',
-					senha: '',
-					confirmarSenha: '',
-					telefone: ''
+					telefone: '',
+					credenciais:
+					{
+						login: '',
+						senha: '',
+						confirmarSenha: '',
+						senhaAnterior: ''
+					}
 				},
 				endereco:
 				{
-					id: emptyUUID,
+					id: undefined,
 					cep: '',
 					logradouro: '',
 					numero: '',
@@ -85,13 +85,12 @@ export class TaxistasControllerService
 					localidade: '',
 					uf: ''
 				},
-				idLocalizacaoAtual: null,
-				idPontoTaxi: null,
-				idFoto: '',
-				arquivoFoto: null,
+				idLocalizacaoAtual: undefined,
+				idPontoTaxi: undefined,
+				idFoto: undefined,
 				fotoSummary:
 				{
-					id: emptyUUID,
+					id: null,
 					dados: null,
 					nome: '',
 					nomeArquivo: ''
@@ -110,14 +109,18 @@ export class TaxistasControllerService
 			{
 				id: taxista.usuario.id,
 				nome: taxista.usuario.nome,
+				cpf: taxista.usuario.cpf,
+				rg: taxista.usuario.rg,
 				email: taxista.usuario.email,
 				telefone: taxista.usuario.telefone,
-				login: taxista.usuario.login,
-				senha: taxista.usuario.senha,
-				confirmarSenha: taxista.usuario.confirmarSenha
+				credenciais:
+				{
+					login: taxista.usuario.credenciais.login,
+					senha: taxista.usuario.credenciais.senha,
+					confirmarSenha: taxista.usuario.credenciais.confirmarSenha,
+					senhaAnterior: taxista.usuario.credenciais.senhaAnterior
+				}
 			},
-			cpf: taxista.cpf,
-			rg: taxista.rg,
 			endereco:
 			{
 				id: taxista.endereco.id,
@@ -140,6 +143,19 @@ export class TaxistasControllerService
 	{
 		const self = this;
 		await self.obterTaxistas();
+
+		let taxistaSel = self.taxistaSelecionado.value;
+		const taxistas = self.taxistas.value;
+
+		if (taxistaSel && !taxistas.find(tx => tx.id === taxistaSel.id))
+		{
+			taxistaSel = null;
+		}
+
+		if (!taxistaSel)
+		{
+			self.taxistaSelecionado.next(taxistas.length > 0 ? taxistas[0] : null);
+		}
 	}
 
 	private async obterTaxistas()
@@ -152,7 +168,7 @@ export class TaxistasControllerService
 
 		// obtém informações de acesso dos usuários
 		await self.taxistasSrv.ApiV1TaxistaGet().toPromise().then(async resp => {
-			if (resp.success)
+			if (resp && resp.success)
 			{
 				resp.data.forEach(taxista_sum => {
 					taxistas.push(self.instanciarTaxista(taxista_sum));
@@ -178,7 +194,7 @@ export class TaxistasControllerService
 			fotoSummary.id = emptyUUID; // para serializalçao do parâmetro
 			await self.fotoSrv.ApiV1FotoPost(fotoSummary).toPromise().then(resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					fotoSummary.id = resp.data;
 				}
@@ -212,7 +228,7 @@ export class TaxistasControllerService
 			// cria o registro do taxista
 			await self.taxistasSrv.ApiV1TaxistaPost(taxistaSummary).toPromise().then(async resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					novo_taxista.id = resp.data;
 					await self.enviarFoto(novo_taxista.fotoSummary);
@@ -244,7 +260,7 @@ export class TaxistasControllerService
 
 			await self.taxistasSrv.ApiV1TaxistaPut(newTaxista).toPromise().then(async resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					if (newTaxista.fotoSummary.nomeArquivo !== oldTaxista.fotoSummary.nomeArquivo)
 					{
@@ -279,7 +295,7 @@ export class TaxistasControllerService
 
 			await self.taxistasSrv.ApiV1TaxistaByIdDelete(taxista.id).toPromise().then(resp =>
 			{
-				if (resp.success)
+				if (resp && resp.success)
 				{
 					result = true;
 				}

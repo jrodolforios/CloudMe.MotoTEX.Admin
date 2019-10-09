@@ -1,10 +1,10 @@
 /* tslint:disable */
-import { LocalizacaoSummary } from './localizacao-summary';
+import { EnderecoSummary } from './endereco-summary';
+import { UsuarioSummary } from './usuario-summary';
 export interface PassageiroSummary {
   id?: string;
-  idUsuario?: string;
-  cpf?: string;
   idFoto?: string;
   idLocalizacaoAtual?: string;
-  endereco?: LocalizacaoSummary;
+  endereco?: EnderecoSummary;
+  usuario?: UsuarioSummary;
 }

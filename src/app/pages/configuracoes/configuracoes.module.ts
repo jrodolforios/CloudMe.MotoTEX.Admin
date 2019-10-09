@@ -7,7 +7,7 @@ import { ValorEditorComponent } from './faixas-desconto/valor/valor-editor.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ThemeModule } from '../../@theme/theme.module';
 import { CommonViewsModule } from '../../common-views/common-views.module';
-import { NbCardModule, NbInputModule, NbButtonModule, NbRadioModule } from '@nebular/theme';
+import { NbCardModule, NbInputModule, NbButtonModule, NbRadioModule, NbSpinnerModule } from '@nebular/theme';
 import { ConfiguracoesRoutingModule } from './configuracoes-routing.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgxMaskModule } from 'ngx-mask';
@@ -32,6 +32,7 @@ import { NgxMaskModule } from 'ngx-mask';
 		NbRadioModule,
 		Ng2SmartTableModule,
 		ConfiguracoesRoutingModule,
+		NbSpinnerModule
 	]
 })
 export class ConfiguracoesModule { }

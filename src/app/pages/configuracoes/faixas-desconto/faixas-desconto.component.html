@@ -1,4 +1,4 @@
-<base-card>
+<base-card #baseCard>
 	<div header>FAIXAS DE DESCONTO</div>
 	<div body>
 		<ng2-smart-table #table
@@ -6,8 +6,7 @@
 			[source]="source" 
 			(createConfirm)="onCreateConfirm($event)"
 			(editConfirm)="onEditConfirm($event)"
-			(deleteConfirm)="onDeleteConfirm($event)"
-			(custom)="onCustomAction($event)">
+			(deleteConfirm)="onDeleteConfirm($event)">
 		</ng2-smart-table>
 	</div>
 </base-card>

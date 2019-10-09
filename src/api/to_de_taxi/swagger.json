@@ -2402,7 +2402,7 @@
         ],
         "parameters": [
           {
-            "name": "PassageiroSummary",
+            "name": "passageiroSummary",
             "in": "body",
             "description": "Modified Passageiro list's properties summary",
             "required": false,
@@ -2452,7 +2452,7 @@
         ],
         "parameters": [
           {
-            "name": "PassageiroSummary",
+            "name": "passageiroSummary",
             "in": "body",
             "description": "Passageiro's summary",
             "required": false,
@@ -3678,6 +3678,117 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Usuario/altera_senha/{id}": {
+      "post": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Altera senha do usuario.",
+        "operationId": "ApiV1UsuarioAltera_senhaByIdPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "credenciais",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CredenciaisUsuario"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Usuario/bloquear/{id}": {
+      "post": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Bloqueia/desbloqueia um usuario.",
+        "operationId": "ApiV1UsuarioBloquearByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "bloquear",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -5183,13 +5294,6 @@
           "format": "uuid",
           "type": "string"
         },
-        "idUsuario": {
-          "format": "uuid",
-          "type": "string"
-        },
-        "cpf": {
-          "type": "string"
-        },
         "idFoto": {
           "format": "uuid",
           "type": "string"
@@ -5199,7 +5303,54 @@
           "type": "string"
         },
         "endereco": {
-          "$ref": "#/definitions/LocalizacaoSummary"
+          "$ref": "#/definitions/EnderecoSummary"
+        },
+        "usuario": {
+          "$ref": "#/definitions/UsuarioSummary"
+        }
+      }
+    },
+    "UsuarioSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "cpf": {
+          "type": "string"
+        },
+        "rg": {
+          "type": "string"
+        },
+        "telefone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "credenciais": {
+          "$ref": "#/definitions/CredenciaisUsuario"
+        }
+      }
+    },
+    "CredenciaisUsuario": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "senhaAnterior": {
+          "type": "string"
+        },
+        "senha": {
+          "type": "string"
+        },
+        "confirmarSenha": {
+          "type": "string"
         }
       }
     },
@@ -5488,12 +5639,6 @@
           "format": "uuid",
           "type": "string"
         },
-        "cpf": {
-          "type": "string"
-        },
-        "rg": {
-          "type": "string"
-        },
         "idFoto": {
           "format": "uuid",
           "type": "string"
@@ -5511,33 +5656,6 @@
         },
         "endereco": {
           "$ref": "#/definitions/EnderecoSummary"
-        }
-      }
-    },
-    "UsuarioSummary": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "format": "uuid",
-          "type": "string"
-        },
-        "login": {
-          "type": "string"
-        },
-        "nome": {
-          "type": "string"
-        },
-        "telefone": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "senha": {
-          "type": "string"
-        },
-        "confirmarSenha": {
-          "type": "string"
         }
       }
     },
@@ -5804,7 +5922,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "https://auth.todetaxi.com.br/connect/authorize",
+      "authorizationUrl": "http://localhost:5000/connect/authorize",
       "scopes": {
         "todetaxiapi": "TOdeTaxiAPI"
       },
