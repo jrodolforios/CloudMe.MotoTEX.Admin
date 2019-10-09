@@ -101,7 +101,6 @@ $nb-themes: nb-register-theme((
   color-primary-1000: #505050,
   color-primary-1100: #404040,
     
-  header-background-color: #000000,
   header-text-color: #ffff00,
 
   sidebar-background-color: #404040,
@@ -110,13 +109,14 @@ $nb-themes: nb-register-theme((
   sidebar-scrollbar-background-color: #303030,
   sidebar-scrollbar-color: #505050,
   
-  text-hint-color: #E0E0E0,
+  text-hint-color: white,
+  text-hint-color-theme: #303030,
 
   card-header-primary-text-color: #ffff00,
   card-header-primary-background-color: #404040,
 
   menu-background-color: transparent,
-  menu-text-color: text-hint-color,
+  menu-text-color: #E0E0E0,
   menu-item-active-text-color: #ffff00,
   menu-item-icon-active-color: #ffff00,
   menu-item-divider-color:#303030,
@@ -139,6 +139,7 @@ $nb-themes: nb-register-theme((
   card-margin-bottom: 1.875rem,
   card-header-with-select-padding-top: 0.5rem,
   card-header-with-select-padding-bottom: 0.5rem,
+  user-name-text-color: white,
 
   select-min-width: 6rem,
 

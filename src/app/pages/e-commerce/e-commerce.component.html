@@ -1,38 +1,39 @@
 <div class="row">
-  <div class="col-xxl-5">
+  <div class="col-xxl-12">
     <div class="row">
       <div class="col-md-6">
-        <ngx-profit-card></ngx-profit-card>
+        <ngx-progress-section></ngx-progress-section>
       </div>
       <div class="col-md-6">
-        <ngx-earning-card></ngx-earning-card>
+          <div class="col-xxxl-12 col-md-12">
+              <nb-card ngClass="on">
+                <div class="icon-container">
+                  <div class="icon status-success" (click)="goToPage('/pages/settings/cameras')">
+                    <nb-icon class="nbIconCard" icon="person-add-outline"></nb-icon>
+                  </div>
+                </div>
+          
+                <div class="details">
+                  <div class="title h5">Taxistas</div>
+                  <div class="status">Adicionar Taxistas</div>
+                </div>
+              </nb-card>
+              <nb-card ngClass="on">
+                  <div class="icon-container">
+                    <div class="icon status-danger" (click)="goToPage('/pages/settings/cameras')">
+                      <nb-icon class="nbIconCard" icon="activity-outline"></nb-icon>
+                    </div>
+                  </div>
+            
+                  <div class="details">
+                    <div class="title h5">Configurações Financeiras</div>
+                    <div class="status">Ajustar tarifas e descontos</div>
+                  </div>
+                </nb-card>
+            </div>
       </div>
     </div>
 
     <ngx-traffic-reveal-card></ngx-traffic-reveal-card>
-  </div>
-
-  <div class="col-xxl-7">
-    <ngx-ecommerce-charts></ngx-ecommerce-charts>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xxl-9">
-    <ngx-country-orders></ngx-country-orders>
-  </div>
-
-  <div class="col-xxl-3">
-    <ngx-progress-section></ngx-progress-section>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xxl-9">
-    <ngx-ecommerce-visitors-analytics></ngx-ecommerce-visitors-analytics>
-  </div>
-
-  <div class="col-xxl-3">
-    <ngx-user-activity></ngx-user-activity>
   </div>
 </div>

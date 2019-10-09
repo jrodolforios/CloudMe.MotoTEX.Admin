@@ -32,7 +32,7 @@ import { ErrorInterceptor } from './@core/utils/error-interceptor';
 
 /*export const options: Partial<IConfig> = {
 };*/
-const toDeTaxiAPIBaseURL = 'http://localhost:5002';
+const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
 const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
 const viaCEPAPIBaseURL = 'https://viacep.com.br';
 const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;

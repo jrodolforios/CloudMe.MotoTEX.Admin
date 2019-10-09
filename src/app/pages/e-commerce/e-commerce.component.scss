@@ -1,4 +1,4 @@
-@import '../../../@theme/styles/themes';
+@import '../../@theme/styles/themes';
 
 @include nb-install-component() {
   nb-card {
@@ -7,12 +7,17 @@
     height: 6rem;
     overflow: visible;
 
+    .nbIconCard{
+        font-size: 3rem !important;
+    }
+
     .icon-container {
       height: 100%;
       padding: 0.625rem;
     }
 
     .icon {
+        cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -42,12 +47,11 @@
     }
 
     &.off {
-      color: nb-theme(text-hint-color-theme);
+      color: nb-theme(text-hint-color);
 
-      .status,
       .title,
       .icon {
-        color: nb-theme(text-hint-color-theme);
+        color: nb-theme(text-hint-color);
       }
 
       @each $status in nb-get-statuses() {
@@ -74,6 +78,10 @@
 
     .status {
       text-transform: uppercase;
+      font-family: nb-theme(text-paragraph-2-font-family);
+      font-size: nb-theme(text-paragraph-2-font-size);
+      font-weight: nb-theme(text-paragraph-2-font-weight);
+      line-height: nb-theme(text-paragraph-2-line-height);
     }
   }
 }

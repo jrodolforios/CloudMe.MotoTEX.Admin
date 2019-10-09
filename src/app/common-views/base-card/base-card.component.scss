@@ -1,19 +1,18 @@
 @import '../../@theme/styles/themes.scss';
 
-
 @include nb-install-component() {
 
-	/deep/ .title_items{
+	 .title_items{
 		display: flex;
 		flex-direction: row;
 	}
 
-	/deep/ .title {
+	 .title {
 		display: flex;
 		flex-direction: row;
 	}
 
-	/deep/ .refresh_icon {
+	 .refresh_icon {
 		height: auto;
 		font-size: small;
 		&:hover

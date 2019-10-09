@@ -178,8 +178,8 @@ export const DEFAULT_THEME = {
       secondLineGradFrom: baseThemeVariables.primary,
       secondLineGradTo: baseThemeVariables.primary,
 
-      secondAreaGradFrom: 'rgba(51, 102, 255, 0.2)',
-      secondAreaGradTo: 'rgba(51, 102, 255, 0)',
+      secondAreaGradFrom: 'rgba(255,255,153,0.2)',
+      secondAreaGradTo: 'rgba(255,255,0,0)',
       secondShadowLineDarkBg: 'rgba(0, 0, 0, 0)',
 
       // third line

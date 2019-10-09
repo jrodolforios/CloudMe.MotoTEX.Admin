@@ -17,7 +17,7 @@
       }
 
       text {
-        fill: nb-theme(text-hint-color);
+        fill: nb-theme(text-hint-color-theme);
       }
 
       .chart-legend {
@@ -25,7 +25,7 @@
           background: nb-theme(background-basic-color-2);
         }
         .legend-label {
-          color: nb-theme(text-hint-color);
+          color: nb-theme(text-hint-color-theme);
           .active .legend-label-text {
             color: nb-theme(text-basic-color);
           }

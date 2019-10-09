@@ -41,7 +41,7 @@
     padding-top: 1.5rem;
 
     span {
-      color: nb-theme(text-hint-color);
+      color: nb-theme(text-hint-color-theme);
     }
   }
 
@@ -90,7 +90,7 @@
     margin: 0 0.5rem;
     display: flex;
     justify-content: space-between;
-    color: nb-theme(text-hint-color);
+    color: nb-theme(text-hint-color-theme);
 
     .current {
       @include nb-ltr(order, 0);
@@ -114,7 +114,7 @@
   }
 
   .control-button {
-    color: nb-theme(text-hint-color);
+    color: nb-theme(text-hint-color-theme);
 
     &.on {
       color: nb-theme(color-primary-default);
@@ -165,7 +165,7 @@
 
   .volume-icon {
     font-size: 1em;
-    color: nb-theme(text-hint-color);
+    color: nb-theme(text-hint-color-theme);
   }
 
   &.collapsed {

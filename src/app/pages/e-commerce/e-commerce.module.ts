@@ -13,6 +13,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { ThemeModule } from '../../@theme/theme.module';
+import { StatusCardComponent } from '../dashboard/status-card/status-card.component';
 import { ECommerceComponent } from './e-commerce.component';
 import { ProfitCardComponent } from './profit-card/profit-card.component';
 import { ECommerceChartsPanelComponent } from './charts-panel/charts-panel.component';
@@ -74,6 +75,7 @@ import { EarningLiveUpdateChartComponent } from './earning-card/front-side/earni
   ],
   declarations: [
     ECommerceComponent,
+    StatusCardComponent,
     StatsCardFrontComponent,
     StatsAreaChartComponent,
     StatsBarAnimationChartComponent,
