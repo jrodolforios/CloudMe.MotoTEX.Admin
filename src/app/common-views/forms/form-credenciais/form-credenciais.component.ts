@@ -101,4 +101,10 @@ export class FormCredenciaisComponent implements OnInit, OnDestroy {
 			senhaAnterior: self.senha_anterior.value
 		};
 	}
+
+	public redefinir()
+	{
+		const self = this;
+		self.credenciais = self._credenciais;
+	}
 }

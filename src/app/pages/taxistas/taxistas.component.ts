@@ -50,7 +50,6 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 	taxista: TaxistaExt = null;
 	taxistas: TaxistaExt[] = [];
-	taxistasSub: Subscription;
 
 	get credenciais() { return this.taxista ? this.taxista.usuario.credenciais : null; }
 	get endereco() { return this.taxista ? this.taxista.endereco : null; }
@@ -93,7 +92,6 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	ngOnDestroy(): void
 	{
 		const self = this;
-		self.taxistasSub.unsubscribe();
 	}
 
 	ngAfterViewInit(): void
@@ -316,9 +314,13 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		let taxistaSel = self.taxistaSelecionado.value;
 
-		if (taxistaSel && !self.taxistas.find(tx => tx.id === taxistaSel.id))
+		if (taxistaSel)
 		{
-			taxistaSel = null;
+			taxistaSel = self.taxistas.find(tx => tx.id === taxistaSel.id);
+			if (taxistaSel)
+			{
+				self.taxistaSelecionado.next(taxistaSel);
+			}
 		}
 
 		if (!taxistaSel)
@@ -450,15 +452,29 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.busyStackCriar.push();
 
 			// cria o registro do taxista
-			await self.taxistaSrv.ApiV1TaxistaPost(novoTaxista).toPromise().then(async resp =>
+			await self.taxistaSrv.ApiV1TaxistaPost(novoTaxista).toPromise().then(async resp_cria_tx =>
 			{
-				if (resp && resp.success)
+				if (resp_cria_tx && resp_cria_tx.success)
 				{
-					novoTaxista.id = resp.data;
-					self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
+					novoTaxista.id = resp_cria_tx.data;
 
-					//await self.enviarFoto(novo_taxista.fotoSummary);
-					//result = true;
+					if (self.formFoto.alterado)
+					{
+						// cria o registro da foto
+						await self.fotoSrv.ApiV1FotoPost(self.formFoto.obterAlteracoes()).toPromise().then(async resp_cria_foto =>
+						{
+							if (resp_cria_foto && resp_cria_foto.success)
+							{
+								// associa a foto ao taxista
+								novoTaxista.idFoto = resp_cria_foto.data;
+
+								// atualiza o registro do taxista
+								await self.taxistaSrv.ApiV1TaxistaPut(novoTaxista).toPromise();
+							}
+						});
+					}
+
+					self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
 				}
 			});
 
@@ -468,7 +484,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		{
 			if (self.formUsuario.alterado)
 			{
-				self.usuarioSrv.ApiV1UsuarioPut(self.formUsuario.obterAlteracoes()).toPromise().then(resp =>
+				await self.usuarioSrv.ApiV1UsuarioPut(self.formUsuario.obterAlteracoes()).toPromise().then(resp =>
 				{
 					if (resp && resp.success)
 					{
@@ -479,7 +495,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 			if (self.formEndereco.alterado)
 			{
-				self.enderecoSrv.ApiV1EnderecoPut(self.formEndereco.obterAlteracoes()).toPromise().then(resp =>
+				await self.enderecoSrv.ApiV1EnderecoPut(self.formEndereco.obterAlteracoes()).toPromise().then(resp =>
 				{
 					if (resp && resp.success)
 					{
@@ -490,7 +506,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 			if (self.formCredenciais.alterado)
 			{
-				self.usuarioSrv.ApiV1UsuarioAlteraSenhaByIdPost({
+				await self.usuarioSrv.ApiV1UsuarioAlteraSenhaByIdPost({
 					id: self.taxista.usuario.id,
 					credenciais: self.formCredenciais.obterAlteracoes()
 				}).toPromise().then(resp =>
@@ -504,7 +520,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 			if (self.formFoto.alterado)
 			{
-				self.fotoSrv.ApiV1FotoPut(self.formFoto.obterAlteracoes()).toPromise().then(resp =>
+				await self.fotoSrv.ApiV1FotoPut(self.formFoto.obterAlteracoes()).toPromise().then(resp =>
 				{
 					if (resp && resp.success)
 					{
@@ -514,6 +530,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			}
 		}
 
+		self.redefinir();
 		self.atualizar();
 		self.setModo(Modo.mdVisualizacao);
 	}
@@ -544,6 +561,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		if (cancelar)
 		{
+			this.redefinir();
 			await self.setModo(Modo.mdVisualizacao);
 		}
 	}
@@ -555,5 +573,14 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		self.formEndereco.form.reset();
 		self.formCredenciais.form.reset();
 		self.formFoto.form.reset();
+	}
+
+	private redefinir()
+	{
+		const self = this;
+		self.formUsuario.redefinir();
+		self.formEndereco.redefinir();
+		self.formCredenciais.redefinir();
+		self.formFoto.redefinir();
 	}
 }

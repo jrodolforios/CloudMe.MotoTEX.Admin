@@ -101,4 +101,10 @@ export class FormUsuarioComponent implements OnInit, OnDestroy {
 			telefone: self.telefone.value,
 		};
 	}
+
+	public redefinir()
+	{
+		const self = this;
+		self.usuario = self._usuario;
+	}
 }

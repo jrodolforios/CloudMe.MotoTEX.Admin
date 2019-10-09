@@ -127,4 +127,10 @@ export class FormFotoComponent implements OnInit {
 			nomeArquivo: self.nomeArquivoFoto
 		};
 	}
+
+	public redefinir()
+	{
+		const self = this;
+		self.foto = self._foto;
+	}
 }

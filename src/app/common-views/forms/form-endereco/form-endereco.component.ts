@@ -139,4 +139,10 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 			uf: self.uf.value
 		};
 	}
+
+	public redefinir()
+	{
+		const self = this;
+		self.endereco = self._endereco;
+	}
 }
