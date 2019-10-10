@@ -47,6 +47,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	busyStackDelete = new BusyStack();
 	busyStackCriar = new BusyStack();
 	busyStackAlterar = new BusyStack();
+	criarNovo = false;
 
 	taxista: TaxistaExt = null;
 	taxistas: TaxistaExt[] = [];
@@ -434,6 +435,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				self.selecionar(self.instanciarTaxista());
 			}
 		});
+
+		this.criarNovo = true;
 	}
 
 	public async confirmarEdicao()

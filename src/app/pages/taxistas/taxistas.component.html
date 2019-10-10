@@ -1,17 +1,19 @@
 <div class="row">
-  <base-card #card_listagem class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
+  <base-card #card_listagem class="col-md-12">
     <div header>Taxistas</div>
     <div body>
       <div class="container actions">
-        <nb-actions size="small" class="row">
+        <nb-actions size="medium" class="row">
             <nb-action class="col">
-              <input type="text" nbInput fullWidth shape="semi-round" placeholder="Pesquisar...">
+              <input type="text" nbInput fullWidth shape="semi-round"class="inputSearch" placeholder="Pesquisar...">
+              <br/>
+              <br/>
             </nb-action>
             <nb-action class="col-auto" icon="search-outline"></nb-action>
             <nb-action nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
         </nb-actions>
       </div>
-      <nb-list class="own-scroll"
+      <nb-list *ngIf="!((usuario != null && usuario != undefined) || criarNovo)" class="own-scroll"
         nbInfiniteList
         [threshold]="500">
         <nb-list-item *ngFor="let taxista of taxistas">
@@ -42,13 +44,18 @@
               </div>
             </div>
           </div>
-        </nb-list-item>		
+        </nb-list-item>
       </nb-list>
+      <br/>
+      <br/>
+      <nb-alert status="info" *ngIf="taxistas.length <= 0 || taxistas == null || taxistas == undefined">
+        Sem registros para exibir
+      </nb-alert>
     </div>
   </base-card>
 
 
-  <base-card #card_detalhes class="col-xxxl-9 col-xxl-8 col-lg-7 col-md-6">
+  <base-card #card_detalhes *ngIf="(usuario != null && usuario != undefined) || criarNovo" class="col-md-12">
     <div header>Detalhes</div>
     <div class="body container" body>
       <nb-actions size="large" >
