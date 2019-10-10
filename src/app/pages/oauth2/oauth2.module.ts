@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {
 	NbCardModule,
 	NbLayoutModule,
+	NbButtonModule
 } from '@nebular/theme';
 
 import {
@@ -31,6 +32,7 @@ import { Oauth2RoutingModule } from './oauth2-routing.module';
 		CommonModule,
 		FormsModule,
 		HttpClientModule,
+		NbButtonModule,
 
 		NbAuthModule.forRoot({
 			strategies: [
@@ -49,7 +51,6 @@ import { Oauth2RoutingModule } from './oauth2-routing.module';
 					redirect:
 					{
 						success: '/pages/dashboard',
-						//failure: '/pages/error',
 					},
 				}),
 				/*NbOAuth2AuthStrategy.setup({

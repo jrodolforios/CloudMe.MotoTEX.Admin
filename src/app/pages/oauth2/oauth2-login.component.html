@@ -1,0 +1,19 @@
+<nb-layout>
+    <nb-layout-column>
+            <div class="col-md-5 offset-md-4 text-center">
+        <nb-card>
+            <nb-card-body>
+                    <h1>Bem-vindo</h1>
+                    <img src="/assets/images/to_de_taxi_logo.png" width="150px" class="logo-img">
+                    <br/>                    
+                    <br/>
+                    <button nbButton status="warning" *ngIf="!token" (click)="login()">Entrar</button>
+                    <button nbButton status="warning" *ngIf="token" (click)="logout()">Sair</button>
+                    <br/>
+                    <br/>
+                    <p>Toque em "Entrar" para fazer login</p>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    </nb-layout-column>
+</nb-layout>
