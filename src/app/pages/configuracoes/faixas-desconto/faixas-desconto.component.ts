@@ -53,7 +53,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 		},
 		columns: {
 			valor: {
-				title: 'Valor',
+				title: 'Valor (%)',
 				type: 'text',
 				editor:
 				{
