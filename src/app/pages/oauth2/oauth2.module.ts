@@ -45,7 +45,7 @@ import { Oauth2RoutingModule } from './oauth2-routing.module';
 					{
 						endpoint: 'https://auth.todetaxi.com.br/connect/authorize',
 						scope: 'todetaxiapi',
-						redirectUri: 'http://localhost:4200/auth/callback',
+						redirectUri: 'https://admin.todetaxi.com.br/auth/callback',
 						responseType: NbOAuth2ResponseType.TOKEN,
 					},
 					redirect:
