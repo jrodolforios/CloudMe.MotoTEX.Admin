@@ -1,15 +1,16 @@
 <form [formGroup]="form" class="container">
-    <fieldset [disabled]="desabilitarControles">
-      
-      <div class="row">
-        <img class="foto" [src]="imgSrc" [attr.height]="alturaImagem"/>
+  <fieldset [disabled]="desabilitarControles">
+
+    <div class="row">
+      <div class="col-md-3">
+        <img class="foto" [src]="imgSrc" [attr.height]="alturaImagem" />
+      </div>
+      <div class="col-md-9">
         <label nbButton status="primary" class="image-upload-container btn btn-bwm">
           <span>Selecionar imagem</span>
-          <input #imageInput
-                type="file"
-                accept="image/*"
-                (change)="processFile(imageInput)">
+          <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
         </label>
       </div>
-    </fieldset>
+    </div>
+  </fieldset>
 </form>
