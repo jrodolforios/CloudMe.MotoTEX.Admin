@@ -259,7 +259,7 @@ class TaxistaService extends __BaseService {
    *
    * - `id`: ID do usuário
    *
-   * - `ativar`:
+   * - `ativar`: Indica se o usuário será ativado/desativado
    *
    * @return Success
    */
@@ -291,7 +291,7 @@ class TaxistaService extends __BaseService {
    *
    * - `id`: ID do usuário
    *
-   * - `ativar`:
+   * - `ativar`: Indica se o usuário será ativado/desativado
    *
    * @return Success
    */
@@ -329,6 +329,10 @@ module TaxistaService {
      * ID do usuário
      */
     id: string;
+
+    /**
+     * Indica se o usuário será ativado/desativado
+     */
     ativar?: boolean;
   }
 }

@@ -2415,7 +2415,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[Boolean]"
+              "$ref": "#/definitions/Response[PassageiroSummary]"
             }
           },
           "401": {
@@ -2465,7 +2465,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[Guid]"
+              "$ref": "#/definitions/Response[PassageiroSummary]"
             }
           },
           "401": {
@@ -2548,6 +2548,113 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Passageiro/associar_foto/{id}": {
+      "post": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Associa uma foto ao passageiro.",
+        "operationId": "ApiV1PassageiroAssociar_fotoByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "idFoto",
+            "in": "query",
+            "description": "ID da foto",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Passageiro/ativar/{id}": {
+      "post": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Ativa/desativa um passageiro.",
+        "operationId": "ApiV1PassageiroAtivarByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "ativar",
+            "in": "query",
+            "description": "Indica se o usuário será ativado/desativado",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -3536,7 +3643,7 @@
         "tags": [
           "Taxista"
         ],
-        "summary": "Ativa/desativa um usuario.",
+        "summary": "Ativa/desativa um taxista.",
         "operationId": "ApiV1TaxistaAtivarByIdPost",
         "consumes": [],
         "produces": [
@@ -3556,6 +3663,7 @@
           {
             "name": "ativar",
             "in": "query",
+            "description": "Indica se o usuário será ativado/desativado",
             "required": false,
             "type": "boolean"
           }
@@ -5400,6 +5508,9 @@
         "id": {
           "format": "uuid",
           "type": "string"
+        },
+        "ativo": {
+          "type": "boolean"
         },
         "idFoto": {
           "format": "uuid",
