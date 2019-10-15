@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { TaxistasControllerService, TaxistaExt } from './taxistas-controller.service';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
 import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { NbDialogService, NbToastrService, NbGlobalPhysicalPosition } from '@nebular/theme';
@@ -9,10 +8,18 @@ import { FormCredenciaisComponent } from '../../common-views/forms/form-credenci
 import { FormFotoComponent } from '../../common-views/forms/form-foto/form-foto.component';
 import { FormUsuarioComponent } from '../../common-views/forms/form-usuario/form-usuario.component';
 import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
-import { TaxistaSummary } from '../../../api/to_de_taxi/models';
+import { TaxistaSummary, FotoSummary } from '../../../api/to_de_taxi/models';
 import { BusyStack } from '../../@core/utils/busy_stack';
+import { SendMessageComponent } from '../../common-views/send-message/send-message.component';
 
-enum Modo
+interface TaxistaExt extends TaxistaSummary
+{
+	fotoSummary: FotoSummary;
+}
+
+const emptyUUID = '00000000-0000-0000-0000-000000000000';
+
+export enum Modo
 {
 	mdEdicao,
 	mdCriacao,
@@ -28,6 +35,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 {
 	@ViewChild('card_listagem', null) cardListagem: BaseCardComponent;
 	@ViewChild('card_detalhes', null) cardDetalhes: BaseCardComponent;
+	@ViewChild('card_foto', null) cardFoto: BaseCardComponent;
+
+	@ViewChild('pesquisaTaxista', null) inputPesquisaTaxista: ElementRef;
 
 	@ViewChild('formUsuario', null) formUsuario: FormUsuarioComponent;
 	@ViewChild('formEndereco', null) formEndereco: FormEnderecoComponent;
@@ -43,14 +53,13 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	taxistaSelecionado = new BehaviorSubject<TaxistaExt>(null);
 
 	// indicação de carregamento de dados da API em background
-	busyStackAtualizar = new BusyStack();
-	busyStackDelete = new BusyStack();
-	busyStackCriar = new BusyStack();
-	busyStackAlterar = new BusyStack();
-	criarNovo = false;
+	busyStackListagem = new BusyStack();
+	busyStackDetalhes = new BusyStack();
 
 	taxista: TaxistaExt = null;
 	taxistas: TaxistaExt[] = [];
+
+	taxistasPesquisa: TaxistaExt[] = [];
 
 	get credenciais() { return this.taxista ? this.taxista.usuario.credenciais : null; }
 	get endereco() { return this.taxista ? this.taxista.endereco : null; }
@@ -58,10 +67,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	get usuario() { return this.taxista ? this.taxista.usuario : null; }
 
 	taxistaSelSub: Subscription;
-	busyStackCriarSub: Subscription = null;
-	busyStackAlterarSub: Subscription = null;
-	busyStackAtualizarSub: Subscription = null;
-	busyStackRemoverSub: Subscription = null;
+	busyStackListagemSub: Subscription = null;
+	busyStackDetalhesSub: Subscription = null;
+	busyStackFotoSub: Subscription = null;
 
 	get registroAlterado(): boolean
 	{
@@ -101,36 +109,34 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.atualizar();
 
-		const atualizarRemoverCallback = () =>
+		self.busyStackListagemSub = self.busyStackListagem.busy.subscribe(() =>
 		{
 			if (self.cardListagem)
 			{
-				self.cardListagem.toggleRefresh(
-					self.busyStackAtualizar.busy.value > 0 &&
-					self.busyStackDelete.busy.value > 0);
+				self.cardListagem.toggleRefresh(self.busyStackListagem.busy.value > 0);
 			}
-		};
+		});
 
-		const criarAlterarCallback = () =>
+		self.busyStackDetalhesSub = self.busyStackDetalhes.busy.subscribe(() =>
 		{
 			if (self.cardDetalhes)
 			{
-				self.cardDetalhes.toggleRefresh(
-					self.busyStackAtualizar.busy.value > 0 &&
-					self.busyStackDelete.busy.value > 0);
+				self.cardDetalhes.toggleRefresh(self.busyStackDetalhes.busy.value > 0);
 			}
-		};
+		});
 
-		self.busyStackAtualizarSub = self.busyStackAtualizar.busy.subscribe(atualizarRemoverCallback);
-		self.busyStackRemoverSub = self.busyStackDelete.busy.subscribe(atualizarRemoverCallback);
-		self.busyStackCriarSub = self.busyStackCriar.busy.subscribe(criarAlterarCallback);
-		self.busyStackAlterarSub = self.busyStackAlterar.busy.subscribe(criarAlterarCallback);
+		self.busyStackFotoSub = self.formFoto.busyStackFoto.busy.subscribe(() =>
+		{
+			if (self.cardFoto)
+			{
+				self.cardFoto.toggleRefresh(self.formFoto.busyStackFoto.busy.value > 0);
+			}
+		});
 
 		self.taxistaSelSub = self.taxistaSelecionado.subscribe(async tax_sel =>
 		{
 			if (self.taxista !== tax_sel)
 			{
-				self.limparCampos();
 				self.taxista = tax_sel;
 			}
 		});
@@ -185,7 +191,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	get podeEditar(): boolean
 	{
 		const self = this;
-		return self.modo === Modo.mdVisualizacao && self.taxista !== null && self.taxista.id.length > 0;
+		return self.modo === Modo.mdVisualizacao && self.taxista !== null;
 	}
 
 	get podeConfirmar(): boolean
@@ -200,6 +206,12 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		return self.modo === Modo.mdCriacao || self.modo === Modo.mdEdicao;
 	}
 
+	get validarSenhaAnterior(): boolean
+	{
+		const self = this;
+		return self.modo === Modo.mdEdicao;
+	}
+
 	public instanciarTaxista(sumario?: TaxistaSummary): TaxistaExt
 	{
 		let taxista: TaxistaExt;
@@ -208,6 +220,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			taxista =
 			{
 				id: sumario.id,
+				ativo: sumario.ativo,
 				usuario: sumario.usuario,
 				endereco: sumario.endereco,
 				idPontoTaxi: sumario.idPontoTaxi,
@@ -215,18 +228,32 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				idFoto: sumario.idFoto,
 				fotoSummary:
 				{
-					id: null,
+					id: sumario.idFoto,
 					dados: null,
 					nome: '',
 					nomeArquivo: ''
 				},
 			};
+
+			if (taxista.usuario)
+			{
+				if (!taxista.usuario.credenciais)
+				{
+					taxista.usuario.credenciais = {
+						login: '',
+						senha: '',
+						confirmarSenha: '',
+						senhaAnterior: ''
+					};
+				}
+			}
 		}
 		else
 		{
 			taxista =
 			{
 				id: undefined,
+				ativo: true,
 				usuario:
 				{
 					id: undefined,
@@ -313,18 +340,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 		await self.obterTaxistas();
 
-		let taxistaSel = self.taxistaSelecionado.value;
+		const taxistaSel = self.taxistaSelecionado.value;
 
-		if (taxistaSel)
-		{
-			taxistaSel = self.taxistas.find(tx => tx.id === taxistaSel.id);
-			if (taxistaSel)
-			{
-				self.taxistaSelecionado.next(taxistaSel);
-			}
-		}
-
-		if (!taxistaSel)
+		if (!taxistaSel || !self.taxistas.find(tx => tx.id === taxistaSel.id))
 		{
 			self.taxistaSelecionado.next(self.taxistas.length > 0 ? self.taxistas[0] : null);
 		}
@@ -334,7 +352,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 
-		self.busyStackAtualizar.push();
+		self.busyStackListagem.push();
 
 		const novos_taxistas: TaxistaExt[] = [];
 
@@ -342,15 +360,20 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		await self.taxistaSrv.ApiV1TaxistaGet().toPromise().then(async resp => {
 			if (resp && resp.success)
 			{
+				resp.data.sort((tx1, tx2) =>
+				{
+					return tx1.usuario.nome.localeCompare(tx2.usuario.nome);
+				});
+
 				resp.data.forEach(taxista_sum => {
 					novos_taxistas.push(self.instanciarTaxista(taxista_sum));
 				});
 			}
 		});
 
-		self.taxistas = novos_taxistas;
+		self.taxistasPesquisa = self.taxistas = novos_taxistas;
 
-		self.busyStackAtualizar.pop();
+		self.busyStackListagem.pop();
 	}
 
 	selecionar(taxista: TaxistaExt)
@@ -406,7 +429,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		if (confirmaRemocao)
 		{
-			self.busyStackDelete.push();
+			self.busyStackListagem.push();
 
 			//await self.removerFoto(taxista.fotoSummary);
 
@@ -419,8 +442,65 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				}
 			});
 
-			self.busyStackDelete.pop();
+			self.busyStackListagem.pop();
 		}
+	}
+
+	async ativar(taxista: TaxistaExt, ativo: boolean)
+	{
+		const self = this;
+		self.busyStackListagem.push();
+
+		await self.taxistaSrv.ApiV1TaxistaAtivarByIdPost(
+		{
+			id: taxista.id,
+			ativar: ativo
+		}).toPromise().then(resp =>
+		{
+			if (resp && resp.success)
+			{
+				self.toastSrv.success( `Taxista ${taxista.usuario.nome} ${ativo ? 'ativado' : 'desativado'} com sucesso!`, 'Taxistas');
+				self.atualizar();
+			}
+		});
+
+		self.busyStackListagem.pop();
+	}
+
+	async enviarMensagem(taxista: TaxistaExt)
+	{
+		const self = this;
+		await self.dialogSrv.open(
+			SendMessageComponent,
+			{
+				context:
+				{
+					destinatario: taxista.usuario
+				},
+			})
+			.onClose.toPromise().then(async result =>
+			{
+				if (result)
+				{
+					self.toastSrv.success( `Mensagem enviada para  ${taxista.usuario.nome} com sucesso!`, 'Taxistas');
+				}
+			});
+	}
+
+	limparPesquisa()
+	{
+		const self = this;
+		self.taxistasPesquisa = self.taxistas;
+		self.inputPesquisaTaxista.nativeElement.value = '';
+	}
+
+	filtrarTaxistas(filter: string)
+	{
+		const self = this;
+
+		self.taxistasPesquisa = self.taxistas.filter(taxista => {
+			return taxista.usuario.nome.toUpperCase().includes(filter.toUpperCase());
+		});
 	}
 
 	async criar()
@@ -435,14 +515,14 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				self.selecionar(self.instanciarTaxista());
 			}
 		});
-
-		this.criarNovo = true;
 	}
 
 	public async confirmarEdicao()
 	{
 		const self = this;
 		if (!self.podeConfirmar) return; // sanity check
+
+		self.busyStackDetalhes.push();
 
 		if (self.modo === Modo.mdCriacao)
 		{
@@ -452,15 +532,11 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			novoTaxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
 			novoTaxista.fotoSummary = self.formFoto.obterAlteracoes();
 
-			self.busyStackCriar.push();
-
 			// cria o registro do taxista
 			await self.taxistaSrv.ApiV1TaxistaPost(novoTaxista).toPromise().then(async resp_cria_tx =>
 			{
 				if (resp_cria_tx && resp_cria_tx.success)
 				{
-					novoTaxista.id = resp_cria_tx.data;
-
 					if (self.formFoto.alterado)
 					{
 						// cria o registro da foto
@@ -469,10 +545,10 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 							if (resp_cria_foto && resp_cria_foto.success)
 							{
 								// associa a foto ao taxista
-								novoTaxista.idFoto = resp_cria_foto.data;
+								resp_cria_tx.data.idFoto = resp_cria_foto.data;
 
 								// atualiza o registro do taxista
-								await self.taxistaSrv.ApiV1TaxistaPut(novoTaxista).toPromise();
+								await self.taxistaSrv.ApiV1TaxistaPut(resp_cria_tx.data).toPromise();
 							}
 						});
 					}
@@ -480,8 +556,6 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 					self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
 				}
 			});
-
-			self.busyStackCriar.pop();
 		}
 		else if (self.modo === Modo.mdEdicao)
 		{
@@ -509,7 +583,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 			if (self.formCredenciais.alterado)
 			{
-				await self.usuarioSrv.ApiV1UsuarioAlteraSenhaByIdPost({
+				await self.usuarioSrv.ApiV1UsuarioAlteraCredenciaisByIdPost({
 					id: self.taxista.usuario.id,
 					credenciais: self.formCredenciais.obterAlteracoes()
 				}).toPromise().then(resp =>
@@ -523,19 +597,56 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 			if (self.formFoto.alterado)
 			{
-				await self.fotoSrv.ApiV1FotoPut(self.formFoto.obterAlteracoes()).toPromise().then(resp =>
+				const alteracoes = self.formFoto.obterAlteracoes();
+
+				if (!self.taxista.idFoto) // taxista sem foto
 				{
-					if (resp && resp.success)
+					// cria uma nova foto
+
+					await self.fotoSrv.ApiV1FotoPost(alteracoes).toPromise().then(async resp_cria_foto =>
 					{
-						self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
-					}
-				});
+						if (resp_cria_foto && resp_cria_foto.success)
+						{
+							// associa foto ao taxista
+							self.taxista.idFoto = resp_cria_foto.data;
+
+							await self.taxistaSrv.ApiV1TaxistaAssociarFotoByIdPost(
+								{
+									id: self.taxista.id,
+									idFoto: self.taxista.idFoto
+								}).toPromise().then(async resp_assoc_foto_tx =>
+							{
+								if (resp_assoc_foto_tx && resp_assoc_foto_tx.success)
+								{
+									self.toastSrv.success('Foto inserida com sucesso!', 'Taxistas');
+								}
+								else
+								{
+									// remove a foto
+									await self.fotoSrv.ApiV1FotoByIdDelete(resp_cria_foto.data).toPromise();
+								}
+							});
+						}
+					});
+				}
+				else // troca de foto
+				{
+					await self.fotoSrv.ApiV1FotoPut(alteracoes).toPromise().then(resp_modifica_foto =>
+					{
+						if (resp_modifica_foto && resp_modifica_foto.success)
+						{
+							self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
+						}
+					});
+				}
 			}
 		}
 
 		self.redefinir();
 		self.atualizar();
 		self.setModo(Modo.mdVisualizacao);
+
+		self.busyStackDetalhes.pop();
 	}
 
 	async cancelarEdicao()
@@ -564,18 +675,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		if (cancelar)
 		{
-			this.redefinir();
+			self.redefinir();
 			await self.setModo(Modo.mdVisualizacao);
 		}
-	}
-
-	private limparCampos()
-	{
-		const self = this;
-		self.formUsuario.form.reset();
-		self.formEndereco.form.reset();
-		self.formCredenciais.form.reset();
-		self.formFoto.form.reset();
 	}
 
 	private redefinir()

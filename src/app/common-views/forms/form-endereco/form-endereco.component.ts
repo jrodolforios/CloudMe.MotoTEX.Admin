@@ -4,6 +4,8 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EnderecoService } from '../../../../api/viacep/services';
 import { EnderecoSummary } from '../../../../api/to_de_taxi/models';
+import { Endereco } from '../../../../api/viacep/models';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
 	selector: 'ngx-form-endereco',
@@ -21,6 +23,8 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
+		self.form.reset();
+
 		self._endereco = value;
 		if (self._endereco)
 		{
@@ -34,10 +38,6 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 				localidade: self._endereco.localidade,
 				uf: self._endereco.uf
 			});
-		}
-		else
-		{
-			self.form.reset();
 		}
 	}
 
@@ -68,7 +68,9 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 	get localidade() { return this.form.get('localidade'); }
 	get uf() { return this.form.get('uf'); }
 
-	constructor(private enderecoSrv: EnderecoService) { }
+	constructor(
+		private enderecoSrv: EnderecoService,
+		private toastSrv: NbToastrService) { }
 
 	ngOnInit()
 	{
@@ -111,7 +113,14 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 		const self = this;
 		await self.enderecoSrv.Get(cep).toPromise().then(endereco =>
 		{
-			self.form.patchValue(endereco);
+			if (endereco.erro)
+			{
+				self.toastSrv.danger('CEP não encontrado', 'Endereço');
+			}
+			else
+			{
+				self.form.patchValue(endereco);
+			}
 		});
 	}
 

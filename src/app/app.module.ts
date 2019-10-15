@@ -19,6 +19,7 @@ import {
 	NbSidebarModule,
 	NbToastrModule,
 	NbWindowModule,
+	NbTooltipModule,
 } from '@nebular/theme';
 import { FipeApiModule } from '../api/fipe/fipe-api.module';
 import { ApiModule } from '../api/to_de_taxi/api.module';
@@ -33,7 +34,8 @@ import { CommonViewsModule } from './common-views/common-views.module';
 
 /*export const options: Partial<IConfig> = {
 };*/
-const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
+//const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
+const toDeTaxiAPIBaseURL = 'http://localhost:5002';
 const fipeAPIBaseURL = 'https://parallelum.com.br/fipe';
 const viaCEPAPIBaseURL = 'https://viacep.com.br';
 const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
@@ -59,6 +61,7 @@ const authBaseEndpoint = `${toDeTaxiAPIBaseURL}/api/v1/usuario/`;
 		NbChatModule.forRoot({
 			messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
 		}),
+		NbTooltipModule,
 		CoreModule.forRoot(),
 
 		FipeApiModule.forRoot({rootUrl: fipeAPIBaseURL}),

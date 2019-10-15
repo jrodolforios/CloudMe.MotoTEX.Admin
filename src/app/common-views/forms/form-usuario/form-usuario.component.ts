@@ -18,6 +18,8 @@ export class FormUsuarioComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
+		self.form.reset();
+
 		self._usuario = value;
 		if (self._usuario)
 		{
@@ -29,10 +31,6 @@ export class FormUsuarioComponent implements OnInit, OnDestroy {
 				email: self._usuario.email,
 				telefone: self._usuario.telefone,
 			});
-		}
-		else
-		{
-			self.form.reset();
 		}
 	}
 

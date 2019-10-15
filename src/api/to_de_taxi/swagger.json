@@ -3319,7 +3319,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[Boolean]"
+              "$ref": "#/definitions/Response[TaxistaSummary]"
             }
           },
           "401": {
@@ -3369,7 +3369,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[Guid]"
+              "$ref": "#/definitions/Response[TaxistaSummary]"
             }
           },
           "401": {
@@ -3452,6 +3452,112 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Taxista/associar_foto/{id}": {
+      "post": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Associa uma foto ao taxista.",
+        "operationId": "ApiV1TaxistaAssociar_fotoByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "idFoto",
+            "in": "query",
+            "description": "ID da foto",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Taxista/ativar/{id}": {
+      "post": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Ativa/desativa um usuario.",
+        "operationId": "ApiV1TaxistaAtivarByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "ativar",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -3703,13 +3809,13 @@
         ]
       }
     },
-    "/api/v1/Usuario/altera_senha/{id}": {
+    "/api/v1/Usuario/altera_credenciais/{id}": {
       "post": {
         "tags": [
           "Usuario"
         ],
-        "summary": "Altera senha do usuario.",
-        "operationId": "ApiV1UsuarioAltera_senhaByIdPost",
+        "summary": "Altera credenciais do usuario.",
+        "operationId": "ApiV1UsuarioAltera_credenciaisByIdPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -3779,7 +3885,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "DialList's ID",
+            "description": "ID do usuário",
             "required": true,
             "type": "string",
             "format": "uuid"
@@ -3787,6 +3893,7 @@
           {
             "name": "bloquear",
             "in": "query",
+            "description": "Indica se o usuário será ou não bloqueado",
             "required": false,
             "type": "boolean"
           }
@@ -5638,6 +5745,9 @@
         "id": {
           "format": "uuid",
           "type": "string"
+        },
+        "ativo": {
+          "type": "boolean"
         },
         "idFoto": {
           "format": "uuid",

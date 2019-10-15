@@ -22,7 +22,7 @@ class UsuarioService extends __BaseService {
   static readonly ApiV1UsuarioPostPath = '/api/v1/Usuario';
   static readonly ApiV1UsuarioByIdGetPath = '/api/v1/Usuario/{id}';
   static readonly ApiV1UsuarioByIdDeletePath = '/api/v1/Usuario/{id}';
-  static readonly ApiV1UsuarioAlteraSenhaByIdPostPath = '/api/v1/Usuario/altera_senha/{id}';
+  static readonly ApiV1UsuarioAlteraCredenciaisByIdPostPath = '/api/v1/Usuario/altera_credenciais/{id}';
   static readonly ApiV1UsuarioBloquearByIdPostPath = '/api/v1/Usuario/bloquear/{id}';
 
   constructor(
@@ -210,7 +210,7 @@ class UsuarioService extends __BaseService {
   }
 
   /**
-   * @param params The `UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams` containing the following parameters:
+   * @param params The `UsuarioService.ApiV1UsuarioAlteraCredenciaisByIdPostParams` containing the following parameters:
    *
    * - `id`: DialList's ID
    *
@@ -218,7 +218,7 @@ class UsuarioService extends __BaseService {
    *
    * @return Success
    */
-  ApiV1UsuarioAlteraSenhaByIdPostResponse(params: UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+  ApiV1UsuarioAlteraCredenciaisByIdPostResponse(params: UsuarioService.ApiV1UsuarioAlteraCredenciaisByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -226,7 +226,7 @@ class UsuarioService extends __BaseService {
     __body = params.credenciais;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/api/v1/Usuario/altera_senha/${params.id}`,
+      this.rootUrl + `/api/v1/Usuario/altera_credenciais/${params.id}`,
       __body,
       {
         headers: __headers,
@@ -242,7 +242,7 @@ class UsuarioService extends __BaseService {
     );
   }
   /**
-   * @param params The `UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams` containing the following parameters:
+   * @param params The `UsuarioService.ApiV1UsuarioAlteraCredenciaisByIdPostParams` containing the following parameters:
    *
    * - `id`: DialList's ID
    *
@@ -250,8 +250,8 @@ class UsuarioService extends __BaseService {
    *
    * @return Success
    */
-  ApiV1UsuarioAlteraSenhaByIdPost(params: UsuarioService.ApiV1UsuarioAlteraSenhaByIdPostParams): __Observable<ResponseBoolean> {
-    return this.ApiV1UsuarioAlteraSenhaByIdPostResponse(params).pipe(
+  ApiV1UsuarioAlteraCredenciaisByIdPost(params: UsuarioService.ApiV1UsuarioAlteraCredenciaisByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1UsuarioAlteraCredenciaisByIdPostResponse(params).pipe(
       __map(_r => _r.body as ResponseBoolean)
     );
   }
@@ -259,9 +259,9 @@ class UsuarioService extends __BaseService {
   /**
    * @param params The `UsuarioService.ApiV1UsuarioBloquearByIdPostParams` containing the following parameters:
    *
-   * - `id`: DialList's ID
+   * - `id`: ID do usuário
    *
-   * - `bloquear`:
+   * - `bloquear`: Indica se o usuário será ou não bloqueado
    *
    * @return Success
    */
@@ -291,9 +291,9 @@ class UsuarioService extends __BaseService {
   /**
    * @param params The `UsuarioService.ApiV1UsuarioBloquearByIdPostParams` containing the following parameters:
    *
-   * - `id`: DialList's ID
+   * - `id`: ID do usuário
    *
-   * - `bloquear`:
+   * - `bloquear`: Indica se o usuário será ou não bloqueado
    *
    * @return Success
    */
@@ -307,9 +307,9 @@ class UsuarioService extends __BaseService {
 module UsuarioService {
 
   /**
-   * Parameters for ApiV1UsuarioAlteraSenhaByIdPost
+   * Parameters for ApiV1UsuarioAlteraCredenciaisByIdPost
    */
-  export interface ApiV1UsuarioAlteraSenhaByIdPostParams {
+  export interface ApiV1UsuarioAlteraCredenciaisByIdPostParams {
 
     /**
      * DialList's ID
@@ -324,9 +324,13 @@ module UsuarioService {
   export interface ApiV1UsuarioBloquearByIdPostParams {
 
     /**
-     * DialList's ID
+     * ID do usuário
      */
     id: string;
+
+    /**
+     * Indica se o usuário será ou não bloqueado
+     */
     bloquear?: boolean;
   }
 }

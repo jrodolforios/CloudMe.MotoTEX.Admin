@@ -26,6 +26,8 @@ export class FormCredenciaisComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
+		self.form.reset();
+
 		self._credenciais = value;
 		if (self._credenciais)
 		{
@@ -36,10 +38,6 @@ export class FormCredenciaisComponent implements OnInit, OnDestroy {
 				senha_anterior: self._credenciais.senhaAnterior,
 				conferir_senha: self._credenciais.confirmarSenha,
 			});
-		}
-		else
-		{
-			self.form.reset();
 		}
 	}
 

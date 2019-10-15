@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { SeletorItemComponent } from './seletor-items/seletor-items.component';
 import { ThemeModule } from '../@theme/theme.module';
-import { NbCardModule, NbSpinnerModule, NbIconModule, NbListModule, NbButtonModule } from '@nebular/theme';
+import { NbCardModule, NbSpinnerModule, NbIconModule, NbListModule, NbButtonModule, NbToastrModule } from '@nebular/theme';
 import { FormEnderecoComponent } from './forms/form-endereco/form-endereco.component';
 import { FormFotoComponent } from './forms/form-foto/form-foto.component';
 import { FormCredenciaisComponent } from './forms/form-credenciais/form-credenciais.component';
@@ -12,6 +12,7 @@ import { FormUsuarioComponent } from './forms/form-usuario/form-usuario.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { NgxMaskModule } from 'ngx-mask';
+import { SendMessageComponent } from './send-message/send-message.component';
 
 const COMMON_VIEWS_COMPS = [
 	BaseCardComponent,
@@ -21,6 +22,7 @@ const COMMON_VIEWS_COMPS = [
 	FormFotoComponent,
 	FormCredenciaisComponent,
 	FormUsuarioComponent,
+	SendMessageComponent,
 ];
 
 @NgModule({
@@ -36,6 +38,7 @@ const COMMON_VIEWS_COMPS = [
 		NbButtonModule,
 		NbIconModule,
 		NgxMaskModule,
+		NbToastrModule,
 		ShowHidePasswordModule
 	],
 	declarations: [
@@ -45,7 +48,8 @@ const COMMON_VIEWS_COMPS = [
 		...COMMON_VIEWS_COMPS
 	],
 	entryComponents: [
-		ConfirmDialogComponent
+		ConfirmDialogComponent,
+		SendMessageComponent
 	]
 })
 export class CommonViewsModule {

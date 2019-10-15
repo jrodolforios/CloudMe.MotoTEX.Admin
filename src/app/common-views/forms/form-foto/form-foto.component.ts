@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FotoSummary } from '../../../../api/to_de_taxi/models';
 import { FotoService } from '../../../../api/to_de_taxi/services';
 import { FormGroup } from '@angular/forms';
+import { BusyStack } from '../../../@core/utils/busy_stack';
 
 @Component({
 	selector: 'ngx-form-foto',
@@ -16,6 +17,8 @@ export class FormFotoComponent implements OnInit {
 	dadosFoto: any = null;
 	nomeFoto: string = '';
 	nomeArquivoFoto: string = '';
+
+	busyStackFoto = new BusyStack();
 
 	// dados originais
 	private _foto: FotoSummary = null;
@@ -45,12 +48,15 @@ export class FormFotoComponent implements OnInit {
 
 	constructor(private fotoSrv: FotoService) { }
 
-	ngOnInit() {
+	ngOnInit()
+	{
 	}
 
 	private async carregarFoto()
 	{
 		const self = this;
+		self.busyStackFoto.push();
+
 		if (!self._foto)
 		{
 			self.nomeFoto = '';
@@ -86,6 +92,8 @@ export class FormFotoComponent implements OnInit {
 			self.dadosFoto = self._foto.dados;
 			self.imgSrc = atob(self.dadosFoto);
 		}
+
+		self.busyStackFoto.pop();
 	}
 
 	processFile(imageInput: any)

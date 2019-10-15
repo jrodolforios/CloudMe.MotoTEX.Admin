@@ -1,46 +1,46 @@
 <div class="row">
-  <base-card #card_listagem class="col-md-12">
+  <base-card #card_listagem class="col-md-6">
     <div header>Taxistas</div>
     <div body>
       <div class="container actions">
         <nb-actions size="medium" class="row">
             <nb-action class="col">
-              <input type="text" nbInput fullWidth shape="semi-round"class="inputSearch" placeholder="Pesquisar...">
-              <br/>
-              <br/>
+              <input nbTooltip="Pesquisar" #pesquisaTaxista type="text" nbInput fullWidth shape="semi-round"class="inputSearch" placeholder="Pesquisar..." (input)="filtrarTaxistas($event.target.value)">
             </nb-action>
-            <nb-action class="col-auto" icon="search-outline"></nb-action>
-            <nb-action nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
+            <nb-action class="col-auto" icon="close-outline" (click)="limparPesquisa()" [disabled]="!pesquisaTaxista.value"></nb-action>
+            <nb-action nbTooltip="Adicionar taxista" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
         </nb-actions>
       </div>
-      <nb-list *ngIf="!((usuario != null && usuario != undefined) || criarNovo)" class="own-scroll"
+      <nb-list class="own-scroll"
         nbInfiniteList
         [threshold]="500">
-        <nb-list-item *ngFor="let taxista of taxistas">
+        <nb-list-item *ngFor="let taxista of taxistasPesquisa">
           <div class="container">
             <div class="row h4 nome">
               <div class="col-8 nome_taxista" (click)="visualizar(taxista)">
-                {{taxista && taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}
+                {{taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}
               </div>
               <div class="col-4">
                 <nb-actions class="actions_taxista" size="small">
-                  <nb-action icon="trash-2-outline" (click)="deletar(taxista)"></nb-action>
-                  <nb-action [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(taxista)"></nb-action>
+                  <nb-action nbTooltip="Enviar mensagem" icon="message-circle-outline" (click)="enviarMensagem(taxista)"></nb-action>
+                  <nb-action nbTooltip="Remover" icon="trash-2-outline" (click)="deletar(taxista)"></nb-action>
+                  <nb-action nbTooltip="Modificar" [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(taxista)"></nb-action>
+                  <nb-action nbTooltip="taxista.ativo ? 'Desativar' : 'Ativar'" [icon]="taxista.ativo ? 'toggle-right' : 'toggle-left-outline'" (click)="ativar(taxista, !taxista.ativo)"></nb-action>
                 </nb-actions>
               </div>
             </div>
             <div class="row sumario">
               <div class="col propriedade">
                 <div class="nome_propriedade">RG</div>
-                <div class="valor_propriedade">{{ taxista ? taxista.usuario.rg : "N/I" }}</div>
+                <div class="valor_propriedade">{{ taxista.usuario.rg }}</div>
               </div>
               <div class="col propriedade">
                 <div class="nome_propriedade">CPF</div>
-                <div class="valor_propriedade">{{ taxista ? taxista.usuario.cpf : "N/I" }}</div>
+                <div class="valor_propriedade">{{ taxista.usuario.cpf }}</div>
               </div>
               <div class="col propriedade">
                 <div class="nome_propriedade">TELEFONE</div>
-                <div class="valor_propriedade">{{ taxista ? taxista.usuario.telefone : "N/I" }}</div>
+                <div class="valor_propriedade">{{ taxista.usuario.telefone }}</div>
               </div>
             </div>
           </div>
@@ -48,14 +48,14 @@
       </nb-list>
       <br/>
       <br/>
-      <nb-alert status="info" *ngIf="taxistas.length <= 0 || taxistas == null || taxistas == undefined">
+      <nb-alert status="info" *ngIf="taxistas.length === 0 || taxistas == null || taxistas == undefined">
         Sem registros para exibir
       </nb-alert>
     </div>
   </base-card>
 
 
-  <base-card #card_detalhes *ngIf="(usuario != null && usuario != undefined) || criarNovo" class="col-md-12">
+  <base-card #card_detalhes class="col-md-6">
     <div header>Detalhes</div>
     <div class="body container" body>
       <nb-actions size="large" >
@@ -66,7 +66,7 @@
       <nb-card>
         <nb-card-header>Informações pessoais</nb-card-header>
         <nb-card-body>
-          <ngx-form-usuario #formUsuario
+          <ngx-form-usuario class="formulario" #formUsuario
             [desabilitarControles]="desabilitarControles"
             [usuario]="usuario">
           </ngx-form-usuario>
@@ -76,7 +76,7 @@
       <nb-card>
         <nb-card-header>Endereço</nb-card-header>
         <nb-card-body>
-          <ngx-form-endereco #formEndereco
+          <ngx-form-endereco class="formulario" #formEndereco
             [desabilitarControles]="desabilitarControles"
             [endereco]="endereco">
           </ngx-form-endereco>
@@ -86,19 +86,19 @@
       <nb-card>
         <nb-card-header>Credenciais</nb-card-header>
         <nb-card-body>
-          <ngx-form-credenciais #formCredenciais
+          <ngx-form-credenciais class="formulario" #formCredenciais
             [desabilitarControles]="desabilitarControles"
-            [validarSenhaAnterior]="false"
+            [validarSenhaAnterior]="validarSenhaAnterior"
             [credenciais]="credenciais">
           </ngx-form-credenciais>
         </nb-card-body>
       </nb-card>
 
       <nb-card>
-        <nb-card-header>Foto</nb-card-header>
+        <nb-card-header #cardFoto>Foto</nb-card-header>
         <nb-card-body>
           <div class="row">
-          <ngx-form-foto #formFoto
+          <ngx-form-foto class="formulario" #formFoto
             [alturaImagem]="200"
             [desabilitarControles]="desabilitarControles"
             [foto]="foto">

@@ -148,4 +148,8 @@ $nb-themes: nb-register-theme((
   slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3,
 
   actions-icon-color: #222222,
+
+  spinner-background-color: rgba(0, 0, 0, 0.5),
+  spinner-circle-filled-color: #ffff00,
+  spinner-text-color: white
 ), to_de_taxi, corporate);

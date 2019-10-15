@@ -1,6 +1,7 @@
 
 export interface Endereco
 {
+	erro?: boolean;
 	cep?: string;
 	logradouro?: string;
 	complemento?: string;
