@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MarcaVeiculo, ModeloVeiculo } from '../../../api/fipe/models';
 import { BehaviorSubject } from 'rxjs';
-import { VeiculoSummary, FotoSummary } from '../../../api/to_de_taxi/models';
+import { VeiculoSummary, FotoSummary, MarcaVeiculo, ModeloVeiculo } from '../../../api/to_de_taxi/models';
 
 export class VeiculoSummaryExt
 {

@@ -26,6 +26,11 @@ const routes: Routes = [{
 				.then(m => m.VeiculosModule),
 		},
 		{
+			path: 'pontos-taxi',
+			loadChildren: () => import('./pontos-taxi/pontos-taxi.module')
+				.then(m => m.PontosTaxiModule),
+		},
+		{
 			path: 'dashboard',
 			component: ECommerceComponent,
 		},

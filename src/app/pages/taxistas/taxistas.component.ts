@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } fr
 import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { NbDialogService, NbToastrService, NbGlobalPhysicalPosition } from '@nebular/theme';
-import { FotoService, UsuarioService, TaxistaService, EnderecoService } from '../../../api/to_de_taxi/services';
+import { FotoService, UsuarioService, TaxistaService, EnderecoService, VeiculoService } from '../../../api/to_de_taxi/services';
 import { FormEnderecoComponent } from '../../common-views/forms/form-endereco/form-endereco.component';
 import { FormCredenciaisComponent } from '../../common-views/forms/form-credenciais/form-credenciais.component';
 import { FormFotoComponent } from '../../common-views/forms/form-foto/form-foto.component';
 import { FormUsuarioComponent } from '../../common-views/forms/form-usuario/form-usuario.component';
 import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
-import { TaxistaSummary, FotoSummary } from '../../../api/to_de_taxi/models';
+import { TaxistaSummary, FotoSummary, VeiculoSummary } from '../../../api/to_de_taxi/models';
 import { BusyStack } from '../../@core/utils/busy_stack';
 import { SendMessageComponent } from '../../common-views/send-message/send-message.component';
 
@@ -58,7 +58,6 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 	taxista: TaxistaExt = null;
 	taxistas: TaxistaExt[] = [];
-
 	taxistasPesquisa: TaxistaExt[] = [];
 
 	get credenciais() { return this.taxista ? this.taxista.usuario.credenciais : null; }

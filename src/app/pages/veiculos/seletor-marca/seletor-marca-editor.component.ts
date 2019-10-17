@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { DefaultEditor } from 'ng2-smart-table';
-import { MarcaVeiculo } from '../../../../api/fipe/models';
 import { VeiculosService, VeiculoSummaryExt } from '../veiculos.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
+import { MarcaVeiculo } from '../../../../api/to_de_taxi/models';
 
 @Component({
 	template:

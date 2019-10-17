@@ -3,18 +3,20 @@ import { CommonModule } from '@angular/common';
 import { TaxistasComponent } from './taxistas.component';
 import { ThemeModule } from '../../@theme/theme.module';
 import { TaxistasRoutingModule } from './taxistas-routing.module';
-import { NbCardModule, NbListModule, NbInputModule, NbIconModule, NbActionsModule, NbDialogModule, NbSpinnerModule, NbAlertModule, NbUserModule, NbTooltipModule } from '@nebular/theme';
+import { NbCardModule, NbListModule, NbInputModule, NbIconModule, NbActionsModule, NbDialogModule, NbSpinnerModule, NbAlertModule, NbUserModule, NbTooltipModule, NbLayoutModule } from '@nebular/theme';
 import { CommonViewsModule } from '../../common-views/common-views.module';
-import { NgxMaskModule } from 'ngx-mask';
+import { VeiculosTaxistaComponent } from './veiculos-taxista/veiculos-taxista.component';
 
 @NgModule({
 	declarations: [
 		TaxistasComponent,
+		VeiculosTaxistaComponent,
 	],
 	imports: [
 		CommonModule,
-		NbTooltipModule,
 		ThemeModule,
+		NbLayoutModule,
+		NbTooltipModule,
 		CommonViewsModule,
 		NbAlertModule,
 		TaxistasRoutingModule,

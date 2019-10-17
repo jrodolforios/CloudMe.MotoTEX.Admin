@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { NgxMaskModule } from 'ngx-mask';
 import { SendMessageComponent } from './send-message/send-message.component';
+import { MasterDetailComponent } from './master-detail/master-detail.component';
 
 const COMMON_VIEWS_COMPS = [
 	BaseCardComponent,
@@ -43,6 +44,7 @@ const COMMON_VIEWS_COMPS = [
 	],
 	declarations: [
 		...COMMON_VIEWS_COMPS,
+		MasterDetailComponent,
 	],
 	exports: [
 		...COMMON_VIEWS_COMPS

@@ -16,6 +16,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		link: '/pages/taxistas',
 	},
 	{
+		title: 'Pontos de taxi',
+		icon: 'pin-outline',
+		link: '/pages/pontos-taxi',
+	},
+	{
 		title: 'Veículos',
 		icon: 'car',
 		link: '/pages/veiculos',

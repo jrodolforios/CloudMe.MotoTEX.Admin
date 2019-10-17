@@ -10,6 +10,7 @@ export { GrupoUsuarioService } from './services/grupo-usuario.service';
 export { IdentityService } from './services/identity.service';
 export { LocalizacaoService } from './services/localizacao.service';
 export { PassageiroService } from './services/passageiro.service';
+export { PontoTaxiService } from './services/ponto-taxi.service';
 export { RotaService } from './services/rota.service';
 export { SolicitacaoCorridaService } from './services/solicitacao-corrida.service';
 export { TarifaService } from './services/tarifa.service';

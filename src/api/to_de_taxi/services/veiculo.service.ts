@@ -12,6 +12,8 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { VeiculoSummary } from '../models/veiculo-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseVeiculoSummary } from '../models/response-veiculo-summary';
+import { ResponseIEnumerableMarcaVeiculo } from '../models/response-ienumerable-marca-veiculo';
+import { ResponseInfoMarca } from '../models/response-info-marca';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +23,8 @@ class VeiculoService extends __BaseService {
   static readonly ApiV1VeiculoPostPath = '/api/v1/Veiculo';
   static readonly ApiV1VeiculoByIdGetPath = '/api/v1/Veiculo/{id}';
   static readonly ApiV1VeiculoByIdDeletePath = '/api/v1/Veiculo/{id}';
+  static readonly ApiV1VeiculoMarcasGetPath = '/api/v1/Veiculo/marcas';
+  static readonly ApiV1VeiculoModelosByCodigoMarcaGetPath = '/api/v1/Veiculo/modelos/{codigo_marca}';
 
   constructor(
     config: __Configuration,
@@ -203,6 +207,75 @@ class VeiculoService extends __BaseService {
   ApiV1VeiculoByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1VeiculoByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @return Success
+   */
+  ApiV1VeiculoMarcasGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableMarcaVeiculo>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Veiculo/marcas`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableMarcaVeiculo>;
+      })
+    );
+  }
+  /**
+   * @return Success
+   */
+  ApiV1VeiculoMarcasGet(): __Observable<ResponseIEnumerableMarcaVeiculo> {
+    return this.ApiV1VeiculoMarcasGetResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableMarcaVeiculo)
+    );
+  }
+
+  /**
+   * @param codigo_marca undefined
+   * @return Success
+   */
+  ApiV1VeiculoModelosByCodigoMarcaGetResponse(codigoMarca: string): __Observable<__StrictHttpResponse<ResponseInfoMarca>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Veiculo/modelos/${codigoMarca}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseInfoMarca>;
+      })
+    );
+  }
+  /**
+   * @param codigo_marca undefined
+   * @return Success
+   */
+  ApiV1VeiculoModelosByCodigoMarcaGet(codigoMarca: string): __Observable<ResponseInfoMarca> {
+    return this.ApiV1VeiculoModelosByCodigoMarcaGetResponse(codigoMarca).pipe(
+      __map(_r => _r.body as ResponseInfoMarca)
     );
   }
 }

@@ -1,6 +1,11 @@
 @import '../../@theme/styles/themes';
 
 @include nb-install-component() {
+  nb-layout, nb-layout-column {
+    padding: 0%;
+    margin: 0%;
+  }
+
   .sumario {
     display: flex;
     flex-wrap: wrap;
@@ -12,7 +17,7 @@
 
   .inputSearch::placeholder { /* Firefox, Chrome, Opera */ 
     color: #404040;
-} 
+  } 
   
   .inputSearch:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
       color: #404040; 

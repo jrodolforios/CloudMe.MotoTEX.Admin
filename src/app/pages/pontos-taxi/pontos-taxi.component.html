@@ -1,0 +1,87 @@
+<nb-layout>
+  <nb-layout-column>
+    <div class="row">
+      <base-card #card_listagem class="col-md-6">
+        <div header>Pontos de taxi</div>
+        <div body>
+          <div class="container actions">
+            <nb-actions size="medium" class="row">
+                <nb-action class="col">
+                  <input nbTooltip="Pesquisar" #pesquisaPontoTaxi type="text" nbInput fullWidth shape="semi-round"class="inputSearch" placeholder="Pesquisar..." (input)="filtrarPontosTaxi($event.target.value)">
+                </nb-action>
+                <nb-action class="col-auto" icon="close-outline" (click)="limparPesquisa()" [disabled]="!pesquisaPontoTaxi.value"></nb-action>
+                <nb-action nbTooltip="Adicionar ponto de taxi" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
+            </nb-actions>
+          </div>
+          <nb-list class="own-scroll"
+            nbInfiniteList
+            [threshold]="500">
+            <nb-list-item *ngFor="let ponto_taxi of pontosTaxiPesquisa">
+              <div class="container">
+                <div class="row h4 nome">
+                  <div class="col-8 nome_taxista" (click)="visualizar(ponto_taxi)">
+                    {{ponto_taxi.nome}}
+                  </div>
+                  <div class="col-4">
+                    <nb-actions class="actions_taxista" size="small">
+                      <nb-action nbTooltip="Remover" icon="trash-2-outline" (click)="deletar(ponto_taxi)"></nb-action>
+                      <nb-action nbTooltip="Modificar" [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(ponto_taxi)"></nb-action>
+                    </nb-actions>
+                  </div>
+                </div>
+                <div class="row sumario">
+                  <div class="col propriedade">
+                    <div class="nome_propriedade">#Taxistas</div>
+                    <!--div class="valor_propriedade">{{ taxista.usuario.rg }}</div-->
+                  </div>
+                </div>
+              </div>
+            </nb-list-item>
+          </nb-list>
+          <br/>
+          <br/>
+          <nb-alert status="info" *ngIf="pontosTaxi.length === 0 || pontosTaxi == null || pontosTaxi == undefined">
+            Sem registros para exibir
+          </nb-alert>
+        </div>
+      </base-card>
+    
+    
+      <base-card #card_detalhes class="col-md-6">
+        <div header>Detalhes</div>
+        <div class="body container" body>
+          <nb-actions size="large" >
+            <nb-action [disabled]="!podeConfirmar" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+            <nb-action [disabled]="!podeCancelar" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+          </nb-actions>
+    
+          <nb-card>
+            <nb-card-header>Identificação</nb-card-header>
+            <nb-card-body>
+              <ngx-form-identificacao class="formulario" #formIdentificacao
+                [desabilitarControles]="desabilitarControles"
+                [pontoTaxi]="pontoTaxi">
+              </ngx-form-identificacao>
+            </nb-card-body>
+          </nb-card>
+    
+          <nb-card>
+            <nb-card-header>Endereço</nb-card-header>
+            <nb-card-body>
+              <ngx-form-endereco class="formulario" #formEndereco
+                [desabilitarControles]="desabilitarControles"
+                [endereco]="endereco">
+              </ngx-form-endereco>
+            </nb-card-body>
+          </nb-card>    
+        </div>
+        <div footer>
+          <span>* (campo obrigatório)</span>
+        </div>
+      </base-card>
+    </div>
+  </nb-layout-column>
+</nb-layout>
+
+
+

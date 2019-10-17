@@ -15,6 +15,7 @@ import { GrupoUsuarioService } from './services/grupo-usuario.service';
 import { IdentityService } from './services/identity.service';
 import { LocalizacaoService } from './services/localizacao.service';
 import { PassageiroService } from './services/passageiro.service';
+import { PontoTaxiService } from './services/ponto-taxi.service';
 import { RotaService } from './services/rota.service';
 import { SolicitacaoCorridaService } from './services/solicitacao-corrida.service';
 import { TarifaService } from './services/tarifa.service';
@@ -49,6 +50,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     IdentityService,
     LocalizacaoService,
     PassageiroService,
+    PontoTaxiService,
     RotaService,
     SolicitacaoCorridaService,
     TarifaService,

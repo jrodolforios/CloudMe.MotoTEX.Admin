@@ -11,6 +11,7 @@ import { ResponseIEnumerableTaxistaSummary } from '../models/response-ienumerabl
 import { ResponseTaxistaSummary } from '../models/response-taxista-summary';
 import { TaxistaSummary } from '../models/taxista-summary';
 import { ResponseBoolean } from '../models/response-boolean';
+import { ResponseIEnumerableVeiculoTaxistaSummary } from '../models/response-ienumerable-veiculo-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -22,6 +23,7 @@ class TaxistaService extends __BaseService {
   static readonly ApiV1TaxistaByIdDeletePath = '/api/v1/Taxista/{id}';
   static readonly ApiV1TaxistaAssociarFotoByIdPostPath = '/api/v1/Taxista/associar_foto/{id}';
   static readonly ApiV1TaxistaAtivarByIdPostPath = '/api/v1/Taxista/ativar/{id}';
+  static readonly ApiV1TaxistaByIdVeiculosGetPath = '/api/v1/Taxista/{id}/veiculos';
 
   constructor(
     config: __Configuration,
@@ -298,6 +300,42 @@ class TaxistaService extends __BaseService {
   ApiV1TaxistaAtivarByIdPost(params: TaxistaService.ApiV1TaxistaAtivarByIdPostParams): __Observable<ResponseBoolean> {
     return this.ApiV1TaxistaAtivarByIdPostResponse(params).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id ID do taxista
+   * @return Success
+   */
+  ApiV1TaxistaByIdVeiculosGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/${id}/veiculos`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id ID do taxista
+   * @return Success
+   */
+  ApiV1TaxistaByIdVeiculosGet(id: string): __Observable<ResponseIEnumerableVeiculoTaxistaSummary> {
+    return this.ApiV1TaxistaByIdVeiculosGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseIEnumerableVeiculoTaxistaSummary)
     );
   }
 }

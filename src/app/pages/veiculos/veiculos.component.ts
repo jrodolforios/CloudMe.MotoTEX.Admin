@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
-import { MarcaVeiculoService, ModeloVeiculoService } from '../../../api/fipe/services';
 import { VeiculoSummary, FotoSummary } from '../../../api/to_de_taxi/models';
 import { VeiculoService, FotoService } from '../../../api/to_de_taxi/services';
 import { UUID } from 'angular2-uuid';
@@ -123,7 +122,6 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 	source: LocalDataSource = new LocalDataSource();
 
 	constructor(
-		private marcasVeicSrv: MarcaVeiculoService,
 		private veiculoSrv: VeiculoService,
 		private fotoSrv: FotoService,
 		private veiculosSrv: VeiculosService,
@@ -154,8 +152,11 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		self.busyStack.push();
 
-		await self.marcasVeicSrv.GetAll().toPromise().then(marcas => {
-			self.veiculosSrv.marcasVeiculos.next(marcas);
+		await self.veiculoSrv.ApiV1VeiculoMarcasGet().toPromise().then(resp_marcas => {
+			if (resp_marcas && resp_marcas.success)
+			{
+				self.veiculosSrv.marcasVeiculos.next(resp_marcas.data);
+			}
 		});
 
 		await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(resp =>

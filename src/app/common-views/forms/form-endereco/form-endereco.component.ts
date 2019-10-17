@@ -2,10 +2,9 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subject, Subscription, EMPTY } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EnderecoService } from '../../../../api/viacep/services';
 import { EnderecoSummary } from '../../../../api/to_de_taxi/models';
-import { Endereco } from '../../../../api/viacep/models';
 import { NbToastrService } from '@nebular/theme';
+import { EnderecoService } from '../../../../api/to_de_taxi/services';
 
 @Component({
 	selector: 'ngx-form-endereco',
@@ -111,15 +110,11 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 	private async obterEndereco(cep: string)
 	{
 		const self = this;
-		await self.enderecoSrv.Get(cep).toPromise().then(endereco =>
+		await self.enderecoSrv.ApiV1EnderecoConsultaCepByCepGet(cep).toPromise().then(resp_endereco =>
 		{
-			if (endereco.erro)
+			if (resp_endereco && resp_endereco.success)
 			{
-				self.toastSrv.danger('CEP não encontrado', 'Endereço');
-			}
-			else
-			{
-				self.form.patchValue(endereco);
+				self.form.patchValue(resp_endereco.data);
 			}
 		});
 	}

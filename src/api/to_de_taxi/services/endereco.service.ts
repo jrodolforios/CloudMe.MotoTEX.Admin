@@ -21,6 +21,7 @@ class EnderecoService extends __BaseService {
   static readonly ApiV1EnderecoPostPath = '/api/v1/Endereco';
   static readonly ApiV1EnderecoByIdGetPath = '/api/v1/Endereco/{id}';
   static readonly ApiV1EnderecoByIdDeletePath = '/api/v1/Endereco/{id}';
+  static readonly ApiV1EnderecoConsultaCepByCepGetPath = '/api/v1/Endereco/consulta_cep/{cep}';
 
   constructor(
     config: __Configuration,
@@ -203,6 +204,42 @@ class EnderecoService extends __BaseService {
   ApiV1EnderecoByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1EnderecoByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param cep undefined
+   * @return Success
+   */
+  ApiV1EnderecoConsultaCepByCepGetResponse(cep: string): __Observable<__StrictHttpResponse<ResponseEnderecoSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Endereco/consulta_cep/${cep}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseEnderecoSummary>;
+      })
+    );
+  }
+  /**
+   * @param cep undefined
+   * @return Success
+   */
+  ApiV1EnderecoConsultaCepByCepGet(cep: string): __Observable<ResponseEnderecoSummary> {
+    return this.ApiV1EnderecoConsultaCepByCepGetResponse(cep).pipe(
+      __map(_r => _r.body as ResponseEnderecoSummary)
     );
   }
 }

@@ -1,0 +1,24 @@
+  <div class="row">
+    <button nbButton>Selecione</button>
+    <label *ngIf="veiculoSel">{{veiculoSel.marca + ' ' + veiculoSel.modelo + ' ' + veiculoSel.placa}}</label>
+  </div>
+  <div class="row">
+    <nb-list>
+      <nb-list-item *ngFor="let veiculo of veiculosTaxista">
+        <div class="row">
+          <div class="col propriedade">
+            <div class="nome_propriedade">RG</div>
+            <div class="valor_propriedade">{{ taxista.usuario.rg }}</div>
+          </div>
+          <div class="col propriedade">
+            <div class="nome_propriedade">CPF</div>
+            <div class="valor_propriedade">{{ taxista.usuario.cpf }}</div>
+          </div>
+          <div class="col propriedade">
+            <div class="nome_propriedade">TELEFONE</div>
+            <div class="valor_propriedade">{{ taxista.usuario.telefone }}</div>
+          </div>
+        </div>
+      </nb-list-item>
+    </nb-list>                
+  </div>

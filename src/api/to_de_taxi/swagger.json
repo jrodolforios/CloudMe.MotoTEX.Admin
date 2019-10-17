@@ -457,6 +457,50 @@
         ]
       }
     },
+    "/api/v1/Endereco/consulta_cep/{cep}": {
+      "get": {
+        "tags": [
+          "Endereco"
+        ],
+        "summary": "Obtém um endereço por CEP.\r\n<param name=\"cep\">CEP do endereco a ser consultado</param>",
+        "operationId": "ApiV1EnderecoConsulta_cepByCepGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "cep",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[EnderecoSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/FaixaDesconto": {
       "get": {
         "tags": [
@@ -2680,6 +2724,232 @@
         ]
       }
     },
+    "/api/v1/PontoTaxi": {
+      "get": {
+        "tags": [
+          "PontoTaxi"
+        ],
+        "summary": "Gets all PontoTaxis.",
+        "operationId": "ApiV1PontoTaxiGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[PontoTaxiSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "PontoTaxi"
+        ],
+        "summary": "Modifies an existing PontoTaxi.",
+        "operationId": "ApiV1PontoTaxiPut",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "pontoTaxiSummary",
+            "in": "body",
+            "description": "Modified PontoTaxi list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PontoTaxiSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[PontoTaxiSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "PontoTaxi"
+        ],
+        "summary": "Creates a new PontoTaxi.",
+        "operationId": "ApiV1PontoTaxiPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "pontoTaxiSummary",
+            "in": "body",
+            "description": "PontoTaxi's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PontoTaxiSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[PontoTaxiSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/PontoTaxi/{id}": {
+      "get": {
+        "tags": [
+          "PontoTaxi"
+        ],
+        "summary": "Gets a PontoTaxi.\r\n<param name=\"id\">PontoTaxi's ID</param>",
+        "operationId": "ApiV1PontoTaxiByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[PontoTaxiSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "PontoTaxi"
+        ],
+        "summary": "Removes an existing PontoTaxi.",
+        "operationId": "ApiV1PontoTaxiByIdDelete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Rota": {
       "get": {
         "tags": [
@@ -3691,6 +3961,52 @@
         ]
       }
     },
+    "/api/v1/Taxista/{id}/veiculos": {
+      "get": {
+        "tags": [
+          "Taxista"
+        ],
+        "summary": "Obtém os veículos associados a um taxista.",
+        "operationId": "ApiV1TaxistaByIdVeiculosGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do taxista",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[VeiculoTaxistaSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Usuario": {
       "get": {
         "tags": [
@@ -4463,6 +4779,87 @@
             "description": "Success",
             "schema": {
               "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Veiculo/marcas": {
+      "get": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Obtém marcas de veículos.",
+        "operationId": "ApiV1VeiculoMarcasGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[MarcaVeiculo]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Veiculo/modelos/{codigo_marca}": {
+      "get": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Obtém os modelos de uma marca de veículo.",
+        "operationId": "ApiV1VeiculoModelosByCodigo_marcaGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "codigo_marca",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[InfoMarca]"
             }
           },
           "401": {
@@ -5592,6 +5989,64 @@
         }
       }
     },
+    "Response[IEnumerable[PontoTaxiSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PontoTaxiSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "PontoTaxiSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "endereco": {
+          "$ref": "#/definitions/EnderecoSummary"
+        }
+      }
+    },
+    "Response[PontoTaxiSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/PontoTaxiSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "Response[IEnumerable[RotaSummary]]": {
       "type": "object",
       "properties": {
@@ -5900,6 +6355,49 @@
         }
       }
     },
+    "Response[IEnumerable[VeiculoTaxistaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VeiculoTaxistaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "VeiculoTaxistaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idVeiculo": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "ativo": {
+          "type": "boolean"
+        }
+      }
+    },
     "Response[IEnumerable[UsuarioSummary]]": {
       "type": "object",
       "properties": {
@@ -6076,14 +6574,14 @@
         }
       }
     },
-    "Response[IEnumerable[VeiculoTaxistaSummary]]": {
+    "Response[IEnumerable[MarcaVeiculo]]": {
       "type": "object",
       "properties": {
         "data": {
           "description": "Dados vinculados à resposta da operação (de qualquer formato)",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/VeiculoTaxistaSummary"
+            "$ref": "#/definitions/MarcaVeiculo"
           }
         },
         "success": {
@@ -6099,23 +6597,73 @@
         }
       }
     },
-    "VeiculoTaxistaSummary": {
+    "MarcaVeiculo": {
       "type": "object",
       "properties": {
-        "id": {
-          "format": "uuid",
+        "nome": {
           "type": "string"
         },
-        "idVeiculo": {
-          "format": "uuid",
+        "codigo": {
           "type": "string"
+        }
+      }
+    },
+    "Response[InfoMarca]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/InfoMarca",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
-        "idTaxista": {
-          "format": "uuid",
-          "type": "string"
-        },
-        "ativo": {
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "InfoMarca": {
+      "type": "object",
+      "properties": {
+        "anos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnoModelo"
+          }
+        },
+        "modelos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModeloVeiculo"
+          }
+        }
+      }
+    },
+    "AnoModelo": {
+      "type": "object",
+      "properties": {
+        "codigo": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        }
+      }
+    },
+    "ModeloVeiculo": {
+      "type": "object",
+      "properties": {
+        "codigo": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
         }
       }
     },
