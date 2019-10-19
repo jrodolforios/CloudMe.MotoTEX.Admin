@@ -26,7 +26,8 @@
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images",
                 "output": "/assets/img/markers"
-              }
+              },
+              "src/app/auth/silent-refresh.html"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",

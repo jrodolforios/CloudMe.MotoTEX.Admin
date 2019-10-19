@@ -21,8 +21,6 @@ class TaxistaService extends __BaseService {
   static readonly ApiV1TaxistaPostPath = '/api/v1/Taxista';
   static readonly ApiV1TaxistaByIdGetPath = '/api/v1/Taxista/{id}';
   static readonly ApiV1TaxistaByIdDeletePath = '/api/v1/Taxista/{id}';
-  static readonly ApiV1TaxistaAssociarFotoByIdPostPath = '/api/v1/Taxista/associar_foto/{id}';
-  static readonly ApiV1TaxistaAtivarByIdPostPath = '/api/v1/Taxista/ativar/{id}';
   static readonly ApiV1TaxistaByIdVeiculosGetPath = '/api/v1/Taxista/{id}/veiculos';
 
   constructor(
@@ -210,100 +208,6 @@ class TaxistaService extends __BaseService {
   }
 
   /**
-   * @param params The `TaxistaService.ApiV1TaxistaAssociarFotoByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `idFoto`: ID da foto
-   *
-   * @return Success
-   */
-  ApiV1TaxistaAssociarFotoByIdPostResponse(params: TaxistaService.ApiV1TaxistaAssociarFotoByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    if (params.idFoto != null) __params = __params.set('idFoto', params.idFoto.toString());
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/v1/Taxista/associar_foto/${params.id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseBoolean>;
-      })
-    );
-  }
-  /**
-   * @param params The `TaxistaService.ApiV1TaxistaAssociarFotoByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `idFoto`: ID da foto
-   *
-   * @return Success
-   */
-  ApiV1TaxistaAssociarFotoByIdPost(params: TaxistaService.ApiV1TaxistaAssociarFotoByIdPostParams): __Observable<ResponseBoolean> {
-    return this.ApiV1TaxistaAssociarFotoByIdPostResponse(params).pipe(
-      __map(_r => _r.body as ResponseBoolean)
-    );
-  }
-
-  /**
-   * @param params The `TaxistaService.ApiV1TaxistaAtivarByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `ativar`: Indica se o usuário será ativado/desativado
-   *
-   * @return Success
-   */
-  ApiV1TaxistaAtivarByIdPostResponse(params: TaxistaService.ApiV1TaxistaAtivarByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    if (params.ativar != null) __params = __params.set('ativar', params.ativar.toString());
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/v1/Taxista/ativar/${params.id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseBoolean>;
-      })
-    );
-  }
-  /**
-   * @param params The `TaxistaService.ApiV1TaxistaAtivarByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `ativar`: Indica se o usuário será ativado/desativado
-   *
-   * @return Success
-   */
-  ApiV1TaxistaAtivarByIdPost(params: TaxistaService.ApiV1TaxistaAtivarByIdPostParams): __Observable<ResponseBoolean> {
-    return this.ApiV1TaxistaAtivarByIdPostResponse(params).pipe(
-      __map(_r => _r.body as ResponseBoolean)
-    );
-  }
-
-  /**
    * @param id ID do taxista
    * @return Success
    */
@@ -341,38 +245,6 @@ class TaxistaService extends __BaseService {
 }
 
 module TaxistaService {
-
-  /**
-   * Parameters for ApiV1TaxistaAssociarFotoByIdPost
-   */
-  export interface ApiV1TaxistaAssociarFotoByIdPostParams {
-
-    /**
-     * ID do usuário
-     */
-    id: string;
-
-    /**
-     * ID da foto
-     */
-    idFoto?: string;
-  }
-
-  /**
-   * Parameters for ApiV1TaxistaAtivarByIdPost
-   */
-  export interface ApiV1TaxistaAtivarByIdPostParams {
-
-    /**
-     * ID do usuário
-     */
-    id: string;
-
-    /**
-     * Indica se o usuário será ativado/desativado
-     */
-    ativar?: boolean;
-  }
 }
 
 export { TaxistaService }

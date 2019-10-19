@@ -6,12 +6,17 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Route} from '@angular/router';
-import { OAuth2PasswordLoginComponent } from './oauth2-password-login.component';
+import { AuthLoginComponent } from './auth-login.component';
+import { AuthLoginCallbackComponent } from './auth-login-callback.component';
 
 const routes: Route[] = [
 	{
 		path: '',
-		component: OAuth2PasswordLoginComponent,
+		component: AuthLoginComponent,
+	},
+	{
+		path: 'callback',
+		component: AuthLoginCallbackComponent,
 	},
 ];
 
@@ -19,4 +24,4 @@ const routes: Route[] = [
 	imports: [ RouterModule.forChild(routes) ],
 	exports: [ RouterModule ],
 })
-export class Oauth2PasswordRoutingModule {}
+export class AuthRoutingModule {}

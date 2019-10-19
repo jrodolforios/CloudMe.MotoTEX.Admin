@@ -3,92 +3,111 @@ import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServ
 
 import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
-import { map, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { map, takeUntil, filter } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../../../globais.service';
+import { UsuarioSummary } from '../../../../api/to_de_taxi/models';
 
 @Component({
-  selector: 'ngx-header',
-  styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html',
+	selector: 'ngx-header',
+	styleUrls: ['./header.component.scss'],
+	templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  private destroy$: Subject<void> = new Subject<void>();
-  userPictureOnly: boolean = false;
-  user: any;
+	private destroy$: Subject<void> = new Subject<void>();
+	userPictureOnly: boolean = false;
 
-  themes = [
-    {
-      value: 'default',
-      name: 'Light',
-    },
-    {
-      value: 'dark',
-      name: 'Dark',
-    },
-    {
-      value: 'cosmic',
-      name: 'Cosmic',
-    },
-    {
-      value: 'corporate',
-      name: 'Corporate',
-    },
-  ];
+	private usuarioSub: Subscription;
+	usuario: UsuarioSummary = null;
 
-  currentTheme = 'default';
+	themes = [
+		{
+			value: 'default',
+			name: 'Light',
+		},
+		{
+			value: 'dark',
+			name: 'Dark',
+		},
+		{
+			value: 'cosmic',
+			name: 'Cosmic',
+		},
+		{
+			value: 'corporate',
+			name: 'Corporate',
+		},
+	];
 
-  userMenu = [ { title: 'Log out' } ];
+	currentTheme = 'default';
 
-  constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-              private themeService: NbThemeService,
-              private userService: UserData,
-              private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
-  }
+	userMenu = [ { title: 'Sair' } ];
 
-  ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+	constructor(
+		private sidebarService: NbSidebarService,
+		private menuService: NbMenuService,
+		private themeService: NbThemeService,
+		private layoutService: LayoutService,
+		private breakpointService: NbMediaBreakpointsService,
+		private oauthService: OAuthService,
+		private globaisSrv: GlobaisService
+		) {
+	}
 
-    this.userService.getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.nick);
+	ngOnInit()
+	{
+		const self = this;
 
-    const { xl } = this.breakpointService.getBreakpointsMap();
-    this.themeService.onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+		self.currentTheme = self.themeService.currentTheme;
 
-    this.themeService.onThemeChange()
-      .pipe(
-        map(({ name }) => name),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(themeName => this.currentTheme = themeName);
-  }
+		const { xl } = self.breakpointService.getBreakpointsMap();
+		self.themeService.onMediaQueryChange()
+			.pipe(
+				map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
+				takeUntil(self.destroy$),
+			)
+			.subscribe((isLessThanXl: boolean) => self.userPictureOnly = isLessThanXl);
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+		self.themeService.onThemeChange()
+			.pipe(
+				map(({ name }) => name),
+				takeUntil(self.destroy$),
+			)
+			.subscribe(themeName => self.currentTheme = themeName);
 
-  changeTheme(themeName: string) {
-    this.themeService.changeTheme(themeName);
-  }
+		self.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'menu-sair')).subscribe(async item =>
+		{
+			//await self.authService.logout('oauth2_todetaxi');
+			self.oauthService.logOut();
+		});
 
-  toggleSidebar(): boolean {
-    this.sidebarService.toggle(true, 'menu-sidebar');
-    this.layoutService.changeLayoutSize();
+		self.usuarioSub = self.globaisSrv.usuario.subscribe(novo_usr =>
+		{
+			self.usuario = novo_usr;
+		});
+	}
 
-    return false;
-  }
+	ngOnDestroy() {
+		this.destroy$.next();
+		this.destroy$.complete();
+		this.usuarioSub.unsubscribe();
+	}
 
-  navigateHome() {
-    this.menuService.navigateHome();
-    return false;
-  }
+	changeTheme(themeName: string) {
+		this.themeService.changeTheme(themeName);
+	}
+
+	toggleSidebar(): boolean {
+		this.sidebarService.toggle(true, 'menu-sidebar');
+		this.layoutService.changeLayoutSize();
+
+		return false;
+	}
+
+	navigateHome() {
+		this.menuService.navigateHome();
+		return false;
+	}
 }

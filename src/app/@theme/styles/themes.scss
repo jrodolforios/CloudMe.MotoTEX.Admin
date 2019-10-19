@@ -139,7 +139,12 @@ $nb-themes: nb-register-theme((
   card-margin-bottom: 1.875rem,
   card-header-with-select-padding-top: 0.5rem,
   card-header-with-select-padding-bottom: 0.5rem,
+
   user-name-text-color: white,
+  user-title-text-color: rgba(255, 255, 255, 0.8),
+  user-picture-box-background-color: #ffff00,
+  user-picture-box-border-color: black,
+  user-initials-text-color: black,
 
   select-min-width: 6rem,
 
@@ -151,5 +156,8 @@ $nb-themes: nb-register-theme((
 
   spinner-background-color: rgba(0, 0, 0, 0.5),
   spinner-circle-filled-color: #ffff00,
-  spinner-text-color: white
+  spinner-text-color: white,
+
+  //accordion-item-background-color: #808080,
+  //accordion-header-text-color: #ffff00,
 ), to_de_taxi, corporate);

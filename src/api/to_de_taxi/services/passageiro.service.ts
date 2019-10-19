@@ -20,8 +20,6 @@ class PassageiroService extends __BaseService {
   static readonly ApiV1PassageiroPostPath = '/api/v1/Passageiro';
   static readonly ApiV1PassageiroByIdGetPath = '/api/v1/Passageiro/{id}';
   static readonly ApiV1PassageiroByIdDeletePath = '/api/v1/Passageiro/{id}';
-  static readonly ApiV1PassageiroAssociarFotoByIdPostPath = '/api/v1/Passageiro/associar_foto/{id}';
-  static readonly ApiV1PassageiroAtivarByIdPostPath = '/api/v1/Passageiro/ativar/{id}';
 
   constructor(
     config: __Configuration,
@@ -206,135 +204,9 @@ class PassageiroService extends __BaseService {
       __map(_r => _r.body as ResponseBoolean)
     );
   }
-
-  /**
-   * @param params The `PassageiroService.ApiV1PassageiroAssociarFotoByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `idFoto`: ID da foto
-   *
-   * @return Success
-   */
-  ApiV1PassageiroAssociarFotoByIdPostResponse(params: PassageiroService.ApiV1PassageiroAssociarFotoByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    if (params.idFoto != null) __params = __params.set('idFoto', params.idFoto.toString());
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/v1/Passageiro/associar_foto/${params.id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseBoolean>;
-      })
-    );
-  }
-  /**
-   * @param params The `PassageiroService.ApiV1PassageiroAssociarFotoByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `idFoto`: ID da foto
-   *
-   * @return Success
-   */
-  ApiV1PassageiroAssociarFotoByIdPost(params: PassageiroService.ApiV1PassageiroAssociarFotoByIdPostParams): __Observable<ResponseBoolean> {
-    return this.ApiV1PassageiroAssociarFotoByIdPostResponse(params).pipe(
-      __map(_r => _r.body as ResponseBoolean)
-    );
-  }
-
-  /**
-   * @param params The `PassageiroService.ApiV1PassageiroAtivarByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `ativar`: Indica se o usuário será ativado/desativado
-   *
-   * @return Success
-   */
-  ApiV1PassageiroAtivarByIdPostResponse(params: PassageiroService.ApiV1PassageiroAtivarByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    if (params.ativar != null) __params = __params.set('ativar', params.ativar.toString());
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/v1/Passageiro/ativar/${params.id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseBoolean>;
-      })
-    );
-  }
-  /**
-   * @param params The `PassageiroService.ApiV1PassageiroAtivarByIdPostParams` containing the following parameters:
-   *
-   * - `id`: ID do usuário
-   *
-   * - `ativar`: Indica se o usuário será ativado/desativado
-   *
-   * @return Success
-   */
-  ApiV1PassageiroAtivarByIdPost(params: PassageiroService.ApiV1PassageiroAtivarByIdPostParams): __Observable<ResponseBoolean> {
-    return this.ApiV1PassageiroAtivarByIdPostResponse(params).pipe(
-      __map(_r => _r.body as ResponseBoolean)
-    );
-  }
 }
 
 module PassageiroService {
-
-  /**
-   * Parameters for ApiV1PassageiroAssociarFotoByIdPost
-   */
-  export interface ApiV1PassageiroAssociarFotoByIdPostParams {
-
-    /**
-     * ID do usuário
-     */
-    id: string;
-
-    /**
-     * ID da foto
-     */
-    idFoto?: string;
-  }
-
-  /**
-   * Parameters for ApiV1PassageiroAtivarByIdPost
-   */
-  export interface ApiV1PassageiroAtivarByIdPostParams {
-
-    /**
-     * ID do usuário
-     */
-    id: string;
-
-    /**
-     * Indica se o usuário será ativado/desativado
-     */
-    ativar?: boolean;
-  }
 }
 
 export { PassageiroService }

@@ -1,0 +1,11 @@
+<div class="row" body>
+  <nb-select class="col" placeholder="Selecione um ponto de táxi" filled status="primary" [(selected)]="pontoTaxiSelecionado">
+    <nb-option [value]="undefined">Nenhum</nb-option>
+    <nb-option *ngFor="let ponto of pontosTaxi" [value]="ponto">{{ponto.nome}}</nb-option>
+  </nb-select>
+  <nb-actions class="col-auto" size="small" class="row">
+      <nb-action class="col-auto" nbTooltip="Desfazer" icon="undo-outline" (click)="desfazer()" [disabled]="!podeDesfazer()"></nb-action>
+      <nb-action class="col-auto" nbTooltip="Salvar" icon="save-outline" (click)="salvar()" [disabled]="!podeSalvar()"></nb-action>
+  </nb-actions>
+</div>
+

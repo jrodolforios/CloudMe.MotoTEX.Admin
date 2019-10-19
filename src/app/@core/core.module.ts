@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbAuthModule, NbDummyAuthStrategy, NbOAuth2ResponseType, NbOAuth2AuthStrategy } from '@nebular/auth';
 import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
 import { of as observableOf } from 'rxjs';
 
@@ -103,38 +102,6 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
 export const NB_CORE_PROVIDERS = [
 	...MockDataModule.forRoot().providers,
 	...DATA_SERVICES,
-	/*...NbAuthModule.forRoot({
-
-		strategies:
-		[
-			NbOAuth2AuthStrategy.setup(
-			{
-				name: 'oauth2',
-				clientId: 'ToDeTaxiAPI',
-				authorize:
-				{
-					endpoint: 'http://localhost:5000/connect/authorize',
-					scope: 'todetaxiapi',
-					redirectUri: 'http://localhost:4200/login-callback.html',
-					responseType: NbOAuth2ResponseType.TOKEN,
-				},
-				/*redirect:
-				{
-					success: '/pages/dashboard',
-					failure: '/pages/error',
-				},
-			}),
-		],
-		forms: {
-			login: {
-				socialLinks: socialLinks,
-			},
-			register: {
-				socialLinks: socialLinks,
-			},
-		},
-	}).providers,*/
-
 	NbSecurityModule.forRoot({
 		accessControl: {
 			guest: {
@@ -164,7 +131,6 @@ export const NB_CORE_PROVIDERS = [
 		NbToastrModule
 	],
 	exports: [
-		NbAuthModule,
 	],
 	declarations: [],
 })

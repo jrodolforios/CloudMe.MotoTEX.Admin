@@ -45,35 +45,51 @@
           </nb-alert>
         </div>
       </base-card>
-    
-    
       <base-card #card_detalhes class="col-md-6">
         <div header>Detalhes</div>
-        <div class="body container" body>
-          <nb-actions size="large" >
-            <nb-action [disabled]="!podeConfirmar" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
-            <nb-action [disabled]="!podeCancelar" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+        <div class="container" body>
+          <nb-actions size="small" >
+            <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+            <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+            <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
+            <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
           </nb-actions>
-    
-          <nb-card>
-            <nb-card-header>Identificação</nb-card-header>
-            <nb-card-body>
-              <ngx-form-identificacao class="formulario" #formIdentificacao
-                [desabilitarControles]="desabilitarControles"
-                [pontoTaxi]="pontoTaxi">
-              </ngx-form-identificacao>
-            </nb-card-body>
-          </nb-card>
-    
-          <nb-card>
-            <nb-card-header>Endereço</nb-card-header>
-            <nb-card-body>
-              <ngx-form-endereco class="formulario" #formEndereco
-                [desabilitarControles]="desabilitarControles"
-                [endereco]="endereco">
-              </ngx-form-endereco>
-            </nb-card-body>
-          </nb-card>    
+
+          <nb-accordion multi #abas>
+            <nb-accordion-item>
+              <nb-accordion-item-header>
+                  Identificação
+              </nb-accordion-item-header>
+              <nb-accordion-item-body>
+                <ngx-form-identificacao class="formulario" #formIdentificacao
+                  [desabilitarControles]="desabilitarControles"
+                  [pontoTaxi]="pontoTaxi">
+                </ngx-form-identificacao>
+              </nb-accordion-item-body>
+            </nb-accordion-item>
+
+            <nb-accordion-item>
+              <nb-accordion-item-header>
+                  Endereço
+              </nb-accordion-item-header>
+              <nb-accordion-item-body>
+                <ngx-form-endereco class="formulario" #formEndereco
+                  [desabilitarControles]="desabilitarControles"
+                  [endereco]="endereco">
+                </ngx-form-endereco>
+              </nb-accordion-item-body>
+            </nb-accordion-item>
+
+            <nb-accordion-item>
+                <nb-accordion-item-header>
+                    Taxistas
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  <ngx-taxistas-ponto-taxi [pontoTaxi]="pontoTaxi"></ngx-taxistas-ponto-taxi>
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+
+          </nb-accordion>
         </div>
         <div footer>
           <span>* (campo obrigatório)</span>

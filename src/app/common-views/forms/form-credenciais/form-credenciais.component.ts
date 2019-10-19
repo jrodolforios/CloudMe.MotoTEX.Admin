@@ -49,7 +49,7 @@ export class FormCredenciaisComponent implements OnInit, OnDestroy {
 	form: FormGroup = new FormGroup(
 	{
 		'login': new FormControl('', [Validators.required]),
-		'senha_anterior': new FormControl('', [Validators.required]),
+		'senha_anterior': new FormControl('', /*[Validators.required]*/),
 		'senha': new FormControl('', [Validators.required]),
 		'conferir_senha': new FormControl('', [Validators.required])
 	}, { validators: conferirSenhaValidator });

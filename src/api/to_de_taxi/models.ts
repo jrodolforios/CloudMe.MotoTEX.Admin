@@ -39,6 +39,8 @@ export { ResponsePassageiroSummary } from './models/response-passageiro-summary'
 export { ResponseIEnumerablePontoTaxiSummary } from './models/response-ienumerable-ponto-taxi-summary';
 export { PontoTaxiSummary } from './models/ponto-taxi-summary';
 export { ResponsePontoTaxiSummary } from './models/response-ponto-taxi-summary';
+export { ResponseIEnumerableTaxistaSummary } from './models/response-ienumerable-taxista-summary';
+export { TaxistaSummary } from './models/taxista-summary';
 export { ResponseIEnumerableRotaSummary } from './models/response-ienumerable-rota-summary';
 export { RotaSummary } from './models/rota-summary';
 export { ResponseRotaSummary } from './models/response-rota-summary';
@@ -48,8 +50,6 @@ export { ResponseSolicitacaoCorridaSummary } from './models/response-solicitacao
 export { ResponseIEnumerableTarifaSummary } from './models/response-ienumerable-tarifa-summary';
 export { TarifaSummary } from './models/tarifa-summary';
 export { ResponseTarifaSummary } from './models/response-tarifa-summary';
-export { ResponseIEnumerableTaxistaSummary } from './models/response-ienumerable-taxista-summary';
-export { TaxistaSummary } from './models/taxista-summary';
 export { ResponseTaxistaSummary } from './models/response-taxista-summary';
 export { ResponseIEnumerableVeiculoTaxistaSummary } from './models/response-ienumerable-veiculo-taxista-summary';
 export { VeiculoTaxistaSummary } from './models/veiculo-taxista-summary';

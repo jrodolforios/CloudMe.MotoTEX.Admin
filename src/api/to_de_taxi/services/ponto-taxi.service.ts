@@ -11,6 +11,7 @@ import { ResponseIEnumerablePontoTaxiSummary } from '../models/response-ienumera
 import { ResponsePontoTaxiSummary } from '../models/response-ponto-taxi-summary';
 import { PontoTaxiSummary } from '../models/ponto-taxi-summary';
 import { ResponseBoolean } from '../models/response-boolean';
+import { ResponseIEnumerableTaxistaSummary } from '../models/response-ienumerable-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,6 +21,7 @@ class PontoTaxiService extends __BaseService {
   static readonly ApiV1PontoTaxiPostPath = '/api/v1/PontoTaxi';
   static readonly ApiV1PontoTaxiByIdGetPath = '/api/v1/PontoTaxi/{id}';
   static readonly ApiV1PontoTaxiByIdDeletePath = '/api/v1/PontoTaxi/{id}';
+  static readonly ApiV1PontoTaxiByIdTaxistasGetPath = '/api/v1/PontoTaxi/{id}/taxistas';
 
   constructor(
     config: __Configuration,
@@ -202,6 +204,42 @@ class PontoTaxiService extends __BaseService {
   ApiV1PontoTaxiByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1PontoTaxiByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id undefined
+   * @return Success
+   */
+  ApiV1PontoTaxiByIdTaxistasGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseIEnumerableTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/PontoTaxi/${id}/taxistas`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id undefined
+   * @return Success
+   */
+  ApiV1PontoTaxiByIdTaxistasGet(id: string): __Observable<ResponseIEnumerableTaxistaSummary> {
+    return this.ApiV1PontoTaxiByIdTaxistasGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseIEnumerableTaxistaSummary)
     );
   }
 }

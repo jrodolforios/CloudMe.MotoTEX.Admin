@@ -1,0 +1,12 @@
+<nb-list>
+  <nb-list-item *ngFor="let taxista of taxistas">
+    <div class="row">
+      <nb-user class="col-auto"
+        size="medium"
+        [picture]="converterFoto(taxista.foto.dados)"
+        onlyPicture=true>
+      </nb-user>
+      <span class="h8 col">{{taxista.usuario.nome}}</span>
+    </div>
+  </nb-list-item>
+</nb-list>

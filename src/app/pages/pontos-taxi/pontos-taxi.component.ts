@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
 import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { NbDialogService, NbToastrService, NbAccordionComponent } from '@nebular/theme';
 import { EnderecoService, PontoTaxiService } from '../../../api/to_de_taxi/services';
 import { FormEnderecoComponent } from '../../common-views/forms/form-endereco/form-endereco.component';
 import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
@@ -26,6 +26,8 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 	@ViewChild('card_listagem', null) cardListagem: BaseCardComponent;
 	@ViewChild('card_detalhes', null) cardDetalhes: BaseCardComponent;
 	@ViewChild('card_foto', null) cardFoto: BaseCardComponent;
+
+	@ViewChild('abas', null) abas: NbAccordionComponent;
 
 	@ViewChild('pesquisaPontoTaxi', null) inputPesquisaPontoTaxi: ElementRef;
 
@@ -450,5 +452,15 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 		self.formIdentificacao.redefinir();
 		self.formEndereco.redefinir();
+	}
+
+	expandir()
+	{
+		this.abas.openAll();
+	}
+
+	encolher()
+	{
+		this.abas.closeAll();
 	}
 }

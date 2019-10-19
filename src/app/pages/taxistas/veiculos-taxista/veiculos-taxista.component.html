@@ -1,24 +1,42 @@
-  <div class="row">
-    <button nbButton>Selecione</button>
-    <label *ngIf="veiculoSel">{{veiculoSel.marca + ' ' + veiculoSel.modelo + ' ' + veiculoSel.placa}}</label>
+<div class="container">
+  <div *ngIf="taxista && taxista.id" class="row">
+    <ngx-seletor-items #seletorVeiculo
+      title="Selecione um veículo"
+      [items]="veiculosPermitidos"
+      [selected_item]="veiculoSel"
+      [onGetItemHash]="onGetItemHash"
+      [onGetItemLabel]="onGetItemLabel"
+      (itemSelected)="selecionarVeiculo($event)">
+    </ngx-seletor-items>
+    <button nbButton [disabled]="!podeAdicionar(veiculoSel)" status="success" (click)="adicionar(veiculoSel)">Adicionar</button>
   </div>
   <div class="row">
     <nb-list>
-      <nb-list-item *ngFor="let veiculo of veiculosTaxista">
-        <div class="row">
-          <div class="col propriedade">
-            <div class="nome_propriedade">RG</div>
-            <div class="valor_propriedade">{{ taxista.usuario.rg }}</div>
+      <nb-list-item *ngFor="let veiculoTx of veiculosTaxista">
+        <div class="container">
+          <div class="row h4">
+            <div class="col-8">
+              {{veiculoTx.veiculo.placa}}
+            </div>
+            <div class="col-4">
+              <nb-actions size="small">
+                <nb-action nbTooltip="Remover" icon="trash-2-outline" (click)="remover(veiculoTx)"></nb-action>
+              </nb-actions>
+            </div>
           </div>
-          <div class="col propriedade">
-            <div class="nome_propriedade">CPF</div>
-            <div class="valor_propriedade">{{ taxista.usuario.cpf }}</div>
-          </div>
-          <div class="col propriedade">
-            <div class="nome_propriedade">TELEFONE</div>
-            <div class="valor_propriedade">{{ taxista.usuario.telefone }}</div>
+          <div class="row">
+            <div class="col propriedade">
+              <div class="nome_propriedade">Marca</div>
+              <div class="valor_propriedade">{{ veiculoTx.veiculo.marca }}</div>
+            </div>
+            <div class="col propriedade">
+              <div class="nome_propriedade">Modelo</div>
+              <div class="valor_propriedade">{{ veiculoTx.veiculo.modelo }}</div>
+            </div>
           </div>
         </div>
       </nb-list-item>
     </nb-list>                
   </div>
+</div>
+

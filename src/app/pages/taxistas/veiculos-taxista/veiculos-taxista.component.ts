@@ -1,8 +1,11 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { VeiculoSummary, TaxistaSummary, VeiculoTaxistaSummary } from '../../../../api/to_de_taxi/models';
 import { BusyStack } from '../../../@core/utils/busy_stack';
 import { Subscription } from 'rxjs';
 import { VeiculoService, VeiculoTaxistaService, TaxistaService } from '../../../../api/to_de_taxi/services';
+import { NbToastrService, NbDialogService } from '@nebular/theme';
+import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
+import { ConfirmDialogComponent } from '../../../common-views/confirm-dialog/confirm-dialog.component';
 
 interface VeiculoTaxistaExt extends VeiculoTaxistaSummary
 {
@@ -14,10 +17,13 @@ interface VeiculoTaxistaExt extends VeiculoTaxistaSummary
 	templateUrl: './veiculos-taxista.component.html',
 	styleUrls: ['./veiculos-taxista.component.scss']
 })
-export class VeiculosTaxistaComponent implements AfterViewInit {
+export class VeiculosTaxistaComponent implements AfterViewInit, OnDestroy {
+
+	@ViewChild('baseCard', null) baseCard: BaseCardComponent;
 
 	veiculoSel: VeiculoSummary = null;
 	veiculos: VeiculoSummary[] = [];
+	veiculosPermitidos: VeiculoSummary[] = [];
 	veiculosTaxista: VeiculoTaxistaExt[] = [];
 
 	busyStackVeiculos = new BusyStack();
@@ -32,7 +38,10 @@ export class VeiculosTaxistaComponent implements AfterViewInit {
 		if (value !== self._taxista)
 		{
 			self._taxista = value;
-			self.obterVeiculosTaxista(value);
+			if (self._taxista)
+			{
+				self.obterVeiculosTaxista(self._taxista);
+			}
 		}
 	}
 	get taxista(): TaxistaSummary
@@ -42,12 +51,29 @@ export class VeiculosTaxistaComponent implements AfterViewInit {
 
 	constructor(
 		private taxistaSrv: TaxistaService,
-		private veiculoSrv: VeiculoService) { }
+		private veiculoSrv: VeiculoService,
+		private veicTxSrv: VeiculoTaxistaService,
+		private toastSrv: NbToastrService,
+		private dialogSrv: NbDialogService) { }
 
 	ngAfterViewInit()
 	{
 		const self = this;
+
+		self.busyStackVeiculosSub = self.busyStackVeiculos.busy.subscribe(() =>
+		{
+			if (self.baseCard)
+			{
+				self.baseCard.toggleRefresh(self.busyStackVeiculos.busy.value > 0);
+			}
+		});
+
 		self.obterVeiculos();
+	}
+
+	ngOnDestroy()
+	{
+		this.busyStackVeiculosSub.unsubscribe();
 	}
 
 	private async obterVeiculos()
@@ -77,7 +103,7 @@ export class VeiculosTaxistaComponent implements AfterViewInit {
 
 		self.busyStackVeiculos.push();
 
-		if (!taxista)
+		if (!taxista || !taxista.id)
 		{
 			self.veiculosTaxista = [];
 		}
@@ -96,7 +122,7 @@ export class VeiculosTaxistaComponent implements AfterViewInit {
 							idVeiculo: veic_tx.idVeiculo,
 							veiculo: self.veiculos.find(veic =>
 							{
-								return veic.id === veic_tx.id;
+								return veic.id === veic_tx.idVeiculo;
 							})
 						};
 
@@ -107,11 +133,90 @@ export class VeiculosTaxistaComponent implements AfterViewInit {
 						return (veicTx1.veiculo.marca + veicTx1.veiculo.modelo + veicTx1.veiculo.placa)
 							.localeCompare(veicTx2.veiculo.marca + veicTx2.veiculo.modelo + veicTx2.veiculo.placa);
 					});
-					self.veiculos = resp.data;
+					self.veiculosTaxista = tmpVeicsTxExt;
+
+					// filtra os veículos permitidos para nova associação
+					self.veiculosPermitidos = self.veiculos.filter((veic, index, array) =>
+					{
+						return !self.veiculosTaxista.find((veic_tx, idx, obj) =>
+							{
+								return veic_tx.idVeiculo === veic.id;
+							});
+					});
 				}
 			});
 		}
 
 		self.busyStackVeiculos.pop();
+	}
+
+	onGetItemLabel(veiculo: VeiculoSummary)
+	{
+		return veiculo ? veiculo.placa : 'N/I';
+	}
+
+	onGetItemHash(veiculo: VeiculoSummary)
+	{
+		return veiculo ? veiculo.id : '';
+	}
+
+	selecionarVeiculo(veiculo: VeiculoSummary)
+	{
+		const self = this;
+		self.veiculoSel = veiculo;
+	}
+
+	podeAdicionar(veiculo: VeiculoSummary): boolean
+	{
+		const self = this;
+		return self.taxista && veiculo && !self.veiculosTaxista.find(veixTx => {
+			return veixTx.idVeiculo === veiculo.id;
+		});
+	}
+
+	async adicionar(veiculo: VeiculoSummary)
+	{
+		const self = this;
+		self.veicTxSrv.ApiV1VeiculoTaxistaPost({
+			id: undefined,
+			idTaxista: self.taxista.id,
+			idVeiculo: veiculo.id
+		}).toPromise().then(resp_adicionar =>
+		{
+			if (resp_adicionar && resp_adicionar.success)
+			{
+				self.toastSrv.success('Veículo associado com sucesso ao taxista!', 'Veículo/Taxista');
+				self.obterVeiculosTaxista(self.taxista);
+			}
+		});
+	}
+
+	async remover(veiculo_taxista: VeiculoTaxistaSummary)
+	{
+		const self = this;
+
+		await self.dialogSrv.open(
+			ConfirmDialogComponent,
+			{
+				context:
+				{
+					title: 'Taxistas',
+					prompt: 'Desassociar veículo do taxista?'
+				},
+			})
+			.onClose.toPromise().then(async result =>
+			{
+				if (result)
+				{
+					self.veicTxSrv.ApiV1VeiculoTaxistaByIdDelete(veiculo_taxista.id).toPromise().then(resp_remover =>
+					{
+						if (resp_remover && resp_remover.success)
+						{
+							self.toastSrv.success('Veículo desassociado com sucesso!', 'Veículo/Taxista');
+							self.obterVeiculosTaxista(self.taxista);
+						}
+					});
+				}
+			});
 	}
 }

@@ -35,8 +35,11 @@ export class FormFotoComponent implements OnInit {
 	{
 		const self = this;
 
+		self.form.reset();
+
 		self._foto = value;
 		self.carregarFoto();
+		self.alterado = false;
 	}
 
 	get foto(): FotoSummary
@@ -66,7 +69,7 @@ export class FormFotoComponent implements OnInit {
 		}
 		else
 		{
-			if (!self._foto.dados) // dados ainda não carregados
+			/*if (!self._foto.dados) // dados ainda não carregados
 			{
 				if (self._foto.id)
 				{
@@ -85,7 +88,7 @@ export class FormFotoComponent implements OnInit {
 				{
 					return;
 				}
-			}
+			}*/
 
 			self.nomeFoto = self._foto.nome;
 			self.nomeArquivoFoto = self._foto.nomeArquivo;
