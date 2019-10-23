@@ -3,7 +3,7 @@ import { DefaultEditor } from 'ng2-smart-table';
 
 @Component({
 	template:
-	`<input nbInput shape='semi-round' type="text" mask='0*,00' [(ngModel)]="valor"/>`
+	`<input nbInput mask="percent" suffix="%" shape='semi-round' type="text" [(ngModel)]="valor"/>`
 })
 export class ValorEditorComponent extends DefaultEditor implements OnInit {
 

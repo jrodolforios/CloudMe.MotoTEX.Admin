@@ -8,9 +8,10 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { ResponseIEnumerableTaxistaSummary } from '../models/response-ienumerable-taxista-summary';
-import { ResponseTaxistaSummary } from '../models/response-taxista-summary';
-import { TaxistaSummary } from '../models/taxista-summary';
 import { ResponseBoolean } from '../models/response-boolean';
+import { TaxistaSummary } from '../models/taxista-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseTaxistaSummary } from '../models/response-taxista-summary';
 import { ResponseIEnumerableVeiculoTaxistaSummary } from '../models/response-ienumerable-veiculo-taxista-summary';
 @Injectable({
   providedIn: 'root',
@@ -67,7 +68,7 @@ class TaxistaService extends __BaseService {
    * @param taxistaSummary Modified Taxista list's properties summary
    * @return Success
    */
-  ApiV1TaxistaPutResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<ResponseTaxistaSummary>> {
+  ApiV1TaxistaPutResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -85,7 +86,7 @@ class TaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseTaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -93,9 +94,9 @@ class TaxistaService extends __BaseService {
    * @param taxistaSummary Modified Taxista list's properties summary
    * @return Success
    */
-  ApiV1TaxistaPut(taxistaSummary?: TaxistaSummary): __Observable<ResponseTaxistaSummary> {
+  ApiV1TaxistaPut(taxistaSummary?: TaxistaSummary): __Observable<ResponseBoolean> {
     return this.ApiV1TaxistaPutResponse(taxistaSummary).pipe(
-      __map(_r => _r.body as ResponseTaxistaSummary)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
@@ -103,7 +104,7 @@ class TaxistaService extends __BaseService {
    * @param taxistaSummary Taxista's summary
    * @return Success
    */
-  ApiV1TaxistaPostResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<ResponseTaxistaSummary>> {
+  ApiV1TaxistaPostResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -121,7 +122,7 @@ class TaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseTaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
@@ -129,9 +130,9 @@ class TaxistaService extends __BaseService {
    * @param taxistaSummary Taxista's summary
    * @return Success
    */
-  ApiV1TaxistaPost(taxistaSummary?: TaxistaSummary): __Observable<ResponseTaxistaSummary> {
+  ApiV1TaxistaPost(taxistaSummary?: TaxistaSummary): __Observable<ResponseGuid> {
     return this.ApiV1TaxistaPostResponse(taxistaSummary).pipe(
-      __map(_r => _r.body as ResponseTaxistaSummary)
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 

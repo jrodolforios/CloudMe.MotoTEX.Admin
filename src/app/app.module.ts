@@ -28,6 +28,16 @@ import { ErrorInterceptor } from './@core/utils/error-interceptor';
 import { CommonViewsModule } from './common-views/common-views.module';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { GlobaisService } from './globais.service';
+import { CatalogosService } from './catalogos/catalogos.service';
+import { CatalogoTaxistas } from './catalogos/catalogo-taxistas.service';
+import { CatalogoVeiculos } from './catalogos/catalogo-veiculos.service';
+import { CatalogoTarifas } from './catalogos/catalogo-tarifas.service';
+import { CatalogoFaixasDesconto } from './catalogos/catalogo-faixas-desconto.service';
+import { CatalogoFormasPagamento } from './catalogos/catalogo-formas-pagamento.service';
+import { CatalogoFaixasDescontoTaxistas } from './catalogos/catalogo-faixas-desconto-taxistas.service';
+import { CatalogoFormasPagamentoTaxistas } from './catalogos/catalogo-formas-pagamento-taxistas.service';
+import { CatalogoPontosTaxi } from './catalogos/catalogo-pontos-taxi.service';
+import { CatalogoVeiculosTaxistas } from './catalogos/catalogo-veiculos-taxistas.service';
 
 export function oAuthStorageFactory(): OAuthStorage
 {
@@ -73,6 +83,16 @@ const toDeTaxiAPIBaseURL = 'http://localhost:5002';
 	providers: [
 		AuthGuard,
 		GlobaisService,
+		CatalogosService,
+		CatalogoTaxistas,
+		CatalogoVeiculos,
+		CatalogoVeiculosTaxistas,
+		CatalogoTarifas,
+		CatalogoFaixasDesconto,
+		CatalogoFormasPagamento,
+		CatalogoFaixasDescontoTaxistas,
+		CatalogoFormasPagamentoTaxistas,
+		CatalogoPontosTaxi,
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: ErrorInterceptor,

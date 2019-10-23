@@ -2459,7 +2459,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[PassageiroSummary]"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2509,7 +2509,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[PassageiroSummary]"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -2685,7 +2685,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[PontoTaxiSummary]"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -2735,7 +2735,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[PontoTaxiSummary]"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -3634,7 +3634,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[TaxistaSummary]"
+              "$ref": "#/definitions/Response[Boolean]"
             }
           },
           "401": {
@@ -3684,7 +3684,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[TaxistaSummary]"
+              "$ref": "#/definitions/Response[Guid]"
             }
           },
           "401": {
@@ -6375,8 +6375,7 @@
           "type": "integer"
         },
         "cor": {
-          "format": "int32",
-          "type": "integer"
+          "type": "string"
         },
         "idFoto": {
           "format": "uuid",

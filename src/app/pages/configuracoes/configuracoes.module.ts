@@ -11,6 +11,7 @@ import { NbCardModule, NbInputModule, NbButtonModule, NbRadioModule, NbSpinnerMo
 import { ConfiguracoesRoutingModule } from './configuracoes-routing.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgxMaskModule } from 'ngx-mask';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
 	declarations: [
@@ -32,7 +33,18 @@ import { NgxMaskModule } from 'ngx-mask';
 		NbRadioModule,
 		Ng2SmartTableModule,
 		ConfiguracoesRoutingModule,
-		NbSpinnerModule
+		NbSpinnerModule,
+		NgxCurrencyModule.forRoot({
+			align: 'right',
+			allowZero: true,
+			precision: 2,
+			prefix: 'R$ ',
+			suffix: '',
+			allowNegative: false,
+			thousands: '.',
+			decimal: ',',
+			nullable: false
+		})
 	]
 })
 export class ConfiguracoesModule { }

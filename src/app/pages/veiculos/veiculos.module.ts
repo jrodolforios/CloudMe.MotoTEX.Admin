@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VeiculosComponent } from './veiculos.component';
-import { NbCardModule, NbDialogModule, NbInputModule, NbSpinnerModule } from '@nebular/theme';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { NbCardModule, NbDialogModule, NbInputModule, NbSpinnerModule, NbListModule, NbUserModule, NbAlertModule } from '@nebular/theme';
 import { VeiculosRoutingModule } from './veiculos-routing.module';
 import { CommonViewsModule } from '../../common-views/common-views.module';
 import { SeletorMarcaEditorComponent } from './seletor-marca/seletor-marca-editor.component';
@@ -17,6 +16,9 @@ import { NgxMaskModule } from 'ngx-mask';
 import { FotoViewComponent } from './foto/foto-view.component';
 import { ListagemComponent } from './listagem/listagem.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
+import { CorEditorComponent } from './cor/cor-editor.component';
+import { CorViewComponent } from './cor/cor-view.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 const COMPONENTS = [
 	VeiculosComponent,
@@ -27,7 +29,9 @@ const COMPONENTS = [
 	PlacaEditorComponent,
 	CapacidadeEditorComponent,
 	FotoEditorComponent,
-	FotoViewComponent
+	FotoViewComponent,
+	CorEditorComponent,
+	CorViewComponent
 ];
 
 @NgModule({
@@ -45,7 +49,10 @@ const COMPONENTS = [
 		Ng2SmartTableModule,
 		NbInputModule,
 		NgxMaskModule,
-		NbSpinnerModule
+		NbSpinnerModule,
+		NbListModule,
+		NbUserModule,
+		NbAlertModule
 	]
 })
 export class VeiculosModule { }

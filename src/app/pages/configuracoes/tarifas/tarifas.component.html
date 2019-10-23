@@ -3,47 +3,63 @@
   <div body>
     <form [formGroup]="tarifasForm" (ngSubmit)="salvar()">
       <div class="row form-group">
-        <label class="label col-sm-3">Bandeirada (R$)</label>
+        <label class="label col-sm-3">Bandeirada</label>
         <div class="col-sm-9">
           <input 
             class="form-control" 
             formControlName="bandeirada" 
-            type="number"
+            type="text"
+            currencyMask
             nbInput 
             placeholder="Valor da bandeirada">
+          <div *ngIf="bandeirada.invalid && (bandeirada.dirty || bandeirada.touched)" class="alert alert-danger">
+            <div *ngIf="bandeirada.errors.required">Valor obrigatório.</div>
+          </div>
         </div>
       </div>
       <div class="row form-group">
-        <label class="label col-sm-3">Km rodado bandeira 1 (R$)</label>
+        <label class="label col-sm-3">Km rodado bandeira 1</label>
         <div class="col-sm-9">
           <input 
             class="form-control" 
             formControlName="kmRodadoBandeira1" 
-            type="number" 
+            type="text" 
+            currencyMask
             nbInput 
             placeholder="Valor do Km rodado na bandeira 1">
+          <div *ngIf="kmRodadoBandeira1.invalid && (kmRodadoBandeira1.dirty || kmRodadoBandeira1.touched)" class="alert alert-danger">
+            <div *ngIf="kmRodadoBandeira1.errors.required">Valor obrigatório.</div>
+          </div>
         </div>
       </div>
       <div class="row form-group">
-        <label class="label col-sm-3">Km rodado bandeira 2 (R$)</label>
+        <label class="label col-sm-3">Km rodado bandeira 2</label>
         <div class="col-sm-9">
           <input 
             class="form-control" 
             formControlName="kmRodadoBandeira2" 
-            type="number" 
+            type="text" 
+            currencyMask
             nbInput 
             placeholder="Valor do Km rodado na bandeira 1">
+          <div *ngIf="kmRodadoBandeira2.invalid && (kmRodadoBandeira2.dirty || kmRodadoBandeira2.touched)" class="alert alert-danger">
+            <div *ngIf="kmRodadoBandeira2.errors.required">Valor obrigatório.</div>
+          </div>
         </div>
       </div>
       <div class="row form-group">
-        <label class="label col-sm-3">Hora parada (R$)</label>
+        <label class="label col-sm-3">Hora parada</label>
         <div class="col-sm-9">
           <input 
             class="form-control" 
             formControlName="horaParada" 
-            type="number" 
+            type="text" 
+            currencyMask
             nbInput 
             placeholder="Valor da hora parada">
+          <div *ngIf="horaParada.invalid && (horaParada.dirty || horaParada.touched)" class="alert alert-danger">
+            <div *ngIf="horaParada.errors.required">Valor obrigatório.</div>
+          </div>
         </div>
       </div>
       <div class="row form-group">
@@ -52,8 +68,5 @@
         </div>
       </div>
     </form>
-  </div>
-  <div *ngIf="tarifasForm.errors && (tarifasForm.touched || tarifasForm.dirty)" class="cross-validation-error-message alert alert-danger">
-      Name cannot match alter ego.
   </div>
 </base-card>

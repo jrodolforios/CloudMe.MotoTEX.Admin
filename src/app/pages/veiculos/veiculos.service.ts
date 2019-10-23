@@ -4,7 +4,7 @@ import { VeiculoSummary, FotoSummary, MarcaVeiculo, ModeloVeiculo } from '../../
 
 export class VeiculoSummaryExt
 {
-	veicRef: VeiculoSummary;
+	// veicRef: VeiculoSummary;
 
 	marcaRef = new BehaviorSubject<MarcaVeiculo>(null);
 	modeloRef = new BehaviorSubject<ModeloVeiculo>(null);
@@ -13,10 +13,10 @@ export class VeiculoSummaryExt
 
 	arquivoFoto: File = null;
 
-	public constructor(veic: VeiculoSummary)
+	/*public constructor(veic: VeiculoSummary)
 	{
 		this.veicRef = veic;
-	}
+	}*/
 }
 
 @Injectable({

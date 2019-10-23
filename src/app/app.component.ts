@@ -3,7 +3,7 @@
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnalyticsService } from './@core/utils/analytics.service';
 import { NbIconLibraries } from '@nebular/theme';
 import { OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
@@ -12,9 +12,12 @@ import { Router } from '@angular/router';
 
 @Component({
 	selector: 'ngx-app',
-	template: '<router-outlet></router-outlet>',
+	template:
+	`
+	<router-outlet></router-outlet>
+	`
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private analytics: AnalyticsService,
@@ -23,8 +26,12 @@ export class AppComponent implements OnInit {
 		private router: Router)
 	{
 		this.iconLibraries.registerFontPack('font-awesome', { iconClassPrefix: 'fa' });
+		this.iconLibraries.registerFontPack('fa', { packClass: 'fa', iconClassPrefix: 'fa' });
+		this.iconLibraries.registerFontPack('far', { packClass: 'far', iconClassPrefix: 'fa' });
+		this.iconLibraries.registerFontPack('ion', { iconClassPrefix: 'ion' });
 		this.configureWithNewConfigApi();
 	}
+
 	private async configureWithNewConfigApi()
 	{
 		this.oauthService.configure(authConfig);
@@ -40,6 +47,11 @@ export class AppComponent implements OnInit {
 	}
 
 	ngOnInit(): void
+	{
+		this.analytics.trackPageViews();
+	}
+
+	ngOnDestroy(): void
 	{
 		this.analytics.trackPageViews();
 	}

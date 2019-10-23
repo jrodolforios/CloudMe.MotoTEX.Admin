@@ -28,14 +28,16 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	tarifasForm: FormGroup = new FormGroup({
 		'id': new FormControl(0),
-		'bandeirada': new FormControl(0, [
-			Validators.required,
-			Validators.min(0)
-		]),
+		'bandeirada': new FormControl(0, [Validators.required, Validators.min(0)]),
 		'kmRodadoBandeira1': new FormControl(0, [Validators.required, Validators.min(0)]),
 		'kmRodadoBandeira2': new FormControl(0, [Validators.required, Validators.min(0)]),
 		'horaParada': new FormControl(0, [Validators.required, Validators.min(0)])
 	});
+
+	get bandeirada() { return this.tarifasForm.get('bandeirada'); }
+	get kmRodadoBandeira1() { return this.tarifasForm.get('kmRodadoBandeira1'); }
+	get kmRodadoBandeira2() { return this.tarifasForm.get('kmRodadoBandeira2'); }
+	get horaParada() { return this.tarifasForm.get('horaParada'); }
 
 	ngOnInit()
 	{
@@ -84,10 +86,10 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		const tarifa: TarifaSummary = {
 			id: self.tarifasForm.get('id').value,
-			bandeirada: self.tarifasForm.get('bandeirada').value,
-			kmRodadoBandeira1: self.tarifasForm.get('kmRodadoBandeira1').value,
-			kmRodadoBandeira2: self.tarifasForm.get('kmRodadoBandeira2').value,
-			horaParada: self.tarifasForm.get('horaParada').value
+			bandeirada: +self.bandeirada.value,
+			kmRodadoBandeira1: +self.kmRodadoBandeira1.value,
+			kmRodadoBandeira2: +self.kmRodadoBandeira2.value,
+			horaParada: +self.horaParada.value
 		};
 
 		self.busyStack.push();

@@ -8,9 +8,10 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { ResponseIEnumerablePontoTaxiSummary } from '../models/response-ienumerable-ponto-taxi-summary';
-import { ResponsePontoTaxiSummary } from '../models/response-ponto-taxi-summary';
-import { PontoTaxiSummary } from '../models/ponto-taxi-summary';
 import { ResponseBoolean } from '../models/response-boolean';
+import { PontoTaxiSummary } from '../models/ponto-taxi-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponsePontoTaxiSummary } from '../models/response-ponto-taxi-summary';
 import { ResponseIEnumerableTaxistaSummary } from '../models/response-ienumerable-taxista-summary';
 @Injectable({
   providedIn: 'root',
@@ -67,7 +68,7 @@ class PontoTaxiService extends __BaseService {
    * @param pontoTaxiSummary Modified PontoTaxi list's properties summary
    * @return Success
    */
-  ApiV1PontoTaxiPutResponse(pontoTaxiSummary?: PontoTaxiSummary): __Observable<__StrictHttpResponse<ResponsePontoTaxiSummary>> {
+  ApiV1PontoTaxiPutResponse(pontoTaxiSummary?: PontoTaxiSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -85,7 +86,7 @@ class PontoTaxiService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponsePontoTaxiSummary>;
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -93,9 +94,9 @@ class PontoTaxiService extends __BaseService {
    * @param pontoTaxiSummary Modified PontoTaxi list's properties summary
    * @return Success
    */
-  ApiV1PontoTaxiPut(pontoTaxiSummary?: PontoTaxiSummary): __Observable<ResponsePontoTaxiSummary> {
+  ApiV1PontoTaxiPut(pontoTaxiSummary?: PontoTaxiSummary): __Observable<ResponseBoolean> {
     return this.ApiV1PontoTaxiPutResponse(pontoTaxiSummary).pipe(
-      __map(_r => _r.body as ResponsePontoTaxiSummary)
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
@@ -103,7 +104,7 @@ class PontoTaxiService extends __BaseService {
    * @param pontoTaxiSummary PontoTaxi's summary
    * @return Success
    */
-  ApiV1PontoTaxiPostResponse(pontoTaxiSummary?: PontoTaxiSummary): __Observable<__StrictHttpResponse<ResponsePontoTaxiSummary>> {
+  ApiV1PontoTaxiPostResponse(pontoTaxiSummary?: PontoTaxiSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -121,7 +122,7 @@ class PontoTaxiService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponsePontoTaxiSummary>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
@@ -129,9 +130,9 @@ class PontoTaxiService extends __BaseService {
    * @param pontoTaxiSummary PontoTaxi's summary
    * @return Success
    */
-  ApiV1PontoTaxiPost(pontoTaxiSummary?: PontoTaxiSummary): __Observable<ResponsePontoTaxiSummary> {
+  ApiV1PontoTaxiPost(pontoTaxiSummary?: PontoTaxiSummary): __Observable<ResponseGuid> {
     return this.ApiV1PontoTaxiPostResponse(pontoTaxiSummary).pipe(
-      __map(_r => _r.body as ResponsePontoTaxiSummary)
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 

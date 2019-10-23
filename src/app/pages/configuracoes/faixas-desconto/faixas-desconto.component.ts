@@ -2,13 +2,14 @@ import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular
 import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { FaixaDescontoService } from '../../../../api/to_de_taxi/services';
-import { FaixaDescontoSummary } from '../../../../api/to_de_taxi/models';
+import { FaixaDescontoSummary, TaxistaSummary } from '../../../../api/to_de_taxi/models';
 import { UUID } from 'angular2-uuid';
 import { ValorEditorComponent } from './valor/valor-editor.component';
 import { BusyStack } from '../../../@core/utils/busy_stack';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogComponent } from '../../../common-views/confirm-dialog/confirm-dialog.component';
 import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { CatalogosService } from '../../../catalogos/catalogos.service';
 
 @Component({
 	selector: 'ngx-faixas-desconto',
@@ -23,6 +24,8 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 	@ViewChild('baseCard', null) baseCard: BaseCardComponent;
 	busyStack = new BusyStack();
 	busyStackSub: Subscription = null;
+
+	faixasDescontoSub: Subscription = null;
 
 	grid_settings = {
 		noDataMessage: 'Sem registros para exibição.',
@@ -65,13 +68,18 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 				title: 'Descrição',
 				type: 'text',
 			},
+			taxistas: {
+				title: 'Taxistas adeptos',
+				type: 'text',
+				editable: false
+			}
 		},
 	};
 
 	source: LocalDataSource = new LocalDataSource();
 
 	constructor(
-		private faixaDescSrv: FaixaDescontoService,
+		private catalogosSrv: CatalogosService,
 		private dialogSrv: NbDialogService,
 		private toastSrv: NbToastrService
 	) { }
@@ -93,12 +101,32 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 		self.busyStack.push();
-		await self.faixaDescSrv.ApiV1FaixaDescontoGet().toPromise().then(resp =>
+		//await self.catalogosSrv.faixasDesconto.getAll().then(faixas_desconto =>
+		self.faixasDescontoSub = self.catalogosSrv.faixasDesconto.itemsSubject.subscribe(faixas_desconto =>
 		{
-			if (resp && resp.success)
+			const totalTaxistas = self.catalogosSrv.taxistas.items.length;
+			faixas_desconto.forEach(fx_desc =>
 			{
-				this.source.load(resp.data);
-			}
+				let taxistas: TaxistaSummary[] = [];
+
+				const faixasDescTx = self.catalogosSrv.faixasDescontoTaxistas.items.filter(fx_desc_tx =>
+				{
+					return fx_desc_tx.idFaixaDesconto === fx_desc.id;
+				});
+
+				if (faixasDescTx)
+				{
+					taxistas = self.catalogosSrv.taxistas.items.filter(tx =>
+					{
+						return faixasDescTx.find(veic_tx => veic_tx.idTaxista === tx.id) !== undefined;
+					});
+				}
+
+				const numTaxistas = taxistas ? taxistas.length : 0;
+				const percent = numTaxistas / totalTaxistas * 100;
+				fx_desc['taxistas'] = `${percent.toLocaleString('pt-BR', { minimumIntegerDigits: 1, maximumFractionDigits: 0 })}% (${numTaxistas}/${totalTaxistas})`;
+			});
+			self.source.load(faixas_desconto);
 		});
 		self.busyStack.pop();
 	}
@@ -107,6 +135,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 		self.busyStackSub.unsubscribe();
+		self.faixasDescontoSub.unsubscribe();
 	}
 
 	async onCreateConfirm(event)
@@ -123,17 +152,22 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 		};
 
 		self.busyStack.push();
-		await self.faixaDescSrv.ApiV1FaixaDescontoPost(sumarioVeic).toPromise().then(async resp => {
-			if (resp && resp.success)
+		await self.catalogosSrv.faixasDesconto.post(sumarioVeic).then(async resultado =>
+		{
+			if (resultado)
 			{
-				nova_faixa_desc.id = resp.data;
-				event.confirm.resolve(nova_faixa_desc);
+				event.confirm.resolve();
+				self.toastSrv.success('Faixa de desconto criada com sucesso!', 'Faixas de desconto');
 			}
 			else
 			{
 				event.confirm.reject();
 			}
+		}).catch(() =>
+		{
+			event.confirm.reject();
 		});
+
 		self.busyStack.pop();
 	}
 
@@ -154,16 +188,18 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 		};
 
 		self.busyStack.push();
-		await self.faixaDescSrv.ApiV1FaixaDescontoPut(sumarioVeic).toPromise().then(async resultado => {
+		await self.catalogosSrv.faixasDesconto.put(sumarioVeic).then(async resultado =>
+		{
 			if (resultado)
 			{
 				event.confirm.resolve();
+				self.toastSrv.success('Faixa de desconto atualizada com sucesso!', 'Faixas de desconto');
 			}
 			else
 			{
 				event.confirm.reject();
 			}
-		});
+		}).catch(reason => event.confirm.reject());
 		self.busyStack.pop();
 	}
 
@@ -187,11 +223,12 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 				if (result)
 				{
 					self.busyStack.push();
-					await self.faixaDescSrv.ApiV1FaixaDescontoByIdDelete(veic.id).toPromise().then(resultado => {
+					await self.catalogosSrv.faixasDesconto.delete(veic.id).then(resultado =>
+					{
 						if (resultado)
 						{
 							event.confirm.resolve();
-							self.toastSrv.success('Registro removido com sucesso!', 'Faixas de desconto');
+							self.toastSrv.success('Faixa de desconto removida com sucesso!', 'Faixas de desconto');
 						}
 						else
 						{

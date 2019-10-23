@@ -28,7 +28,7 @@ export class FotoViewComponent implements AfterViewInit{
 
 		if (!self.rowData.veicExt)
 		{
-			self.rowData.veicExt = new VeiculoSummaryExt(self.rowData);
+			self.rowData.veicExt = new VeiculoSummaryExt(/*self.rowData*/);
 		}
 		self.veicExt = self.rowData.veicExt;
 

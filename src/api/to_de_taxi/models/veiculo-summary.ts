@@ -5,6 +5,6 @@ export interface VeiculoSummary {
   marca?: string;
   modelo?: string;
   capacidade?: number;
-  cor?: number;
+  cor?: string;
   idFoto?: string;
 }

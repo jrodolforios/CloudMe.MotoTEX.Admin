@@ -40,7 +40,7 @@ export class SeletorMarcaEditorComponent extends DefaultEditor implements OnInit
 		self.veic = this.cell.getRow().getData();
 		if (!self.veic.veicExt)
 		{
-			self.veic.veicExt = new VeiculoSummaryExt(self.veic);
+			self.veic.veicExt = new VeiculoSummaryExt(/*self.veic*/);
 		}
 		self.veicExt = self.veic.veicExt;
 

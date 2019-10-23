@@ -3,6 +3,7 @@ import { UsuarioSummary } from '../api/to_de_taxi/models';
 import { BehaviorSubject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { NbToastrService } from '@nebular/theme';
+import { CatalogosService } from './catalogos/catalogos.service';
 
 @Injectable()
 export class GlobaisService
@@ -11,34 +12,38 @@ export class GlobaisService
 
 	constructor(
 		private oauthService: OAuthService,
-		private toastSrv: NbToastrService)
+		private toastSrv: NbToastrService,
+		private catalogosSrv: CatalogosService)
 	{
 		const self = this;
 
 		if (self.oauthService.hasValidIdToken())
 		{
-			self.oauthService.loadUserProfile().then(profile =>
-			{
-				self.usuario.next({
-					nome: profile['name'],
-					email: profile['email'],
-				});
-			});
+			self.carregarPerfilUsuario();
 		}
 
 		self.oauthService.events.subscribe(async event =>
 		{
-			self.toastSrv.info(event.type);
-
 			if (event.type === 'token_received')
 			{
-				self.toastSrv.info('Token recebida');
-
-				await self.oauthService.loadUserProfile().then(profile =>
-				{
-					profile = profile;
-				});
+				await self.carregarPerfilUsuario();
 			}
+		});
+	}
+
+	async carregarPerfilUsuario()
+	{
+		const self = this;
+
+		self.oauthService.loadUserProfile().then(profile =>
+		{
+			self.usuario.next({
+				id: profile['sub'],
+				nome: profile['nome'],
+				email: profile['email'],
+			});
+
+			self.catalogosSrv.carregar();
 		});
 	}
 }

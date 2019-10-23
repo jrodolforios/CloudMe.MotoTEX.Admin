@@ -26,6 +26,8 @@ export enum Modo
 })
 export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 {
+	public enumModo = Modo;
+
 	@ViewChild('card_listagem', null) cardListagem: BaseCardComponent;
 	@ViewChild('card_detalhes', null) cardDetalhes: BaseCardComponent;
 	@ViewChild('card_foto', null) cardFoto: BaseCardComponent;

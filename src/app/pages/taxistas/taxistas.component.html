@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-5">
         <base-card #card_listagem>
-          <div header>Taxistas</div>
+          <div header>TAXISTAS</div>
           <div body class="container">
             <div class="row actions">
               <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaTaxista type="text" nbInput fullWidth shape="semi-round" placeholder="Pesquisar..." (input)="filtrarTaxistas($event.target.value)">
@@ -67,7 +67,7 @@
       </div>
       <div class="col-md-7">
         <base-card #card_detalhes>
-          <div header>Detalhes de {{taxista ? (taxista.usuario?.nome || "Novo taxista") : "Indefinido"}}</div>
+          <div header>DETALHES DE {{taxista ? (taxista.usuario?.nome.toUpperCase() || "NOVO TAXISTA") : "INDEFINIDO"}}</div>
           <div class="container" body>
             <nb-actions size="small" >
               <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
@@ -101,7 +101,7 @@
                 </nb-accordion-item-body>
               </nb-accordion-item>
 
-              <nb-accordion-item>
+              <nb-accordion-item [hidden]="modo === enumModo.mdVisualizacao">
                 <nb-accordion-item-header>
                     Credenciais
                 </nb-accordion-item-header>
@@ -127,7 +127,7 @@
                 </nb-accordion-item-body>
               </nb-accordion-item>
 
-              <nb-accordion-item>
+              <nb-accordion-item [hidden]="modo !== enumModo.mdVisualizacao">
                 <nb-accordion-item-header>
                     Veículos associados
                 </nb-accordion-item-header>
@@ -136,7 +136,7 @@
                 </nb-accordion-item-body>
               </nb-accordion-item>
 
-              <nb-accordion-item>
+              <nb-accordion-item [hidden]="modo !== enumModo.mdVisualizacao">
                 <nb-accordion-item-header>
                     Ponto de táxi
                 </nb-accordion-item-header>

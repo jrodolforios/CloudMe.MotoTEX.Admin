@@ -24,7 +24,7 @@ export class AuthLoginComponent implements OnDestroy {
 
 	public login()
 	{
-		this.oauthService.initImplicitFlow('login');
+		this.oauthService.initCodeFlow();
 	}
 
 	public logout()

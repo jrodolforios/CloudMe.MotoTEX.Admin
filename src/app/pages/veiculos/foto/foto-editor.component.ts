@@ -38,7 +38,7 @@ export class FotoEditorComponent extends DefaultEditor implements OnInit, AfterV
 		self.veic = self.cell.getRow().getData();
 		if (!self.veic.veicExt)
 		{
-			self.veic.veicExt = new VeiculoSummaryExt(self.veic);
+			self.veic.veicExt = new VeiculoSummaryExt(/*self.veic*/);
 		}
 		self.veicExt = self.veic.veicExt;
 	}
