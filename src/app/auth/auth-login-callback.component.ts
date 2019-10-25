@@ -13,7 +13,7 @@ export class AuthLoginCallbackComponent implements OnInit {
 	{
 		this.oauthService.loadDiscoveryDocumentAndTryLogin().then(_ =>
 		{
-			if (!this.oauthService.hasValidIdToken() || !this.oauthService.hasValidAccessToken())
+			if (!this.oauthService.hasValidIdToken() && !this.oauthService.hasValidAccessToken())
 			{
 				this.oauthService.initImplicitFlow('login');
 			}

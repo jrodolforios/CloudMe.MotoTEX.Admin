@@ -121,7 +121,7 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 			self.uf.touched && self.uf.dirty);
 	}
 
-	private async obterEndereco(cep: string)
+	public async obterEndereco(cep: string)
 	{
 		const self = this;
 		const desabCtrls = self.desabilitarControles;

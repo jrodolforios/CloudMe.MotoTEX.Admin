@@ -2,7 +2,7 @@
     <fieldset [disabled]="desabilitarControles">
       
       <div class="row">
-        <div class="col-3">
+        <div class="col-8">
           <label>CEP*</label>
           <!--input type="text" nbInput fullWidth placeholder="Ex.: Centro" class="form-control" formControlName="cep" (keyup)="cepAlterado.next($event.target.value)"-->
           <input type="text" nbInput fullWidth mask='00000-000' placeholder="Ex.: 12345-678" class="form-control" formControlName="cep">
@@ -10,8 +10,9 @@
             <div *ngIf="cep.errors.required">Informe CEP.</div>
           </div>
         </div>
-        <div class="col-3">
-          <button type="button" [nbSpinner]="buscandoCEP" nbButton fullWidth [disabled]="!cep.valid" class="form-control" (click)="obterEndereco(cep.value)">BUSCAR CEP</button>
+        <div class="col-4 text-center">
+            <label>&nbsp;</label>
+          <button type="button" [nbSpinner]="buscandoCEP" nbButton [disabled]="!cep.valid" class="form-control" (click)="obterEndereco(cep.value)">BUSCAR CEP</button>
         </div>
       </div>  
 
