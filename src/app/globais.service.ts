@@ -12,19 +12,19 @@ export class GlobaisService
 
 	constructor(
 		private oauthService: OAuthService,
-		private toastSrv: NbToastrService,
+		// private toastSrv: NbToastrService,
 		private catalogosSrv: CatalogosService)
 	{
 		const self = this;
 
-		if (self.oauthService.hasValidIdToken())
+		if (self.oauthService.hasValidIdToken() || self.oauthService.hasValidAccessToken())
 		{
 			self.carregarPerfilUsuario();
 		}
 
 		self.oauthService.events.subscribe(async event =>
 		{
-			toastSrv.info(event.type, 'Auth');
+			// toastSrv.info(event.type, 'Auth');
 			if (event.type === 'token_received')
 			{
 				await self.carregarPerfilUsuario();
