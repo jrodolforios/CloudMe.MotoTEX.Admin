@@ -21,7 +21,7 @@ class FaixaDescontoApiInterface implements CatalogApiInterface<FaixaDescontoSumm
 			await self.faixaDescontoSrv.ApiV1FaixaDescontoByIdGet(id).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<FaixaDescontoSummary>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -34,7 +34,7 @@ class FaixaDescontoApiInterface implements CatalogApiInterface<FaixaDescontoSumm
 			await self.faixaDescontoSrv.ApiV1FaixaDescontoGet().toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<FaixaDescontoSummary[]>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -47,7 +47,7 @@ class FaixaDescontoApiInterface implements CatalogApiInterface<FaixaDescontoSumm
 			await self.faixaDescontoSrv.ApiV1FaixaDescontoPost(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<string>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -60,7 +60,7 @@ class FaixaDescontoApiInterface implements CatalogApiInterface<FaixaDescontoSumm
 			await self.faixaDescontoSrv.ApiV1FaixaDescontoPut(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -73,7 +73,7 @@ class FaixaDescontoApiInterface implements CatalogApiInterface<FaixaDescontoSumm
 			await self.faixaDescontoSrv.ApiV1FaixaDescontoByIdDelete(id).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 }

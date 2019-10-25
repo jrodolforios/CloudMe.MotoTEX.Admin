@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PontoTaxiSummary, TaxistaSummary } from '../../../../api/to_de_taxi/models';
 import { PontoTaxiService } from '../../../../api/to_de_taxi/services';
+import { CatalogosService } from '../../../catalogos/catalogos.service';
 
 @Component({
 	selector: 'ngx-taxistas-ponto-taxi',
@@ -9,7 +10,7 @@ import { PontoTaxiService } from '../../../../api/to_de_taxi/services';
 })
 export class TaxistasComponent implements OnInit {
 
-	constructor(private pontoTaxiSrv: PontoTaxiService) { }
+	constructor(private catalogosSrv: CatalogosService) { }
 
 	_pontoTaxi: PontoTaxiSummary = null;
 	taxistas: TaxistaSummary[] = [];
@@ -35,20 +36,12 @@ export class TaxistasComponent implements OnInit {
 			return;
 		}
 
-		self.pontoTaxiSrv.ApiV1PontoTaxiByIdTaxistasGet(self.pontoTaxi.id).toPromise().then(resp =>
+		self.taxistas = self.catalogosSrv.taxistas.items.filter(tx =>
 		{
-			if (resp && resp.success)
-			{
-				self.taxistas = resp.data;
-			}
+			return tx.idPontoTaxi === self.pontoTaxi.id;
 		});
 	}
 
 	ngOnInit() {
-	}
-
-	converterFoto(foto: string): string
-	{
-		return atob(foto);
 	}
 }

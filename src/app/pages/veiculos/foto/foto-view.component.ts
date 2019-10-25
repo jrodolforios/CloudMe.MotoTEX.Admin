@@ -50,6 +50,6 @@ export class FotoViewComponent implements AfterViewInit{
 				return;
 			}
 		}
-		self.imgSrc = atob(self.veicExt.fotoSummaryRef.dados);
+		self.imgSrc = self.veicExt.fotoSummaryRef.dados;
 	}
 }

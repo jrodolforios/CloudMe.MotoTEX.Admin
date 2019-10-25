@@ -1,0 +1,121 @@
+<nb-layout class="overlay">
+  <nb-layout-column class="overlay">
+    <div class="row">
+      <div class="col-md-5">
+        <base-card #card_listagem>
+          <div header>PASSAGEIROS ({{quantidadePassageiros}})</div>
+          <div body class="container">
+            <div class="row actions">
+              <nb-actions size="small" class="col-auto">
+                <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
+              </nb-actions>
+            </div>
+            <div class="row filtros" *ngIf="exibirFiltros">
+              <form class="container">
+                  <div class="row">
+                    <label class="label col-sm-3">Nome</label>
+                    <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaPassageiro fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
+                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaPassageiro.value"></nb-action>
+                  </div>
+                  <div class="row">
+                    <label class="label col-sm-3">Situação</label>
+                    <nb-select class="col" placeholder="Filtrar por situação" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroSituacao">
+                      <nb-option [value]="null">Todos</nb-option>
+                      <nb-option [value]="true">Ativos</nb-option>
+                      <nb-option [value]="false">Inativos</nb-option>
+                    </nb-select>
+                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroSituacao=null" [disabled]="filtroSituacao === null"></nb-action>
+                  </div>                              
+                  <div class="row">
+                    <div class="offset-sm-3 col-sm-9">
+                      <button nbButton fullWidth status="info" shape="semi-round" (click)="limparFiltros()">Limpar filtros</button>
+                    </div>
+                  </div>
+              </form>
+            </div>
+            <div class="row">
+              <nb-list class="col own-scroll"
+                nbInfiniteList
+                [threshold]="500">
+                <nb-list-item *ngFor="let passageiro of passageirosPesquisa">
+                  <div class="container">
+                    <div class="row h4 nome">
+                      <div class="col-8 nome_passageiro" (click)="visualizar(passageiro)">
+                        {{passageiro.usuario ? passageiro.usuario.nome : "Desconhecido" }}
+                      </div>
+                      <div class="col-4">
+                        <nb-actions class="actions_passageiro" size="small">
+                          <nb-action nbTooltip="Enviar mensagem" icon="message-circle-outline" (click)="enviarMensagem(passageiro)"></nb-action>
+                          <nb-action [nbTooltip]="passageiro.ativo ? 'Desativar' : 'Ativar'" [icon]="passageiro.ativo ? 'toggle-right' : 'toggle-left-outline'" (click)="ativar(passageiro, !passageiro.ativo)"></nb-action>
+                        </nb-actions>
+                      </div>
+                    </div>
+                    <div class="row sumario">
+                      <div class="col propriedade">
+                        <div class="nome_propriedade">RG</div>
+                        <div class="valor_propriedade">{{ passageiro.usuario.rg }}</div>
+                      </div>
+                      <div class="col propriedade">
+                        <div class="nome_propriedade">CPF</div>
+                        <div class="valor_propriedade">{{ passageiro.usuario.cpf }}</div>
+                      </div>
+                      <div class="col propriedade">
+                        <div class="nome_propriedade">TELEFONE</div>
+                        <div class="valor_propriedade">{{ passageiro.usuario.telefone }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </nb-list-item>
+              </nb-list>
+            </div>
+            <br/>
+            <br/>
+            <nb-alert status="info" *ngIf="passageiros.length === 0 || passageiros == null || passageiros == undefined">
+              Sem registros para exibir
+            </nb-alert>
+          </div>
+        </base-card>
+      </div>
+      <div class="col-md-7">
+        <base-card #card_detalhes>
+          <div header>DETALHES DE {{passageiro && passageiro.usuario ? passageiro.usuario.nome.toUpperCase() : "DESCONHECIDO"}}</div>
+          <div class="container" body>
+            <nb-actions size="small" >
+              <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
+              <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
+            </nb-actions><br>
+
+            <nb-accordion multi #abas>
+              <nb-accordion-item>
+                <nb-accordion-item-header>
+                    Informações pessoais
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  <ngx-form-usuario class="formulario" #formUsuario
+                    [desabilitarControles]="true"
+                    [usuario]="usuario">
+                  </ngx-form-usuario>
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+
+              <nb-accordion-item>
+                <nb-accordion-item-header>
+                    Endereço
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  <ngx-form-endereco class="formulario" #formEndereco
+                    [desabilitarControles]="true"
+                    [endereco]="endereco">
+                  </ngx-form-endereco>
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            </nb-accordion>
+          </div>
+        </base-card>
+      </div>
+    </div>
+  </nb-layout-column>
+</nb-layout>
+
+
+

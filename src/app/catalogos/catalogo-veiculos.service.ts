@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { VeiculoSummary } from '../../api/to_de_taxi/models';
 import { VeiculoService } from '../../api/to_de_taxi/services';
-import { ApiCatalog, CatalogApiInterface } from './api-catalog';
+import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
 
 class VeiculoApiInterface implements CatalogApiInterface<VeiculoSummary>
 {
-private veiculoSrv: VeiculoService;
+	private veiculoSrv: VeiculoService;
 
 	constructor(veiculoSrv: VeiculoService)
 	{
@@ -15,78 +15,66 @@ private veiculoSrv: VeiculoService;
 	async get(id: string): Promise<VeiculoSummary>
 	{
 		const self = this;
-		let result: VeiculoSummary = null;
 
-		await self.veiculoSrv.ApiV1VeiculoByIdGet(id).toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.veiculoSrv.ApiV1VeiculoByIdGet(id).toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<VeiculoSummary>, resolve, reject);
+			});
 		});
-
-		return result;
 	}
 
 	async getAll(): Promise<VeiculoSummary[]>
 	{
 		const self = this;
-		let result: VeiculoSummary[] = [];
 
-		await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<VeiculoSummary[]>, resolve, reject);
+			});
 		});
-
-		return result;
 	}
 
 	async post(item: VeiculoSummary): Promise<string>
 	{
 		const self = this;
-		let result = '';
-		await self.veiculoSrv.ApiV1VeiculoPost(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.veiculoSrv.ApiV1VeiculoPost(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<string>, resolve, reject);
+			});
+		});
 	}
 
 	async put(item: VeiculoSummary): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.veiculoSrv.ApiV1VeiculoPut(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.veiculoSrv.ApiV1VeiculoPut(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			});
+		});
 	}
 
 	async delete(id: string): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.veiculoSrv.ApiV1VeiculoByIdDelete(id).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.veiculoSrv.ApiV1VeiculoByIdDelete(id).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			});
+		});
 	}
 }
 

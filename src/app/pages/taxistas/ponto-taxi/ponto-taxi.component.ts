@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
 import { PontoTaxiService, TaxistaService } from '../../../../api/to_de_taxi/services';
 import { NbToastrService } from '@nebular/theme';
+import { CatalogosService } from '../../../catalogos/catalogos.service';
 
 @Component({
 	selector: 'ngx-ponto-taxi',
@@ -43,8 +44,7 @@ export class PontoTaxiComponent implements AfterViewInit, OnDestroy {
 	}
 
 	constructor(
-		private ptTaxiSrv: PontoTaxiService,
-		private taxistaSrv: TaxistaService,
+		private catalogosSrv: CatalogosService,
 		private toastSrv: NbToastrService) { }
 
 	ngAfterViewInit()
@@ -73,17 +73,9 @@ export class PontoTaxiComponent implements AfterViewInit, OnDestroy {
 
 		self.busyStackPontosTaxi.push();
 
-		// obtém informações de acesso dos usuários
-		await self.ptTaxiSrv.ApiV1PontoTaxiGet().toPromise().then(async resp => {
-			if (resp && resp.success)
-			{
-				resp.data.sort((pt_tx1, pt_tx2) =>
-				{
-					return pt_tx1.nome.localeCompare(pt_tx2.nome);
-				});
-
-				self.pontosTaxi = resp.data;
-			}
+		self.pontosTaxi = self.catalogosSrv.pontosTaxi.items.sort((pt_tx1, pt_tx2) =>
+		{
+			return pt_tx1.nome.localeCompare(pt_tx2.nome);
 		});
 
 		self.busyStackPontosTaxi.pop();
@@ -99,17 +91,22 @@ export class PontoTaxiComponent implements AfterViewInit, OnDestroy {
 		const self = this;
 		self.busyStackPontosTaxi.push();
 
-		//const txSummary = Object.assign({}, self.taxista) as TaxistaSummary;
-		self.taxista.idPontoTaxi = self.pontoTaxiSelecionado ? self.pontoTaxiSelecionado.id : undefined;
-
-		await self.taxistaSrv.ApiV1TaxistaPut(self.taxista).toPromise().then(resp =>
+		const txSummary: TaxistaSummary =
 		{
-			if (resp && resp.success)
+			id: self.taxista.id,
+			ativo: self.taxista.ativo,
+			idPontoTaxi: self.pontoTaxiSelecionado ? self.pontoTaxiSelecionado.id : undefined
+		};
+
+		await self.catalogosSrv.taxistas.put(txSummary).then(resultado =>
+		{
+			if (resultado)
 			{
+				// self.taxista.idPontoTaxi = txSummary.idPontoTaxi;
 				self.pontoTaxiOriginal = self.pontoTaxiSelecionado;
 				self.toastSrv.success('Ponto de táxi alterado com sucesso!', 'Taxista');
 			}
-		});
+		}).catch(() => {});
 
 		self.busyStackPontosTaxi.pop();
 	}

@@ -26,6 +26,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		link: '/pages/veiculos',
 	},
 	{
+		title: 'Passageiros',
+		icon: 'briefcase-outline',
+		link: '/pages/passageiros',
+	},
+	{
 		title: 'CONFIGURAÇÕES',
 		group: true,
 	},

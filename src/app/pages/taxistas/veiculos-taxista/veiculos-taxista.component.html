@@ -1,6 +1,6 @@
 <div class="container">
-  <div *ngIf="taxista && taxista.id" class="row">
-    <ngx-seletor-items #seletorVeiculo
+  <div *ngIf="taxista && taxista.id" class="row mb-2">
+    <ngx-seletor-items #seletorVeiculo class="col-auto mr-2"
       title="Selecione um veículo"
       [items]="veiculosPermitidos"
       [selected_item]="veiculoSel"
@@ -8,7 +8,7 @@
       [onGetItemLabel]="onGetItemLabel"
       (itemSelected)="selecionarVeiculo($event)">
     </ngx-seletor-items>
-    <button nbButton [disabled]="!podeAdicionar(veiculoSel)" status="success" (click)="adicionar(veiculoSel)">Adicionar</button>
+    <button class="col-auto" nbButton [disabled]="!podeAdicionar(veiculoSel)" status="success" (click)="adicionar(veiculoSel)">Adicionar</button>
   </div>
   <div class="row">
     <nb-list>

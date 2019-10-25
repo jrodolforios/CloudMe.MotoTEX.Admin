@@ -100,7 +100,7 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 				{
 					self.toastSrv.success('Registro atualizado com sucesso!', 'Tarifas');
 				}
-			});
+			}).catch(() => {});
 		}
 		else
 		{
@@ -114,7 +114,7 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 					});
 					self.toastSrv.success('Registro inserido com sucesso!', 'Tarifas');
 				}
-			});
+			}).catch(() => {});
 		}
 		self.busyStack.pop();
 	}

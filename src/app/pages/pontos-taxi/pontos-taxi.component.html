@@ -1,43 +1,48 @@
 <nb-layout>
   <nb-layout-column>
     <div class="row">
-      <base-card #card_listagem class="col-md-6">
-        <div header>PONTOS DE TAXI</div>
-        <div body>
-          <div class="container actions">
-            <nb-actions size="medium" class="row">
-                <nb-action class="col">
-                  <input nbTooltip="Pesquisar" #pesquisaPontoTaxi type="text" nbInput fullWidth shape="semi-round"class="inputSearch" placeholder="Pesquisar..." (input)="filtrarPontosTaxi($event.target.value)">
-                </nb-action>
-                <nb-action class="col-auto" icon="close-outline" (click)="limparPesquisa()" [disabled]="!pesquisaPontoTaxi.value"></nb-action>
-                <nb-action nbTooltip="Adicionar ponto de taxi" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
+      <base-card #card_listagem class="col-md-5">
+        <div header>PONTOS DE TAXI ({{quantidadePontosTaxi}})</div>
+        <div body class="container">
+          <div class="row actions mb-3">
+            <nb-actions size="small" class="col-auto">
+              <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
+              <nb-action nbTooltip="Adicionar ponto de taxi" [disabled]="!podeCriar" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
             </nb-actions>
           </div>
-          <nb-list class="own-scroll"
-            nbInfiniteList
-            [threshold]="500">
-            <nb-list-item *ngFor="let ponto_taxi of pontosTaxiPesquisa">
-              <div class="container">
-                <div class="row h4 nome">
-                  <div class="col-8 nome_taxista" (click)="visualizar(ponto_taxi)">
-                    {{ponto_taxi.nome}}
+          <div class="row filtros" *ngIf="exibirFiltros">
+            <div class="row">
+              <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaTaxista fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
+              <nb-action nbTooltip="Limpar pesquisa" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaTaxista.value"></nb-action>
+            </div>
+          </div>
+          <div class="row">
+            <nb-list class="own-scroll row"
+              nbInfiniteList
+              [threshold]="500">
+              <nb-list-item *ngFor="let ponto_taxi of pontosTaxiPesquisa">
+                <div class="container">
+                  <div class="row h4 nome">
+                    <div class="col-8 nome_taxista" (click)="visualizar(ponto_taxi)">
+                      {{ponto_taxi.nome}}
+                    </div>
+                    <div class="col-4">
+                      <nb-actions class="actions_taxista" size="small">
+                        <nb-action nbTooltip="Remover" icon="trash-2-outline" (click)="deletar(ponto_taxi)"></nb-action>
+                        <nb-action nbTooltip="Modificar" [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(ponto_taxi)"></nb-action>
+                      </nb-actions>
+                    </div>
                   </div>
-                  <div class="col-4">
-                    <nb-actions class="actions_taxista" size="small">
-                      <nb-action nbTooltip="Remover" icon="trash-2-outline" (click)="deletar(ponto_taxi)"></nb-action>
-                      <nb-action nbTooltip="Modificar" [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(ponto_taxi)"></nb-action>
-                    </nb-actions>
+                  <div class="row sumario">
+                    <div class="col propriedade">
+                      <div class="nome_propriedade">{{contarTaxistas(ponto_taxi)}} Taxista(s)</div>
+                      <!--div class="valor_propriedade">{{ taxista.usuario.rg }}</div-->
+                    </div>
                   </div>
                 </div>
-                <div class="row sumario">
-                  <div class="col propriedade">
-                    <div class="nome_propriedade">#Taxistas</div>
-                    <!--div class="valor_propriedade">{{ taxista.usuario.rg }}</div-->
-                  </div>
-                </div>
-              </div>
-            </nb-list-item>
-          </nb-list>
+              </nb-list-item>
+            </nb-list>
+          </div>
           <br/>
           <br/>
           <nb-alert status="info" *ngIf="pontosTaxi.length === 0 || pontosTaxi == null || pontosTaxi == undefined">
@@ -45,15 +50,15 @@
           </nb-alert>
         </div>
       </base-card>
-      <base-card #card_detalhes class="col-md-6">
-        <div header>DETALHES DO PONTO DE TAXI: {{pontoTaxi ? pontoTaxi.nome.toUpperCase() : '[DESCONHECIDO]'}}</div>
+      <base-card #card_detalhes class="col-md-7">
+        <div header>DETALHES DO PONTO DE TAXI: {{pontoTaxi && pontoTaxi.nome ? pontoTaxi.nome.toUpperCase() : '[DESCONHECIDO]'}}</div>
         <div class="container" body>
           <nb-actions size="small" >
             <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
             <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
             <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
             <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
-          </nb-actions>
+          </nb-actions><br>
 
           <nb-accordion multi #abas>
             <nb-accordion-item>
@@ -80,7 +85,7 @@
               </nb-accordion-item-body>
             </nb-accordion-item>
 
-            <nb-accordion-item>
+            <nb-accordion-item [hidden]="modo !== enumModo.mdVisualizacao">
                 <nb-accordion-item-header>
                     Taxistas
                 </nb-accordion-item-header>

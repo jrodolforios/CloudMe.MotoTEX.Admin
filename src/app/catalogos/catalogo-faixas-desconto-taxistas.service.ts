@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FaixaDescontoTaxistaSummary } from '../../api/to_de_taxi/models';
 import { FaixaDescontoTaxistaService } from '../../api/to_de_taxi/services';
-import { ApiCatalog, CatalogApiInterface } from './api-catalog';
+import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 
 class FaixaDescontoTaxistaApiInterface implements CatalogApiInterface<FaixaDescontoTaxistaSummary>
 {
@@ -15,78 +15,66 @@ class FaixaDescontoTaxistaApiInterface implements CatalogApiInterface<FaixaDesco
 	async get(id: string): Promise<FaixaDescontoTaxistaSummary>
 	{
 		const self = this;
-		let result: FaixaDescontoTaxistaSummary = null;
 
-		await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaByIdGet(id).toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaByIdGet(id).toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<FaixaDescontoTaxistaSummary>, resolve, reject);
+			}).catch(reason => reject(reason));
 		});
-
-		return result;
 	}
 
 	async getAll(): Promise<FaixaDescontoTaxistaSummary[]>
 	{
 		const self = this;
-		let result: FaixaDescontoTaxistaSummary[] = [];
 
-		await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaGet().toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaGet().toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<FaixaDescontoTaxistaSummary[]>, resolve, reject);
+			}).catch(reason => reject(reason));
 		});
-
-		return result;
 	}
 
 	async post(item: FaixaDescontoTaxistaSummary): Promise<string>
 	{
 		const self = this;
-		let result = '';
-		await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaPost(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaPost(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<string>, resolve, reject);
+			}).catch(reason => reject(reason));
+		});
 	}
 
 	async put(item: FaixaDescontoTaxistaSummary): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaPut(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaPut(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			}).catch(reason => reject(reason));
+		});
 	}
 
 	async delete(id: string): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaByIdDelete(id).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.faixaDescontoTaxistaSrv.ApiV1FaixaDescontoTaxistaByIdDelete(id).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			}).catch(reason => reject(reason));
+		});
 	}
 }
 

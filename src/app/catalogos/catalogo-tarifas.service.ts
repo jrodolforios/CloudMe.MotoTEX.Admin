@@ -21,7 +21,7 @@ class TarifaApiInterface implements CatalogApiInterface<TarifaSummary>
 			await self.tarifaSrv.ApiV1TarifaByIdGet(id).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<TarifaSummary>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -34,7 +34,7 @@ class TarifaApiInterface implements CatalogApiInterface<TarifaSummary>
 			await self.tarifaSrv.ApiV1TarifaGet().toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<TarifaSummary[]>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -47,7 +47,7 @@ class TarifaApiInterface implements CatalogApiInterface<TarifaSummary>
 			await self.tarifaSrv.ApiV1TarifaPost(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<string>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -60,7 +60,7 @@ class TarifaApiInterface implements CatalogApiInterface<TarifaSummary>
 			await self.tarifaSrv.ApiV1TarifaPut(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 
@@ -73,7 +73,7 @@ class TarifaApiInterface implements CatalogApiInterface<TarifaSummary>
 			await self.tarifaSrv.ApiV1TarifaByIdDelete(id).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
-			});
+			}).catch(reason => reject(reason));
 		});
 	}
 }

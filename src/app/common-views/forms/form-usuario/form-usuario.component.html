@@ -36,8 +36,8 @@
     </div>
     <div class="row">
       <div class="col">
-        <label>Telefone*</label>
-        <input type="text" nbInput mask='(00) 0000-0000' fullWidth placeholder="Telefone" class="form-control" formControlName="telefone">
+        <label>Celular*</label>
+        <input type="text" nbInput mask='(00) 0 0000-0000' fullWidth placeholder="Celular" class="form-control" formControlName="telefone">
         <div *ngIf="telefone.invalid && (telefone.dirty || telefone.touched)" class="alert alert-danger">
           <div *ngIf="telefone.errors.required">Telefone é obrigatório.</div>
         </div>

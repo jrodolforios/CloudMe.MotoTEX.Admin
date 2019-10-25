@@ -17,6 +17,8 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 
 	@Input() desabilitarControles: boolean = true;
 
+	buscandoCEP = false;
+
 	@Input()
 	set endereco(value: EnderecoSummary)
 	{
@@ -96,20 +98,35 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
-		if (!self._endereco) return false;
-		else if (self.cep.value !== self._endereco.cep) return true;
-		else if (self.logradouro.value !== self._endereco.logradouro) return true;
-		else if (self.numero.value !== self._endereco.numero) return true;
-		else if (self.complemento.value !== self._endereco.complemento) return true;
-		else if (self.bairro.value !== self._endereco.bairro) return true;
-		else if (self.localidade.value !== self._endereco.localidade) return true;
-		else if (self.uf.value !== self._endereco.uf) return true;
-		return false;
+		if (self._endereco)
+		{
+			return (
+				self.cep.value !== this._endereco.cep ||
+				self.logradouro.value !== this._endereco.logradouro ||
+				self.numero.value !== this._endereco.numero ||
+				self.complemento.value !== this._endereco.complemento ||
+				self.bairro.value !== this._endereco.bairro ||
+				self.localidade.value !== this._endereco.localidade ||
+				self.uf.value !== this._endereco.uf
+			);
+		}
+
+		return (
+			self.cep.touched && self.cep.dirty ||
+			self.logradouro.touched && self.logradouro.dirty ||
+			self.numero.touched && self.numero.dirty ||
+			self.complemento.touched && self.complemento.dirty ||
+			self.bairro.touched && self.bairro.dirty ||
+			self.localidade.touched && self.localidade.dirty ||
+			self.uf.touched && self.uf.dirty);
 	}
 
 	private async obterEndereco(cep: string)
 	{
 		const self = this;
+		const desabCtrls = self.desabilitarControles;
+		self.buscandoCEP = true;
+		self.desabilitarControles = true;
 		await self.enderecoSrv.ApiV1EnderecoConsultaCepByCepGet(cep).toPromise().then(resp_endereco =>
 		{
 			if (resp_endereco && resp_endereco.success)
@@ -117,23 +134,16 @@ export class FormEnderecoComponent implements OnInit, OnDestroy {
 				self.form.patchValue(resp_endereco.data);
 			}
 		});
+		self.desabilitarControles = desabCtrls;
+		self.buscandoCEP = false;
 	}
 
 	public obterAlteracoes(): EnderecoSummary
 	{
 		const self = this;
-		if (!self._endereco)
-		{
-			return null;
-		}
-
-		if (!self.alterado)
-		{
-			return self._endereco;
-		}
 
 		return {
-			id: self._endereco.id,
+			id: self._endereco ? self._endereco.id : undefined,
 			cep: self.cep.value,
 			logradouro: self.logradouro.value,
 			numero: self.numero.value,

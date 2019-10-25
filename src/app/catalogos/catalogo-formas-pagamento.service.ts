@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormaPagamentoSummary } from '../../api/to_de_taxi/models';
 import { FormaPagamentoService } from '../../api/to_de_taxi/services';
-import { ApiCatalog, CatalogApiInterface } from './api-catalog';
+import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 
 class FormaPagamentoApiInterface implements CatalogApiInterface<FormaPagamentoSummary>
 {
@@ -15,78 +15,66 @@ class FormaPagamentoApiInterface implements CatalogApiInterface<FormaPagamentoSu
 	async get(id: string): Promise<FormaPagamentoSummary>
 	{
 		const self = this;
-		let result: FormaPagamentoSummary = null;
 
-		await self.formaPagamentoSrv.ApiV1FormaPagamentoByIdGet(id).toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.formaPagamentoSrv.ApiV1FormaPagamentoByIdGet(id).toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<FormaPagamentoSummary>, resolve, reject);
+			}).catch(reason => reject(reason));
 		});
-
-		return result;
 	}
 
 	async getAll(): Promise<FormaPagamentoSummary[]>
 	{
 		const self = this;
-		let result: FormaPagamentoSummary[] = [];
 
-		await self.formaPagamentoSrv.ApiV1FormaPagamentoGet().toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.formaPagamentoSrv.ApiV1FormaPagamentoGet().toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<FormaPagamentoSummary[]>, resolve, reject);
+			}).catch(reason => reject(reason));
 		});
-
-		return result;
 	}
 
 	async post(item: FormaPagamentoSummary): Promise<string>
 	{
 		const self = this;
-		let result = '';
-		await self.formaPagamentoSrv.ApiV1FormaPagamentoPost(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.formaPagamentoSrv.ApiV1FormaPagamentoPost(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<string>, resolve, reject);
+			}).catch(reason => reject(reason));
+		});
 	}
 
 	async put(item: FormaPagamentoSummary): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.formaPagamentoSrv.ApiV1FormaPagamentoPut(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.formaPagamentoSrv.ApiV1FormaPagamentoPut(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			}).catch(reason => reject(reason));
+		});
 	}
 
 	async delete(id: string): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.formaPagamentoSrv.ApiV1FormaPagamentoByIdDelete(id).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.formaPagamentoSrv.ApiV1FormaPagamentoByIdDelete(id).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			}).catch(reason => reject(reason));
+		});
 	}
 }
 

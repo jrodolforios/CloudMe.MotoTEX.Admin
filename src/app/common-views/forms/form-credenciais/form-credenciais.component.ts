@@ -73,24 +73,22 @@ export class FormCredenciaisComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
-		if (!self._credenciais) return false;
-		else if (self.login.value !== self._credenciais.login) return true;
-		else if (self.senha.value !== self._credenciais.senha) return true;
-		return false;
+		/*if (self._credenciais)
+		{
+			return (
+				self.login.value !== this._credenciais.login ||
+				self.senha.value !== this._credenciais.senha
+			);
+		}*/
+
+		return (
+			self.login.touched && self.login.dirty ||
+			self.senha.touched && self.senha.dirty);
 	}
 
 	public obterAlteracoes(): CredenciaisUsuario
 	{
 		const self = this;
-		if (!self._credenciais)
-		{
-			return null;
-		}
-
-		if (!self.alterado)
-		{
-			return self._credenciais;
-		}
 
 		return {
 			login: self.login.value,

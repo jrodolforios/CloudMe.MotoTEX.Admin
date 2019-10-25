@@ -31,6 +31,11 @@ const routes: Routes = [{
 				.then(m => m.PontosTaxiModule),
 		},
 		{
+			path: 'passageiros',
+			loadChildren: () => import('./passageiros/passageiros.module')
+				.then(m => m.PassageirosModule),
+		},
+		{
 			path: 'dashboard',
 			component: ECommerceComponent,
 		},

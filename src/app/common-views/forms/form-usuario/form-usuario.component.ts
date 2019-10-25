@@ -58,13 +58,23 @@ export class FormUsuarioComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
-		if (!self._usuario) return false;
-		else if (self.nome.value !== self._usuario.nome) return true;
-		else if (self.rg.value !== self._usuario.rg) return true;
-		else if (self.cpf.value !== self._usuario.cpf) return true;
-		else if (self.email.value !== self._usuario.email) return true;
-		else if (self.telefone.value !== self._usuario.telefone) return true;
-		return false;
+		if (self._usuario)
+		{
+			return (
+				self.nome.value !== this._usuario.nome ||
+				self.rg.value !== this._usuario.rg ||
+				self.cpf.value !== this._usuario.cpf ||
+				self.email.value !== this._usuario.email ||
+				self.telefone.value !== this._usuario.telefone
+			);
+		}
+
+		return (
+			self.nome.touched && self.nome.dirty ||
+			self.rg.touched && self.rg.dirty ||
+			self.cpf.touched && self.cpf.dirty ||
+			self.email.touched && self.email.dirty ||
+			self.telefone.touched && self.telefone.dirty);
 	}
 
 	constructor() { }
@@ -80,18 +90,8 @@ export class FormUsuarioComponent implements OnInit, OnDestroy {
 	public obterAlteracoes(): UsuarioSummary
 	{
 		const self = this;
-		if (!self._usuario)
-		{
-			return null;
-		}
-
-		if (!self.alterado)
-		{
-			return self._usuario;
-		}
-
 		return {
-			id: self._usuario.id,
+			id: self._usuario ? self._usuario.id : undefined,
 			nome: self.nome.value,
 			rg: self.rg.value,
 			cpf: self.cpf.value,

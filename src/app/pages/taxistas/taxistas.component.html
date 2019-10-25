@@ -3,14 +3,45 @@
     <div class="row">
       <div class="col-md-5">
         <base-card #card_listagem>
-          <div header>TAXISTAS</div>
+          <div header>TAXISTAS ({{quantidadeTaxistas}})</div>
           <div body class="container">
             <div class="row actions">
-              <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaTaxista type="text" nbInput fullWidth shape="semi-round" placeholder="Pesquisar..." (input)="filtrarTaxistas($event.target.value)">
               <nb-actions size="small" class="col-auto">
-                  <nb-action nbTooltip="Limpar pesquisa" class="col-auto" icon="close-outline" (click)="limparPesquisa()" [disabled]="!pesquisaTaxista.value"></nb-action>
-                  <nb-action nbTooltip="Adicionar taxista" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
+                <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
+                <nb-action nbTooltip="Adicionar taxista" [disabled]="!podeCriar" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
               </nb-actions>
+            </div>
+            <div class="row filtros" *ngIf="exibirFiltros">
+              <form class="container">
+                  <div class="row">
+                    <label class="label col-sm-3">Nome</label>
+                    <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaTaxista fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
+                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaTaxista.value"></nb-action>
+                  </div>
+                  <div class="row">
+                    <label class="label col-sm-3">Situação</label>
+                    <nb-select class="col" placeholder="Filtrar por situação" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroSituacao">
+                      <nb-option [value]="null">Todos</nb-option>
+                      <nb-option [value]="true">Ativos</nb-option>
+                      <nb-option [value]="false">Inativos</nb-option>
+                    </nb-select>
+                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroSituacao=null" [disabled]="filtroSituacao === null"></nb-action>
+                  </div>                              
+                  <div class="row">
+                    <label class="label col-sm-3">Ponto de táxi</label>
+                    <nb-select class="col" placeholder="Filtrar por ponto de táxi" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroPontoTaxi">
+                      <nb-option [value]="null">Nenhum</nb-option>
+                      <nb-option [value]="todosPontosTaxi">Todos</nb-option>
+                      <nb-option *ngFor="let ptTx of pontosTaxi" [value]="ptTx">{{ptTx.nome}}</nb-option>
+                    </nb-select>
+                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPontoTaxi=undefined" [disabled]="filtroPontoTaxi === undefined"></nb-action>
+                  </div>                              
+                  <div class="row">
+                    <div class="offset-sm-3 col-sm-9">
+                      <button nbButton fullWidth status="info" shape="semi-round" (click)="limparFiltros()">Limpar filtros</button>
+                    </div>
+                  </div>
+              </form>
             </div>
             <div class="row">
               <nb-list class="col own-scroll"
@@ -47,7 +78,7 @@
                       <div class="col">
                         <nb-user
                           size="giant"
-                          [picture]="converterFoto(taxista.foto.dados)"
+                          [picture]="taxista.foto.dados"
                           onlyPicture
                           shape="rectangle">
                         </nb-user>
@@ -67,14 +98,14 @@
       </div>
       <div class="col-md-7">
         <base-card #card_detalhes>
-          <div header>DETALHES DE {{taxista ? (taxista.usuario?.nome.toUpperCase() || "NOVO TAXISTA") : "INDEFINIDO"}}</div>
+          <div header>DETALHES DE {{taxista && taxista.usuario ? taxista.usuario.nome.toUpperCase() : "NOVO TAXISTA"}}</div>
           <div class="container" body>
             <nb-actions size="small" >
               <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
               <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
               <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
               <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
-            </nb-actions>
+            </nb-actions><br>
 
             <nb-accordion multi #abas>
               <nb-accordion-item>

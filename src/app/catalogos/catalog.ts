@@ -5,12 +5,13 @@ export class CatalogChanges<T>
 	addedItems: T[] = [];
 	removedItems: T[] = [];
 	updatedItems: T[] = [];
+	oldItems: T[] = []; // apenas para updates
 }
 
 export class Catalog<T>
 {
 	items: T[] = [];
-	itemsSubject = new BehaviorSubject<T[]>([]);
+	// itemsSubject = new BehaviorSubject<T[]>([]);
 
 	private currentChanges = new CatalogChanges<T>();
 	changesSubject = new Subject<CatalogChanges<T>>();
@@ -22,8 +23,7 @@ export class Catalog<T>
 		if (self.hasChanges)
 		{
 			self.changesSubject.next(self.currentChanges);
-
-			self.applyChanges();
+			self.resetChanges();
 		}
 	}
 
@@ -56,16 +56,27 @@ export class Catalog<T>
 			});
 
 			self.currentChanges.updatedItems.forEach(updated_item => {
-				const target = self.items.find(item => item['id'] === updated_item['id']);
+				let tgtIdx = -1;
+				const target = self.items.find((item, index) =>
+				{
+					if (item['id'] === updated_item['id'])
+					{
+						tgtIdx = index;
+						return true;
+					}
+					return false;
+				});
+
 				if (target)
 				{
-					Object.assign(target, updated_item);
+					self.currentChanges.oldItems.push(target);
+					self.items[tgtIdx] = updated_item;
 				}
 			});
 
-			self.itemsSubject.next(self.items);
+			// self.itemsSubject.next(self.items);
 
-			self.resetChanges();
+			self.notifyChanges();
 		}
 	}
 
@@ -93,7 +104,7 @@ export class Catalog<T>
 		}) !== undefined;
 	}
 
-	add(items: T[], notify: boolean = true)
+	add(items: T[], apply: boolean = true)
 	{
 		const self = this;
 
@@ -105,13 +116,13 @@ export class Catalog<T>
 			}
 		});
 
-		if (notify)
+		if (apply)
 		{
-			self.notifyChanges();
+			self.applyChanges();
 		}
 	}
 
-	remove(items: T[], notify: boolean = true)
+	remove(items: T[], apply: boolean = true)
 	{
 		const self = this;
 
@@ -123,13 +134,13 @@ export class Catalog<T>
 			}
 		});
 
-		if (notify)
+		if (apply)
 		{
-			self.notifyChanges();
+			self.applyChanges();
 		}
 	}
 
-	update(items: T[], notify: boolean = true)
+	update(items: T[], apply: boolean = true)
 	{
 		const self = this;
 
@@ -141,9 +152,9 @@ export class Catalog<T>
 			}
 		});
 
-		if (notify)
+		if (apply)
 		{
-			self.notifyChanges();
+			self.applyChanges();
 		}
 	}
 
@@ -159,7 +170,7 @@ export class Catalog<T>
 	{
 		const self = this;
 		self.items = [...items];
-		self.itemsSubject.next(self.items);
+		// self.itemsSubject.next(self.items);
 		self.resetChanges();
 	}
 }

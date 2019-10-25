@@ -1,7 +1,7 @@
 <nb-card status="primary" [nbSpinner]="is_refreshing" nbSpinnerMessage="Aguarde..." nbSpinnerSize="xxlarge">
 	<nb-card-header >
 		<div class="row title_items">
-			<nb-icon class="col-auto refresh_icon" [icon]="refresh-outline" *ngIf="enable_user_refresh" (click)="onClickRefresh()"></nb-icon>
+			<nb-icon class="col-auto refresh_icon" icon="refresh-outline" *ngIf="enable_user_refresh" (click)="onClickRefresh()"></nb-icon>
 			<ng-content class="col title" style="text-align: center" select="[header]"></ng-content>	
 		</div>
 	</nb-card-header>  

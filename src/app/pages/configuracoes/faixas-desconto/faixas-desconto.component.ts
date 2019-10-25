@@ -101,32 +101,13 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 		self.busyStack.push();
-		//await self.catalogosSrv.faixasDesconto.getAll().then(faixas_desconto =>
-		self.faixasDescontoSub = self.catalogosSrv.faixasDesconto.itemsSubject.subscribe(faixas_desconto =>
+		// await self.catalogosSrv.faixasDesconto.getAll().then(faixas_desconto =>
+
+		self.obterFaixasDesconto();
+
+		self.faixasDescontoSub = self.catalogosSrv.faixasDesconto.changesSubject.subscribe(() =>
 		{
-			const totalTaxistas = self.catalogosSrv.taxistas.items.length;
-			faixas_desconto.forEach(fx_desc =>
-			{
-				let taxistas: TaxistaSummary[] = [];
-
-				const faixasDescTx = self.catalogosSrv.faixasDescontoTaxistas.items.filter(fx_desc_tx =>
-				{
-					return fx_desc_tx.idFaixaDesconto === fx_desc.id;
-				});
-
-				if (faixasDescTx)
-				{
-					taxistas = self.catalogosSrv.taxistas.items.filter(tx =>
-					{
-						return faixasDescTx.find(veic_tx => veic_tx.idTaxista === tx.id) !== undefined;
-					});
-				}
-
-				const numTaxistas = taxistas ? taxistas.length : 0;
-				const percent = numTaxistas / totalTaxistas * 100;
-				fx_desc['taxistas'] = `${percent.toLocaleString('pt-BR', { minimumIntegerDigits: 1, maximumFractionDigits: 0 })}% (${numTaxistas}/${totalTaxistas})`;
-			});
-			self.source.load(faixas_desconto);
+			self.obterFaixasDesconto();
 		});
 		self.busyStack.pop();
 	}
@@ -137,6 +118,38 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 		self.busyStackSub.unsubscribe();
 		self.faixasDescontoSub.unsubscribe();
 	}
+
+	obterFaixasDesconto()
+	{
+		const self = this;
+
+		const faixas_desconto = self.catalogosSrv.faixasDesconto.items;
+		const taxistas = self.catalogosSrv.taxistas.items;
+
+		const totalTaxistas = taxistas.length;
+		faixas_desconto.forEach(fx_desc =>
+		{
+			let taxistasFxDesc: TaxistaSummary[] = [];
+
+			const faixasDescTx = self.catalogosSrv.faixasDescontoTaxistas.items.filter(fx_desc_tx =>
+			{
+				return fx_desc_tx.idFaixaDesconto === fx_desc.id;
+			});
+
+			if (faixasDescTx)
+			{
+				taxistasFxDesc = taxistas.filter(tx =>
+				{
+					return faixasDescTx.find(veic_tx => veic_tx.idTaxista === tx.id) !== undefined;
+				});
+			}
+
+			const numTaxistas = taxistasFxDesc ? taxistasFxDesc.length : 0;
+			const percent = numTaxistas / totalTaxistas * 100;
+			fx_desc['taxistas'] = `${percent.toLocaleString('pt-BR', { minimumIntegerDigits: 1, maximumFractionDigits: 0 })}% (${numTaxistas}/${totalTaxistas})`;
+		});
+		self.source.load(faixas_desconto);
+}
 
 	async onCreateConfirm(event)
 	{
@@ -156,7 +169,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 		{
 			if (resultado)
 			{
-				event.confirm.resolve();
+				// event.confirm.resolve();
 				self.toastSrv.success('Faixa de desconto criada com sucesso!', 'Faixas de desconto');
 			}
 			else
@@ -215,7 +228,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 				context:
 				{
 					title: 'Faixas de desconto',
-					prompt: 'Confirma remoção?'
+					prompt: 'A remoção do registro implicará no rompimento de outras associações/agrupamentos no sistema. Confirma remoção?'
 				},
 			})
 			.onClose.toPromise().then(async result =>
@@ -223,24 +236,29 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 				if (result)
 				{
 					self.busyStack.push();
-					await self.catalogosSrv.faixasDesconto.delete(veic.id).then(resultado =>
+					await self.catalogosSrv.faixasDesconto.delete(veic.id).then(async resultado =>
 					{
 						if (resultado)
 						{
 							event.confirm.resolve();
 							self.toastSrv.success('Faixa de desconto removida com sucesso!', 'Faixas de desconto');
+
+							// busca novamente associações com:
+							// - Taxistas
+							await self.catalogosSrv.faixasDescontoTaxistas.getAll();
 						}
 						else
 						{
 							event.confirm.reject();
 						}
-					});
+					}).catch(() => {});
+
 					self.busyStack.pop();
 				}
 				else
 				{
 					event.confirm.reject();
 				}
-			});
+			}).catch(() => {});
 	}
 }

@@ -6,6 +6,7 @@ import { VeiculoService, VeiculoTaxistaService, TaxistaService } from '../../../
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
 import { ConfirmDialogComponent } from '../../../common-views/confirm-dialog/confirm-dialog.component';
+import { CatalogosService } from '../../../catalogos/catalogos.service';
 
 interface VeiculoTaxistaExt extends VeiculoTaxistaSummary
 {
@@ -50,9 +51,7 @@ export class VeiculosTaxistaComponent implements AfterViewInit, OnDestroy {
 	}
 
 	constructor(
-		private taxistaSrv: TaxistaService,
-		private veiculoSrv: VeiculoService,
-		private veicTxSrv: VeiculoTaxistaService,
+		private catalogoSrv: CatalogosService,
 		private toastSrv: NbToastrService,
 		private dialogSrv: NbDialogService) { }
 
@@ -82,16 +81,9 @@ export class VeiculosTaxistaComponent implements AfterViewInit, OnDestroy {
 
 		self.busyStackVeiculos.push();
 
-		await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(async resp => {
-			if (resp && resp.success)
-			{
-				resp.data.sort((veic1, veic2) =>
-				{
-					return (veic1.marca + veic1.modelo + veic1.placa).localeCompare(veic2.marca + veic2.modelo + veic2.placa);
-				});
-
-				self.veiculos = resp.data;
-			}
+		self.veiculos = self.catalogoSrv.veiculos.items.sort((veic1, veic2) =>
+		{
+			return (veic1.marca + veic1.modelo + veic1.placa).localeCompare(veic2.marca + veic2.modelo + veic2.placa);
 		});
 
 		self.busyStackVeiculos.pop();
@@ -109,41 +101,40 @@ export class VeiculosTaxistaComponent implements AfterViewInit, OnDestroy {
 		}
 		else
 		{
-			await self.taxistaSrv.ApiV1TaxistaByIdVeiculosGet(taxista.id).toPromise().then(async resp => {
-				if (resp && resp.success)
-				{
-					const tmpVeicsTxExt: VeiculoTaxistaExt[] = [];
+			const tmpVeicsTxExt: VeiculoTaxistaExt[] = [];
 
-					resp.data.forEach(veic_tx => {
-						const veicTxExt: VeiculoTaxistaExt = {
-							id: veic_tx.id,
-							ativo: veic_tx.ativo,
-							idTaxista: veic_tx.idTaxista,
-							idVeiculo: veic_tx.idVeiculo,
-							veiculo: self.veiculos.find(veic =>
-							{
-								return veic.id === veic_tx.idVeiculo;
-							})
-						};
+			const veicsTx = self.catalogoSrv.veiculosTaxistas.items.filter(veic_tx =>
+			{
+				return veic_tx.idTaxista === taxista.id;
+			});
 
-						tmpVeicsTxExt.push(veicTxExt);
-					});
-					tmpVeicsTxExt.sort((veicTx1, veicTx2) =>
+			veicsTx.forEach(veic_tx => {
+				const veicTxExt: VeiculoTaxistaExt = {
+					id: veic_tx.id,
+					ativo: veic_tx.ativo,
+					idTaxista: veic_tx.idTaxista,
+					idVeiculo: veic_tx.idVeiculo,
+					veiculo: self.veiculos.find(veic =>
 					{
-						return (veicTx1.veiculo.marca + veicTx1.veiculo.modelo + veicTx1.veiculo.placa)
-							.localeCompare(veicTx2.veiculo.marca + veicTx2.veiculo.modelo + veicTx2.veiculo.placa);
-					});
-					self.veiculosTaxista = tmpVeicsTxExt;
+						return veic.id === veic_tx.idVeiculo;
+					})
+				};
 
-					// filtra os veículos permitidos para nova associação
-					self.veiculosPermitidos = self.veiculos.filter((veic, index, array) =>
+				tmpVeicsTxExt.push(veicTxExt);
+			});
+			self.veiculosTaxista = tmpVeicsTxExt.sort((veicTx1, veicTx2) =>
+			{
+				return (veicTx1.veiculo.marca + veicTx1.veiculo.modelo + veicTx1.veiculo.placa)
+					.localeCompare(veicTx2.veiculo.marca + veicTx2.veiculo.modelo + veicTx2.veiculo.placa);
+			});
+
+			// filtra os veículos permitidos para nova associação
+			self.veiculosPermitidos = self.veiculos.filter((veic, index, array) =>
+			{
+				return !self.veiculosTaxista.find((veic_tx, idx, obj) =>
 					{
-						return !self.veiculosTaxista.find((veic_tx, idx, obj) =>
-							{
-								return veic_tx.idVeiculo === veic.id;
-							});
+						return veic_tx.idVeiculo === veic.id;
 					});
-				}
 			});
 		}
 
@@ -177,18 +168,18 @@ export class VeiculosTaxistaComponent implements AfterViewInit, OnDestroy {
 	async adicionar(veiculo: VeiculoSummary)
 	{
 		const self = this;
-		self.veicTxSrv.ApiV1VeiculoTaxistaPost({
+		self.catalogoSrv.veiculosTaxistas.post({
 			id: undefined,
 			idTaxista: self.taxista.id,
 			idVeiculo: veiculo.id
-		}).toPromise().then(resp_adicionar =>
+		}).then(resultado =>
 		{
-			if (resp_adicionar && resp_adicionar.success)
+			if (resultado)
 			{
 				self.toastSrv.success('Veículo associado com sucesso ao taxista!', 'Veículo/Taxista');
 				self.obterVeiculosTaxista(self.taxista);
 			}
-		});
+		}).catch(() => {});
 	}
 
 	async remover(veiculo_taxista: VeiculoTaxistaSummary)
@@ -208,15 +199,15 @@ export class VeiculosTaxistaComponent implements AfterViewInit, OnDestroy {
 			{
 				if (result)
 				{
-					self.veicTxSrv.ApiV1VeiculoTaxistaByIdDelete(veiculo_taxista.id).toPromise().then(resp_remover =>
+					self.catalogoSrv.veiculosTaxistas.delete(veiculo_taxista.id).then(resultado =>
 					{
-						if (resp_remover && resp_remover.success)
+						if (resultado)
 						{
 							self.toastSrv.success('Veículo desassociado com sucesso!', 'Veículo/Taxista');
 							self.obterVeiculosTaxista(self.taxista);
 						}
-					});
+					}).catch(() => {});
 				}
-			});
+			}).catch(() => {});
 	}
 }

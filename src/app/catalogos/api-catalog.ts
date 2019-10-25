@@ -102,7 +102,7 @@ export class ApiCatalog<T> extends Catalog<T>
 			await self.apiInterface.post(item).then(async id =>
 			{
 				await self.get(id); // obtém do server o objeto criado
-				resolve(true);
+				resolve(id ? true : false);
 			})
 			.catch(reason =>
 			{

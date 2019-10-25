@@ -93,7 +93,7 @@ export class FormFotoComponent implements OnInit {
 			self.nomeFoto = self._foto.nome;
 			self.nomeArquivoFoto = self._foto.nomeArquivo;
 			self.dadosFoto = self._foto.dados;
-			self.imgSrc = atob(self.dadosFoto);
+			self.imgSrc = self.dadosFoto;
 		}
 
 		self.busyStackFoto.pop();
@@ -121,18 +121,9 @@ export class FormFotoComponent implements OnInit {
 	public obterAlteracoes(): FotoSummary
 	{
 		const self = this;
-		if (!self._foto)
-		{
-			return null;
-		}
-
-		if (!self.alterado)
-		{
-			return self._foto;
-		}
 
 		return {
-			id: self._foto.id,
+			id: self._foto ? self._foto.id : undefined,
 			dados: self.dadosFoto,
 			nome: self.nomeFoto,
 			nomeArquivo: self.nomeArquivoFoto

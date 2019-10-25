@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { VeiculoTaxistaSummary } from '../../api/to_de_taxi/models';
 import { VeiculoTaxistaService } from '../../api/to_de_taxi/services';
-import { ApiCatalog, CatalogApiInterface } from './api-catalog';
+import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 
 class VeiculoTaxistaApiInterface implements CatalogApiInterface<VeiculoTaxistaSummary>
 {
@@ -15,78 +15,66 @@ class VeiculoTaxistaApiInterface implements CatalogApiInterface<VeiculoTaxistaSu
 	async get(id: string): Promise<VeiculoTaxistaSummary>
 	{
 		const self = this;
-		let result: VeiculoTaxistaSummary = null;
 
-		await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaByIdGet(id).toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaByIdGet(id).toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<VeiculoTaxistaSummary>, resolve, reject);
+			});
 		});
-
-		return result;
 	}
 
 	async getAll(): Promise<VeiculoTaxistaSummary[]>
 	{
 		const self = this;
-		let result: VeiculoTaxistaSummary[] = [];
 
-		await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaGet().toPromise().then(resp =>
+		return new Promise(async (resolve, reject) =>
 		{
-			if (resp && resp.success)
+			await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaGet().toPromise().then(resp =>
 			{
-				result = resp.data;
-			}
+				processResponse(resp as ApiResponse<VeiculoTaxistaSummary[]>, resolve, reject);
+			});
 		});
-
-		return result;
 	}
 
 	async post(item: VeiculoTaxistaSummary): Promise<string>
 	{
 		const self = this;
-		let result = '';
-		await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaPost(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaPost(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<string>, resolve, reject);
+			});
+		});
 	}
 
 	async put(item: VeiculoTaxistaSummary): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaPut(item).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaPut(item).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			});
+		});
 	}
 
 	async delete(id: string): Promise<boolean>
 	{
 		const self = this;
-		let result = false;
-		await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaByIdDelete(id).toPromise().then(resp =>
-		{
-			if (resp && resp.success)
-			{
-				result = resp.data;
-			}
-		});
 
-		return result;
+		return new Promise(async (resolve, reject) =>
+		{
+			await self.veiculoTaxistaSrv.ApiV1VeiculoTaxistaByIdDelete(id).toPromise().then(resp =>
+			{
+				processResponse(resp as ApiResponse<boolean>, resolve, reject);
+			});
+		});
 	}
 }
 

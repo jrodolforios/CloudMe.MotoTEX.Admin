@@ -195,31 +195,13 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 			{
 				self.veiculosSrv.marcasVeiculos.next(resp_marcas.data);
 			}
-		});
+		}).catch(() => {});
 
-		self.veicsSub = self.catalogosSrv.veiculos.itemsSubject.subscribe(novos_veics =>
+		self.obterVeiculos();
+
+		self.veicsSub = self.catalogosSrv.veiculos.changesSubject.subscribe(() =>
 		{
-			novos_veics.forEach(veic =>
-			{
-				let taxistas: TaxistaSummary[] = [];
-
-				const veicsTxs = self.catalogosSrv.veiculosTaxistas.items.filter(veic_tx =>
-				{
-					return veic_tx.idVeiculo === veic.id;
-				});
-
-				if (veicsTxs)
-				{
-					taxistas = self.catalogosSrv.taxistas.items.filter(tx =>
-					{
-						return veicsTxs.find(veic_tx => veic_tx.idTaxista === tx.id) !== undefined;
-					});
-				}
-
-				veic['taxistas'] = taxistas;
-				veic['num_taxistas'] = taxistas ? taxistas.length : 0;
-			});
-			self.source.load(novos_veics);
+			self.obterVeiculos();
 		});
 
 		/*await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(resp =>
@@ -231,6 +213,34 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 		});*/
 
 		self.busyStack.pop();
+	}
+
+	obterVeiculos()
+	{
+		const self = this;
+
+		const veics = self.catalogosSrv.veiculos.items;
+		veics.forEach(veic =>
+		{
+			let taxistas: TaxistaSummary[] = [];
+
+			const veicsTxs = self.catalogosSrv.veiculosTaxistas.items.filter(veic_tx =>
+			{
+				return veic_tx.idVeiculo === veic.id;
+			});
+
+			if (veicsTxs)
+			{
+				taxistas = self.catalogosSrv.taxistas.items.filter(tx =>
+				{
+					return veicsTxs.find(veic_tx => veic_tx.idTaxista === tx.id) !== undefined;
+				});
+			}
+
+			veic['taxistas'] = taxistas;
+			veic['num_taxistas'] = taxistas ? taxistas.length : 0;
+		});
+		self.source.load(veics);
 	}
 
 	ngOnDestroy(): void
@@ -376,7 +386,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 				context:
 				{
 					title: 'Veículos',
-					prompt: 'Confirma remoção?'
+					prompt: 'A remoção do registro implicará no rompimento de outras associações/agrupamentos no sistema. Confirma remoção?'
 				},
 			})
 			.onClose.toPromise().then(async result =>
@@ -389,6 +399,10 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 						{
 							event.confirm.resolve();
 							self.toastSrv.success('Registro removido com sucesso!', 'Veículos');
+
+							// busca novamente associações com:
+							// - Taxistas
+							await self.catalogosSrv.veiculosTaxistas.getAll();
 						}
 						else
 						{
@@ -405,7 +419,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 				{
 					event.confirm.reject();
 				}
-			});
+			}).catch(() => {});
 	}
 
 	onCustomAction(event)
@@ -423,10 +437,5 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 	{
 		const self = this;
 		self.veiculoSelecionado = event.data;
-	}
-
-	converterFoto(foto: string): string
-	{
-		return atob(foto);
 	}
 }

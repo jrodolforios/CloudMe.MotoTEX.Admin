@@ -63,4 +63,18 @@
     vertical-align: middle;
     cursor: pointer;
   }
+
+  nb-accordion-item-header
+  {
+    background-color: #909090;
+    color: yellow;
+  }
+
+  .filtros
+  {
+    .row
+    {
+      padding: 0.5rem;
+    }
+  }
 }

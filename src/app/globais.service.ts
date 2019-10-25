@@ -24,6 +24,7 @@ export class GlobaisService
 
 		self.oauthService.events.subscribe(async event =>
 		{
+			toastSrv.info(event.type, 'Auth');
 			if (event.type === 'token_received')
 			{
 				await self.carregarPerfilUsuario();

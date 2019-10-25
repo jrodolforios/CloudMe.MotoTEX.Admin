@@ -8,9 +8,10 @@ import { FormCredenciaisComponent } from '../../common-views/forms/form-credenci
 import { FormFotoComponent } from '../../common-views/forms/form-foto/form-foto.component';
 import { FormUsuarioComponent } from '../../common-views/forms/form-usuario/form-usuario.component';
 import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
-import { TaxistaSummary, FotoSummary, VeiculoSummary, PontoTaxiSummary } from '../../../api/to_de_taxi/models';
+import { TaxistaSummary, PontoTaxiSummary } from '../../../api/to_de_taxi/models';
 import { BusyStack } from '../../@core/utils/busy_stack';
 import { SendMessageComponent } from '../../common-views/send-message/send-message.component';
+import { CatalogosService } from '../../catalogos/catalogos.service';
 
 export enum Modo
 {
@@ -40,13 +41,13 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	@ViewChild('formCredenciais', null) formCredenciais: FormCredenciaisComponent;
 	@ViewChild('formFoto', null) formFoto: FormFotoComponent;
 
+	exibirFiltros = false;
+
 	_modo: Modo = Modo.mdVisualizacao;
 	get modo(): Modo
 	{
 		return this._modo;
 	}
-
-	taxistaSelecionado = new BehaviorSubject<TaxistaSummary>(null);
 
 	// indicação de carregamento de dados da API em background
 	busyStackListagem = new BusyStack();
@@ -55,8 +56,12 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	taxista: TaxistaSummary = null;
 	taxistas: TaxistaSummary[] = [];
 	taxistasPesquisa: TaxistaSummary[] = [];
+	// taxistasSub: Subscription = null;
+	taxistasChangesSub: Subscription = null;
 
-	get credenciais() { return this.taxista ? this.taxista.usuario.credenciais : null; }
+	pontosTaxi: PontoTaxiSummary[] = [];
+
+	get credenciais() { return this.taxista && this.taxista.usuario ? this.taxista.usuario.credenciais : null; }
 	get endereco() { return this.taxista ? this.taxista.endereco : null; }
 	get foto() { return this.taxista ? this.taxista.foto : null; }
 	get usuario() { return this.taxista ? this.taxista.usuario : null; }
@@ -80,8 +85,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 	constructor(
 		private dialogSrv: NbDialogService,
+		private catalogosSrv: CatalogosService,
 		private usuarioSrv: UsuarioService,
-		private taxistaSrv: TaxistaService,
 		private fotoSrv: FotoService,
 		private enderecoSrv: EnderecoService,
 		private toastSrv: NbToastrService)
@@ -96,6 +101,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	ngOnDestroy(): void
 	{
 		const self = this;
+		//self.taxistasSub.unsubscribe();
+		self.taxistasChangesSub.unsubscribe();
 	}
 
 	ngAfterViewInit(): void
@@ -128,13 +135,17 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.atualizar();
 
-		self.taxistaSelSub = self.taxistaSelecionado.subscribe(async tax_sel =>
+		self.taxistasChangesSub = self.catalogosSrv.taxistas.changesSubject.subscribe(() =>
 		{
-			if (self.taxista !== tax_sel)
-			{
-				self.taxista = tax_sel;
-			}
+			self.atualizar();
 		});
+
+		/*self.taxistasSub = self.catalogosSrv.taxistas.itemsSubject.subscribe(() =>
+		{
+			self.atualizar();
+		});*/
+
+		self.pontosTaxi = self.catalogosSrv.pontosTaxi.items;
 	}
 
 	async setModo(value: Modo): Promise<boolean>
@@ -158,7 +169,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 					.onClose.toPromise().then(result =>
 					{
 						descartar = result;
-					});
+					}).catch(() => {});
 
 				if (!descartar)
 				{
@@ -207,93 +218,14 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		return self.modo === Modo.mdEdicao;
 	}
 
-	public instanciarTaxista(sumario?: TaxistaSummary): TaxistaSummary
-	{
-		let taxista: TaxistaSummary;
-		if (sumario)
-		{
-			taxista =
-			{
-				id: sumario.id,
-				ativo: sumario.ativo,
-				usuario: sumario.usuario,
-				endereco: sumario.endereco,
-				foto: sumario.foto,
-				idPontoTaxi: sumario.idPontoTaxi,
-				idLocalizacaoAtual: sumario.idLocalizacaoAtual,
-			};
-
-			if (taxista.usuario)
-			{
-				if (!taxista.usuario.credenciais)
-				{
-					taxista.usuario.credenciais = {
-						login: '',
-						senha: '',
-						confirmarSenha: '',
-						senhaAnterior: ''
-					};
-				}
-			}
-		}
-		else
-		{
-			taxista =
-			{
-				id: undefined,
-				ativo: true,
-				usuario:
-				{
-					id: undefined,
-					nome: '',
-					rg: '',
-					cpf: '',
-					email: '',
-					telefone: '',
-					credenciais:
-					{
-						login: '',
-						senha: '',
-						confirmarSenha: '',
-						senhaAnterior: ''
-					}
-				},
-				endereco:
-				{
-					id: undefined,
-					cep: '',
-					logradouro: '',
-					numero: '',
-					complemento: '',
-					bairro: '',
-					localidade: '',
-					uf: ''
-				},
-				foto:
-				{
-					id: undefined,
-					nome: '',
-					nomeArquivo: '',
-					dados: ''
-				},
-				idLocalizacaoAtual: undefined,
-				idPontoTaxi: undefined,
-			};
-		}
-
-		return taxista;
-	}
-
 	public async atualizar()
 	{
 		const self = this;
 		await self.obterTaxistas();
 
-		const taxistaSel = self.taxistaSelecionado.value;
-
-		if (!taxistaSel || !self.taxistas.find(tx => tx.id === taxistaSel.id))
+		if (!self.taxista || !self.taxistas.find(tx => tx.id === self.taxista.id))
 		{
-			self.taxistaSelecionado.next(self.taxistas.length > 0 ? self.taxistas[0] : null);
+			self.taxista = self.taxistas.length > 0 ? self.taxistas[0] : null;
 		}
 	}
 
@@ -303,31 +235,18 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.busyStackListagem.push();
 
-		const novos_taxistas: TaxistaSummary[] = [];
-
-		// obtém informações de acesso dos usuários
-		await self.taxistaSrv.ApiV1TaxistaGet().toPromise().then(async resp => {
-			if (resp && resp.success)
-			{
-				resp.data.sort((tx1, tx2) =>
-				{
-					return tx1.usuario.nome.localeCompare(tx2.usuario.nome);
-				});
-
-				resp.data.forEach(taxista_sum => {
-					novos_taxistas.push(self.instanciarTaxista(taxista_sum));
-				});
-			}
+		self.taxistas = self.catalogosSrv.taxistas.items.sort((tx1, tx2) =>
+		{
+			return tx1.usuario.nome.localeCompare(tx2.usuario.nome);
 		});
 
-		self.taxistasPesquisa = self.taxistas = novos_taxistas;
-
+		self.filtrarTaxistas();
 		self.busyStackListagem.pop();
 	}
 
 	selecionar(taxista: TaxistaSummary)
 	{
-		this.taxistaSelecionado.next(taxista);
+		this.taxista = taxista;
 	}
 
 	async visualizar(taxista: TaxistaSummary)
@@ -339,7 +258,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			{
 				self.selecionar(taxista);
 			}
-		});
+		}).catch(() => {});
 	}
 
 	async editar(taxista: TaxistaSummary)
@@ -352,8 +271,10 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			if (result)
 			{
 				self.selecionar(taxista);
+
+				self.expandir();
 			}
-		});
+		}).catch(() => {});
 	}
 
 	async deletar(taxista: TaxistaSummary)
@@ -368,28 +289,36 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				context:
 				{
 					title: 'Taxistas',
-					prompt: 'Confirma remoção?'
+					prompt: 'A remoção do registro implicará no rompimento de outras associações/agrupamentos no sistema. Confirma remoção?'
 				},
 			})
 			.onClose.toPromise().then(result =>
 			{
 				confirmaRemocao = result;
-			});
+			}).catch(() => {});
 
 		if (confirmaRemocao)
 		{
 			self.busyStackListagem.push();
 
-			//await self.removerFoto(taxista.fotoSummary);
+			// await self.removerFoto(taxista.fotoSummary);
 
-			await self.taxistaSrv.ApiV1TaxistaByIdDelete(taxista.id).toPromise().then(resp =>
+			await self.catalogosSrv.taxistas.delete(taxista.id).then(async resultado =>
 			{
-				if (resp && resp.success)
+				if (resultado)
 				{
 					self.toastSrv.success('Registro removido com sucesso!', 'Taxistas');
 					self.atualizar();
+
+					// busca novamente associações com:
+					// - Veículos
+					await self.catalogosSrv.veiculosTaxistas.getAll();
+					// - Formas de pagamento
+					await self.catalogosSrv.formasPagamentoTaxistas.getAll();
+					// - Faixas de desconto
+					await self.catalogosSrv.faixasDesconto.getAll();
 				}
-			});
+			}).catch(() => {});
 
 			self.busyStackListagem.pop();
 		}
@@ -413,20 +342,26 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				{
 					self.busyStackListagem.push();
 
-					taxista.ativo = ativo;
-
-					await self.taxistaSrv.ApiV1TaxistaPut(taxista).toPromise().then(resp =>
+					const txSummary: TaxistaSummary =
 					{
-						if (resp && resp.success)
+						id: taxista.id,
+						ativo,
+						idPontoTaxi: taxista.idPontoTaxi
+					};
+
+					await self.catalogosSrv.taxistas.put(txSummary).then(resultado =>
+					{
+						if (resultado)
 						{
+							// taxista.ativo = ativo;
 							self.toastSrv.success( `Taxista ${taxista.usuario.nome} ${ativo ? 'ativado' : 'desativado'} com sucesso!`, 'Taxistas');
 							self.atualizar();
 						}
-					});
+					}).catch(() => {});
 
 					self.busyStackListagem.pop();
 				}
-			});
+			}).catch(() => {});
 	}
 
 	async enviarMensagem(taxista: TaxistaSummary)
@@ -446,23 +381,84 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				{
 					self.toastSrv.success( `Mensagem enviada para  ${taxista.usuario.nome} com sucesso!`, 'Taxistas');
 				}
-			});
+			}).catch(() => {});
 	}
 
-	limparPesquisa()
+	_filtroSituacao: boolean = null;
+	set filtroSituacao(value: boolean)
 	{
 		const self = this;
-		self.taxistasPesquisa = self.taxistas;
-		self.inputPesquisaTaxista.nativeElement.value = '';
+		self._filtroSituacao = value;
+		self.filtrarTaxistas();
+	}
+	get filtroSituacao(): boolean
+	{
+		return this._filtroSituacao;
 	}
 
-	filtrarTaxistas(filter: string)
+	_filtroPesquisa: string = '';
+	set filtroPesquisa(value: string)
+	{
+		const self = this;
+		self._filtroPesquisa = value;
+		self.filtrarTaxistas();
+	}
+	get filtroPesquisa(): string
+	{
+		return this._filtroPesquisa;
+	}
+
+	todosPontosTaxi: PontoTaxiSummary = {};
+	_filtroPontoTaxi: PontoTaxiSummary = this.todosPontosTaxi;
+	set filtroPontoTaxi(value: PontoTaxiSummary)
+	{
+		const self = this;
+		self._filtroPontoTaxi = value;
+		self.filtrarTaxistas();
+	}
+	get filtroPontoTaxi(): PontoTaxiSummary
+	{
+		return this._filtroPontoTaxi;
+	}
+
+	filtrarTaxistas()
 	{
 		const self = this;
 
-		self.taxistasPesquisa = self.taxistas.filter(taxista => {
-			return taxista.usuario.nome.toUpperCase().includes(filter.toUpperCase());
+		self.taxistasPesquisa = self.taxistas.filter(taxista =>
+		{
+			let passa_filtro = true;
+
+			if (self.filtroPesquisa)
+			{
+				passa_filtro = taxista.usuario.nome.toUpperCase().includes(self.filtroPesquisa.toUpperCase());
+			}
+
+			if (self.filtroSituacao !== null)
+			{
+				passa_filtro = passa_filtro && taxista.ativo === self.filtroSituacao;
+			}
+
+			if (self.filtroPontoTaxi !== self.todosPontosTaxi)
+			{
+				passa_filtro =
+					passa_filtro &&
+					((self.filtroPontoTaxi === null && !taxista.idPontoTaxi) ||
+					(self.filtroPontoTaxi && taxista.idPontoTaxi === self.filtroPontoTaxi.id));
+			}
+
+			return passa_filtro;
 		});
+	}
+
+	limparFiltros()
+	{
+		const self = this;
+		self.filtroPesquisa = '';
+		self.filtroSituacao = null;
+		self.filtroPontoTaxi = self.todosPontosTaxi;
+
+		self.filtrarTaxistas();
 	}
 
 	async criar()
@@ -474,9 +470,11 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		{
 			if (result)
 			{
-				self.selecionar(self.instanciarTaxista());
+				self.selecionar({});
+
+				self.expandir();
 			}
-		});
+		}).catch(() => {});
 	}
 
 	public async confirmarEdicao()
@@ -486,34 +484,37 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.busyStackDetalhes.push();
 
+		let contemErros = false;
+
 		if (self.modo === Modo.mdCriacao)
 		{
-			const novoTaxista = self.instanciarTaxista();
-			novoTaxista.usuario = self.formUsuario.obterAlteracoes();
-			novoTaxista.endereco = self.formEndereco.obterAlteracoes();
-			novoTaxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
-			novoTaxista.foto = self.formFoto.obterAlteracoes();
+			self.taxista.usuario = self.formUsuario.obterAlteracoes();
+			self.taxista.endereco = self.formEndereco.obterAlteracoes();
+			self.taxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
+			self.taxista.foto = self.formFoto.obterAlteracoes();
 
 			// cria o registro do taxista
-			await self.taxistaSrv.ApiV1TaxistaPost(novoTaxista).toPromise().then(async resp_cria_tx =>
+			await self.catalogosSrv.taxistas.post(self.taxista).then(async resultado =>
 			{
-				if (resp_cria_tx && resp_cria_tx.success)
+				if (resultado)
 				{
 					self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
 				}
-			});
+			}).catch(() => { contemErros = true; });
 		}
 		else if (self.modo === Modo.mdEdicao)
 		{
+			let atualizou = false;
 			if (self.formUsuario.alterado)
 			{
 				await self.usuarioSrv.ApiV1UsuarioPut(self.formUsuario.obterAlteracoes()).toPromise().then(resp =>
 				{
 					if (resp && resp.success)
 					{
+						atualizou = true;
 						self.toastSrv.success('Informações pessoais alteradas com sucesso!', 'Taxistas');
 					}
-				});
+				}).catch(() => { contemErros = true; });
 			}
 
 			if (self.formEndereco.alterado)
@@ -522,9 +523,10 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				{
 					if (resp && resp.success)
 					{
+						atualizou = true;
 						self.toastSrv.success('Endereço alterado com sucesso!', 'Taxistas');
 					}
-				});
+				}).catch(() => { contemErros = true; });
 			}
 
 			if (self.formCredenciais.alterado)
@@ -536,9 +538,10 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				{
 					if (resp && resp.success)
 					{
+						atualizou = true;
 						self.toastSrv.success('Credenciais alteradas com sucesso!', 'Taxistas');
 					}
-				});
+				}).catch(() => { contemErros = true; });
 			}
 
 			if (self.formFoto.alterado)
@@ -547,15 +550,24 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				{
 					if (resp && resp.success)
 					{
+						atualizou = true;
 						self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
 					}
-				});
+				}).catch(() => { contemErros = true; });
+			}
+
+			if (atualizou)
+			{
+				self.catalogosSrv.taxistas.get(self.taxista.id); // obtém os atualizados dados do servidor
 			}
 		}
 
-		self.redefinir();
-		self.atualizar();
-		self.setModo(Modo.mdVisualizacao);
+		if (!contemErros)
+		{
+			self.redefinir();
+			self.atualizar();
+			self.setModo(Modo.mdVisualizacao);
+		}
 
 		self.busyStackDetalhes.pop();
 	}
@@ -581,7 +593,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				.onClose.toPromise().then(async result =>
 				{
 					cancelar = result;
-				});
+				}).catch(() => {});
 		}
 
 		if (cancelar)
@@ -604,10 +616,15 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 		return (
-			self.formUsuario.form.untouched || self.formUsuario.form.valid &&
-			self.formEndereco.form.untouched || self.formEndereco.form.valid &&
-			self.formCredenciais.form.untouched || self.formCredenciais.form.valid &&
-			self.formFoto.form.valid);
+			(self.formUsuario.form.valid) &&
+			(self.formEndereco.form.valid) &&
+			(!self.formCredenciais.form.touched || self.formCredenciais.form.valid) &&
+			(self.formFoto.form.valid));
+		/*return (
+			self.formUsuario.form.valid &&
+			self.formEndereco.form.valid &&
+			self.formCredenciais.form.valid &&
+			self.formFoto.form.valid);*/
 	}
 
 	expandir()
@@ -620,8 +637,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		this.abas.closeAll();
 	}
 
-	converterFoto(foto: string): string
+	get quantidadeTaxistas()
 	{
-		return atob(foto);
+		return this.catalogosSrv.taxistas.items.length;
 	}
 }

@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="col-3">
-          <input type="button" nbButton fullWidth [disabled]="!cep.valid" class="form-control" value="Pesquisar CEP" (click)="obterEndereco(cep.value)">
+          <button type="button" [nbSpinner]="buscandoCEP" nbButton fullWidth [disabled]="!cep.valid" class="form-control" (click)="obterEndereco(cep.value)">BUSCAR CEP</button>
         </div>
       </div>  
 

@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confir
 import { BusyStack } from '../../@core/utils/busy_stack';
 import { PontoTaxiSummary } from '../../../api/to_de_taxi/models/ponto-taxi-summary';
 import { FormIdentificacaoComponent } from './form-identificacao/form-identificacao.component';
+import { CatalogosService } from '../../catalogos/catalogos.service';
 
 export enum Modo
 {
@@ -23,6 +24,10 @@ export enum Modo
 })
 export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 {
+	public enumModo = Modo;
+
+	exibirFiltros = false;
+
 	@ViewChild('card_listagem', null) cardListagem: BaseCardComponent;
 	@ViewChild('card_detalhes', null) cardDetalhes: BaseCardComponent;
 	@ViewChild('card_foto', null) cardFoto: BaseCardComponent;
@@ -40,7 +45,7 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 		return this._modo;
 	}
 
-	taxistaSelecionado = new BehaviorSubject<PontoTaxiSummary>(null);
+	ptTaxiSelecionado = new BehaviorSubject<PontoTaxiSummary>(null);
 
 	// indicação de carregamento de dados da API em background
 	busyStackListagem = new BusyStack();
@@ -52,6 +57,11 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 	pontosTaxiPesquisa: PontoTaxiSummary[] = [];
 
 	get endereco() { return this.pontoTaxi ? this.pontoTaxi.endereco : null; }
+
+	get quantidadePontosTaxi()
+	{
+		return this.catalogosSrv.pontosTaxi.items.length;
+	}
 
 	pontoTaxiSelSub: Subscription;
 	busyStackListagemSub: Subscription = null;
@@ -67,9 +77,9 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 
 	constructor(
 		private dialogSrv: NbDialogService,
-		private pontoTaxiSrv: PontoTaxiService,
-		private enderecoSrv: EnderecoService,
-		private toastSrv: NbToastrService)
+		private toastSrv: NbToastrService,
+		private catalogosSrv: CatalogosService,
+		private enderecoSrv: EnderecoService)
 	{
 	}
 
@@ -105,7 +115,7 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 			}
 		});
 
-		self.pontoTaxiSelSub = self.taxistaSelecionado.subscribe(async tax_sel =>
+		self.pontoTaxiSelSub = self.ptTaxiSelecionado.subscribe(async tax_sel =>
 		{
 			if (self.pontoTaxi !== tax_sel)
 			{
@@ -135,7 +145,7 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 					.onClose.toPromise().then(result =>
 					{
 						descartar = result;
-					});
+					}).catch(() => {});
 
 				if (!descartar)
 				{
@@ -184,51 +194,16 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 		return self.modo === Modo.mdEdicao;
 	}
 
-	public instanciarPontoTaxi(sumario?: PontoTaxiSummary): PontoTaxiSummary
-	{
-		let pontoTaxi: PontoTaxiSummary;
-		if (sumario)
-		{
-			pontoTaxi =
-			{
-				id: sumario.id,
-				nome: sumario.nome,
-				endereco: sumario.endereco,
-			};
-		}
-		else
-		{
-			pontoTaxi =
-			{
-				id: undefined,
-				nome: '',
-				endereco:
-				{
-					id: undefined,
-					cep: '',
-					logradouro: '',
-					numero: '',
-					complemento: '',
-					bairro: '',
-					localidade: '',
-					uf: ''
-				},
-			};
-		}
-
-		return pontoTaxi;
-	}
-
 	public async atualizar()
 	{
 		const self = this;
 		await self.obterPontosTaxi();
 
-		const taxistaSel = self.taxistaSelecionado.value;
+		const taxistaSel = self.ptTaxiSelecionado.value;
 
 		if (!taxistaSel || !self.pontosTaxi.find(tx => tx.id === taxistaSel.id))
 		{
-			self.taxistaSelecionado.next(self.pontosTaxi.length > 0 ? self.pontosTaxi[0] : null);
+			self.ptTaxiSelecionado.next(self.pontosTaxi.length > 0 ? self.pontosTaxi[0] : null);
 		}
 	}
 
@@ -238,31 +213,20 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.busyStackListagem.push();
 
-		const novos_pontos_taxi: PontoTaxiSummary[] = [];
-
-		// obtém informações de acesso dos usuários
-		await self.pontoTaxiSrv.ApiV1PontoTaxiGet().toPromise().then(async resp => {
-			if (resp && resp.success)
-			{
-				resp.data.sort((pt_tx1, pt_tx2) =>
-				{
-					return pt_tx1.nome.localeCompare(pt_tx2.nome);
-				});
-
-				resp.data.forEach(taxista_sum => {
-					novos_pontos_taxi.push(self.instanciarPontoTaxi(taxista_sum));
-				});
-			}
+		const ptsTaxi = self.catalogosSrv.pontosTaxi.items.sort((pt_tx1, pt_tx2) =>
+		{
+			return pt_tx1.nome.localeCompare(pt_tx2.nome);
 		});
 
-		self.pontosTaxiPesquisa = self.pontosTaxi = novos_pontos_taxi;
+		self.pontosTaxi = ptsTaxi;
 
+		self.filtrarPontosTaxi();
 		self.busyStackListagem.pop();
 	}
 
 	selecionar(ponto_taxi: PontoTaxiSummary)
 	{
-		this.taxistaSelecionado.next(ponto_taxi);
+		this.ptTaxiSelecionado.next(ponto_taxi);
 	}
 
 	async visualizar(ponto_taxi: PontoTaxiSummary)
@@ -274,7 +238,7 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 			{
 				self.selecionar(ponto_taxi);
 			}
-		});
+		}).catch(() => {});
 	}
 
 	async editar(ponto_taxi: PontoTaxiSummary)
@@ -287,8 +251,9 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 			if (result)
 			{
 				self.selecionar(ponto_taxi);
+				self.expandir();
 			}
-		});
+		}).catch(() => {});
 	}
 
 	async deletar(ponto_taxi: PontoTaxiSummary)
@@ -303,45 +268,33 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 				context:
 				{
 					title: 'Pontos de taxi',
-					prompt: 'Confirma remoção?'
+					prompt: 'A remoção do registro implicará no rompimento de outras associações/agrupamentos no sistema. Confirma remoção?'
 				},
 			})
 			.onClose.toPromise().then(result =>
 			{
 				confirmaRemocao = result;
-			});
+			}).catch(() => {});
 
 		if (confirmaRemocao)
 		{
 			self.busyStackListagem.push();
 
-			await self.pontoTaxiSrv.ApiV1PontoTaxiByIdDelete(ponto_taxi.id).toPromise().then(resp =>
+			await self.catalogosSrv.pontosTaxi.delete(ponto_taxi.id).then(async resp =>
 			{
-				if (resp && resp.success)
+				if (resp)
 				{
 					self.toastSrv.success('Registro removido com sucesso!', 'Pontos de taxi');
 					self.atualizar();
+
+					// busca novamente associações com:
+					// - Taxistas
+					await self.catalogosSrv.taxistas.getAll();
 				}
-			});
+			}).catch(() => {});
 
 			self.busyStackListagem.pop();
 		}
-	}
-
-	limparPesquisa()
-	{
-		const self = this;
-		self.pontosTaxiPesquisa = self.pontosTaxi;
-		self.inputPesquisaPontoTaxi.nativeElement.value = '';
-	}
-
-	filtrarPontosTaxi(filter: string)
-	{
-		const self = this;
-
-		self.pontosTaxiPesquisa = self.pontosTaxi.filter(ponto_taxi => {
-			return ponto_taxi.nome.toUpperCase().includes(filter.toUpperCase());
-		});
 	}
 
 	async criar()
@@ -353,9 +306,10 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 		{
 			if (result)
 			{
-				self.selecionar(self.instanciarPontoTaxi());
+				self.selecionar({});
+				self.expandir();
 			}
-		});
+		}).catch(() => {});
 	}
 
 	public async confirmarEdicao()
@@ -365,35 +319,37 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.busyStackDetalhes.push();
 
+		let contemErros = false;
+
 		if (self.modo === Modo.mdCriacao)
 		{
-			const novoPontoTaxi = self.instanciarPontoTaxi();
-			novoPontoTaxi.nome = self.formIdentificacao.obterAlteracoes();
-			novoPontoTaxi.endereco = self.formEndereco.obterAlteracoes();
+			self.pontoTaxi.nome = self.formIdentificacao.obterAlteracoes();
+			self.pontoTaxi.endereco = self.formEndereco.obterAlteracoes();
 
 			// cria o registro do taxista
-			await self.pontoTaxiSrv.ApiV1PontoTaxiPost(novoPontoTaxi).toPromise().then(async resp_cria_tx =>
+			await self.catalogosSrv.pontosTaxi.post(self.pontoTaxi).then(async resultado =>
 			{
-				if (resp_cria_tx && resp_cria_tx.success)
+				if (resultado)
 				{
 					self.toastSrv.success('Registro criado com sucesso!', 'Pontos de taxi');
 				}
-			});
+			}).catch(() => { contemErros = true; });
 		}
 		else if (self.modo === Modo.mdEdicao)
 		{
+			let atualizou = false;
 			if (self.formIdentificacao.alterado)
 			{
-				const ptTxSummary = Object.assign({}, self.pontoTaxi);
-				ptTxSummary.nome = self.formIdentificacao.obterAlteracoes();
+				self.pontoTaxi.nome = self.formIdentificacao.obterAlteracoes();
 
-				await self.pontoTaxiSrv.ApiV1PontoTaxiPut(ptTxSummary).toPromise().then(resp =>
+				await self.catalogosSrv.pontosTaxi.put(self.pontoTaxi).then(resultado =>
 				{
-					if (resp && resp.success)
+					if (resultado)
 					{
+						atualizou = true;
 						self.toastSrv.success('Identificação alterada com sucesso!', 'Pontos de taxi');
 					}
-				});
+				}).catch(() => { contemErros = true; });
 			}
 
 			if (self.formEndereco.alterado)
@@ -402,16 +358,24 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 				{
 					if (resp && resp.success)
 					{
+						atualizou = true;
 						self.toastSrv.success('Endereço alterado com sucesso!', 'Pontos de taxi');
 					}
-				});
+				}).catch(() => { contemErros = true; });
 			}
 
+			if (atualizou)
+			{
+				self.catalogosSrv.pontosTaxi.get(self.pontoTaxi.id); // obtém os atualizados dados do servidor
+			}
 		}
 
-		self.redefinir();
-		self.atualizar();
-		self.setModo(Modo.mdVisualizacao);
+		if (!contemErros)
+		{
+			self.redefinir();
+			self.atualizar();
+			self.setModo(Modo.mdVisualizacao);
+		}
 
 		self.busyStackDetalhes.pop();
 	}
@@ -437,7 +401,7 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 				.onClose.toPromise().then(async result =>
 				{
 					cancelar = result;
-				});
+				}).catch(() => {});
 		}
 
 		if (cancelar)
@@ -462,5 +426,54 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 	encolher()
 	{
 		this.abas.closeAll();
+	}
+
+	_filtroPesquisa: string = '';
+	set filtroPesquisa(value: string)
+	{
+		const self = this;
+		self._filtroPesquisa = value;
+		self.filtrarPontosTaxi();
+	}
+	get filtroPesquisa(): string
+	{
+		return this._filtroPesquisa;
+	}
+
+	filtrarPontosTaxi()
+	{
+		const self = this;
+
+		self.pontosTaxiPesquisa = self.pontosTaxi.filter(ptTaxi =>
+		{
+			let passa_filtro = true;
+
+			if (self.filtroPesquisa)
+			{
+				passa_filtro = ptTaxi.nome.toUpperCase().includes(self.filtroPesquisa.toUpperCase());
+			}
+
+			return passa_filtro;
+		});
+	}
+
+	limparFiltros()
+	{
+		const self = this;
+		self.filtroPesquisa = '';
+
+		self.filtrarPontosTaxi();
+	}
+
+	contarTaxistas(pontoTaxi: PontoTaxiSummary): number
+	{
+		const self = this;
+
+		const taxistas = self.catalogosSrv.taxistas.items.filter(tx =>
+		{
+			return tx.idPontoTaxi === pontoTaxi.id;
+		});
+
+		return taxistas ? taxistas.length : 0;
 	}
 }
