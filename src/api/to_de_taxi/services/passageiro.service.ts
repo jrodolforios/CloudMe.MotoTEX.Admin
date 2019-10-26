@@ -170,6 +170,43 @@ class PassageiroService extends __BaseService {
     );
   }
 
+      /**
+   * @param id undefined
+   * @return Success
+   */
+  ApiV1PassageiroConsulta_id_passageiroResponse(id: string): __Observable<__StrictHttpResponse<ResponsePassageiroSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Passageiro/consulta_id_passageiro/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponsePassageiroSummary>;
+      })
+    );
+  }
+
+      /**
+   * @param id undefined
+   * @return Success
+   */
+  ApiV1PassageiroConsulta_id_passageiroGet(id: string): __Observable<ResponsePassageiroSummary> {
+    return this.ApiV1PassageiroConsulta_id_passageiroResponse(id).pipe(
+      __map(_r => _r.body as ResponsePassageiroSummary)
+    );
+  }
+
   /**
    * @param id DialList's ID
    * @return Success
