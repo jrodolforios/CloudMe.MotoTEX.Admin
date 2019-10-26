@@ -5,32 +5,56 @@
         <ngx-progress-section></ngx-progress-section>
       </div>
       <div class="col-md-6">
-          <div class="col-xxxl-12 col-md-12">
-              <nb-card ngClass="on">
-                <div class="icon-container">
-                  <div class="icon status-success" (click)="goToPage('/pages/settings/cameras')">
-                    <nb-icon class="nbIconCard" icon="person-add-outline"></nb-icon>
-                  </div>
-                </div>
-          
-                <div class="details">
-                  <div class="title h5">Taxistas</div>
-                  <div class="status">Adicionar Taxistas</div>
-                </div>
-              </nb-card>
-              <nb-card ngClass="on">
-                  <div class="icon-container">
-                    <div class="icon status-danger" (click)="goToPage('/pages/settings/cameras')">
-                      <nb-icon class="nbIconCard" icon="activity-outline"></nb-icon>
-                    </div>
-                  </div>
-            
-                  <div class="details">
-                    <div class="title h5">Configurações Financeiras</div>
-                    <div class="status">Ajustar tarifas e descontos</div>
-                  </div>
-                </nb-card>
+        <div class="col-xxxl-12 col-md-12">
+          <nb-card ngClass="on">
+            <div class="icon-container">
+              <div class="icon status-success" (click)="goToPage('/pages/taxistas')">
+                <nb-icon class="nbIconCard" icon="person-add-outline"></nb-icon>
+              </div>
             </div>
+
+            <div class="details">
+              <div class="title h5">Taxistas</div>
+              <div class="status">Adicionar Taxistas</div>
+            </div>
+          </nb-card>
+          <nb-card ngClass="on">
+            <div class="icon-container">
+              <div class="icon status-success" (click)="goToPage('/pages/pontos-taxi')">
+                <nb-icon class="nbIconCard" icon="pin-outline"></nb-icon>
+              </div>
+            </div>
+
+            <div class="details">
+              <div class="title h5">Pontos de Taxi</div>
+              <div class="status">Adicionar Pontos de taxi para referência</div>
+            </div>
+          </nb-card>
+          <nb-card ngClass="on">
+            <div class="icon-container">
+              <div class="icon status-success" (click)="goToPage('/pages/veiculos')">
+                <nb-icon class="nbIconCard" icon="car-outline"></nb-icon>
+              </div>
+            </div>
+
+            <div class="details">
+              <div class="title h5">Veículos</div>
+              <div class="status">Adicionar veículos</div>
+            </div>
+          </nb-card>
+          <nb-card ngClass="on">
+            <div class="icon-container">
+              <div class="icon status-danger" (click)="goToPage('/pages/configuracoes')">
+                <nb-icon class="nbIconCard" icon="activity-outline"></nb-icon>
+              </div>
+            </div>
+
+            <div class="details">
+              <div class="title h5">Configurações Financeiras</div>
+              <div class="status">Ajustar tarifas e descontos</div>
+            </div>
+          </nb-card>
+        </div>
       </div>
     </div>
 
