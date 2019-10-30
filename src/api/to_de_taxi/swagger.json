@@ -2617,6 +2617,52 @@
         ]
       }
     },
+    "/api/v1/Passageiro/consulta_id_passageiro/{id}": {
+      "get": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Get by IdUser",
+        "operationId": "ApiV1PassageiroConsulta_id_passageiroByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User Id from passenger",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[PassageiroSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/PontoTaxi": {
       "get": {
         "tags": [
@@ -3477,6 +3523,51 @@
         ]
       }
     },
+    "/api/v1/Tarifa/GetValorKmRodadoAtual": {
+      "get": {
+        "tags": [
+          "Tarifa"
+        ],
+        "summary": "Return de tax of the ride to current Time",
+        "operationId": "ApiV1TarifaGetValorKmRodadoAtualGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "kilometers",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Decimal]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Tarifa/{id}": {
       "get": {
         "tags": [
@@ -4086,7 +4177,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "DialList's ID",
+            "description": "User ID",
             "required": true,
             "type": "string",
             "format": "uuid"
@@ -6145,6 +6236,27 @@
         }
       }
     },
+    "Response[Decimal]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "format": "double",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "number"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "Response[TarifaSummary]": {
       "type": "object",
       "properties": {
@@ -6520,7 +6632,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "http://localhost:5000/connect/authorize",
+      "authorizationUrl": "https://auth.todetaxi.com.br/connect/authorize",
       "scopes": {
         "todetaxiapi": "TOdeTaxiAPI"
       },

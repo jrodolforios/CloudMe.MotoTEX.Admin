@@ -11,6 +11,7 @@ import { ResponseIEnumerableTarifaSummary } from '../models/response-ienumerable
 import { ResponseBoolean } from '../models/response-boolean';
 import { TarifaSummary } from '../models/tarifa-summary';
 import { ResponseGuid } from '../models/response-guid';
+import { ResponseDecimal } from '../models/response-decimal';
 import { ResponseTarifaSummary } from '../models/response-tarifa-summary';
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ class TarifaService extends __BaseService {
   static readonly ApiV1TarifaGetPath = '/api/v1/Tarifa';
   static readonly ApiV1TarifaPutPath = '/api/v1/Tarifa';
   static readonly ApiV1TarifaPostPath = '/api/v1/Tarifa';
+  static readonly ApiV1TarifaGetValorKmRodadoAtualGetPath = '/api/v1/Tarifa/GetValorKmRodadoAtual';
   static readonly ApiV1TarifaByIdGetPath = '/api/v1/Tarifa/{id}';
   static readonly ApiV1TarifaByIdDeletePath = '/api/v1/Tarifa/{id}';
 
@@ -131,6 +133,42 @@ class TarifaService extends __BaseService {
   ApiV1TarifaPost(TarifaSummary?: TarifaSummary): __Observable<ResponseGuid> {
     return this.ApiV1TarifaPostResponse(TarifaSummary).pipe(
       __map(_r => _r.body as ResponseGuid)
+    );
+  }
+
+  /**
+   * @param kilometers undefined
+   * @return Success
+   */
+  ApiV1TarifaGetValorKmRodadoAtualGetResponse(kilometers?: number): __Observable<__StrictHttpResponse<ResponseDecimal>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (kilometers != null) __params = __params.set('kilometers', kilometers.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Tarifa/GetValorKmRodadoAtual`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseDecimal>;
+      })
+    );
+  }
+  /**
+   * @param kilometers undefined
+   * @return Success
+   */
+  ApiV1TarifaGetValorKmRodadoAtualGet(kilometers?: number): __Observable<ResponseDecimal> {
+    return this.ApiV1TarifaGetValorKmRodadoAtualGetResponse(kilometers).pipe(
+      __map(_r => _r.body as ResponseDecimal)
     );
   }
 

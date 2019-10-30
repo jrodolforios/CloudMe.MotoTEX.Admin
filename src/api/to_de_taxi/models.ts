@@ -49,6 +49,7 @@ export { SolicitacaoCorridaSummary } from './models/solicitacao-corrida-summary'
 export { ResponseSolicitacaoCorridaSummary } from './models/response-solicitacao-corrida-summary';
 export { ResponseIEnumerableTarifaSummary } from './models/response-ienumerable-tarifa-summary';
 export { TarifaSummary } from './models/tarifa-summary';
+export { ResponseDecimal } from './models/response-decimal';
 export { ResponseTarifaSummary } from './models/response-tarifa-summary';
 export { ResponseTaxistaSummary } from './models/response-taxista-summary';
 export { ResponseIEnumerableVeiculoTaxistaSummary } from './models/response-ienumerable-veiculo-taxista-summary';
