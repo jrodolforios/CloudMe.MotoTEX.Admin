@@ -58,7 +58,10 @@ export class SeletorAnoEditorComponent extends DefaultEditor implements OnInit, 
 						if (resp_anos_versoes && resp_anos_versoes.success)
 						{
 							const distinct_anos = new Set(resp_anos_versoes.data.map(x => x.ano));
-							self.anos = [...distinct_anos];
+							self.anos = [];
+							distinct_anos.forEach(ano => {
+								self.anos.push(ano);
+							});
 							(self.veic as VeiculoSummary).ano = self.anos.find(ano => ano === self.cell.newValue as string);
 						}
 					});
