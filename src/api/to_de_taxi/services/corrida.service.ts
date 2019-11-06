@@ -19,6 +19,7 @@ class CorridaService extends __BaseService {
   static readonly ApiV1CorridaGetPath = '/api/v1/Corrida';
   static readonly ApiV1CorridaPutPath = '/api/v1/Corrida';
   static readonly ApiV1CorridaPostPath = '/api/v1/Corrida';
+  static readonly ApiV1CorridaConsultaIdPassageiroByIdGetPath = '/api/v1/Corrida/consulta_id_passageiro/{id}';
   static readonly ApiV1CorridaByIdGetPath = '/api/v1/Corrida/{id}';
   static readonly ApiV1CorridaByIdDeletePath = '/api/v1/Corrida/{id}';
 
@@ -131,6 +132,42 @@ class CorridaService extends __BaseService {
   ApiV1CorridaPost(corridaSummary?: CorridaSummary): __Observable<ResponseGuid> {
     return this.ApiV1CorridaPostResponse(corridaSummary).pipe(
       __map(_r => _r.body as ResponseGuid)
+    );
+  }
+
+  /**
+   * @param id undefined
+   * @return Success
+   */
+  ApiV1CorridaConsultaIdPassageiroByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseIEnumerableCorridaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Corrida/consulta_id_passageiro/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableCorridaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id undefined
+   * @return Success
+   */
+  ApiV1CorridaConsultaIdPassageiroByIdGet(id: string): __Observable<ResponseIEnumerableCorridaSummary> {
+    return this.ApiV1CorridaConsultaIdPassageiroByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseIEnumerableCorridaSummary)
     );
   }
 

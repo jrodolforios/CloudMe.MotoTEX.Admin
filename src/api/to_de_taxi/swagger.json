@@ -142,6 +142,51 @@
         ]
       }
     },
+    "/api/v1/Corrida/consulta_id_passageiro/{id}": {
+      "get": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Gets all corridas by passageiro.",
+        "operationId": "ApiV1CorridaConsulta_id_passageiroByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[CorridaSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Corrida/{id}": {
       "get": {
         "tags": [
@@ -192,6 +237,232 @@
         ],
         "summary": "Removes an existing Corrida.",
         "operationId": "ApiV1CorridaByIdDelete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/CorVeiculo": {
+      "get": {
+        "tags": [
+          "CorVeiculo"
+        ],
+        "summary": "Gets all CorVeiculos.",
+        "operationId": "ApiV1CorVeiculoGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[CorVeiculoSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "CorVeiculo"
+        ],
+        "summary": "Modifies an existing CorVeiculo.",
+        "operationId": "ApiV1CorVeiculoPut",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "CorVeiculoSummary",
+            "in": "body",
+            "description": "Modified CorVeiculo list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CorVeiculoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "CorVeiculo"
+        ],
+        "summary": "Creates a new CorVeiculo.",
+        "operationId": "ApiV1CorVeiculoPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "CorVeiculoSummary",
+            "in": "body",
+            "description": "CorVeiculo's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CorVeiculoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/CorVeiculo/{id}": {
+      "get": {
+        "tags": [
+          "CorVeiculo"
+        ],
+        "summary": "Gets a CorVeiculo.\r\n<param name=\"id\">CorVeiculo's ID</param>",
+        "operationId": "ApiV1CorVeiculoByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[CorVeiculoSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "CorVeiculo"
+        ],
+        "summary": "Removes an existing CorVeiculo.",
+        "operationId": "ApiV1CorVeiculoByIdDelete",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -2617,6 +2888,52 @@
         ]
       }
     },
+    "/api/v1/Passageiro/consulta_id_passageiro/{id}": {
+      "get": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Get by IdUser",
+        "operationId": "ApiV1PassageiroConsulta_id_passageiroByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User Id from passenger",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[PassageiroSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/PontoTaxi": {
       "get": {
         "tags": [
@@ -3477,6 +3794,51 @@
         ]
       }
     },
+    "/api/v1/Tarifa/GetValorKmRodadoAtual": {
+      "get": {
+        "tags": [
+          "Tarifa"
+        ],
+        "summary": "Return de tax of the ride to current Time",
+        "operationId": "ApiV1TarifaGetValorKmRodadoAtualGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "kilometers",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Decimal]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Tarifa/{id}": {
       "get": {
         "tags": [
@@ -4086,7 +4448,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "DialList's ID",
+            "description": "User ID",
             "required": true,
             "type": "string",
             "format": "uuid"
@@ -4690,7 +5052,57 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[InfoMarca]"
+              "$ref": "#/definitions/Response[IEnumerable[ModeloVeiculo]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Veiculo/anos_versoes/{codigo_modelo}": {
+      "get": {
+        "tags": [
+          "Veiculo"
+        ],
+        "summary": "Obtém os anos de fabricação e versões (combustível) de um modelo de veículo.",
+        "operationId": "ApiV1VeiculoAnos_versoesByCodigo_modeloGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "codigo_marca",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "codigo_modelo",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[AnoVersao]]"
             }
           },
           "401": {
@@ -5097,6 +5509,61 @@
       "properties": {
         "data": {
           "$ref": "#/definitions/CorridaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[CorVeiculoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CorVeiculoSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "CorVeiculoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        }
+      }
+    },
+    "Response[CorVeiculoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/CorVeiculoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
         "success": {
@@ -6041,7 +6508,8 @@
           "enum": [
             0,
             1,
-            2
+            2,
+            3
           ],
           "type": "integer"
         },
@@ -6142,6 +6610,27 @@
         "horaParada": {
           "format": "float",
           "type": "number"
+        }
+      }
+    },
+    "Response[Decimal]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "format": "double",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "number"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
         }
       }
     },
@@ -6370,14 +6859,17 @@
         "modelo": {
           "type": "string"
         },
-        "capacidade": {
-          "format": "int32",
-          "type": "integer"
+        "ano": {
+          "type": "string"
         },
-        "cor": {
+        "versao": {
           "type": "string"
         },
         "idFoto": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idCorVeiculo": {
           "format": "uuid",
           "type": "string"
         }
@@ -6429,20 +6921,23 @@
     "MarcaVeiculo": {
       "type": "object",
       "properties": {
-        "nome": {
+        "codigo": {
           "type": "string"
         },
-        "codigo": {
+        "nome": {
           "type": "string"
         }
       }
     },
-    "Response[InfoMarca]": {
+    "Response[IEnumerable[ModeloVeiculo]]": {
       "type": "object",
       "properties": {
         "data": {
-          "$ref": "#/definitions/InfoMarca",
-          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModeloVeiculo"
+          }
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -6457,34 +6952,6 @@
         }
       }
     },
-    "InfoMarca": {
-      "type": "object",
-      "properties": {
-        "anos": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AnoModelo"
-          }
-        },
-        "modelos": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ModeloVeiculo"
-          }
-        }
-      }
-    },
-    "AnoModelo": {
-      "type": "object",
-      "properties": {
-        "codigo": {
-          "type": "string"
-        },
-        "nome": {
-          "type": "string"
-        }
-      }
-    },
     "ModeloVeiculo": {
       "type": "object",
       "properties": {
@@ -6492,6 +6959,46 @@
           "type": "string"
         },
         "nome": {
+          "type": "string"
+        }
+      }
+    },
+    "Response[IEnumerable[AnoVersao]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnoVersao"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "AnoVersao": {
+      "type": "object",
+      "properties": {
+        "codigo": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "ano": {
+          "type": "string"
+        },
+        "versao": {
           "type": "string"
         }
       }

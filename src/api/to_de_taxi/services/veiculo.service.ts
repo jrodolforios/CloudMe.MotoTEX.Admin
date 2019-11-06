@@ -13,7 +13,8 @@ import { VeiculoSummary } from '../models/veiculo-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseVeiculoSummary } from '../models/response-veiculo-summary';
 import { ResponseIEnumerableMarcaVeiculo } from '../models/response-ienumerable-marca-veiculo';
-import { ResponseInfoMarca } from '../models/response-info-marca';
+import { ResponseIEnumerableModeloVeiculo } from '../models/response-ienumerable-modelo-veiculo';
+import { ResponseIEnumerableAnoVersao } from '../models/response-ienumerable-ano-versao';
 @Injectable({
   providedIn: 'root',
 })
@@ -25,6 +26,7 @@ class VeiculoService extends __BaseService {
   static readonly ApiV1VeiculoByIdDeletePath = '/api/v1/Veiculo/{id}';
   static readonly ApiV1VeiculoMarcasGetPath = '/api/v1/Veiculo/marcas';
   static readonly ApiV1VeiculoModelosByCodigoMarcaGetPath = '/api/v1/Veiculo/modelos/{codigo_marca}';
+  static readonly ApiV1VeiculoAnosVersoesByCodigoModeloGetPath = '/api/v1/Veiculo/anos_versoes/{codigo_modelo}';
 
   constructor(
     config: __Configuration,
@@ -247,7 +249,7 @@ class VeiculoService extends __BaseService {
    * @param codigo_marca undefined
    * @return Success
    */
-  ApiV1VeiculoModelosByCodigoMarcaGetResponse(codigoMarca: string): __Observable<__StrictHttpResponse<ResponseInfoMarca>> {
+  ApiV1VeiculoModelosByCodigoMarcaGetResponse(codigoMarca: string): __Observable<__StrictHttpResponse<ResponseIEnumerableModeloVeiculo>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -265,7 +267,7 @@ class VeiculoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseInfoMarca>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableModeloVeiculo>;
       })
     );
   }
@@ -273,14 +275,69 @@ class VeiculoService extends __BaseService {
    * @param codigo_marca undefined
    * @return Success
    */
-  ApiV1VeiculoModelosByCodigoMarcaGet(codigoMarca: string): __Observable<ResponseInfoMarca> {
+  ApiV1VeiculoModelosByCodigoMarcaGet(codigoMarca: string): __Observable<ResponseIEnumerableModeloVeiculo> {
     return this.ApiV1VeiculoModelosByCodigoMarcaGetResponse(codigoMarca).pipe(
-      __map(_r => _r.body as ResponseInfoMarca)
+      __map(_r => _r.body as ResponseIEnumerableModeloVeiculo)
+    );
+  }
+
+  /**
+   * @param params The `VeiculoService.ApiV1VeiculoAnosVersoesByCodigoModeloGetParams` containing the following parameters:
+   *
+   * - `codigo_modelo`:
+   *
+   * - `codigo_marca`:
+   *
+   * @return Success
+   */
+  ApiV1VeiculoAnosVersoesByCodigoModeloGetResponse(params: VeiculoService.ApiV1VeiculoAnosVersoesByCodigoModeloGetParams): __Observable<__StrictHttpResponse<ResponseIEnumerableAnoVersao>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.codigoMarca != null) __params = __params.set('codigo_marca', params.codigoMarca.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Veiculo/anos_versoes/${params.codigoModelo}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableAnoVersao>;
+      })
+    );
+  }
+  /**
+   * @param params The `VeiculoService.ApiV1VeiculoAnosVersoesByCodigoModeloGetParams` containing the following parameters:
+   *
+   * - `codigo_modelo`:
+   *
+   * - `codigo_marca`:
+   *
+   * @return Success
+   */
+  ApiV1VeiculoAnosVersoesByCodigoModeloGet(params: VeiculoService.ApiV1VeiculoAnosVersoesByCodigoModeloGetParams): __Observable<ResponseIEnumerableAnoVersao> {
+    return this.ApiV1VeiculoAnosVersoesByCodigoModeloGetResponse(params).pipe(
+      __map(_r => _r.body as ResponseIEnumerableAnoVersao)
     );
   }
 }
 
 module VeiculoService {
+
+  /**
+   * Parameters for ApiV1VeiculoAnosVersoesByCodigoModeloGet
+   */
+  export interface ApiV1VeiculoAnosVersoesByCodigoModeloGetParams {
+    codigoModelo: string;
+    codigoMarca?: string;
+  }
 }
 
 export { VeiculoService }

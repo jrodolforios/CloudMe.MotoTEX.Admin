@@ -4,7 +4,7 @@
       <nb-icon icon="menu-2-outline"></nb-icon>
     </a>
     <img src="/assets/images/to_de_taxi_logo.png" class="logo-img">
-    <span class="title"><b>TÔdeTaxi ADMIN</b></span>
+    <span *ngIf="!userPictureOnly" class="title"><b>TÔdeTaxi ADMIN</b></span>
   </div>
 </div>
 
@@ -20,7 +20,8 @@
         nbContextMenuTag="menu-sair"
         [name]="usuario?.nome"
         [title]="usuario?.email"
-        [showTitle]="true">
+        [showTitle]="!userPictureOnly"
+        [onlyPicture]="userPictureOnly">
       </nb-user>
     </nb-action>
   </nb-actions>

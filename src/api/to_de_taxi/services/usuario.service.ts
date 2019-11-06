@@ -212,7 +212,7 @@ class UsuarioService extends __BaseService {
   /**
    * @param params The `UsuarioService.ApiV1UsuarioAlteraCredenciaisByIdPostParams` containing the following parameters:
    *
-   * - `id`: DialList's ID
+   * - `id`: User ID
    *
    * - `credenciais`:
    *
@@ -244,7 +244,7 @@ class UsuarioService extends __BaseService {
   /**
    * @param params The `UsuarioService.ApiV1UsuarioAlteraCredenciaisByIdPostParams` containing the following parameters:
    *
-   * - `id`: DialList's ID
+   * - `id`: User ID
    *
    * - `credenciais`:
    *
@@ -312,7 +312,7 @@ module UsuarioService {
   export interface ApiV1UsuarioAlteraCredenciaisByIdPostParams {
 
     /**
-     * DialList's ID
+     * User ID
      */
     id: string;
     credenciais?: CredenciaisUsuario;

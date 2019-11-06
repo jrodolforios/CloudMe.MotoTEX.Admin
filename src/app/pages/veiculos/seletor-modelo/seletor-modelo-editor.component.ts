@@ -53,7 +53,7 @@ export class SeletorModeloEditorComponent extends DefaultEditor implements OnIni
 					await self.veiculoSrv.ApiV1VeiculoModelosByCodigoMarcaGet(marca.codigo).toPromise().then(resp_info_marca => {
 						if (resp_info_marca && resp_info_marca.success)
 						{
-							self.modelos = resp_info_marca.data.modelos;
+							self.modelos = resp_info_marca.data;
 							self.veicExt.modeloRef.next(self.modelos.find(modelo => modelo.nome === self.cell.newValue as string));
 						}
 					});

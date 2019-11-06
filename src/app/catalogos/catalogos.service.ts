@@ -8,6 +8,7 @@ import { CatalogoFaixasDescontoTaxistas } from './catalogo-faixas-desconto-taxis
 import { CatalogoFormasPagamento } from './catalogo-formas-pagamento.service';
 import { CatalogoFormasPagamentoTaxistas } from './catalogo-formas-pagamento-taxistas.service';
 import { CatalogoTarifas } from './catalogo-tarifas.service';
+import { CatalogoCorVeiculos } from './catalogo-cores-veiculos.service';
 
 @Injectable()
 export class CatalogosService
@@ -23,7 +24,8 @@ export class CatalogosService
 		public faixasDescontoTaxistas: CatalogoFaixasDescontoTaxistas,
 		public formasPagamento: CatalogoFormasPagamento,
 		public formasPagamentoTaxistas: CatalogoFormasPagamentoTaxistas,
-		public tarifas: CatalogoTarifas)
+		public tarifas: CatalogoTarifas,
+		public cores: CatalogoCorVeiculos)
 	{
 	}
 
@@ -57,5 +59,8 @@ export class CatalogosService
 
 		self.catalogoCarregamento = 'Formas de pagamento/Taxistas';
 		await self.formasPagamentoTaxistas.getAll();
+
+		self.catalogoCarregamento = 'Cores de veículos';
+		await self.cores.getAll();
 	}
 }

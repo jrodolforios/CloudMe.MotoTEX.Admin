@@ -1,34 +1,80 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
+
 import { DefaultEditor } from 'ng2-smart-table';
-import { VeiculoSummary } from '../../../../api/to_de_taxi/models';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { VeiculoSummaryExt } from '../veiculos.service';
+import { ModeloVeiculo, VeiculoSummary, CorVeiculoSummary } from '../../../../api/to_de_taxi/models';
+import { CatalogosService } from '../../../catalogos/catalogos.service';
 
 @Component({
 	template:
-`
-  <input style="margin: 0px; padding: 0px" nbInput fullWidth type="color" [(ngModel)]="cell.newValue">
-`
+	`<ngx-seletor-items #seletor
+		title="Selecione uma cor"
+		[items]="cores"
+		[selected_item]="cor"
+		[onGetItemHash]="onGetItemHash"
+		[onGetItemLabel]="onGetItemLabel"
+		(itemSelected)="selecionarCor($event)">
+	</ngx-seletor-items>`
 })
+export class CorEditorComponent extends DefaultEditor implements AfterViewInit, OnDestroy {
 
-export class CorEditorComponent extends DefaultEditor implements OnInit, AfterViewInit {
+	cores: CorVeiculoSummary[] = [];
+	cor: CorVeiculoSummary = null;
 
-	veiculo: VeiculoSummary = null;
+	corSub: Subscription = null;
 
-	constructor() { super(); }
+	veic: VeiculoSummary = null;
 
-	ngOnInit()
-	{
-	}
+	constructor(private catalogosSrv: CatalogosService){ super(); }
 
 	ngAfterViewInit(): void
 	{
 		const self = this;
 
-		self.veiculo = self.cell.getRow().getData();
+		self.veic = self.cell.getRow().getData();
+
+		self.atualizar();
+
+		self.corSub = self.catalogosSrv.cores.changesSubject.subscribe(changes =>
+		{
+			self.atualizar();
+		});
 	}
 
-	trocarCor(colorInput: any)
+	private atualizar()
 	{
 		const self = this;
-		self.cell.newValue = colorInput;
+		self.cores = self.catalogosSrv.cores.items;
+
+		if (!self.cor)
+		{
+			self.cor = self.cores.find(cor => cor.id === self.veic.idCorVeiculo);
+		}
+	}
+
+	ngOnDestroy(): void
+	{
+		const self = this;
+
+		if (self.corSub)
+		{
+			this.corSub.unsubscribe();
+		}
+	}
+
+	selecionarCor(cor: CorVeiculoSummary)
+	{
+		this.cell.newValue = cor.id;
+	}
+
+	onGetItemLabel(cor: CorVeiculoSummary)
+	{
+		return cor ? cor.nome : 'N/I';
+	}
+
+	onGetItemHash(cor: CorVeiculoSummary)
+	{
+		return cor ? cor.id : '';
 	}
 }

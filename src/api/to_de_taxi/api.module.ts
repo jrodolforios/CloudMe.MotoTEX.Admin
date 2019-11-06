@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationInterface } from './api-configuration';
 
 import { CorridaService } from './services/corrida.service';
+import { CorVeiculoService } from './services/cor-veiculo.service';
 import { EnderecoService } from './services/endereco.service';
 import { FaixaDescontoService } from './services/faixa-desconto.service';
 import { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
@@ -39,6 +40,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
   providers: [
     ApiConfiguration,
     CorridaService,
+    CorVeiculoService,
     EnderecoService,
     FaixaDescontoService,
     FaixaDescontoTaxistaService,

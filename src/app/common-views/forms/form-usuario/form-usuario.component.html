@@ -20,9 +20,10 @@
       <div class="col">
         <label>CPF*</label>
         <input type="text" nbInput mask='000.000.000-00' fullWidth placeholder="CPF" class="form-control" formControlName="cpf">
-        <div *ngIf="cpf.invalid && (cpf.dirty || cpf.touched)" class="alert alert-danger">
-          <div *ngIf="cpf.errors.required">CPF é obrigatório.</div>
-        </div>
+        <div *ngIf="(cpf.dirty || cpf.touched)">
+          <div *ngIf="cpf.errors?.required" class="alert alert-danger">CPF é obrigatório.</div>
+          <div *ngIf="cpf.invalid || cpf.errors?.cpfNotValid" class="alert alert-danger">CPF inválido.</div>
+          </div>
       </div>
     </div>  
     <div class="row">

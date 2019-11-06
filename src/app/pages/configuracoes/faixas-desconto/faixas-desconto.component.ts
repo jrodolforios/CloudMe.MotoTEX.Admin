@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { BaseCardComponent } from '../../../common-views/base-card/base-card.component';
-import { LocalDataSource } from 'ng2-smart-table';
 import { FaixaDescontoService } from '../../../../api/to_de_taxi/services';
 import { FaixaDescontoSummary, TaxistaSummary } from '../../../../api/to_de_taxi/models';
 import { UUID } from 'angular2-uuid';
@@ -10,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmDialogComponent } from '../../../common-views/confirm-dialog/confirm-dialog.component';
 import { NbDialogService, NbToastrService } from '@nebular/theme';
 import { CatalogosService } from '../../../catalogos/catalogos.service';
+import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
 	selector: 'ngx-faixas-desconto',
@@ -81,6 +81,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 	constructor(
 		private catalogosSrv: CatalogosService,
 		private dialogSrv: NbDialogService,
+		private faixaDescSrv: FaixaDescontoService,
 		private toastSrv: NbToastrService
 	) { }
 
@@ -148,8 +149,8 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 			const percent = numTaxistas / totalTaxistas * 100;
 			fx_desc['taxistas'] = `${percent.toLocaleString('pt-BR', { minimumIntegerDigits: 1, maximumFractionDigits: 0 })}% (${numTaxistas}/${totalTaxistas})`;
 		});
-		self.source.load(faixas_desconto);
-}
+		self.source.load([...faixas_desconto]);
+	}
 
 	async onCreateConfirm(event)
 	{
@@ -158,28 +159,28 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 		const nova_faixa_desc = event.newData as FaixaDescontoSummary;
 		nova_faixa_desc.id = UUID.UUID();
 
-		const sumarioVeic: FaixaDescontoSummary = {
+		const sumarioFxDesc: FaixaDescontoSummary = {
 			id: nova_faixa_desc.id,
 			valor: nova_faixa_desc.valor,
 			descricao: nova_faixa_desc.descricao
 		};
 
 		self.busyStack.push();
-		await self.catalogosSrv.faixasDesconto.post(sumarioVeic).then(async resultado =>
+		await self.catalogosSrv.faixasDesconto.post(sumarioFxDesc).then(async resultado =>
 		{
 			if (resultado)
 			{
-				// event.confirm.resolve();
+				//event.confirm.resolve.skipAdd = true;
 				self.toastSrv.success('Faixa de desconto criada com sucesso!', 'Faixas de desconto');
+				event.confirm.resolve(null);
 			}
 			else
 			{
 				event.confirm.reject();
 			}
-		}).catch(() =>
-		{
-			event.confirm.reject();
-		});
+		}).catch(() => { event.confirm.reject(); });
+
+		self.obterFaixasDesconto();
 
 		self.busyStack.pop();
 	}
@@ -194,25 +195,28 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 		const origFxDsc = event.data as FaixaDescontoSummary;
 		const newFxDsc = event.newData as FaixaDescontoSummary;
 
-		const sumarioVeic: FaixaDescontoSummary = {
+		const sumarioFxDesc: FaixaDescontoSummary = {
 			id: newFxDsc.id,
 			valor: newFxDsc.valor,
 			descricao: newFxDsc.descricao
 		};
 
 		self.busyStack.push();
-		await self.catalogosSrv.faixasDesconto.put(sumarioVeic).then(async resultado =>
+		await self.catalogosSrv.faixasDesconto.put(sumarioFxDesc).then(async resultado =>
 		{
 			if (resultado)
 			{
-				event.confirm.resolve();
 				self.toastSrv.success('Faixa de desconto atualizada com sucesso!', 'Faixas de desconto');
+				event.confirm.resolve(null);
 			}
 			else
 			{
 				event.confirm.reject();
 			}
 		}).catch(reason => event.confirm.reject());
+
+		self.obterFaixasDesconto();
+
 		self.busyStack.pop();
 	}
 

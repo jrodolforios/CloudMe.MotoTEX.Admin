@@ -1,6 +1,6 @@
 /* tslint:disable */
 export interface SolicitacaoCorridaSummary {
-  tipoAtendimento?: 0 | 1 | 2;
+  tipoAtendimento?: 0 | 1 | 2 | 3;
   id?: string;
   idLocalizacaoOrigem?: string;
   idLocalizacaoDestino?: string;

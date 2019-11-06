@@ -20,6 +20,8 @@ import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confir
 import { CorViewComponent } from './cor/cor-view.component';
 import { CorEditorComponent } from './cor/cor-editor.component';
 import { CatalogosService } from '../../catalogos/catalogos.service';
+import { SeletorAnoViewComponent } from './ano/seletor-ano-view.component';
+import { SeletorAnoEditorComponent } from './ano/seletor-ano-editor.component';
 
 @Component({
 	selector: 'ngx-veiculos',
@@ -35,7 +37,9 @@ import { CatalogosService } from '../../catalogos/catalogos.service';
 		FotoEditorComponent,
 		FotoViewComponent,
 		CorEditorComponent,
-		CorViewComponent
+		CorViewComponent,
+		SeletorAnoViewComponent,
+		SeletorAnoEditorComponent
 	]
 })
 export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -119,16 +123,17 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 					component: PlacaEditorComponent
 				}
 			},
-			capacidade: {
-				title: 'Passageiros',
+			ano: {
+				title: 'Ano',
 				type: 'text',
+				renderComponent: SeletorAnoViewComponent,
 				editor:
 				{
 					type: 'custom',
-					component: CapacidadeEditorComponent
+					component: SeletorAnoEditorComponent
 				}
 			},
-			cor: {
+			idCorVeiculo: {
 				title: 'Cor',
 				type: 'custom',
 				renderComponent: CorViewComponent,
@@ -139,7 +144,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			},
 			num_taxistas: {
-				title: 'Taxistas',
+				title: 'Número de taxistas',
 				type: 'text',
 				editable: false
 			}
@@ -240,7 +245,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 			veic['taxistas'] = taxistas;
 			veic['num_taxistas'] = taxistas ? taxistas.length : 0;
 		});
-		self.source.load(veics);
+		self.source.load([...veics]);
 	}
 
 	ngOnDestroy(): void
@@ -310,27 +315,26 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 			id: novo_veic.id,
 			marca: novo_veic.marca,
 			modelo: novo_veic.modelo,
+			ano: novo_veic.ano,
+			idCorVeiculo: novo_veic.idCorVeiculo,
 			placa: novo_veic.placa,
-			capacidade: novo_veic.capacidade,
-			cor: novo_veic.cor,
-			idFoto: novo_veic.idFoto
 		};
 
 		self.busyStack.push();
-		await self.catalogosSrv.veiculos.post(sumarioVeic).then(async resultado => {
+		await self.catalogosSrv.veiculos.post(sumarioVeic).then(async resultado =>
+		{
 			if (resultado)
 			{
 				self.toastSrv.success('Veículo criado com sucesso!', 'Veículos');
-				// event.confirm.resolve();
+				event.confirm.resolve(null);
 			}
 			else
 			{
 				event.confirm.reject();
 			}
-		}).catch(reason =>
-		{
-			event.confirm.reject();
-		});
+		}).catch(reason => {});
+
+		self.obterVeiculos();
 
 		self.busyStack.pop();
 	}
@@ -343,16 +347,15 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 		// await this.enviarFoto(event.newData.veicExt);
 
 		// const origVeic = event.data as VeiculoSummary;
-		const newVeic = event.newData as VeiculoSummary;
+		const editedVeic = event.newData as VeiculoSummary;
 
 		const sumarioVeic: VeiculoSummary = {
-			id: newVeic.id,
-			marca: newVeic.marca,
-			modelo: newVeic.modelo,
-			placa: newVeic.placa,
-			capacidade: newVeic.capacidade,
-			cor: newVeic.cor,
-			// idFoto: origVeic.idFoto
+			id: editedVeic.id,
+			marca: editedVeic.marca,
+			modelo: editedVeic.modelo,
+			ano: editedVeic.ano,
+			idCorVeiculo: editedVeic.idCorVeiculo,
+			placa: editedVeic.placa,
 		};
 
 		self.busyStack.push();
@@ -360,7 +363,7 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (resultado)
 			{
 				self.toastSrv.success('Veículo atualizado com sucesso!', 'Veículos');
-				event.confirm.resolve();
+				event.confirm.resolve(null);
 			}
 			else
 			{
@@ -370,6 +373,8 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 		{
 			event.confirm.reject();
 		});
+
+		self.obterVeiculos();
 
 		self.busyStack.pop();
 	}
