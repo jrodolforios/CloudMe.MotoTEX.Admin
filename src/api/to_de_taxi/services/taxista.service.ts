@@ -22,6 +22,7 @@ class TaxistaService extends __BaseService {
   static readonly ApiV1TaxistaPostPath = '/api/v1/Taxista';
   static readonly ApiV1TaxistaByIdGetPath = '/api/v1/Taxista/{id}';
   static readonly ApiV1TaxistaByIdDeletePath = '/api/v1/Taxista/{id}';
+  static readonly ApiV1TaxistaConsultaIdTaxistaByIdGetPath = '/api/v1/Taxista/consulta_id_taxista/{id}';
   static readonly ApiV1TaxistaByIdVeiculosGetPath = '/api/v1/Taxista/{id}/veiculos';
 
   constructor(
@@ -205,6 +206,42 @@ class TaxistaService extends __BaseService {
   ApiV1TaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1TaxistaByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/consulta_id_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseTaxistaSummary> {
+    return this.ApiV1TaxistaConsultaIdTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseTaxistaSummary)
     );
   }
 
