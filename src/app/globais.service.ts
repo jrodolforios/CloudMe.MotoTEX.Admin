@@ -44,7 +44,7 @@ export class GlobaisService
 				email: profile['email'],
 			});
 
-			self.catalogosSrv.carregar();
+			//self.catalogosSrv.carregar();
 		});
 	}
 }

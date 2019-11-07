@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		await this.oauthService.loadDiscoveryDocumentAndTryLogin();
 		if (this.oauthService.hasValidIdToken() || this.oauthService.hasValidAccessToken())
 		{
-			this.router.navigate(['/pages/dashboard']);
+			this.router.navigate(['/load_resources']);
 		}
 	}
 

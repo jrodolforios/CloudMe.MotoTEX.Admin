@@ -10,6 +10,11 @@ const routes: Routes = [
 			.then(m => m.PagesModule),
 	},
 	{
+		path: 'load_resources',
+		loadChildren: () => import('./pages/carregamento/carregamento.module')
+			.then(m => m.CarregamentoModule),
+	},
+	{
 		path: 'auth',
 		loadChildren: () => import('./auth/auth.module')
 			.then(m => m.AuthModule),

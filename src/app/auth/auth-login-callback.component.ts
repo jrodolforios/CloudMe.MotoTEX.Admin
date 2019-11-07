@@ -19,7 +19,7 @@ export class AuthLoginCallbackComponent implements OnInit {
 			}
 			else
 			{
-				this.router.navigate(['/pages/dashboard']);
+				this.router.navigate(['/load_resources']);
 			}
 		});
 	}
