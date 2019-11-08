@@ -5,6 +5,7 @@ import { FotoSummary } from './foto-summary';
 export interface TaxistaSummary {
   id?: string;
   ativo?: boolean;
+  disponivel?: boolean;
   idLocalizacaoAtual?: string;
   idPontoTaxi?: string;
   usuario?: UsuarioSummary;

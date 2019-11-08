@@ -6706,6 +6706,9 @@
         "ativo": {
           "type": "boolean"
         },
+        "disponivel": {
+          "type": "boolean"
+        },
         "idLocalizacaoAtual": {
           "format": "uuid",
           "type": "string"
