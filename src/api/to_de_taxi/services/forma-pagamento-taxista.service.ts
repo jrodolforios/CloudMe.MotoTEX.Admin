@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { FormaPagamentoTaxistaSummary } from '../models/forma-pagamento-taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseFormaPagamentoTaxistaSummary } from '../models/response-forma-pagamento-taxista-summary';
+import { ResponseListFormaPagamentoTaxistaSummary } from '../models/response-list-forma-pagamento-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +22,8 @@ class FormaPagamentoTaxistaService extends __BaseService {
   static readonly ApiV1FormaPagamentoTaxistaPostPath = '/api/v1/FormaPagamentoTaxista';
   static readonly ApiV1FormaPagamentoTaxistaByIdGetPath = '/api/v1/FormaPagamentoTaxista/{id}';
   static readonly ApiV1FormaPagamentoTaxistaByIdDeletePath = '/api/v1/FormaPagamentoTaxista/{id}';
+  static readonly ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetPath = '/api/v1/FormaPagamentoTaxista/consulta_id_taxista/{id}';
+  static readonly ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDeletePath = '/api/v1/FormaPagamentoTaxista/Deletar_por_taxista/{id}';
 
   constructor(
     config: __Configuration,
@@ -202,6 +205,78 @@ class FormaPagamentoTaxistaService extends __BaseService {
    */
   ApiV1FormaPagamentoTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1FormaPagamentoTaxistaByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseListFormaPagamentoTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/FormaPagamentoTaxista/consulta_id_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseListFormaPagamentoTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseListFormaPagamentoTaxistaSummary> {
+    return this.ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseListFormaPagamentoTaxistaSummary)
+    );
+  }
+
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/v1/FormaPagamentoTaxista/Deletar_por_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
     );
   }

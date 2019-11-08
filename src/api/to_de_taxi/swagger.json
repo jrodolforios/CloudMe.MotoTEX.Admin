@@ -1224,6 +1224,98 @@
         ]
       }
     },
+    "/api/v1/FaixaDescontoTaxista/consulta_id_taxista/{id}": {
+      "get": {
+        "tags": [
+          "FaixaDescontoTaxista"
+        ],
+        "summary": "Get by IdTaxista",
+        "operationId": "ApiV1FaixaDescontoTaxistaConsulta_id_taxistaByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id from taxist",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[List[FaixaDescontoTaxistaSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/FaixaDescontoTaxista/Deletar_por_taxista/{id}": {
+      "delete": {
+        "tags": [
+          "FaixaDescontoTaxista"
+        ],
+        "summary": "Get by IdTaxista",
+        "operationId": "ApiV1FaixaDescontoTaxistaDeletar_por_taxistaByIdDelete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id from taxist",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Favorito": {
       "get": {
         "tags": [
@@ -1874,6 +1966,98 @@
             "name": "id",
             "in": "path",
             "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/FormaPagamentoTaxista/consulta_id_taxista/{id}": {
+      "get": {
+        "tags": [
+          "FormaPagamentoTaxista"
+        ],
+        "summary": "Get by IdTaxista",
+        "operationId": "ApiV1FormaPagamentoTaxistaConsulta_id_taxistaByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id from taxist",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[List[FormaPagamentoTaxistaSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/FormaPagamentoTaxista/Deletar_por_taxista/{id}": {
+      "delete": {
+        "tags": [
+          "FormaPagamentoTaxista"
+        ],
+        "summary": "Get by IdTaxista",
+        "operationId": "ApiV1FormaPagamentoTaxistaDeletar_por_taxistaByIdDelete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id from taxist",
             "required": true,
             "type": "string",
             "format": "uuid"
@@ -5821,6 +6005,29 @@
         }
       }
     },
+    "Response[List[FaixaDescontoTaxistaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "Response[IEnumerable[FavoritoSummary]]": {
       "type": "object",
       "properties": {
@@ -5986,6 +6193,29 @@
         "data": {
           "$ref": "#/definitions/FormaPagamentoTaxistaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[List[FormaPagamentoTaxistaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
+          }
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",

@@ -16,6 +16,7 @@ export { ResponseFaixaDescontoSummary } from './models/response-faixa-desconto-s
 export { ResponseIEnumerableFaixaDescontoTaxistaSummary } from './models/response-ienumerable-faixa-desconto-taxista-summary';
 export { FaixaDescontoTaxistaSummary } from './models/faixa-desconto-taxista-summary';
 export { ResponseFaixaDescontoTaxistaSummary } from './models/response-faixa-desconto-taxista-summary';
+export { ResponseListFaixaDescontoTaxistaSummary } from './models/response-list-faixa-desconto-taxista-summary';
 export { ResponseIEnumerableFavoritoSummary } from './models/response-ienumerable-favorito-summary';
 export { FavoritoSummary } from './models/favorito-summary';
 export { ResponseFavoritoSummary } from './models/response-favorito-summary';
@@ -25,6 +26,7 @@ export { ResponseFormaPagamentoSummary } from './models/response-forma-pagamento
 export { ResponseIEnumerableFormaPagamentoTaxistaSummary } from './models/response-ienumerable-forma-pagamento-taxista-summary';
 export { FormaPagamentoTaxistaSummary } from './models/forma-pagamento-taxista-summary';
 export { ResponseFormaPagamentoTaxistaSummary } from './models/response-forma-pagamento-taxista-summary';
+export { ResponseListFormaPagamentoTaxistaSummary } from './models/response-list-forma-pagamento-taxista-summary';
 export { ResponseIEnumerableFotoSummary } from './models/response-ienumerable-foto-summary';
 export { FotoSummary } from './models/foto-summary';
 export { ResponseFotoSummary } from './models/response-foto-summary';
