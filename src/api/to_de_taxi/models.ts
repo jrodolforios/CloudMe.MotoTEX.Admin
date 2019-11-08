@@ -74,3 +74,4 @@ export { ModeloVeiculo } from './models/modelo-veiculo';
 export { ResponseIEnumerableAnoVersao } from './models/response-ienumerable-ano-versao';
 export { AnoVersao } from './models/ano-versao';
 export { ResponseVeiculoTaxistaSummary } from './models/response-veiculo-taxista-summary';
+export { ResponseListVeiculoTaxistaSummary } from './models/response-list-veiculo-taxista-summary';
