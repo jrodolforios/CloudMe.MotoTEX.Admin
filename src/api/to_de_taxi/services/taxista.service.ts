@@ -296,7 +296,6 @@ class TaxistaService extends __BaseService {
   }
 
   /**
-<<<<<<< HEAD
    * @param params The `TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams` containing the following parameters:
    *
    * - `id`:
@@ -344,8 +343,6 @@ class TaxistaService extends __BaseService {
   }
 
   /**
-=======
->>>>>>> 53735345d64a868559e3a52773b33dd50f316ca8
    * @param id ID do taxista
    * @return Success
    */
@@ -395,7 +392,6 @@ module TaxistaService {
     id: string;
     disponivel?: boolean;
   }
-<<<<<<< HEAD
 
   /**
    * Parameters for ApiV1TaxistaInformarLocalizacaoByIdPost
@@ -408,8 +404,6 @@ module TaxistaService {
      */
     localizacao?: LocalizacaoSummary;
   }
-=======
->>>>>>> 53735345d64a868559e3a52773b33dd50f316ca8
 }
 
 export { TaxistaService }
