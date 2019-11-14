@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { PontoTaxiSummary } from '../../api/to_de_taxi/models';
 import { PontoTaxiService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 class PontoTaxiApiInterface implements CatalogApiInterface<PontoTaxiSummary>
 {
@@ -81,8 +82,8 @@ class PontoTaxiApiInterface implements CatalogApiInterface<PontoTaxiSummary>
 @Injectable()
 export class CatalogoPontosTaxi extends ApiCatalog<PontoTaxiSummary>
 {
-	constructor(private pontoTaxiSrv: PontoTaxiService)
+	constructor(private oauthService: OAuthService, private pontoTaxiSrv: PontoTaxiService)
 	{
-		super(new PontoTaxiApiInterface(pontoTaxiSrv));
+		super(oauthService, new PontoTaxiApiInterface(pontoTaxiSrv), 'ponto_taxi', 'ponto_taxi');
 	}
 }

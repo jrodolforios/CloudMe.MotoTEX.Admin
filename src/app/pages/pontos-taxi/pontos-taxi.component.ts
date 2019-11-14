@@ -53,6 +53,7 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 
 	pontoTaxi: PontoTaxiSummary = null;
 	pontosTaxi: PontoTaxiSummary[] = [];
+	pontosTaxiChangesSub: Subscription = null;
 
 	pontosTaxiPesquisa: PontoTaxiSummary[] = [];
 
@@ -91,6 +92,10 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 	ngOnDestroy(): void
 	{
 		const self = this;
+		self.pontosTaxiChangesSub.unsubscribe();
+		self.pontoTaxiSelSub.unsubscribe();
+		self.busyStackListagemSub.unsubscribe();
+		self.busyStackDetalhesSub.unsubscribe();
 	}
 
 	ngAfterViewInit(): void
@@ -98,6 +103,11 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 
 		self.atualizar();
+
+		self.pontosTaxiChangesSub = self.catalogosSrv.pontosTaxi.changesSubject.subscribe(changes =>
+		{
+			self.atualizar();
+		});
 
 		self.busyStackListagemSub = self.busyStackListagem.busy.subscribe(() =>
 		{
@@ -199,9 +209,9 @@ export class PontosTaxiComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 		await self.obterPontosTaxi();
 
-		const taxistaSel = self.ptTaxiSelecionado.value;
+		const ptTaxiSel = self.ptTaxiSelecionado.value;
 
-		if (!taxistaSel || !self.pontosTaxi.find(tx => tx.id === taxistaSel.id))
+		if (!ptTaxiSel || !self.pontosTaxi.find(tx => tx.id === ptTaxiSel.id))
 		{
 			self.ptTaxiSelecionado.next(self.pontosTaxi.length > 0 ? self.pontosTaxi[0] : null);
 		}

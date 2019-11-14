@@ -1,5 +1,7 @@
 import { Catalog } from './catalog';
 import { BusyStack } from '../@core/utils/busy_stack';
+import * as signalR from '@aspnet/signalr';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 export class ApiResponse<T>
 {
@@ -42,11 +44,120 @@ export interface CatalogApiInterface<T>
 export class ApiCatalog<T> extends Catalog<T>
 {
 	apiInterface: CatalogApiInterface<T> = null;
+	private hubConnection: signalR.HubConnection = null;
 
-	constructor(apiInterface: CatalogApiInterface<T>)
+	// baseEndpointUrl: 'https://api.todetaxi.com.br/notifications';
+	baseEndpointUrl = 'http://localhost:5002/notifications';
+	entryTrackEndpoint = '';
+	entryTag = '';
+
+	private intentionalTrackingStop = false;
+	private _oauthService: OAuthService = null;
+
+	constructor(oauthService: OAuthService, apiInterface: CatalogApiInterface<T>, entry_track_endpoint: string, entry_tag: string)
 	{
 		super();
-		this.apiInterface = apiInterface;
+
+		const self = this;
+		self._oauthService = oauthService;
+		self.apiInterface = apiInterface;
+		self.entryTrackEndpoint = entry_track_endpoint;
+		self.entryTag = entry_tag;
+	}
+
+	private startHubConnection()
+	{
+		const self = this;
+
+		self.hubConnection
+			.start()
+			.then(() =>
+			{
+				console.info(`Catálogo[${self.entryTag}]: Connection started`);
+				self.addHubListeners();
+			})
+			.catch(err =>
+			{
+				console.error(`Catálogo[${self.entryTag}]: Error while starting connection: ${err}`);
+				self.reconnectToHub();
+			});
+	}
+
+	private reconnectToHub()
+	{
+		const self = this;
+		setTimeout(function ()
+		{
+			self.startHubConnection();
+		},
+		5000);
+	}
+
+	private addHubListeners()
+	{
+		const self = this;
+
+		self.hubConnection.on('inserted', (entry_tag, summary: T) =>
+		{
+			if (entry_tag === self.entryTag)
+			{
+				self.add([summary], true);
+			}
+		});
+
+		self.hubConnection.on('updated', (entry_tag, summary: T) =>
+		{
+			if (entry_tag === self.entryTag)
+			{
+				self.update([summary], true);
+			}
+		});
+
+		self.hubConnection.on('deleted', (entry_tag, id: string) =>
+		{
+			if (entry_tag === self.entryTag)
+			{
+				const item = self.findItem(id);
+				if (item)
+				{
+					self.remove([item], true);
+				}
+			}
+		});
+	}
+
+	startTrackingChanges()
+	{
+		const self = this;
+		self.intentionalTrackingStop = false;
+
+		self.hubConnection = new signalR.HubConnectionBuilder()
+			.withUrl(`${self.baseEndpointUrl}/${self.entryTrackEndpoint}`/*, { accessTokenFactory: () => self._oauthService.getAccessToken() }*/)
+			.build();
+
+		Object.defineProperty(WebSocket, 'OPEN', { value: 1, });
+
+		self.hubConnection.onclose(() =>
+		{
+			if (!self.intentionalTrackingStop)
+			{
+				self.reconnectToHub();
+			}
+		});
+
+		self.startHubConnection();
+
+	}
+
+	stopTrackingChanges()
+	{
+		const self = this;
+		self.intentionalTrackingStop = true;
+
+		self.hubConnection
+			.stop()
+			.then(() => console.info(`Catálogo[${self.entryTag}]: Connection stopped`))
+			.catch(err => console.error(`Catálogo[${self.entryTag}]: Error while stopping connection: ${err}`));
 	}
 
 	async get(id: string): Promise<T>

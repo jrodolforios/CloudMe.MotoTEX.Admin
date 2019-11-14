@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { TaxistaSummary } from '../models/taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseTaxistaSummary } from '../models/response-taxista-summary';
+import { LocalizacaoSummary } from '../models/localizacao-summary';
 import { ResponseIEnumerableVeiculoTaxistaSummary } from '../models/response-ienumerable-veiculo-taxista-summary';
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,8 @@ class TaxistaService extends __BaseService {
   static readonly ApiV1TaxistaByIdGetPath = '/api/v1/Taxista/{id}';
   static readonly ApiV1TaxistaByIdDeletePath = '/api/v1/Taxista/{id}';
   static readonly ApiV1TaxistaConsultaIdTaxistaByIdGetPath = '/api/v1/Taxista/consulta_id_taxista/{id}';
+  static readonly ApiV1TaxistaMarcarTaxistaDisponivelByIdGetPath = '/api/v1/Taxista/marcar_taxista_disponivel/{id}';
+  static readonly ApiV1TaxistaInformarLocalizacaoByIdPostPath = '/api/v1/Taxista/informar_localizacao/{id}';
   static readonly ApiV1TaxistaByIdVeiculosGetPath = '/api/v1/Taxista/{id}/veiculos';
 
   constructor(
@@ -246,6 +249,100 @@ class TaxistaService extends __BaseService {
   }
 
   /**
+   * @param params The `TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams` containing the following parameters:
+   *
+   * - `id`: User Id from taxist
+   *
+   * - `disponivel`:
+   *
+   * @return Success
+   */
+  ApiV1TaxistaMarcarTaxistaDisponivelByIdGetResponse(params: TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.disponivel != null) __params = __params.set('disponivel', params.disponivel.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/marcar_taxista_disponivel/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams` containing the following parameters:
+   *
+   * - `id`: User Id from taxist
+   *
+   * - `disponivel`:
+   *
+   * @return Success
+   */
+  ApiV1TaxistaMarcarTaxistaDisponivelByIdGet(params: TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams): __Observable<ResponseBoolean> {
+    return this.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param params The `TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `localizacao`: Sumário da nova localização do taxista (necessário apenas latitude e longitude)
+   *
+   * @return Success
+   */
+  ApiV1TaxistaInformarLocalizacaoByIdPostResponse(params: TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.localizacao;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Taxista/informar_localizacao/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `localizacao`: Sumário da nova localização do taxista (necessário apenas latitude e longitude)
+   *
+   * @return Success
+   */
+  ApiV1TaxistaInformarLocalizacaoByIdPost(params: TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1TaxistaInformarLocalizacaoByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
    * @param id ID do taxista
    * @return Success
    */
@@ -283,6 +380,30 @@ class TaxistaService extends __BaseService {
 }
 
 module TaxistaService {
+
+  /**
+   * Parameters for ApiV1TaxistaMarcarTaxistaDisponivelByIdGet
+   */
+  export interface ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams {
+
+    /**
+     * User Id from taxist
+     */
+    id: string;
+    disponivel?: boolean;
+  }
+
+  /**
+   * Parameters for ApiV1TaxistaInformarLocalizacaoByIdPost
+   */
+  export interface ApiV1TaxistaInformarLocalizacaoByIdPostParams {
+    id: string;
+
+    /**
+     * Sumário da nova localização do taxista (necessário apenas latitude e longitude)
+     */
+    localizacao?: LocalizacaoSummary;
+  }
 }
 
 export { TaxistaService }

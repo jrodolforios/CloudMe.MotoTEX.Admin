@@ -3,8 +3,8 @@
     <div class="row">
       <nb-user class="col-auto"
         size="medium"
-        [picture]="taxista.foto.dados"
-        onlyPicture=true>
+        [picture]="taxista['foto']?.dados"
+        onlyPicture="taxista['foto'] !== undefined">
       </nb-user>
       <span class="h8 col">{{taxista.usuario.nome}}</span>
     </div>

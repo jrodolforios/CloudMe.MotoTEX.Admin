@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { VeiculoTaxistaSummary } from '../models/veiculo-taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseVeiculoTaxistaSummary } from '../models/response-veiculo-taxista-summary';
+import { ResponseListVeiculoTaxistaSummary } from '../models/response-list-veiculo-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +22,7 @@ class VeiculoTaxistaService extends __BaseService {
   static readonly ApiV1VeiculoTaxistaPostPath = '/api/v1/VeiculoTaxista';
   static readonly ApiV1VeiculoTaxistaByIdGetPath = '/api/v1/VeiculoTaxista/{id}';
   static readonly ApiV1VeiculoTaxistaByIdDeletePath = '/api/v1/VeiculoTaxista/{id}';
+  static readonly ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGetPath = '/api/v1/VeiculoTaxista/consulta_veiculos_de_taxistas/{id}';
 
   constructor(
     config: __Configuration,
@@ -203,6 +205,42 @@ class VeiculoTaxistaService extends __BaseService {
   ApiV1VeiculoTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1VeiculoTaxistaByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseListVeiculoTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/VeiculoTaxista/consulta_veiculos_de_taxistas/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseListVeiculoTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGet(id: string): __Observable<ResponseListVeiculoTaxistaSummary> {
+    return this.ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseListVeiculoTaxistaSummary)
     );
   }
 }

@@ -8,4 +8,5 @@ export interface UsuarioSummary {
   telefone?: string;
   email?: string;
   credenciais?: CredenciaisUsuario;
+  tipo?: 0 | 1 | 2 | 3;
 }

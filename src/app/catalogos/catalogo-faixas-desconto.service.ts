@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FaixaDescontoSummary } from '../../api/to_de_taxi/models';
 import { FaixaDescontoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 class FaixaDescontoApiInterface implements CatalogApiInterface<FaixaDescontoSummary>
 {
@@ -81,8 +82,8 @@ class FaixaDescontoApiInterface implements CatalogApiInterface<FaixaDescontoSumm
 @Injectable()
 export class CatalogoFaixasDesconto extends ApiCatalog<FaixaDescontoSummary>
 {
-	constructor(private faixaDescontoSrv: FaixaDescontoService)
+	constructor(private oauthService: OAuthService, private faixaDescontoSrv: FaixaDescontoService)
 	{
-		super(new FaixaDescontoApiInterface(faixaDescontoSrv));
+		super(oauthService, new FaixaDescontoApiInterface(faixaDescontoSrv), 'faixa_desconto', 'faixa_desconto');
 	}
 }

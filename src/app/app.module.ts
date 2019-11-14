@@ -39,6 +39,9 @@ import { CatalogoFormasPagamentoTaxistas } from './catalogos/catalogo-formas-pag
 import { CatalogoPontosTaxi } from './catalogos/catalogo-pontos-taxi.service';
 import { CatalogoVeiculosTaxistas } from './catalogos/catalogo-veiculos-taxistas.service';
 import { CatalogoCorVeiculos } from './catalogos/catalogo-cores-veiculos.service';
+import { CatalogoPassageiros } from './catalogos/catalogo-passageiros.service';
+import { CatalogoFotos } from './catalogos/catalogo-fotos.service';
+import { CatalogoLocalizacoes } from './catalogos/catalogo-localizacoes.service';
 
 export function oAuthStorageFactory(): OAuthStorage
 {
@@ -47,8 +50,8 @@ export function oAuthStorageFactory(): OAuthStorage
 
 /*export const options: Partial<IConfig> = {
 };*/
-const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
-// const toDeTaxiAPIBaseURL = 'http://localhost:5002';
+// const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
+const toDeTaxiAPIBaseURL = 'http://localhost:5002';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -86,6 +89,8 @@ const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
 		GlobaisService,
 		CatalogosService,
 		CatalogoTaxistas,
+		CatalogoPassageiros,
+		CatalogoFotos,
 		CatalogoVeiculos,
 		CatalogoVeiculosTaxistas,
 		CatalogoTarifas,
@@ -95,6 +100,7 @@ const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
 		CatalogoFormasPagamentoTaxistas,
 		CatalogoPontosTaxi,
 		CatalogoCorVeiculos,
+		CatalogoLocalizacoes,
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: ErrorInterceptor,

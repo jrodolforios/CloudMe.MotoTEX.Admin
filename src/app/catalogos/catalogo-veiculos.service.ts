@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { VeiculoSummary } from '../../api/to_de_taxi/models';
 import { VeiculoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 class VeiculoApiInterface implements CatalogApiInterface<VeiculoSummary>
 {
@@ -81,8 +82,8 @@ class VeiculoApiInterface implements CatalogApiInterface<VeiculoSummary>
 @Injectable()
 export class CatalogoVeiculos extends ApiCatalog<VeiculoSummary>
 {
-	constructor(private veiculoSrv: VeiculoService)
+	constructor(private oauthService: OAuthService, private veiculoSrv: VeiculoService)
 	{
-		super(new VeiculoApiInterface(veiculoSrv));
+		super(oauthService, new VeiculoApiInterface(veiculoSrv), 'veiculo', 'veiculo');
 	}
 }

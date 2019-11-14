@@ -42,6 +42,7 @@ export class Catalog<T>
 		self.currentChanges.addedItems = [];
 		self.currentChanges.removedItems = [];
 		self.currentChanges.updatedItems = [];
+		self.currentChanges.oldItems = [];
 	}
 
 	private applyChanges()
@@ -69,8 +70,8 @@ export class Catalog<T>
 
 				if (target)
 				{
-					self.currentChanges.oldItems.push(target);
-					self.items[tgtIdx] = updated_item;
+					// mescla os objetos
+					Object.assign(target, target, updated_item);
 				}
 			});
 
@@ -110,9 +111,19 @@ export class Catalog<T>
 
 		items.forEach(item =>
 		{
-			if (item && !self.itemAdded(item))
+			if (!item) return;
+			if (self.findItem(item['id']))
 			{
-				self.currentChanges.addedItems.push(item);
+				// item já catalogado... marca para atualização
+				self.update([item], false);
+			}
+			else
+			{
+				// item ainda não catalogado
+				if (!self.itemAdded(item))
+				{
+					self.currentChanges.addedItems.push(item);
+				}
 			}
 		});
 
@@ -128,9 +139,15 @@ export class Catalog<T>
 
 		items.forEach(item =>
 		{
-			if (item && !self.itemRemoved(item))
+			if (!item) return;
+
+			if (self.findItem(item['id']))
 			{
-				self.currentChanges.removedItems.push(item);
+				// item catalogado
+				if (!self.itemRemoved(item))
+				{
+					self.currentChanges.removedItems.push(item);
+				}
 			}
 		});
 

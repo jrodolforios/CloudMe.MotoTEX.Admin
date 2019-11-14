@@ -78,8 +78,8 @@
                       <div class="col">
                         <nb-user
                           size="giant"
-                          [picture]="taxista.foto.dados"
-                          onlyPicture
+                          [picture]="taxista['foto']?.dados"
+                          onlyPicture="taxista['foto'] !== undefined"
                           shape="rectangle">
                         </nb-user>
                       </div>

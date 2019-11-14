@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { TaxistaSummary } from '../../api/to_de_taxi/models';
-import { TaxistaService } from '../../api/to_de_taxi/services';
+import { TaxistaSummary, FotoSummary } from '../../api/to_de_taxi/models';
+import { TaxistaService, FotoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { Subscription } from 'rxjs';
+import { CatalogoFotos } from './catalogo-fotos.service';
 
 class TaxistaApiInterface implements CatalogApiInterface<TaxistaSummary>
 {
@@ -12,14 +15,6 @@ class TaxistaApiInterface implements CatalogApiInterface<TaxistaSummary>
 		this.taxistaSrv = taxistaSrv;
 	}
 
-	converterFoto(taxista: TaxistaSummary)
-	{
-		if (taxista.foto && taxista.foto.dados)
-		{
-			taxista.foto.dados = atob(taxista.foto.dados);
-		}
-	}
-
 	async get(id: string): Promise<TaxistaSummary>
 	{
 		const self = this;
@@ -28,13 +23,7 @@ class TaxistaApiInterface implements CatalogApiInterface<TaxistaSummary>
 		{
 			await self.taxistaSrv.ApiV1TaxistaByIdGet(id).toPromise().then(resp =>
 			{
-				if (resp && resp.data)
-				{
-					self.converterFoto(resp.data);
-				}
-
 				processResponse(resp as ApiResponse<TaxistaSummary>, resolve, reject);
-
 			}).catch(reason => reject(reason));
 		});
 	}
@@ -47,14 +36,6 @@ class TaxistaApiInterface implements CatalogApiInterface<TaxistaSummary>
 		{
 			await self.taxistaSrv.ApiV1TaxistaGet().toPromise().then(resp =>
 			{
-				if (resp && resp.data)
-				{
-					resp.data.forEach(taxista =>
-					{
-						self.converterFoto(taxista);
-					});
-				}
-
 				processResponse(resp as ApiResponse<TaxistaSummary[]>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
@@ -103,8 +84,39 @@ class TaxistaApiInterface implements CatalogApiInterface<TaxistaSummary>
 @Injectable()
 export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 {
-	constructor(private taxistaSrv: TaxistaService)
+	constructor(
+		private oauthService: OAuthService,
+		private taxistaSrv: TaxistaService,
+		private fotos: CatalogoFotos)
 	{
-		super(new TaxistaApiInterface(taxistaSrv));
+		super(oauthService, new TaxistaApiInterface(taxistaSrv), 'taxista', 'taxista');
+	}
+
+	async recuperarFoto(taxista: TaxistaSummary)
+	{
+		const self = this;
+
+		if (!taxista['foto'])
+		{
+			taxista['carregandoFoto'] = true;
+
+			const foto = await self.fotos.get(taxista.idFoto);
+			taxista['foto'] = foto;
+
+			taxista['carregandoFoto'] = false;
+		}
+	}
+
+	liberarFoto(taxista: TaxistaSummary)
+	{
+		const self = this;
+
+		const foto = taxista['foto'] as FotoSummary;
+
+		if (foto)
+		{
+			taxista['foto'] = undefined;
+			self.fotos.remove([foto]);
+		}
 	}
 }

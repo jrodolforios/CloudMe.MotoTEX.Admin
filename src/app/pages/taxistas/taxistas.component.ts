@@ -63,7 +63,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 	get credenciais() { return this.taxista && this.taxista.usuario ? this.taxista.usuario.credenciais : null; }
 	get endereco() { return this.taxista ? this.taxista.endereco : null; }
-	get foto() { return this.taxista ? this.taxista.foto : null; }
+	get foto() { return this.taxista ? this.taxista['foto'] : null; }
 	get usuario() { return this.taxista ? this.taxista.usuario : null; }
 
 	taxistaSelSub: Subscription;
@@ -241,6 +241,12 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		});
 
 		self.filtrarTaxistas();
+
+		self.taxistas.forEach(async tx =>
+		{
+			await self.catalogosSrv.taxistas.recuperarFoto(tx);
+		});
+
 		self.busyStackListagem.pop();
 	}
 
@@ -491,13 +497,18 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.taxista.usuario = self.formUsuario.obterAlteracoes();
 			self.taxista.endereco = self.formEndereco.obterAlteracoes();
 			self.taxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
-			self.taxista.foto = self.formFoto.obterAlteracoes();
+
+			const foto = self.formFoto.obterAlteracoes();
 
 			// cria o registro do taxista
 			await self.catalogosSrv.taxistas.post(self.taxista).then(async resultado =>
 			{
 				if (resultado)
 				{
+					if (foto)
+					{
+						await self.catalogosSrv.fotos.post(foto);
+					}
 					self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
 				}
 			}).catch(() => { contemErros = true; });
@@ -556,10 +567,10 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				}).catch(() => { contemErros = true; });
 			}
 
-			if (atualizou)
+			/*if (atualizou)
 			{
 				self.catalogosSrv.taxistas.get(self.taxista.id); // obtém os atualizados dados do servidor
-			}
+			}*/
 		}
 
 		if (!contemErros)

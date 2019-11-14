@@ -39,4 +39,13 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		icon: 'activity-outline',
 		link: '/pages/configuracoes',
 	},
+	{
+		title: 'OPERAÇÕES',
+		group: true,
+	},
+	{
+		title: 'Mapa',
+		icon: 'map-outline',
+		link: '/pages/mapa',
+	},
 ];

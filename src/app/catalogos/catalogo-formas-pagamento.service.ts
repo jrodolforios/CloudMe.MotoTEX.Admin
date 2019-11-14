@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormaPagamentoSummary } from '../../api/to_de_taxi/models';
 import { FormaPagamentoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 class FormaPagamentoApiInterface implements CatalogApiInterface<FormaPagamentoSummary>
 {
@@ -81,8 +82,8 @@ class FormaPagamentoApiInterface implements CatalogApiInterface<FormaPagamentoSu
 @Injectable()
 export class CatalogoFormasPagamento extends ApiCatalog<FormaPagamentoSummary>
 {
-	constructor(private formaPagamentoSrv: FormaPagamentoService)
+	constructor(private oauthService: OAuthService, private formaPagamentoSrv: FormaPagamentoService)
 	{
-		super(new FormaPagamentoApiInterface(formaPagamentoSrv));
+		super(oauthService, new FormaPagamentoApiInterface(formaPagamentoSrv), 'forma_pagamento', 'forma_pagamento');
 	}
 }

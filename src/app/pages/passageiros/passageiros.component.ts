@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confir
 import { PassageiroSummary, PontoTaxiSummary } from '../../../api/to_de_taxi/models';
 import { BusyStack } from '../../@core/utils/busy_stack';
 import { SendMessageComponent } from '../../common-views/send-message/send-message.component';
+import { CatalogosService } from '../../catalogos/catalogos.service';
 
 @Component({
 	selector: 'ngx-passageiros',
@@ -36,7 +37,7 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 	passageiros: PassageiroSummary[] = [];
 	passageirosPesquisa: PassageiroSummary[] = [];
 	// passageirosSub: Subscription = null;
-	// passageirosChangesSub: Subscription = null;
+	passageirosChangesSub: Subscription = null;
 
 	get endereco() { return this.passageiro ? this.passageiro.endereco : null; }
 	get usuario() { return this.passageiro ? this.passageiro.usuario : null; }
@@ -47,7 +48,7 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 
 	constructor(
 		private dialogSrv: NbDialogService,
-		private passageiroSrv: PassageiroService,
+		private catalogosSrv: CatalogosService,
 		private toastSrv: NbToastrService)
 	{
 	}
@@ -60,7 +61,7 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 	ngOnDestroy(): void
 	{
 		const self = this;
-		// self.passageirosChangesSub.unsubscribe();
+		self.passageirosChangesSub.unsubscribe();
 	}
 
 	ngAfterViewInit(): void
@@ -84,6 +85,11 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 		});
 
 		self.atualizar();
+
+		self.passageirosChangesSub = self.catalogosSrv.passageiros.changesSubject.subscribe(() =>
+		{
+			self.atualizar();
+		});
 	}
 
 	public async atualizar()
@@ -103,19 +109,12 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.busyStackListagem.push();
 
-		await self.passageiroSrv.ApiV1PassageiroGet().toPromise().then(resp =>
+		self.passageiros = self.catalogosSrv.passageiros.items.sort((passg1, passg2) =>
 		{
-			if (resp && resp.success)
-			{
-				self.passageiros = resp.data.sort((tx1, tx2) =>
-				{
-					return tx1.usuario.nome.localeCompare(tx2.usuario.nome);
-				});
+			return passg1.usuario.nome.localeCompare(passg2.usuario.nome);
+		});
 
-				self.filtrarPassageiros();
-			}
-
-		}).catch(() => {});
+		self.filtrarPassageiros();
 
 		self.busyStackListagem.pop();
 	}
@@ -155,11 +154,12 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 						ativo,
 					};
 
-					await self.passageiroSrv.ApiV1PassageiroPut(passgSummary).toPromise().then(resp =>
+					await self.catalogosSrv.passageiros.put(passgSummary).then(resultado =>
 					{
-						if (resp && resp.success)
+						if (resultado)
 						{
-							self.toastSrv.success( `Passageiro ${passageiro.usuario.nome} ${ativo ? 'ativado' : 'desativado'} com sucesso!`, '`Passageiros`');
+							// taxista.ativo = ativo;
+							self.toastSrv.success( `Taxista ${passageiro.usuario.nome} ${ativo ? 'ativado' : 'desativado'} com sucesso!`, 'Passageiros');
 							self.atualizar();
 						}
 					}).catch(() => {});

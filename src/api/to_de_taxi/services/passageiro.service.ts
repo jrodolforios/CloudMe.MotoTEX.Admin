@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { PassageiroSummary } from '../models/passageiro-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponsePassageiroSummary } from '../models/response-passageiro-summary';
+import { LocalizacaoSummary } from '../models/localizacao-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -22,6 +23,7 @@ class PassageiroService extends __BaseService {
   static readonly ApiV1PassageiroByIdGetPath = '/api/v1/Passageiro/{id}';
   static readonly ApiV1PassageiroByIdDeletePath = '/api/v1/Passageiro/{id}';
   static readonly ApiV1PassageiroConsultaIdPassageiroByIdGetPath = '/api/v1/Passageiro/consulta_id_passageiro/{id}';
+  static readonly ApiV1PassageiroInformarLocalizacaoByIdPostPath = '/api/v1/Passageiro/informar_localizacao/{id}';
 
   constructor(
     config: __Configuration,
@@ -242,9 +244,68 @@ class PassageiroService extends __BaseService {
       __map(_r => _r.body as ResponsePassageiroSummary)
     );
   }
+
+  /**
+   * @param params The `PassageiroService.ApiV1PassageiroInformarLocalizacaoByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `localizacao`: Sumário da nova localização do passageiro (necessário apenas latitude e longitude)
+   *
+   * @return Success
+   */
+  ApiV1PassageiroInformarLocalizacaoByIdPostResponse(params: PassageiroService.ApiV1PassageiroInformarLocalizacaoByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.localizacao;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Passageiro/informar_localizacao/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `PassageiroService.ApiV1PassageiroInformarLocalizacaoByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `localizacao`: Sumário da nova localização do passageiro (necessário apenas latitude e longitude)
+   *
+   * @return Success
+   */
+  ApiV1PassageiroInformarLocalizacaoByIdPost(params: PassageiroService.ApiV1PassageiroInformarLocalizacaoByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1PassageiroInformarLocalizacaoByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
 }
 
 module PassageiroService {
+
+  /**
+   * Parameters for ApiV1PassageiroInformarLocalizacaoByIdPost
+   */
+  export interface ApiV1PassageiroInformarLocalizacaoByIdPostParams {
+    id: string;
+
+    /**
+     * Sumário da nova localização do passageiro (necessário apenas latitude e longitude)
+     */
+    localizacao?: LocalizacaoSummary;
+  }
 }
 
 export { PassageiroService }

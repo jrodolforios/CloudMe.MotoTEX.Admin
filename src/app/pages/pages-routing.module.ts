@@ -36,10 +36,15 @@ const routes: Routes = [{
 				.then(m => m.PassageirosModule),
 		},
 		{
+			path: 'mapa',
+			loadChildren: () => import('./mapa/mapa.module')
+				.then(m => m.MapaModule),
+		},
+		{
 			path: 'dashboard',
 			component: ECommerceComponent,
 		},
-		{
+		/*{
 			path: 'iot-dashboard',
 			component: DashboardComponent,
 		},
@@ -92,7 +97,7 @@ const routes: Routes = [{
 			path: 'miscellaneous',
 			loadChildren: () => import('./miscellaneous/miscellaneous.module')
 				.then(m => m.MiscellaneousModule),
-		},
+		},*/
 		{
 			path: '',
 			redirectTo: 'dashboard',

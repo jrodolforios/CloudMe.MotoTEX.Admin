@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { FaixaDescontoTaxistaSummary } from '../models/faixa-desconto-taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseFaixaDescontoTaxistaSummary } from '../models/response-faixa-desconto-taxista-summary';
+import { ResponseListFaixaDescontoTaxistaSummary } from '../models/response-list-faixa-desconto-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +22,8 @@ class FaixaDescontoTaxistaService extends __BaseService {
   static readonly ApiV1FaixaDescontoTaxistaPostPath = '/api/v1/FaixaDescontoTaxista';
   static readonly ApiV1FaixaDescontoTaxistaByIdGetPath = '/api/v1/FaixaDescontoTaxista/{id}';
   static readonly ApiV1FaixaDescontoTaxistaByIdDeletePath = '/api/v1/FaixaDescontoTaxista/{id}';
+  static readonly ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGetPath = '/api/v1/FaixaDescontoTaxista/consulta_id_taxista/{id}';
+  static readonly ApiV1FaixaDescontoTaxistaDeletarPorTaxistaByIdDeletePath = '/api/v1/FaixaDescontoTaxista/Deletar_por_taxista/{id}';
 
   constructor(
     config: __Configuration,
@@ -202,6 +205,78 @@ class FaixaDescontoTaxistaService extends __BaseService {
    */
   ApiV1FaixaDescontoTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1FaixaDescontoTaxistaByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseListFaixaDescontoTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/FaixaDescontoTaxista/consulta_id_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseListFaixaDescontoTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseListFaixaDescontoTaxistaSummary> {
+    return this.ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseListFaixaDescontoTaxistaSummary)
+    );
+  }
+
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FaixaDescontoTaxistaDeletarPorTaxistaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/v1/FaixaDescontoTaxista/Deletar_por_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FaixaDescontoTaxistaDeletarPorTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1FaixaDescontoTaxistaDeletarPorTaxistaByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
     );
   }

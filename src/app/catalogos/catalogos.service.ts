@@ -9,6 +9,9 @@ import { CatalogoFormasPagamento } from './catalogo-formas-pagamento.service';
 import { CatalogoFormasPagamentoTaxistas } from './catalogo-formas-pagamento-taxistas.service';
 import { CatalogoTarifas } from './catalogo-tarifas.service';
 import { CatalogoCorVeiculos } from './catalogo-cores-veiculos.service';
+import { CatalogoPassageiros } from './catalogo-passageiros.service';
+import { CatalogoFotos } from './catalogo-fotos.service';
+import { CatalogoLocalizacoes } from './catalogo-localizacoes.service';
 
 @Injectable()
 export class CatalogosService
@@ -17,6 +20,8 @@ export class CatalogosService
 
 	constructor(
 		public taxistas: CatalogoTaxistas,
+		public passageiros: CatalogoPassageiros,
+		public fotos: CatalogoFotos,
 		public pontosTaxi: CatalogoPontosTaxi,
 		public veiculos: CatalogoVeiculos,
 		public veiculosTaxistas: CatalogoVeiculosTaxistas,
@@ -25,42 +30,8 @@ export class CatalogosService
 		public formasPagamento: CatalogoFormasPagamento,
 		public formasPagamentoTaxistas: CatalogoFormasPagamentoTaxistas,
 		public tarifas: CatalogoTarifas,
-		public cores: CatalogoCorVeiculos)
+		public cores: CatalogoCorVeiculos,
+		public localizacoes: CatalogoLocalizacoes)
 	{
-	}
-
-	async carregar()
-	{
-		const self = this;
-
-		self.catalogoCarregamento = 'Taxistas';
-		await self.taxistas.getAll();
-
-		self.catalogoCarregamento = 'Pontos de táxi';
-		await self.pontosTaxi.getAll();
-
-		self.catalogoCarregamento = 'Veículos';
-		await self.veiculos.getAll();
-
-		self.catalogoCarregamento = 'Veículos/Taxistas';
-		await self.veiculosTaxistas.getAll();
-
-		self.catalogoCarregamento = 'Tarifas';
-		await self.tarifas.getAll();
-
-		self.catalogoCarregamento = 'Faixas de desconto';
-		await self.faixasDesconto.getAll();
-
-		self.catalogoCarregamento = 'Faixas de desconto/Taxistas';
-		await self.faixasDescontoTaxistas.getAll();
-
-		self.catalogoCarregamento = 'Forma de pagamento';
-		await self.formasPagamento.getAll();
-
-		self.catalogoCarregamento = 'Formas de pagamento/Taxistas';
-		await self.formasPagamentoTaxistas.getAll();
-
-		self.catalogoCarregamento = 'Cores de veículos';
-		await self.cores.getAll();
 	}
 }

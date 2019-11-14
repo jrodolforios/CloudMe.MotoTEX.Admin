@@ -25,7 +25,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 	busyStack = new BusyStack();
 	busyStackSub: Subscription = null;
 
-	faixasDescontoSub: Subscription = null;
+	faixasDescontoChangesSub: Subscription = null;
 
 	grid_settings = {
 		noDataMessage: 'Sem registros para exibição.',
@@ -106,7 +106,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.obterFaixasDesconto();
 
-		self.faixasDescontoSub = self.catalogosSrv.faixasDesconto.changesSubject.subscribe(() =>
+		self.faixasDescontoChangesSub = self.catalogosSrv.faixasDesconto.changesSubject.subscribe(() =>
 		{
 			self.obterFaixasDesconto();
 		});
@@ -117,7 +117,7 @@ export class FaixasDescontoComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 		self.busyStackSub.unsubscribe();
-		self.faixasDescontoSub.unsubscribe();
+		self.faixasDescontoChangesSub.unsubscribe();
 	}
 
 	obterFaixasDesconto()

@@ -7,6 +7,7 @@ import { TarifaService } from '../../../../api/to_de_taxi/services';
 import { TarifaSummary } from '../../../../api/to_de_taxi/models';
 import { BusyStack } from '../../../@core/utils/busy_stack';
 import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { CatalogosService } from '../../../catalogos/catalogos.service';
 
 @Component({
 	selector: 'ngx-tarifas',
@@ -20,11 +21,11 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 	busyStackSub: Subscription = null;
 
 	constructor(
-		private tarifaSrv: TarifaService,
+		private catalogosSrv: CatalogosService,
 		private dialogSrv: NbDialogService,
 		private toastSrv: NbToastrService) { }
 
-	private sub_tarifas: Subscription;
+	private tarifasChangesSub: Subscription;
 
 	tarifasForm: FormGroup = new FormGroup({
 		'id': new FormControl(0),
@@ -57,21 +58,30 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 		const self = this;
 
 		self.busyStack.push();
-		self.sub_tarifas = self.tarifaSrv.ApiV1TarifaGet().subscribe(resp =>
+
+		self.obterTarifas();
+		self.tarifasChangesSub = self.catalogosSrv.tarifas.changesSubject.subscribe(changes =>
 		{
-			if (resp && resp.success)
-			{
-				const tarifa = resp.data.length > 0 ? resp.data[0] : {};
-				this.tarifasForm.setValue(tarifa);
-			}
+			self.obterTarifas();
 		});
+
 		self.busyStack.pop();
 	}
 
 	ngOnDestroy(): void
 	{
 		const self = this;
-		self.sub_tarifas.unsubscribe();
+		self.busyStackSub.unsubscribe();
+		self.tarifasChangesSub.unsubscribe();
+	}
+
+	obterTarifas()
+	{
+		const self = this;
+
+		const tarifas = self.catalogosSrv.tarifas.items;
+		const tarifa = tarifas.length > 0 ? tarifas[0] : {};
+		self.tarifasForm.setValue(tarifa);
 	}
 
 	async salvar()
@@ -95,24 +105,22 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 		self.busyStack.push();
 		if (tarifa.id)
 		{
-			await self.tarifaSrv.ApiV1TarifaPut(tarifa).toPromise().then( resp => {
-				if (resp && resp.success)
+			await self.catalogosSrv.tarifas.put(tarifa).then( resultado =>
+			{
+				if (resultado)
 				{
-					self.toastSrv.success('Registro atualizado com sucesso!', 'Tarifas');
+					self.toastSrv.success('Tarifas atualizadas com sucesso!', 'Tarifas');
 				}
 			}).catch(() => {});
 		}
 		else
 		{
 			tarifa.id = UUID.UUID(); // para permitir a serialização
-			await self.tarifaSrv.ApiV1TarifaPost(tarifa).toPromise().then( resp => {
-				if (resp && resp.success)
+			await self.catalogosSrv.tarifas.post(tarifa).then( resultado =>
+			{
+				if (resultado)
 				{
-					self.tarifasForm.patchValue(
-					{
-						id: resp.data
-					});
-					self.toastSrv.success('Registro inserido com sucesso!', 'Tarifas');
+					self.toastSrv.success('Tarifas cadastradas com sucesso!', 'Tarifas');
 				}
 			}).catch(() => {});
 		}

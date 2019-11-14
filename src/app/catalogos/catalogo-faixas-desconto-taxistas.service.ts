@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FaixaDescontoTaxistaSummary } from '../../api/to_de_taxi/models';
 import { FaixaDescontoTaxistaService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 class FaixaDescontoTaxistaApiInterface implements CatalogApiInterface<FaixaDescontoTaxistaSummary>
 {
@@ -81,8 +82,8 @@ class FaixaDescontoTaxistaApiInterface implements CatalogApiInterface<FaixaDesco
 @Injectable()
 export class CatalogoFaixasDescontoTaxistas extends ApiCatalog<FaixaDescontoTaxistaSummary>
 {
-	constructor(private faixaDescontoTaxistaSrv: FaixaDescontoTaxistaService)
+	constructor(private oauthService: OAuthService, private faixaDescontoTaxistaSrv: FaixaDescontoTaxistaService)
 	{
-		super(new FaixaDescontoTaxistaApiInterface(faixaDescontoTaxistaSrv));
+		super(oauthService, new FaixaDescontoTaxistaApiInterface(faixaDescontoTaxistaSrv), 'faixa_desconto_taxista', 'faixa_desconto_taxista');
 	}
 }
