@@ -41,13 +41,14 @@ export interface CatalogApiInterface<T>
 	delete(id: string): Promise<boolean>;
 }
 
+const baseEndpointUrl: string = 'https://api.todetaxi.com.br/notifications';
+// baseEndpointUrl = 'http://localhost:5002/notifications';
+
 export class ApiCatalog<T> extends Catalog<T>
 {
 	apiInterface: CatalogApiInterface<T> = null;
 	private hubConnection: signalR.HubConnection = null;
 
-	// baseEndpointUrl: 'https://api.todetaxi.com.br/notifications';
-	baseEndpointUrl = 'http://localhost:5002/notifications';
 	entryTrackEndpoint = '';
 	entryTag = '';
 
@@ -132,7 +133,7 @@ export class ApiCatalog<T> extends Catalog<T>
 		self.intentionalTrackingStop = false;
 
 		self.hubConnection = new signalR.HubConnectionBuilder()
-			.withUrl(`${self.baseEndpointUrl}/${self.entryTrackEndpoint}`/*, { accessTokenFactory: () => self._oauthService.getAccessToken() }*/)
+			.withUrl(`${baseEndpointUrl}/${self.entryTrackEndpoint}`, { accessTokenFactory: () => self._oauthService.getAccessToken() })
 			.build();
 
 		Object.defineProperty(WebSocket, 'OPEN', { value: 1, });
