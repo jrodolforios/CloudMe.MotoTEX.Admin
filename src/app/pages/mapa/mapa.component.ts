@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LocalizacaoSummary, TaxistaSummary, PassageiroSummary } from '../../../api/to_de_taxi/models';
 import { CatalogosService } from '../../catalogos/catalogos.service';
+import { HubWrapper } from '../../@core/data/hubs/hub-wrapper';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { NbToastrService } from '@nebular/theme';
 
 interface LocalizacaoTaxista
 {
@@ -26,14 +29,23 @@ export class MapaComponent implements OnInit, OnDestroy {
 	lng: number = -41.509;
 	zoom = 15;
 
-	constructor(private catalogosSrv: CatalogosService)
-	{
-	}
-
 	localizacaoChangeSub: Subscription = null;
 
 	taxistas: LocalizacaoTaxista[] = [];
 	passageiros: LocalizacaoPassageiro[] = [];
+
+	hubLocalizacaoTaxistas: HubWrapper = null;
+	hubLocalizacaoPassageiros: HubWrapper = null;
+
+	constructor(
+		private catalogosSrv: CatalogosService,
+		private oauthService: OAuthService,
+		private toastSrv: NbToastrService)
+	{
+		const self = this;
+		self.hubLocalizacaoTaxistas = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
+		self.hubLocalizacaoPassageiros = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
+	}
 
 	private adicionarLocalizacao(localizacao: LocalizacaoSummary)
 	{
@@ -145,10 +157,29 @@ export class MapaComponent implements OnInit, OnDestroy {
 				}
 			});
 		});
+
+		self.hubLocalizacaoTaxistas.connect().then(() =>
+		{
+			self.hubLocalizacaoTaxistas.hubConnection.on('EnviarLocalizacao', () =>
+			{
+				// self.toastSrv.info('Servidor solicitou localização de taxistas', 'Mapas');
+			});
+		});
+
+		self.hubLocalizacaoPassageiros.connect().then(() =>
+		{
+			self.hubLocalizacaoPassageiros.hubConnection.on('EnviarLocalizacao', () =>
+			{
+				// self.toastSrv.info('Servidor solicitou localização de passageiros', 'Mapas');
+			});
+		});
 	}
 
 	ngOnDestroy()
 	{
-		this.localizacaoChangeSub.unsubscribe();
+		const self = this;
+		self.localizacaoChangeSub.unsubscribe();
+		self.hubLocalizacaoTaxistas.disconnect();
+		self.hubLocalizacaoPassageiros.disconnect();
 	}
 }
