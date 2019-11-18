@@ -1,3 +1,4 @@
+export { ContratoService } from './services/contrato.service';
 export { CorridaService } from './services/corrida.service';
 export { CorVeiculoService } from './services/cor-veiculo.service';
 export { EnderecoService } from './services/endereco.service';

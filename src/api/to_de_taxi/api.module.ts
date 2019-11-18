@@ -3,6 +3,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationInterface } from './api-configuration';
 
+import { ContratoService } from './services/contrato.service';
 import { CorridaService } from './services/corrida.service';
 import { CorVeiculoService } from './services/cor-veiculo.service';
 import { EnderecoService } from './services/endereco.service';
@@ -39,6 +40,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
   declarations: [],
   providers: [
     ApiConfiguration,
+    ContratoService,
     CorridaService,
     CorVeiculoService,
     EnderecoService,
