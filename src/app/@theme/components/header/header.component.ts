@@ -80,6 +80,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		self.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'menu-sair')).subscribe(async item =>
 		{
 			//await self.authService.logout('oauth2_todetaxi');
+			await self.globaisSrv.encerrarCatalogos();
 			self.oauthService.logOut();
 		});
 
