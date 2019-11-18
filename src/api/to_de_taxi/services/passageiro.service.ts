@@ -23,6 +23,7 @@ class PassageiroService extends __BaseService {
   static readonly ApiV1PassageiroByIdGetPath = '/api/v1/Passageiro/{id}';
   static readonly ApiV1PassageiroByIdDeletePath = '/api/v1/Passageiro/{id}';
   static readonly ApiV1PassageiroConsultaIdPassageiroByIdGetPath = '/api/v1/Passageiro/consulta_id_passageiro/{id}';
+  static readonly ApiV1PassageiroChecarLoginEmUsoGetPath = '/api/v1/Passageiro/checar_login_em_uso';
   static readonly ApiV1PassageiroInformarLocalizacaoByIdPostPath = '/api/v1/Passageiro/informar_localizacao/{id}';
 
   constructor(
@@ -242,6 +243,42 @@ class PassageiroService extends __BaseService {
   ApiV1PassageiroConsultaIdPassageiroByIdGet(id: string): __Observable<ResponsePassageiroSummary> {
     return this.ApiV1PassageiroConsultaIdPassageiroByIdGetResponse(id).pipe(
       __map(_r => _r.body as ResponsePassageiroSummary)
+    );
+  }
+
+  /**
+   * @param login Id from taxist
+   * @return Success
+   */
+  ApiV1PassageiroChecarLoginEmUsoGetResponse(login?: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (login != null) __params = __params.set('login', login.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Passageiro/checar_login_em_uso`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param login Id from taxist
+   * @return Success
+   */
+  ApiV1PassageiroChecarLoginEmUsoGet(login?: string): __Observable<ResponseBoolean> {
+    return this.ApiV1PassageiroChecarLoginEmUsoGetResponse(login).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 

@@ -3426,6 +3426,51 @@
         ]
       }
     },
+    "/api/v1/Passageiro/checar_login_em_uso": {
+      "get": {
+        "tags": [
+          "Passageiro"
+        ],
+        "summary": "Get by IdTaxista",
+        "operationId": "ApiV1PassageiroChecar_login_em_usoGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "query",
+            "description": "Id from taxist",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Passageiro/informar_localizacao/{id}": {
       "post": {
         "tags": [
