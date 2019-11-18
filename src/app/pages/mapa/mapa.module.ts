@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MapaComponent } from './mapa.component';
 import { AgmCoreModule } from '@agm/core';
 import { CommonViewsModule } from '../../common-views/common-views.module';
-import { NbLayoutModule } from '@nebular/theme';
+import { NbLayoutModule, NbToastrService, NbToastrModule } from '@nebular/theme';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
@@ -19,6 +19,7 @@ const routes: Routes = [
 		CommonModule,
 		CommonViewsModule,
 		NbLayoutModule,
+		NbToastrModule,
 		RouterModule.forChild(routes),
 		AgmCoreModule.forRoot(
 		{

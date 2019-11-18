@@ -1,7 +1,6 @@
 import { Catalog } from './catalog';
-import { BusyStack } from '../@core/utils/busy_stack';
-import * as signalR from '@aspnet/signalr';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { HubWrapper } from '../@core/data/hubs/hub-wrapper';
 
 export class ApiResponse<T>
 {
@@ -41,17 +40,18 @@ export interface CatalogApiInterface<T>
 	delete(id: string): Promise<boolean>;
 }
 
+const baseEndpointUrl: string = 'https://api.todetaxi.com.br/notifications';
+// baseEndpointUrl = 'http://localhost:5002/notifications';
+
 export class ApiCatalog<T> extends Catalog<T>
 {
 	apiInterface: CatalogApiInterface<T> = null;
-	private hubConnection: signalR.HubConnection = null;
 
-	// baseEndpointUrl: 'https://api.todetaxi.com.br/notifications';
-	baseEndpointUrl = 'http://localhost:5002/notifications';
+	hub: HubWrapper = null;
+
 	entryTrackEndpoint = '';
 	entryTag = '';
 
-	private intentionalTrackingStop = false;
 	private _oauthService: OAuthService = null;
 
 	constructor(oauthService: OAuthService, apiInterface: CatalogApiInterface<T>, entry_track_endpoint: string, entry_tag: string)
@@ -63,99 +63,56 @@ export class ApiCatalog<T> extends Catalog<T>
 		self.apiInterface = apiInterface;
 		self.entryTrackEndpoint = entry_track_endpoint;
 		self.entryTag = entry_tag;
-	}
 
-	private startHubConnection()
-	{
-		const self = this;
-
-		self.hubConnection
-			.start()
-			.then(() =>
-			{
-				console.info(`Catálogo[${self.entryTag}]: Connection started`);
-				self.addHubListeners();
-			})
-			.catch(err =>
-			{
-				console.error(`Catálogo[${self.entryTag}]: Error while starting connection: ${err}`);
-				self.reconnectToHub();
-			});
-	}
-
-	private reconnectToHub()
-	{
-		const self = this;
-		setTimeout(function ()
-		{
-			self.startHubConnection();
-		},
-		5000);
-	}
-
-	private addHubListeners()
-	{
-		const self = this;
-
-		self.hubConnection.on('inserted', (entry_tag, summary: T) =>
-		{
-			if (entry_tag === self.entryTag)
-			{
-				self.add([summary], true);
-			}
-		});
-
-		self.hubConnection.on('updated', (entry_tag, summary: T) =>
-		{
-			if (entry_tag === self.entryTag)
-			{
-				self.update([summary], true);
-			}
-		});
-
-		self.hubConnection.on('deleted', (entry_tag, id: string) =>
-		{
-			if (entry_tag === self.entryTag)
-			{
-				const item = self.findItem(id);
-				if (item)
-				{
-					self.remove([item], true);
-				}
-			}
-		});
+		self.hub = new HubWrapper(`${baseEndpointUrl}/${self.entryTrackEndpoint}`, () => self._oauthService.getAccessToken());
 	}
 
 	startTrackingChanges()
 	{
 		const self = this;
-		self.intentionalTrackingStop = false;
-
-		self.hubConnection = new signalR.HubConnectionBuilder()
-			.withUrl(`${self.baseEndpointUrl}/${self.entryTrackEndpoint}`/*, { accessTokenFactory: () => self._oauthService.getAccessToken() }*/)
-			.build();
-
-		Object.defineProperty(WebSocket, 'OPEN', { value: 1, });
-
-		self.hubConnection.onclose(() =>
-		{
-			if (!self.intentionalTrackingStop)
+		self.hub.connect()
+			.then(() =>
 			{
-				self.reconnectToHub();
-			}
-		});
+				console.info(`Catálogo[${self.entryTag}]: Connection started`);
 
-		self.startHubConnection();
+				self.hub.hubConnection.on('inserted', (entry_tag, summary: T) =>
+				{
+					if (entry_tag === self.entryTag)
+					{
+						self.add([summary], true);
+					}
+				});
 
+				self.hub.hubConnection.on('updated', (entry_tag, summary: T) =>
+				{
+					if (entry_tag === self.entryTag)
+					{
+						self.update([summary], true);
+					}
+				});
+
+				self.hub.hubConnection.on('deleted', (entry_tag, id: string) =>
+				{
+					if (entry_tag === self.entryTag)
+					{
+						const item = self.findItem(id);
+						if (item)
+						{
+							self.remove([item], true);
+						}
+					}
+				});
+			})
+			.catch(err =>
+			{
+				console.error(`Catálogo[${self.entryTag}]: Error while starting connection: ${err}`);
+			});
 	}
 
 	stopTrackingChanges()
 	{
 		const self = this;
-		self.intentionalTrackingStop = true;
-
-		self.hubConnection
-			.stop()
+		self.hub.disconnect()
 			.then(() => console.info(`Catálogo[${self.entryTag}]: Connection stopped`))
 			.catch(err => console.error(`Catálogo[${self.entryTag}]: Error while stopping connection: ${err}`));
 	}
