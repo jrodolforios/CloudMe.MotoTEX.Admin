@@ -71,6 +71,7 @@ export class Catalog<T>
 				if (target)
 				{
 					// mescla os objetos
+					self.currentChanges.oldItems.push(target);
 					Object.assign(target, target, updated_item);
 				}
 			});
