@@ -44,6 +44,7 @@ export { PassageiroSummary } from './models/passageiro-summary';
 export { UsuarioSummary } from './models/usuario-summary';
 export { CredenciaisUsuario } from './models/credenciais-usuario';
 export { ResponsePassageiroSummary } from './models/response-passageiro-summary';
+export { ResponseInt32 } from './models/response-int-32';
 export { ResponseIEnumerablePontoTaxiSummary } from './models/response-ienumerable-ponto-taxi-summary';
 export { PontoTaxiSummary } from './models/ponto-taxi-summary';
 export { ResponsePontoTaxiSummary } from './models/response-ponto-taxi-summary';

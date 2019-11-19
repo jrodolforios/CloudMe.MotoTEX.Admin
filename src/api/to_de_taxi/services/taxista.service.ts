@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { TaxistaSummary } from '../models/taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseTaxistaSummary } from '../models/response-taxista-summary';
+import { ResponseInt32 } from '../models/response-int-32';
 import { LocalizacaoSummary } from '../models/localizacao-summary';
 import { ResponseIEnumerableVeiculoTaxistaSummary } from '../models/response-ienumerable-veiculo-taxista-summary';
 @Injectable({
@@ -25,6 +26,7 @@ class TaxistaService extends __BaseService {
   static readonly ApiV1TaxistaByIdDeletePath = '/api/v1/Taxista/{id}';
   static readonly ApiV1TaxistaConsultaIdTaxistaByIdGetPath = '/api/v1/Taxista/consulta_id_taxista/{id}';
   static readonly ApiV1TaxistaMarcarTaxistaDisponivelByIdGetPath = '/api/v1/Taxista/marcar_taxista_disponivel/{id}';
+  static readonly ApiV1TaxistaClassificacaoTaxistaByIdGetPath = '/api/v1/Taxista/classificacao_taxista/{id}';
   static readonly ApiV1TaxistaInformarLocalizacaoByIdPostPath = '/api/v1/Taxista/informar_localizacao/{id}';
   static readonly ApiV1TaxistaByIdVeiculosGetPath = '/api/v1/Taxista/{id}/veiculos';
 
@@ -292,6 +294,42 @@ class TaxistaService extends __BaseService {
   ApiV1TaxistaMarcarTaxistaDisponivelByIdGet(params: TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams): __Observable<ResponseBoolean> {
     return this.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetResponse(params).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaClassificacaoTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseInt32>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/classificacao_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseInt32>;
+      })
+    );
+  }
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaClassificacaoTaxistaByIdGet(id: string): __Observable<ResponseInt32> {
+    return this.ApiV1TaxistaClassificacaoTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseInt32)
     );
   }
 
