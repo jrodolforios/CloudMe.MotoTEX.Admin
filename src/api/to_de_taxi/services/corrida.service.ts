@@ -21,6 +21,9 @@ class CorridaService extends __BaseService {
   static readonly ApiV1CorridaPostPath = '/api/v1/Corrida';
   static readonly ApiV1CorridaConsultaIdPassageiroByIdGetPath = '/api/v1/Corrida/consulta_id_passageiro/{id}';
   static readonly ApiV1CorridaConsultaIdTaxistaByIdGetPath = '/api/v1/Corrida/consulta_id_taxista/{id}';
+  static readonly ApiV1CorridaConsultaIdSolicitacaoCorridaByIdGetPath = '/api/v1/Corrida/consulta_id_solicitacao_corrida/{id}';
+  static readonly ApiV1CorridaClassificaTaxistaByIdGetPath = '/api/v1/Corrida/classifica_taxista/{id}';
+  static readonly ApiV1CorridaClassificarPassageiroByIdGetPath = '/api/v1/Corrida/classificar_passageiro/{id}';
   static readonly ApiV1CorridaByIdGetPath = '/api/v1/Corrida/{id}';
   static readonly ApiV1CorridaByIdDeletePath = '/api/v1/Corrida/{id}';
 
@@ -212,6 +215,136 @@ class CorridaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
+  ApiV1CorridaConsultaIdSolicitacaoCorridaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseCorridaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Corrida/consulta_id_solicitacao_corrida/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseCorridaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id undefined
+   * @return Success
+   */
+  ApiV1CorridaConsultaIdSolicitacaoCorridaByIdGet(id: string): __Observable<ResponseCorridaSummary> {
+    return this.ApiV1CorridaConsultaIdSolicitacaoCorridaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseCorridaSummary)
+    );
+  }
+
+  /**
+   * @param params The `CorridaService.ApiV1CorridaClassificaTaxistaByIdGetParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `classificacao`:
+   *
+   * @return Success
+   */
+  ApiV1CorridaClassificaTaxistaByIdGetResponse(params: CorridaService.ApiV1CorridaClassificaTaxistaByIdGetParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.classificacao != null) __params = __params.set('classificacao', params.classificacao.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Corrida/classifica_taxista/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `CorridaService.ApiV1CorridaClassificaTaxistaByIdGetParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `classificacao`:
+   *
+   * @return Success
+   */
+  ApiV1CorridaClassificaTaxistaByIdGet(params: CorridaService.ApiV1CorridaClassificaTaxistaByIdGetParams): __Observable<ResponseBoolean> {
+    return this.ApiV1CorridaClassificaTaxistaByIdGetResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param params The `CorridaService.ApiV1CorridaClassificarPassageiroByIdGetParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `classificacao`:
+   *
+   * @return Success
+   */
+  ApiV1CorridaClassificarPassageiroByIdGetResponse(params: CorridaService.ApiV1CorridaClassificarPassageiroByIdGetParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.classificacao != null) __params = __params.set('classificacao', params.classificacao.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Corrida/classificar_passageiro/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `CorridaService.ApiV1CorridaClassificarPassageiroByIdGetParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `classificacao`:
+   *
+   * @return Success
+   */
+  ApiV1CorridaClassificarPassageiroByIdGet(params: CorridaService.ApiV1CorridaClassificarPassageiroByIdGetParams): __Observable<ResponseBoolean> {
+    return this.ApiV1CorridaClassificarPassageiroByIdGetResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id undefined
+   * @return Success
+   */
   ApiV1CorridaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseCorridaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
@@ -282,6 +415,22 @@ class CorridaService extends __BaseService {
 }
 
 module CorridaService {
+
+  /**
+   * Parameters for ApiV1CorridaClassificaTaxistaByIdGet
+   */
+  export interface ApiV1CorridaClassificaTaxistaByIdGetParams {
+    id: string;
+    classificacao?: number;
+  }
+
+  /**
+   * Parameters for ApiV1CorridaClassificarPassageiroByIdGet
+   */
+  export interface ApiV1CorridaClassificarPassageiroByIdGetParams {
+    id: string;
+    classificacao?: number;
+  }
 }
 
 export { CorridaService }

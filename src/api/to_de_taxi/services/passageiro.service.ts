@@ -13,6 +13,7 @@ import { PassageiroSummary } from '../models/passageiro-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponsePassageiroSummary } from '../models/response-passageiro-summary';
 import { LocalizacaoSummary } from '../models/localizacao-summary';
+import { ResponseInt32 } from '../models/response-int-32';
 @Injectable({
   providedIn: 'root',
 })
@@ -25,6 +26,7 @@ class PassageiroService extends __BaseService {
   static readonly ApiV1PassageiroConsultaIdPassageiroByIdGetPath = '/api/v1/Passageiro/consulta_id_passageiro/{id}';
   static readonly ApiV1PassageiroChecarLoginEmUsoGetPath = '/api/v1/Passageiro/checar_login_em_uso';
   static readonly ApiV1PassageiroInformarLocalizacaoByIdPostPath = '/api/v1/Passageiro/informar_localizacao/{id}';
+  static readonly ApiV1PassageiroClassificacaoPassageiroByIdGetPath = '/api/v1/Passageiro/classificacao_passageiro/{id}';
 
   constructor(
     config: __Configuration,
@@ -326,6 +328,42 @@ class PassageiroService extends __BaseService {
   ApiV1PassageiroInformarLocalizacaoByIdPost(params: PassageiroService.ApiV1PassageiroInformarLocalizacaoByIdPostParams): __Observable<ResponseBoolean> {
     return this.ApiV1PassageiroInformarLocalizacaoByIdPostResponse(params).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1PassageiroClassificacaoPassageiroByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseInt32>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Passageiro/classificacao_passageiro/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseInt32>;
+      })
+    );
+  }
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1PassageiroClassificacaoPassageiroByIdGet(id: string): __Observable<ResponseInt32> {
+    return this.ApiV1PassageiroClassificacaoPassageiroByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseInt32)
     );
   }
 }

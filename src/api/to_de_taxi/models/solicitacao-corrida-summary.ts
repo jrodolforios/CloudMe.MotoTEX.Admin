@@ -13,5 +13,5 @@ export interface SolicitacaoCorridaSummary {
   tempoDisponivel?: number;
   valorEstimado?: number;
   valorProposto?: number;
-  situacao?: 0 | 1 | 2 | 3;
+  situacao?: 0 | 1 | 2 | 3 | 4;
 }

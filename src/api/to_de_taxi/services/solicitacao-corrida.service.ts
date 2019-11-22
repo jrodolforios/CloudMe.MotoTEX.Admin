@@ -21,6 +21,7 @@ class SolicitacaoCorridaService extends __BaseService {
   static readonly ApiV1SolicitacaoCorridaPostPath = '/api/v1/SolicitacaoCorrida';
   static readonly ApiV1SolicitacaoCorridaByIdGetPath = '/api/v1/SolicitacaoCorrida/{id}';
   static readonly ApiV1SolicitacaoCorridaByIdDeletePath = '/api/v1/SolicitacaoCorrida/{id}';
+  static readonly ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostPath = '/api/v1/SolicitacaoCorrida/acao_taxista/{id}';
 
   constructor(
     config: __Configuration,
@@ -205,9 +206,88 @@ class SolicitacaoCorridaService extends __BaseService {
       __map(_r => _r.body as ResponseBoolean)
     );
   }
+
+  /**
+   * @param params The `SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `id_taxista`: Id do taxista
+   *
+   * - `id_solicitacao`: Id da solicitação
+   *
+   * - `acao`: Ação tomada pelo taxista na solicitação
+   *
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostResponse(params: SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.idTaxista != null) __params = __params.set('id_taxista', params.idTaxista.toString());
+    if (params.idSolicitacao != null) __params = __params.set('id_solicitacao', params.idSolicitacao.toString());
+    if (params.acao != null) __params = __params.set('acao', params.acao.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/SolicitacaoCorrida/acao_taxista/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `id_taxista`: Id do taxista
+   *
+   * - `id_solicitacao`: Id da solicitação
+   *
+   * - `acao`: Ação tomada pelo taxista na solicitação
+   *
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaAcaoTaxistaByIdPost(params: SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
 }
 
 module SolicitacaoCorridaService {
+
+  /**
+   * Parameters for ApiV1SolicitacaoCorridaAcaoTaxistaByIdPost
+   */
+  export interface ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams {
+    id: string;
+
+    /**
+     * Id do taxista
+     */
+    idTaxista?: string;
+
+    /**
+     * Id da solicitação
+     */
+    idSolicitacao?: string;
+
+    /**
+     * Ação tomada pelo taxista na solicitação
+     */
+    acao?: 0 | 1 | 2 | 3;
+  }
 }
 
 export { SolicitacaoCorridaService }
