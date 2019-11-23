@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { CorridaSummary } from '../models/corrida-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseCorridaSummary } from '../models/response-corrida-summary';
+import { ResponseInt32 } from '../models/response-int-32';
 @Injectable({
   providedIn: 'root',
 })
@@ -419,7 +420,7 @@ class CorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1CorridaPausarCorridaByIdPostResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+  ApiV1CorridaPausarCorridaByIdPostResponse(id: string): __Observable<__StrictHttpResponse<ResponseInt32>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -437,7 +438,7 @@ class CorridaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseBoolean>;
+        return _r as __StrictHttpResponse<ResponseInt32>;
       })
     );
   }
@@ -445,9 +446,9 @@ class CorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  ApiV1CorridaPausarCorridaByIdPost(id: string): __Observable<ResponseBoolean> {
+  ApiV1CorridaPausarCorridaByIdPost(id: string): __Observable<ResponseInt32> {
     return this.ApiV1CorridaPausarCorridaByIdPostResponse(id).pipe(
-      __map(_r => _r.body as ResponseBoolean)
+      __map(_r => _r.body as ResponseInt32)
     );
   }
 

@@ -760,7 +760,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[Boolean]"
+              "$ref": "#/definitions/Response[Int32]"
             }
           },
           "401": {
@@ -6758,7 +6758,8 @@
             3,
             4,
             5,
-            6
+            6,
+            7
           ],
           "type": "integer"
         },
@@ -6774,6 +6775,27 @@
         "data": {
           "$ref": "#/definitions/CorridaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[Int32]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "format": "int32",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -7611,27 +7633,6 @@
         }
       }
     },
-    "Response[Int32]": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "format": "int32",
-          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
-          "type": "integer"
-        },
-        "success": {
-          "description": "Indica se a operação foi bem sucedida",
-          "type": "boolean"
-        },
-        "notifications": {
-          "description": "Notificações do domínio.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Notification"
-          }
-        }
-      }
-    },
     "Response[IEnumerable[PontoTaxiSummary]]": {
       "type": "object",
       "properties": {
@@ -7881,6 +7882,9 @@
         "valorProposto": {
           "format": "float",
           "type": "number"
+        },
+        "isInterUrbano": {
+          "type": "boolean"
         },
         "situacao": {
           "format": "int32",
