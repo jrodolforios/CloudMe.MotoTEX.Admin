@@ -733,6 +733,98 @@
         ]
       }
     },
+    "/api/v1/Corrida/pausar_corrida/{id}": {
+      "post": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Pausa uma corrida.",
+        "operationId": "ApiV1CorridaPausar_corridaByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Corrida/retomar_corrida/{id}": {
+      "post": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Retoma uma corrida pausada.",
+        "operationId": "ApiV1CorridaRetomar_corridaByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/CorVeiculo": {
       "get": {
         "tags": [
@@ -8308,7 +8400,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "http://localhost:5000/connect/authorize",
+      "authorizationUrl": "https://auth.todetaxi.com.br/connect/authorize",
       "scopes": {
         "todetaxiapi": "TOdeTaxiAPI"
       },

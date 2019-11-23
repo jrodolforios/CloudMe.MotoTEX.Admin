@@ -26,6 +26,8 @@ class CorridaService extends __BaseService {
   static readonly ApiV1CorridaClassificarPassageiroByIdGetPath = '/api/v1/Corrida/classificar_passageiro/{id}';
   static readonly ApiV1CorridaByIdGetPath = '/api/v1/Corrida/{id}';
   static readonly ApiV1CorridaByIdDeletePath = '/api/v1/Corrida/{id}';
+  static readonly ApiV1CorridaPausarCorridaByIdPostPath = '/api/v1/Corrida/pausar_corrida/{id}';
+  static readonly ApiV1CorridaRetomarCorridaByIdPostPath = '/api/v1/Corrida/retomar_corrida/{id}';
 
   constructor(
     config: __Configuration,
@@ -409,6 +411,78 @@ class CorridaService extends __BaseService {
    */
   ApiV1CorridaByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1CorridaByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id DialList's ID
+   * @return Success
+   */
+  ApiV1CorridaPausarCorridaByIdPostResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Corrida/pausar_corrida/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param id DialList's ID
+   * @return Success
+   */
+  ApiV1CorridaPausarCorridaByIdPost(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1CorridaPausarCorridaByIdPostResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id DialList's ID
+   * @return Success
+   */
+  ApiV1CorridaRetomarCorridaByIdPostResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Corrida/retomar_corrida/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param id DialList's ID
+   * @return Success
+   */
+  ApiV1CorridaRetomarCorridaByIdPost(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1CorridaRetomarCorridaByIdPostResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
     );
   }
