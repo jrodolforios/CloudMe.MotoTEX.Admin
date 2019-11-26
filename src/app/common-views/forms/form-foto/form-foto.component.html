@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="container">
   <fieldset [disabled]="desabilitarControles">
       <div class="row" style="height: 20rem">
-        <input type="file" (change)="fileChangeEvent($event, imageInput)" />
+        <input type="file" (change)="fileChangeEvent($event)" />
 
         <image-cropper *ngIf="edit"
             [imageChangedEvent]="imageChangedEvent"
