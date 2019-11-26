@@ -75,6 +75,7 @@
     "ng2-smart-table": "^1.5.0",
     "ngx-currency": "^2.0.0",
     "ngx-echarts": "^4.2.2",
+    "ngx-image-cropper": "^2.0.2",
     "ngx-mask": "^8.1.6",
     "ngx-show-hide-password": "^2.1.0",
     "node-sass": "^4.13.0",

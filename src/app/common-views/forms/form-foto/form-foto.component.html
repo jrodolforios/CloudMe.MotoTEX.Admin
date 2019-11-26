@@ -1,9 +1,22 @@
 <form [formGroup]="form" class="container">
   <fieldset [disabled]="desabilitarControles">
+      <div class="row" style="height: 20rem">
+        <input type="file" (change)="fileChangeEvent($event, imageInput)" />
 
-    <div class="row" style="height: 20rem">
-      <img class="foto" [src]="imgSrc" [attr.height]="alturaImagem" />
-      <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+        <image-cropper *ngIf="edit"
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 4"
+            [resizeToWidth]="400"
+            imageQuality="20"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"
+        ></image-cropper>
+        <button type="button" nbButton *ngIf="edit" class="form-control" (click)="stopEdit()">Ok</button>
+        <img *ngIf="!edit" width="200px" height="200px" [src]="croppedImage ? croppedImage : '/assets/images/foto_padrao.png'" />
     </div>
   </fieldset>
 </form>

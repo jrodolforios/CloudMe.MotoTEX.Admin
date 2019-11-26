@@ -3,6 +3,7 @@ import { FotoSummary } from '../../../../api/to_de_taxi/models';
 import { FotoService } from '../../../../api/to_de_taxi/services';
 import { FormGroup } from '@angular/forms';
 import { BusyStack } from '../../../@core/utils/busy_stack';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
 	selector: 'ngx-form-foto',
@@ -11,12 +12,11 @@ import { BusyStack } from '../../../@core/utils/busy_stack';
 })
 export class FormFotoComponent implements OnInit {
 
-	imgSrc: any = null;
-
 	// dados de apresentacao
 	dadosFoto: any = null;
 	nomeFoto: string = '';
 	nomeArquivoFoto: string = '';
+	public edit = false;
 
 	busyStackFoto = new BusyStack();
 
@@ -24,15 +24,14 @@ export class FormFotoComponent implements OnInit {
 	private _foto: FotoSummary = null;
 
 	form: FormGroup = new FormGroup(
-	{
-	});
+		{
+		});
 
 	@Input() desabilitarControles: boolean = true;
 	@Input() alturaImagem: string = '200px';
 
 	@Input()
-	set foto(value: FotoSummary)
-	{
+	set foto(value: FotoSummary) {
 		const self = this;
 
 		self.form.reset();
@@ -42,8 +41,7 @@ export class FormFotoComponent implements OnInit {
 		self.alterado = false;
 	}
 
-	get foto(): FotoSummary
-	{
+	get foto(): FotoSummary {
 		return this._foto;
 	}
 
@@ -51,24 +49,19 @@ export class FormFotoComponent implements OnInit {
 
 	constructor(private fotoSrv: FotoService) { }
 
-	ngOnInit()
-	{
+	ngOnInit() {
 	}
 
-	private async carregarFoto()
-	{
+	private async carregarFoto() {
 		const self = this;
 		self.busyStackFoto.push();
 
-		if (!self._foto)
-		{
+		if (!self._foto) {
 			self.nomeFoto = '';
 			self.nomeArquivoFoto = '';
 			self.dadosFoto = null;
-			self.imgSrc = '/assets/images/foto_padrao.png';
 		}
-		else
-		{
+		else {
 			/*if (!self._foto.dados) // dados ainda não carregados
 			{
 				if (self._foto.id)
@@ -93,33 +86,46 @@ export class FormFotoComponent implements OnInit {
 			self.nomeFoto = self._foto.nome;
 			self.nomeArquivoFoto = self._foto.nomeArquivo;
 			self.dadosFoto = self._foto.dados;
-			self.imgSrc = self.dadosFoto;
+			self.croppedImage = self._foto.dados;
 		}
 
 		self.busyStackFoto.pop();
 	}
 
-	processFile(imageInput: any)
-	{
+	imageChangedEvent: any = '';
+	croppedImage: any = '';
+
+	fileChangeEvent(event: any): void {
+		this.imageChangedEvent = event;
+		this.edit = true;
+	}
+	imageCropped(event: ImageCroppedEvent) {
+		this.croppedImage = event.base64;
+
 		const self = this;
 
-		const file: File = imageInput.files[0];
-		const reader = new FileReader();
-
-		const listenAsURL = (event: any) => {
-			self.imgSrc = event.target.result;
-			self.dadosFoto = btoa(event.target.result);
-			self.nomeArquivoFoto = file.name;
-			self.nomeFoto = file.name;
-			self.alterado = true;
-		};
-
-		reader.addEventListener('load', listenAsURL);
-		reader.readAsDataURL(file);
+		self.dadosFoto = btoa(this.croppedImage);
+		self.nomeArquivoFoto = "foto_Taxista.png";
+		self.nomeFoto = "foto_Taxista";
+		self.alterado = true;
 	}
 
-	public obterAlteracoes(): FotoSummary
-	{
+	stopEdit(){
+		this.edit = false;
+		this.alterado = true;
+	}
+
+	imageLoaded() {
+		// show cropper
+	}
+	cropperReady() {
+		// cropper ready
+	}
+	loadImageFailed() {
+		// show message
+	}
+
+	public obterAlteracoes(): FotoSummary {
 		const self = this;
 
 		return {
@@ -130,8 +136,7 @@ export class FormFotoComponent implements OnInit {
 		};
 	}
 
-	public redefinir()
-	{
+	public redefinir() {
 		const self = this;
 		self.foto = self._foto;
 	}

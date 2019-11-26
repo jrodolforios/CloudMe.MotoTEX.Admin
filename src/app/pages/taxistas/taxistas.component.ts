@@ -564,7 +564,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 						atualizou = true;
 						self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
 					}
-				}).catch(() => { contemErros = true; });
+				}).catch((e) => { console.log(JSON.stringify(e)); contemErros = true; });
 			}
 
 			/*if (atualizou)

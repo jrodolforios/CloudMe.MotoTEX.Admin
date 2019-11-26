@@ -14,6 +14,7 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { NgxMaskModule } from 'ngx-mask';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { MasterDetailComponent } from './master-detail/master-detail.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 const COMMON_VIEWS_COMPS = [
 	BaseCardComponent,
@@ -33,6 +34,7 @@ const COMMON_VIEWS_COMPS = [
 		ReactiveFormsModule,
 		ThemeModule.forRoot(),
 		NbCardModule,
+		ImageCropperModule,
 		NbSpinnerModule,
 		NbIconModule,
 		NbListModule,
