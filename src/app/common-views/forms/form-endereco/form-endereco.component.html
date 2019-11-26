@@ -12,7 +12,7 @@
         </div>
         <div class="col-4 text-center">
             <label>&nbsp;</label>
-          <button type="button" [nbSpinner]="buscandoCEP" nbButton [disabled]="!cep.valid" class="form-control" (click)="obterEndereco(cep.value)">BUSCAR CEP</button>
+          <button type="button" [nbSpinner]="buscandoCEP" nbButton [disabled]="!cep.valid" class="form-control" (click)="obterEndereco(cep.value)">BUSCAR</button>
         </div>
       </div>  
 
@@ -33,7 +33,7 @@
         </div>
         <div class="col-3">
           <label>Complemento</label>
-          <input type="text" nbInput fullWidth placeholder="Ex.: 762" class="form-control" formControlName="complemento">
+          <input type="text" nbInput fullWidth placeholder="casa, apto, etc" class="form-control" formControlName="complemento">
         </div>
       </div>  
 

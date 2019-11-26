@@ -10,6 +10,7 @@ import { VeiculoSummaryExt } from '../veiculos.service';
 `
 <img [src]="imgSrc" height="50"/>
 <label class="image-upload-container btn btn-bwm">
+teste
   <span>Select Image</span>
   <input #imageInput
          type="file"
