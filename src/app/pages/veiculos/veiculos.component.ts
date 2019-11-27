@@ -146,7 +146,9 @@ export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 			num_taxistas: {
 				title: 'Número de taxistas',
 				type: 'text',
-				editable: false
+				editable: false,
+				addable: false,
+
 			}
 			/*foto: {
 				title: 'Foto',
