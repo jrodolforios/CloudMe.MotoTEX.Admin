@@ -34,9 +34,9 @@ export class ECommerceProgressSectionComponent implements OnDestroy {
           var dataVerificar: Date = new Date(y.inicio);
           dataVerificar.setHours(0,0,0,0);
           
-          if (dataVerificar === dataHoje)
+          if (dataVerificar.toDateString() === dataHoje.toDateString())
             this.corridasHoje++
-          else if (dataVerificar === dataOntem)
+          else if (dataVerificar.toDateString() === dataOntem.toDateString())
             this.corridasOntem++
         });
       }
