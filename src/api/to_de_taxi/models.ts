@@ -8,6 +8,7 @@ export { ResponseIEnumerableCorridaSummary } from './models/response-ienumerable
 export { CorridaSummary } from './models/corrida-summary';
 export { ResponseCorridaSummary } from './models/response-corrida-summary';
 export { ResponseInt32 } from './models/response-int-32';
+export { ResponseListCorridaSummary } from './models/response-list-corrida-summary';
 export { ResponseIEnumerableCorVeiculoSummary } from './models/response-ienumerable-cor-veiculo-summary';
 export { CorVeiculoSummary } from './models/cor-veiculo-summary';
 export { ResponseCorVeiculoSummary } from './models/response-cor-veiculo-summary';

@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ProgressInfo, StatsProgressBarData } from '../../../@core/data/stats-progress-bar';
 import { takeWhile } from 'rxjs/operators';
+import { CorridaService } from '../../../../api/to_de_taxi/services';
 
 @Component({
   selector: 'ngx-progress-section',
@@ -10,10 +11,37 @@ import { takeWhile } from 'rxjs/operators';
 export class ECommerceProgressSectionComponent implements OnDestroy {
 
   private alive = true;
+  public corridasHoje: number = 0;
+  public corridasOntem: number = 0;
+  public corriasEsteMes: number = 0;
 
   progressInfoData: ProgressInfo[];
 
-  constructor() {
+  constructor(private corridaService: CorridaService) {
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.corridaService.ApiV1CorridaRecuperarApartirDeDataByDataPost(firstDay.toISOString()).toPromise().then(x => {
+      if (x.success) {
+        this.corriasEsteMes = x.data.length;
+
+        x.data.forEach(y => {
+          var dataHoje: Date = new Date();
+          dataHoje.setHours(0,0,0,0);
+          
+          var dataOntem: Date = new Date(new Date().getTime() - (1000 * 60 * 60 * 24));
+          dataOntem.setHours(0,0,0,0);
+
+          var dataVerificar: Date = new Date(y.inicio);
+          dataVerificar.setHours(0,0,0,0);
+          
+          if (dataVerificar === dataHoje)
+            this.corridasHoje++
+          else if (dataVerificar === dataOntem)
+            this.corridasOntem++
+        });
+      }
+    });
+
   }
 
   ngOnDestroy() {

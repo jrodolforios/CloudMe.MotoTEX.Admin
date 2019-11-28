@@ -41,6 +41,7 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 
 	get endereco() { return this.passageiro ? this.passageiro.endereco : null; }
 	get usuario() { return this.passageiro ? this.passageiro.usuario : null; }
+	get foto() { return this.passageiro ? this.passageiro['foto'] : null; }
 
 	passageiroSelSub: Subscription;
 	busyStackListagemSub: Subscription = null;
@@ -113,6 +114,11 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 		{
 			return passg1.usuario.nome.localeCompare(passg2.usuario.nome);
 		});
+
+		self.passageiros.forEach(async tx =>
+			{
+				await self.catalogosSrv.passageiros.recuperarFoto(tx);
+			});
 
 		self.filtrarPassageiros();
 

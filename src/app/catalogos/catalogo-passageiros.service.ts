@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { PassageiroSummary } from '../../api/to_de_taxi/models';
-import { PassageiroService } from '../../api/to_de_taxi/services';
+import { PassageiroSummary, FotoSummary } from '../../api/to_de_taxi/models';
+import { PassageiroService, FotoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { CatalogoFotos } from './catalogo-fotos.service';
 
 class PassageiroApiInterface implements CatalogApiInterface<PassageiroSummary>
 {
@@ -82,8 +83,31 @@ class PassageiroApiInterface implements CatalogApiInterface<PassageiroSummary>
 @Injectable()
 export class CatalogoPassageiros extends ApiCatalog<PassageiroSummary>
 {
-	constructor(private oauthService: OAuthService, private passageiroSrv: PassageiroService)
+	constructor(private oauthService: OAuthService, private passageiroSrv: PassageiroService,
+		private fotos: CatalogoFotos, private fotoService: FotoService)
 	{
 		super(oauthService, new PassageiroApiInterface(passageiroSrv), 'passageiro', 'passageiro');
+	}
+
+	async recuperarFoto(passageiro: PassageiroSummary)
+	{
+		const self = this;
+
+		if (!passageiro['foto'])
+		{
+			passageiro['carregandoFoto'] = true;
+
+			var foto: FotoSummary = null;
+
+			await this.fotoService.ApiV1FotoByIdGet(passageiro.idFoto).toPromise().then(x =>{
+				if(x.success){
+					foto = x.data;
+				}
+			})
+			
+			passageiro['foto'] = foto;
+
+			passageiro['carregandoFoto'] = false;
+		}
 	}
 }

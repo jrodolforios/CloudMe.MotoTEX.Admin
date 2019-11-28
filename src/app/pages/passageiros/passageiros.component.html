@@ -63,6 +63,14 @@
                         <div class="nome_propriedade">TELEFONE</div>
                         <div class="valor_propriedade">{{ passageiro.usuario.telefone }}</div>
                       </div>
+                      <div class="col">
+                        <nb-user
+                          size="giant"
+                          [picture]="'data:image/jpeg;base64,' + passageiro['foto']?.dados"
+                          onlyPicture="passageiro['foto'] !== undefined"
+                          shape="rectangle">
+                        </nb-user>
+                      </div>
                     </div>
                   </div>
                 </nb-list-item>

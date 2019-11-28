@@ -13,6 +13,7 @@ import { CorridaSummary } from '../models/corrida-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseCorridaSummary } from '../models/response-corrida-summary';
 import { ResponseInt32 } from '../models/response-int-32';
+import { ResponseListCorridaSummary } from '../models/response-list-corrida-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +29,7 @@ class CorridaService extends __BaseService {
   static readonly ApiV1CorridaByIdGetPath = '/api/v1/Corrida/{id}';
   static readonly ApiV1CorridaByIdDeletePath = '/api/v1/Corrida/{id}';
   static readonly ApiV1CorridaPausarCorridaByIdPostPath = '/api/v1/Corrida/pausar_corrida/{id}';
+  static readonly ApiV1CorridaRecuperarApartirDeDataByDataPostPath = '/api/v1/Corrida/recuperar_apartir_de_data/{data}';
   static readonly ApiV1CorridaRetomarCorridaByIdPostPath = '/api/v1/Corrida/retomar_corrida/{id}';
 
   constructor(
@@ -449,6 +451,42 @@ class CorridaService extends __BaseService {
   ApiV1CorridaPausarCorridaByIdPost(id: string): __Observable<ResponseInt32> {
     return this.ApiV1CorridaPausarCorridaByIdPostResponse(id).pipe(
       __map(_r => _r.body as ResponseInt32)
+    );
+  }
+
+  /**
+   * @param data DialList's ID
+   * @return Success
+   */
+  ApiV1CorridaRecuperarApartirDeDataByDataPostResponse(data: string): __Observable<__StrictHttpResponse<ResponseListCorridaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Corrida/recuperar_apartir_de_data/${data}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseListCorridaSummary>;
+      })
+    );
+  }
+  /**
+   * @param data DialList's ID
+   * @return Success
+   */
+  ApiV1CorridaRecuperarApartirDeDataByDataPost(data: string): __Observable<ResponseListCorridaSummary> {
+    return this.ApiV1CorridaRecuperarApartirDeDataByDataPostResponse(data).pipe(
+      __map(_r => _r.body as ResponseListCorridaSummary)
     );
   }
 

@@ -779,6 +779,52 @@
         ]
       }
     },
+    "/api/v1/Corrida/recuperar_apartir_de_data/{data}": {
+      "post": {
+        "tags": [
+          "Corrida"
+        ],
+        "summary": "Pausa uma corrida.",
+        "operationId": "ApiV1CorridaRecuperar_apartir_de_dataByDataPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "data",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[List[CorridaSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Corrida/retomar_corrida/{id}": {
       "post": {
         "tags": [
@@ -6796,6 +6842,29 @@
           "format": "int32",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)",
           "type": "integer"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[List[CorridaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CorridaSummary"
+          }
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
