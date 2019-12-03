@@ -477,6 +477,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			if (result)
 			{
 				self.selecionar({});
+				self.formFoto.redefinir(true);
 
 				self.expandir();
 			}

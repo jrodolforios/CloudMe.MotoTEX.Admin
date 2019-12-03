@@ -110,7 +110,7 @@ export class FormFotoComponent implements OnInit {
 		self.alterado = true;
 	}
 
-	stopEdit(){
+	stopEdit() {
 		this.edit = false;
 		this.alterado = true;
 	}
@@ -127,17 +127,29 @@ export class FormFotoComponent implements OnInit {
 
 	public obterAlteracoes(): FotoSummary {
 		const self = this;
-
-		return {
+		self._foto = {
 			id: self._foto ? self._foto.id : undefined,
 			dados: self.dadosFoto,
 			nome: self.nomeFoto,
 			nomeArquivo: self.nomeArquivoFoto
 		};
+
+		return self._foto;
 	}
 
-	public redefinir() {
+	public redefinir(reset: Boolean = false) {
 		const self = this;
+		if(reset)
+			self._foto = {};
+
 		self.foto = self._foto;
+		if (self._foto)
+			try {
+				this.croppedImage = self._foto.dados ? atob(self._foto.dados) : undefined;
+			} catch (err) {
+				this.croppedImage = self._foto.dados ? self._foto.dados : undefined;
+			}
+		else
+			this.croppedImage = undefined;
 	}
 }
