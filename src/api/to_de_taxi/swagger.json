@@ -1097,6 +1097,347 @@
         ]
       }
     },
+    "/api/v1/Emergencia": {
+      "get": {
+        "tags": [
+          "Emergencia"
+        ],
+        "summary": "Gets all Emergencias.",
+        "operationId": "ApiV1EmergenciaGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[EmergenciaSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Emergencia"
+        ],
+        "summary": "Modifies an existing Emergencia.",
+        "operationId": "ApiV1EmergenciaPut",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "EmergenciaSummary",
+            "in": "body",
+            "description": "Modified Emergencia list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/EmergenciaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Emergencia"
+        ],
+        "summary": "Creates a new Emergencia.",
+        "operationId": "ApiV1EmergenciaPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "EmergenciaSummary",
+            "in": "body",
+            "description": "Emergencia's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/EmergenciaSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Emergencia/{id}": {
+      "get": {
+        "tags": [
+          "Emergencia"
+        ],
+        "summary": "Gets a Emergencia.\r\n<param name=\"id\">Emergencia's ID</param>",
+        "operationId": "ApiV1EmergenciaByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[EmergenciaSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Emergencia"
+        ],
+        "summary": "Removes an existing Emergencia.",
+        "operationId": "ApiV1EmergenciaByIdDelete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Emergencia/panico": {
+      "post": {
+        "tags": [
+          "Emergencia"
+        ],
+        "summary": "Criação simplificada de uma emergência.",
+        "operationId": "ApiV1EmergenciaPanicoPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_taxista",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "latitude",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Emergencia/alterar_status": {
+      "post": {
+        "tags": [
+          "Emergencia"
+        ],
+        "summary": "Altera o status de uma emergência.",
+        "operationId": "ApiV1EmergenciaAlterar_statusPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_emergencia",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Endereco": {
       "get": {
         "tags": [
@@ -3416,6 +3757,482 @@
             "required": true,
             "type": "string",
             "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/conversacoes_usrs": {
+      "get": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Obtém as conversações de um usuário com outros usuários (retorna o ID de cada usuário).",
+        "operationId": "ApiV1MensagemConversacoes_usrsGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "inicio",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "fim",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[Guid]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/conversacoes_grps_usrs": {
+      "get": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Obtém as conversações de um usuário com grupos de usuários (retorna o ID de cada grupo).",
+        "operationId": "ApiV1MensagemConversacoes_grps_usrsGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "inicio",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "fim",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[Guid]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/msgs_conversacao_usr": {
+      "get": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Obtém mensagens da conversação de um usuário com outro usuário.",
+        "operationId": "ApiV1MensagemMsgs_conversacao_usrGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "id_usuario_conversacao",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "inicio",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "fim",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[DetalhesMensagem]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/msgs_conversacao_grp_usr": {
+      "get": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Obtém mensagens da conversação em um grupo de usuários.",
+        "operationId": "ApiV1MensagemMsgs_conversacao_grp_usrGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_grupo_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "inicio",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "fim",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[Guid]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/enviar_para_usuario": {
+      "post": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Envia uma mensagem para um usuário.",
+        "operationId": "ApiV1MensagemEnviar_para_usuarioPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "mensagem",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/MensagemSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/enviar_para_usuarios": {
+      "post": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Envia uma mensagem para vários usuários (retorna a qtd de mensagens enviadas).",
+        "operationId": "ApiV1MensagemEnviar_para_usuariosPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "mensagem_usuarios",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/MensagemMultiUsuarios"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Int32]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/enviar_para_grupo_usuarios": {
+      "post": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Envia uma mensagem para um grupo de usuários (retorna a qtd de mensagens enviadas).",
+        "operationId": "ApiV1MensagemEnviar_para_grupo_usuariosPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_grupo_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "mensagem",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/MensagemSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Int32]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/alterar_status_msg": {
+      "post": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Envia uma mensagem para um grupo de usuários (retorna a qtd de mensagens enviadas).",
+        "operationId": "ApiV1MensagemAlterar_status_msgPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_mensagem",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "id_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
           }
         ],
         "responses": {
@@ -6934,6 +7751,78 @@
         }
       }
     },
+    "Response[IEnumerable[EmergenciaSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmergenciaSummary"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "EmergenciaSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "status": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "type": "integer"
+        }
+      }
+    },
+    "Response[EmergenciaSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/EmergenciaSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "Response[IEnumerable[EnderecoSummary]]": {
       "type": "object",
       "properties": {
@@ -7575,6 +8464,126 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[Guid]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[IEnumerable[DetalhesMensagem]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DetalhesMensagem"
+          }
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "DetalhesMensagem": {
+      "type": "object",
+      "properties": {
+        "idMensagem": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idRemetente": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idDestinatario": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idGrupo": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "assunto": {
+          "type": "string"
+        },
+        "corpo": {
+          "type": "string"
+        },
+        "dataEnvio": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "dataRecebimento": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "dataLeitura": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "MensagemSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idRemetente": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "assunto": {
+          "type": "string"
+        },
+        "corpo": {
+          "type": "string"
+        }
+      }
+    },
+    "MensagemMultiUsuarios": {
+      "type": "object",
+      "properties": {
+        "mensagem": {
+          "$ref": "#/definitions/MensagemSummary"
+        },
+        "ids_usuarios": {
+          "type": "array",
+          "items": {
+            "format": "uuid",
+            "type": "string"
           }
         }
       }
@@ -8473,7 +9482,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "https://auth.todetaxi.com.br/connect/authorize",
+      "authorizationUrl": "http://localhost:5000/connect/authorize",
       "scopes": {
         "todetaxiapi": "TOdeTaxiAPI"
       },

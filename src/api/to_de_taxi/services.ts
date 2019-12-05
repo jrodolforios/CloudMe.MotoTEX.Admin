@@ -1,6 +1,7 @@
 export { ContratoService } from './services/contrato.service';
 export { CorridaService } from './services/corrida.service';
 export { CorVeiculoService } from './services/cor-veiculo.service';
+export { EmergenciaService } from './services/emergencia.service';
 export { EnderecoService } from './services/endereco.service';
 export { FaixaDescontoService } from './services/faixa-desconto.service';
 export { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
@@ -11,6 +12,7 @@ export { FotoService } from './services/foto.service';
 export { GrupoUsuarioService } from './services/grupo-usuario.service';
 export { IdentityService } from './services/identity.service';
 export { LocalizacaoService } from './services/localizacao.service';
+export { MensagemService } from './services/mensagem.service';
 export { PassageiroService } from './services/passageiro.service';
 export { PontoTaxiService } from './services/ponto-taxi.service';
 export { RotaService } from './services/rota.service';

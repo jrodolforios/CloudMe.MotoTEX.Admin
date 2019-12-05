@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationInterface } from './api-configuration
 import { ContratoService } from './services/contrato.service';
 import { CorridaService } from './services/corrida.service';
 import { CorVeiculoService } from './services/cor-veiculo.service';
+import { EmergenciaService } from './services/emergencia.service';
 import { EnderecoService } from './services/endereco.service';
 import { FaixaDescontoService } from './services/faixa-desconto.service';
 import { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
@@ -16,6 +17,7 @@ import { FotoService } from './services/foto.service';
 import { GrupoUsuarioService } from './services/grupo-usuario.service';
 import { IdentityService } from './services/identity.service';
 import { LocalizacaoService } from './services/localizacao.service';
+import { MensagemService } from './services/mensagem.service';
 import { PassageiroService } from './services/passageiro.service';
 import { PontoTaxiService } from './services/ponto-taxi.service';
 import { RotaService } from './services/rota.service';
@@ -43,6 +45,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     ContratoService,
     CorridaService,
     CorVeiculoService,
+    EmergenciaService,
     EnderecoService,
     FaixaDescontoService,
     FaixaDescontoTaxistaService,
@@ -53,6 +56,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     GrupoUsuarioService,
     IdentityService,
     LocalizacaoService,
+    MensagemService,
     PassageiroService,
     PontoTaxiService,
     RotaService,

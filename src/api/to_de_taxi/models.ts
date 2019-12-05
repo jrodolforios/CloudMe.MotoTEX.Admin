@@ -12,6 +12,9 @@ export { ResponseListCorridaSummary } from './models/response-list-corrida-summa
 export { ResponseIEnumerableCorVeiculoSummary } from './models/response-ienumerable-cor-veiculo-summary';
 export { CorVeiculoSummary } from './models/cor-veiculo-summary';
 export { ResponseCorVeiculoSummary } from './models/response-cor-veiculo-summary';
+export { ResponseIEnumerableEmergenciaSummary } from './models/response-ienumerable-emergencia-summary';
+export { EmergenciaSummary } from './models/emergencia-summary';
+export { ResponseEmergenciaSummary } from './models/response-emergencia-summary';
 export { ResponseIEnumerableEnderecoSummary } from './models/response-ienumerable-endereco-summary';
 export { EnderecoSummary } from './models/endereco-summary';
 export { ResponseEnderecoSummary } from './models/response-endereco-summary';
@@ -41,6 +44,11 @@ export { ResponseGrupoUsuarioSummary } from './models/response-grupo-usuario-sum
 export { ResponseIEnumerableLocalizacaoSummary } from './models/response-ienumerable-localizacao-summary';
 export { LocalizacaoSummary } from './models/localizacao-summary';
 export { ResponseLocalizacaoSummary } from './models/response-localizacao-summary';
+export { ResponseIEnumerableGuid } from './models/response-ienumerable-guid';
+export { ResponseIEnumerableDetalhesMensagem } from './models/response-ienumerable-detalhes-mensagem';
+export { DetalhesMensagem } from './models/detalhes-mensagem';
+export { MensagemSummary } from './models/mensagem-summary';
+export { MensagemMultiUsuarios } from './models/mensagem-multi-usuarios';
 export { ResponseIEnumerablePassageiroSummary } from './models/response-ienumerable-passageiro-summary';
 export { PassageiroSummary } from './models/passageiro-summary';
 export { UsuarioSummary } from './models/usuario-summary';
