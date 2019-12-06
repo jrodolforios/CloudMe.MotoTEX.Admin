@@ -9482,7 +9482,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "https://auth.todetaxi.com.br/connect/authorize",
+      "authorizationUrl": "http://localhost:5000/connect/authorize",
       "scopes": {
         "todetaxiapi": "TOdeTaxiAPI"
       },
