@@ -48,4 +48,13 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		icon: 'map-outline',
 		link: '/pages/mapa',
 	},
+	{
+		title: 'SUPORTE',
+		group: true,
+	},
+	{
+		title: 'Solicitações de contato',
+		icon: 'message-square-outline',
+		link: '/pages/contactSuport',
+	},
 ];

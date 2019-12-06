@@ -35,6 +35,11 @@ const routes: Routes = [{
 				.then(m => m.PassageirosModule),
 		},
 		{
+			path: 'contactSuport',
+			loadChildren: () => import('./contact-support/contact-support.module')
+				.then(m => m.ContactSupportModule),
+		},
+		{
 			path: 'mapa',
 			loadChildren: () => import('./mapa/mapa.module')
 				.then(m => m.MapaModule),

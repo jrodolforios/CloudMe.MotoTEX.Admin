@@ -1,0 +1,98 @@
+<nb-layout>
+    <nb-layout-column>
+      <div class="row">
+        <base-card #card_listagem class="col-md-5">
+          <div header>Contatos ({{quantidadeContatos}})</div>
+          <div body class="container">
+            <div class="row actions mb-3">
+              <nb-actions size="small" class="col-auto">
+                <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
+              </nb-actions>
+            </div>
+            <div class="row filtros" *ngIf="exibirFiltros">
+              <div class="row">
+                <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaContato fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
+                <nb-action nbTooltip="Limpar pesquisa" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaContato.value"></nb-action>
+              </div>
+            </div>
+            <div class="row">
+              <nb-list class="own-scroll row"
+                nbInfiniteList
+                [threshold]="500">
+                <nb-list-item *ngFor="let contato of ContatosPesquisa">
+                  <div class="container">
+                    <div class="row h4 nome">
+                      <div class="col-8 tituloContato" (click)="visualizar(contato)">
+                        {{contato.Titulo}}
+                      </div>
+                      <div class="col-4">
+                        <nb-actions class="actions_contato" size="small">
+                          <nb-action nbTooltip="Remover" icon="trash-2-outline" (click)="deletar(contato)"></nb-action>
+                        </nb-actions>
+                      </div>
+                    </div>
+                    <div class="row sumario">
+                      <div class="col propriedade">
+                        <div class="nome_propriedade">{{contarContatos(contato)}} Contato(s)</div>
+                        <!--div class="valor_propriedade">{{ contato.usuario.rg }}</div-->
+                      </div>
+                    </div>
+                  </div>
+                </nb-list-item>
+              </nb-list>
+            </div>
+            <br/>
+            <br/>
+            <nb-alert status="info" *ngIf="ContatosPesquisa.length === 0 || ContatosPesquisa == null || ContatosPesquisa == undefined">
+              Sem registros para exibir
+            </nb-alert>
+          </div>
+        </base-card>
+        <base-card #card_detalhes class="col-md-7">
+          <div header>DETALHES DO CONTATO: {{contato && contato.titulo ? contato.nome.toUpperCase() : '[DESCONHECIDO]'}}</div>
+          <div class="container" body>
+            <nb-actions size="small" >
+              <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+              <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+              <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
+              <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
+            </nb-actions><br>
+  
+            <nb-accordion multi #abas>
+              <nb-accordion-item>
+                <nb-accordion-item-header>
+                    Identificação
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+  
+              <nb-accordion-item>
+                <nb-accordion-item-header>
+                    Endereço
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+  
+              <nb-accordion-item [hidden]="modo !== enumModo.mdVisualizacao">
+                  <nb-accordion-item-header>
+                      Contato
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+  
+            </nb-accordion>
+          </div>
+          <div footer>
+            <span>* (campo obrigatório)</span>
+          </div>
+        </base-card>
+      </div>
+    </nb-layout-column>
+  </nb-layout>
+  
+  
+  
+  
