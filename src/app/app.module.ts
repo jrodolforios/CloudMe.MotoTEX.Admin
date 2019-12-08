@@ -50,8 +50,8 @@ export function oAuthStorageFactory(): OAuthStorage
 
 /*export const options: Partial<IConfig> = {
 };*/
-const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
-// const toDeTaxiAPIBaseURL = 'http://localhost:5002';
+// const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
+const toDeTaxiAPIBaseURL = 'http://localhost:5002';
 
 @NgModule({
 	declarations: [AppComponent],

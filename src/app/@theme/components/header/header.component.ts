@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
-import { UserData } from '../../../@core/data/users';
-import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { GlobaisService } from '../../../globais.service';
 import { UsuarioSummary } from '../../../../api/to_de_taxi/models';
+import { LayoutService } from '../../../@core/utils/layout.service';
 
 @Component({
 	selector: 'ngx-header',
