@@ -31,6 +31,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		link: '/pages/passageiros',
 	},
 	{
+		title: 'Mensagens',
+		icon: 'email-outline',
+		link: '/pages/mensagens',
+	},
+	{
 		title: 'CONFIGURAÇÕES',
 		group: true,
 	},

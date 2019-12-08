@@ -3431,6 +3431,51 @@
         ]
       }
     },
+    "/api/v1/GrupoUsuario/by_user": {
+      "get": {
+        "tags": [
+          "GrupoUsuario"
+        ],
+        "summary": "Obtém os grupos de usuários de um usuário específico.",
+        "operationId": "ApiV1GrupoUsuarioBy_userGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[GrupoUsuarioSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/GrupoUsuario/{id}": {
       "get": {
         "tags": [
@@ -3882,6 +3927,65 @@
             "description": "Success",
             "schema": {
               "$ref": "#/definitions/Response[IEnumerable[Guid]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/msgs_usr": {
+      "get": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Obtém todas as mensagens do usuário (como remetente ou destinatário)",
+        "operationId": "ApiV1MensagemMsgs_usrGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_usuario",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "inicio",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "fim",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[DetalhesMensagem]]"
             }
           },
           "401": {

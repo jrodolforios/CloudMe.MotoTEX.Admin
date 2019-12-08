@@ -38,6 +38,11 @@ const routes: Routes = [{
 				.then(m => m.ContactSupportModule),
 		},
 		{
+			path: 'mensagens',
+			loadChildren: () => import('./mensagens/mensagens.module')
+				.then(m => m.MensagensModule),
+		},
+		{
 			path: 'mapa',
 			loadChildren: () => import('./mapa/mapa.module')
 				.then(m => m.MapaModule),

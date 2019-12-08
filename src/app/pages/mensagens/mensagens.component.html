@@ -1,0 +1,50 @@
+<div class = "row p-3">
+    <button nbButton size="giant" hero status="success">Nova mensagem</button>
+</div>
+<nb-tabset>
+    <nb-tab tabTitle="Recebidas">
+
+        <nb-alert status="info" *ngIf="caixaEntrada.length === 0 || caixaEntrada == null || caixaEntrada == undefined">
+            Não há mensagens
+        </nb-alert>
+        
+        <div *ngIf="caixaEntrada && caixaEntrada.length > 0">
+            <nb-accordion>
+                <nb-accordion-item *ngFor="let mensagem of caixaEntrada">
+                    <nb-accordion-item-header class = "row">
+                        <div class="col-3">{{mensagem.nomeRemetente}}</div>
+                        <div class="col-7">{{mensagem.assunto}}</div>
+                        <div class="col-2">{{mensagem.dataEnvio}}</div>
+                    </nb-accordion-item-header>
+                    <nb-accordion-item-body>
+                        {{mensagem.corpo}}
+                    </nb-accordion-item-body>
+                </nb-accordion-item>
+            </nb-accordion>
+        </div>
+
+    </nb-tab>
+    <nb-tab tabTitle="Enviadas">
+
+        <nb-alert status="info" *ngIf="caixaSaida.length === 0 || caixaSaida == null || caixaSaida == undefined">
+            Não há mensagens
+        </nb-alert>
+        
+        <div *ngIf="caixaSaida && caixaSaida.length > 0">
+            <nb-accordion>
+                <nb-accordion-item *ngFor="let mensagem of caixaSaida">
+                    <nb-accordion-item-header class = "row">
+                        <div class="col-3">{{mensagem.nomeRemetente}}</div>
+                        <div class="col-7">{{mensagem.assunto}}</div>
+                        <div class="col-2">{{mensagem.dataEnvio}}</div>
+                    </nb-accordion-item-header>
+                    <nb-accordion-item-body>
+                        {{mensagem.corpo}}
+                    </nb-accordion-item-body>
+                </nb-accordion-item>
+            </nb-accordion>
+        </div>
+
+    </nb-tab>
+</nb-tabset>
+  

@@ -19,6 +19,7 @@ class GrupoUsuarioService extends __BaseService {
   static readonly ApiV1GrupoUsuarioGetPath = '/api/v1/GrupoUsuario';
   static readonly ApiV1GrupoUsuarioPutPath = '/api/v1/GrupoUsuario';
   static readonly ApiV1GrupoUsuarioPostPath = '/api/v1/GrupoUsuario';
+  static readonly ApiV1GrupoUsuarioByUserGetPath = '/api/v1/GrupoUsuario/by_user';
   static readonly ApiV1GrupoUsuarioByIdGetPath = '/api/v1/GrupoUsuario/{id}';
   static readonly ApiV1GrupoUsuarioByIdDeletePath = '/api/v1/GrupoUsuario/{id}';
 
@@ -131,6 +132,42 @@ class GrupoUsuarioService extends __BaseService {
   ApiV1GrupoUsuarioPost(GrupoUsuarioSummary?: GrupoUsuarioSummary): __Observable<ResponseGuid> {
     return this.ApiV1GrupoUsuarioPostResponse(GrupoUsuarioSummary).pipe(
       __map(_r => _r.body as ResponseGuid)
+    );
+  }
+
+  /**
+   * @param id_usuario undefined
+   * @return Success
+   */
+  ApiV1GrupoUsuarioByUserGetResponse(idUsuario?: string): __Observable<__StrictHttpResponse<ResponseIEnumerableGrupoUsuarioSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (idUsuario != null) __params = __params.set('id_usuario', idUsuario.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/GrupoUsuario/by_user`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableGrupoUsuarioSummary>;
+      })
+    );
+  }
+  /**
+   * @param id_usuario undefined
+   * @return Success
+   */
+  ApiV1GrupoUsuarioByUserGet(idUsuario?: string): __Observable<ResponseIEnumerableGrupoUsuarioSummary> {
+    return this.ApiV1GrupoUsuarioByUserGetResponse(idUsuario).pipe(
+      __map(_r => _r.body as ResponseIEnumerableGrupoUsuarioSummary)
     );
   }
 

@@ -19,6 +19,7 @@ import { MensagemMultiUsuarios } from '../models/mensagem-multi-usuarios';
 class MensagemService extends __BaseService {
   static readonly ApiV1MensagemConversacoesUsrsGetPath = '/api/v1/Mensagem/conversacoes_usrs';
   static readonly ApiV1MensagemConversacoesGrpsUsrsGetPath = '/api/v1/Mensagem/conversacoes_grps_usrs';
+  static readonly ApiV1MensagemMsgsUsrGetPath = '/api/v1/Mensagem/msgs_usr';
   static readonly ApiV1MensagemMsgsConversacaoUsrGetPath = '/api/v1/Mensagem/msgs_conversacao_usr';
   static readonly ApiV1MensagemMsgsConversacaoGrpUsrGetPath = '/api/v1/Mensagem/msgs_conversacao_grp_usr';
   static readonly ApiV1MensagemEnviarParaUsuarioPostPath = '/api/v1/Mensagem/enviar_para_usuario';
@@ -134,6 +135,58 @@ class MensagemService extends __BaseService {
   ApiV1MensagemConversacoesGrpsUsrsGet(params: MensagemService.ApiV1MensagemConversacoesGrpsUsrsGetParams): __Observable<ResponseIEnumerableGuid> {
     return this.ApiV1MensagemConversacoesGrpsUsrsGetResponse(params).pipe(
       __map(_r => _r.body as ResponseIEnumerableGuid)
+    );
+  }
+
+  /**
+   * @param params The `MensagemService.ApiV1MensagemMsgsUsrGetParams` containing the following parameters:
+   *
+   * - `inicio`:
+   *
+   * - `id_usuario`:
+   *
+   * - `fim`:
+   *
+   * @return Success
+   */
+  ApiV1MensagemMsgsUsrGetResponse(params: MensagemService.ApiV1MensagemMsgsUsrGetParams): __Observable<__StrictHttpResponse<ResponseIEnumerableDetalhesMensagem>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.inicio != null) __params = __params.set('inicio', params.inicio.toString());
+    if (params.idUsuario != null) __params = __params.set('id_usuario', params.idUsuario.toString());
+    if (params.fim != null) __params = __params.set('fim', params.fim.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Mensagem/msgs_usr`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableDetalhesMensagem>;
+      })
+    );
+  }
+  /**
+   * @param params The `MensagemService.ApiV1MensagemMsgsUsrGetParams` containing the following parameters:
+   *
+   * - `inicio`:
+   *
+   * - `id_usuario`:
+   *
+   * - `fim`:
+   *
+   * @return Success
+   */
+  ApiV1MensagemMsgsUsrGet(params: MensagemService.ApiV1MensagemMsgsUsrGetParams): __Observable<ResponseIEnumerableDetalhesMensagem> {
+    return this.ApiV1MensagemMsgsUsrGetResponse(params).pipe(
+      __map(_r => _r.body as ResponseIEnumerableDetalhesMensagem)
     );
   }
 
@@ -444,6 +497,15 @@ module MensagemService {
    * Parameters for ApiV1MensagemConversacoesGrpsUsrsGet
    */
   export interface ApiV1MensagemConversacoesGrpsUsrsGetParams {
+    inicio?: string;
+    idUsuario?: string;
+    fim?: string;
+  }
+
+  /**
+   * Parameters for ApiV1MensagemMsgsUsrGet
+   */
+  export interface ApiV1MensagemMsgsUsrGetParams {
     inicio?: string;
     idUsuario?: string;
     fim?: string;

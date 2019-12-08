@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LocalizacaoSummary, TaxistaSummary, PassageiroSummary } from '../../../api/to_de_taxi/models';
+import { LocalizacaoSummary, TaxistaSummary, PassageiroSummary, EmergenciaSummary } from '../../../api/to_de_taxi/models';
 import { CatalogosService } from '../../catalogos/catalogos.service';
 import { HubWrapper } from '../../@core/data/hubs/hub-wrapper';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -173,6 +173,11 @@ export class MapaComponent implements OnInit, OnDestroy {
 			self.hubLocalizacaoPassageiros.hubConnection.on('EnviarLocalizacao', () =>
 			{
 				// self.toastSrv.info('Servidor solicitou localização de passageiros', 'Mapas');
+			});
+
+			self.hubLocalizacaoTaxistas.hubConnection.on('panico', (emergencia: EmergenciaSummary) =>
+			{
+				self.toastSrv.danger(`Solicitação de pânico do taxista ${emergencia.idTaxista}`);
 			});
 		});
 	}
