@@ -9,6 +9,11 @@ export interface ResponseIEnumerableRotaSummary {
   data?: Array<RotaSummary>;
 
   /**
+   * Utilizado para paginação de resultados
+   */
+  count?: number;
+
+  /**
    * Indica se a operação foi bem sucedida
    */
   success?: boolean;

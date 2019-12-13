@@ -5,6 +5,232 @@
     "title": "CloudMe ToDeTaxi API"
   },
   "paths": {
+    "/api/v1/Contato": {
+      "get": {
+        "tags": [
+          "Contato"
+        ],
+        "summary": "Gets all Contatos.",
+        "operationId": "ApiV1ContatoGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[IEnumerable[ContatoSummary]]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Contato"
+        ],
+        "summary": "Modifies an existing Contato.",
+        "operationId": "ApiV1ContatoPut",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "ContatoSUmmary",
+            "in": "body",
+            "description": "Modified Contato list's properties summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ContatoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Contato"
+        ],
+        "summary": "Creates a new Cotnrato.",
+        "operationId": "ApiV1ContatoPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "ContatoSummary",
+            "in": "body",
+            "description": "Contato's summary",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ContatoSummary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Guid]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Contato/{id}": {
+      "get": {
+        "tags": [
+          "Contato"
+        ],
+        "summary": "Gets a Contato.\r\n<param name=\"id\">Contato's ID</param>",
+        "operationId": "ApiV1ContatoByIdGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[ContatoSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Contato"
+        ],
+        "summary": "Removes an existing Contato.",
+        "operationId": "ApiV1ContatoByIdDelete",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "DialList's ID",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Contrato": {
       "get": {
         "tags": [
@@ -3431,6 +3657,50 @@
         ]
       }
     },
+    "/api/v1/GrupoUsuario/by_name": {
+      "get": {
+        "tags": [
+          "GrupoUsuario"
+        ],
+        "summary": "Obtém um grupo de usuário por nome.\r\n<param name=\"name\">Nome do grupo de usuários</param>",
+        "operationId": "ApiV1GrupoUsuarioBy_nameGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[GrupoUsuarioSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/GrupoUsuario/by_user": {
       "get": {
         "tags": [
@@ -3827,14 +4097,19 @@
         ]
       }
     },
-    "/api/v1/Mensagem/conversacoes_usrs": {
-      "get": {
+    "/api/v1/Mensagem/obter_enviadas": {
+      "post": {
         "tags": [
           "Mensagem"
         ],
-        "summary": "Obtém as conversações de um usuário com outros usuários (retorna o ID de cada usuário).",
-        "operationId": "ApiV1MensagemConversacoes_usrsGet",
-        "consumes": [],
+        "summary": "Obtém as mensagens enviadas por um usuário.",
+        "operationId": "ApiV1MensagemObter_enviadasPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
         "produces": [
           "text/plain",
           "application/json",
@@ -3861,124 +4136,14 @@
             "required": false,
             "type": "string",
             "format": "date-time"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
+          },
+          {
+            "name": "pagination",
+            "in": "body",
+            "required": false,
             "schema": {
-              "$ref": "#/definitions/Response[IEnumerable[Guid]]"
+              "$ref": "#/definitions/Pagination"
             }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "demo_api"
-            ]
-          }
-        ]
-      }
-    },
-    "/api/v1/Mensagem/conversacoes_grps_usrs": {
-      "get": {
-        "tags": [
-          "Mensagem"
-        ],
-        "summary": "Obtém as conversações de um usuário com grupos de usuários (retorna o ID de cada grupo).",
-        "operationId": "ApiV1MensagemConversacoes_grps_usrsGet",
-        "consumes": [],
-        "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "name": "id_usuario",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uuid"
-          },
-          {
-            "name": "inicio",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "fim",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/Response[IEnumerable[Guid]]"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "demo_api"
-            ]
-          }
-        ]
-      }
-    },
-    "/api/v1/Mensagem/msgs_usr": {
-      "get": {
-        "tags": [
-          "Mensagem"
-        ],
-        "summary": "Obtém todas as mensagens do usuário (como remetente ou destinatário)",
-        "operationId": "ApiV1MensagemMsgs_usrGet",
-        "consumes": [],
-        "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "name": "id_usuario",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uuid"
-          },
-          {
-            "name": "inicio",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "fim",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
           }
         ],
         "responses": {
@@ -4004,14 +4169,19 @@
         ]
       }
     },
-    "/api/v1/Mensagem/msgs_conversacao_usr": {
-      "get": {
+    "/api/v1/Mensagem/obter_recebidas": {
+      "post": {
         "tags": [
           "Mensagem"
         ],
-        "summary": "Obtém mensagens da conversação de um usuário com outro usuário.",
-        "operationId": "ApiV1MensagemMsgs_conversacao_usrGet",
-        "consumes": [],
+        "summary": "Obtém as mensagens recebidas por um usuário.",
+        "operationId": "ApiV1MensagemObter_recebidasPost",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
         "produces": [
           "text/plain",
           "application/json",
@@ -4020,13 +4190,6 @@
         "parameters": [
           {
             "name": "id_usuario",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uuid"
-          },
-          {
-            "name": "id_usuario_conversacao",
             "in": "query",
             "required": false,
             "type": "string",
@@ -4045,6 +4208,14 @@
             "required": false,
             "type": "string",
             "format": "date-time"
+          },
+          {
+            "name": "pagination",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Pagination"
+            }
           }
         ],
         "responses": {
@@ -4070,72 +4241,13 @@
         ]
       }
     },
-    "/api/v1/Mensagem/msgs_conversacao_grp_usr": {
-      "get": {
-        "tags": [
-          "Mensagem"
-        ],
-        "summary": "Obtém mensagens da conversação em um grupo de usuários.",
-        "operationId": "ApiV1MensagemMsgs_conversacao_grp_usrGet",
-        "consumes": [],
-        "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "name": "id_grupo_usuario",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uuid"
-          },
-          {
-            "name": "inicio",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "fim",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/Response[IEnumerable[Guid]]"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "demo_api"
-            ]
-          }
-        ]
-      }
-    },
-    "/api/v1/Mensagem/enviar_para_usuario": {
+    "/api/v1/Mensagem/enviar": {
       "post": {
         "tags": [
           "Mensagem"
         ],
         "summary": "Envia uma mensagem para um usuário.",
-        "operationId": "ApiV1MensagemEnviar_para_usuarioPost",
+        "operationId": "ApiV1MensagemEnviarPost",
         "consumes": [
           "application/json-patch+json",
           "application/json",
@@ -4148,27 +4260,72 @@
           "text/json"
         ],
         "parameters": [
+          {
+            "name": "parametrosEnvio",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ParametrosEnvio"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Int32]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Mensagem/recibo": {
+      "get": {
+        "tags": [
+          "Mensagem"
+        ],
+        "summary": "Obtém o recibo de envio de uma mensagem a um destinatário.",
+        "operationId": "ApiV1MensagemReciboGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_mensagem",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
           {
             "name": "id_usuario",
             "in": "query",
             "required": false,
             "type": "string",
             "format": "uuid"
-          },
-          {
-            "name": "mensagem",
-            "in": "body",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/MensagemSummary"
-            }
           }
         ],
         "responses": {
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/Response[Boolean]"
+              "$ref": "#/definitions/Response[MensagemDestinatarioSummary]"
             }
           },
           "401": {
@@ -4187,122 +4344,13 @@
         ]
       }
     },
-    "/api/v1/Mensagem/enviar_para_usuarios": {
-      "post": {
-        "tags": [
-          "Mensagem"
-        ],
-        "summary": "Envia uma mensagem para vários usuários (retorna a qtd de mensagens enviadas).",
-        "operationId": "ApiV1MensagemEnviar_para_usuariosPost",
-        "consumes": [
-          "application/json-patch+json",
-          "application/json",
-          "text/json",
-          "application/*+json"
-        ],
-        "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "name": "mensagem_usuarios",
-            "in": "body",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/MensagemMultiUsuarios"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/Response[Int32]"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "demo_api"
-            ]
-          }
-        ]
-      }
-    },
-    "/api/v1/Mensagem/enviar_para_grupo_usuarios": {
+    "/api/v1/Mensagem/alterar_status": {
       "post": {
         "tags": [
           "Mensagem"
         ],
         "summary": "Envia uma mensagem para um grupo de usuários (retorna a qtd de mensagens enviadas).",
-        "operationId": "ApiV1MensagemEnviar_para_grupo_usuariosPost",
-        "consumes": [
-          "application/json-patch+json",
-          "application/json",
-          "text/json",
-          "application/*+json"
-        ],
-        "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "name": "id_grupo_usuario",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uuid"
-          },
-          {
-            "name": "mensagem",
-            "in": "body",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/MensagemSummary"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/Response[Int32]"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [
-              "demo_api"
-            ]
-          }
-        ]
-      }
-    },
-    "/api/v1/Mensagem/alterar_status_msg": {
-      "post": {
-        "tags": [
-          "Mensagem"
-        ],
-        "summary": "Envia uma mensagem para um grupo de usuários (retorna a qtd de mensagens enviadas).",
-        "operationId": "ApiV1MensagemAlterar_status_msgPost",
+        "operationId": "ApiV1MensagemAlterar_statusPost",
         "consumes": [],
         "produces": [
           "text/plain",
@@ -6553,6 +6601,50 @@
         ]
       }
     },
+    "/api/v1/Usuario/by_name": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Obtém um usuário por nome.\r\n<param name=\"name\">Nome do usuário</param>",
+        "operationId": "ApiV1UsuarioBy_nameGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[UsuarioSummary]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/Usuario/altera_credenciais/{id}": {
       "post": {
         "tags": [
@@ -7522,6 +7614,152 @@
     }
   },
   "definitions": {
+    "Response[IEnumerable[ContatoSummary]]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ContatoSummary"
+          }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "ContatoSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "assunto": {
+          "type": "string"
+        },
+        "conteudo": {
+          "type": "string"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "idTaxista": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idPassageiro": {
+          "format": "uuid",
+          "type": "string"
+        }
+      }
+    },
+    "Notification": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "type": "string",
+          "readOnly": true
+        },
+        "message": {
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "Response[Guid]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "format": "uuid",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "string"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[Boolean]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "boolean"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
+    "Response[ContatoSummary]": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ContatoSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Notification"
+          }
+        }
+      }
+    },
     "Response[IEnumerable[ContratoSummary]]": {
       "type": "object",
       "properties": {
@@ -7531,6 +7769,11 @@
           "items": {
             "$ref": "#/definitions/ContratoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -7560,66 +7803,17 @@
         }
       }
     },
-    "Notification": {
-      "type": "object",
-      "properties": {
-        "property": {
-          "type": "string",
-          "readOnly": true
-        },
-        "message": {
-          "type": "string",
-          "readOnly": true
-        }
-      }
-    },
-    "Response[Guid]": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "format": "uuid",
-          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
-          "type": "string"
-        },
-        "success": {
-          "description": "Indica se a operação foi bem sucedida",
-          "type": "boolean"
-        },
-        "notifications": {
-          "description": "Notificações do domínio.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Notification"
-          }
-        }
-      }
-    },
-    "Response[Boolean]": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
-          "type": "boolean"
-        },
-        "success": {
-          "description": "Indica se a operação foi bem sucedida",
-          "type": "boolean"
-        },
-        "notifications": {
-          "description": "Notificações do domínio.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Notification"
-          }
-        }
-      }
-    },
     "Response[ContratoSummary]": {
       "type": "object",
       "properties": {
         "data": {
           "$ref": "#/definitions/ContratoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -7643,6 +7837,11 @@
           "items": {
             "$ref": "#/definitions/CorridaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -7743,6 +7942,11 @@
           "$ref": "#/definitions/CorridaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -7762,6 +7966,11 @@
         "data": {
           "format": "int32",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)",
+          "type": "integer"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
           "type": "integer"
         },
         "success": {
@@ -7787,6 +7996,11 @@
             "$ref": "#/definitions/CorridaSummary"
           }
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -7809,6 +8023,11 @@
           "items": {
             "$ref": "#/definitions/CorVeiculoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -7842,6 +8061,11 @@
           "$ref": "#/definitions/CorVeiculoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -7864,6 +8088,11 @@
           "items": {
             "$ref": "#/definitions/EmergenciaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -7914,6 +8143,11 @@
           "$ref": "#/definitions/EmergenciaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -7936,6 +8170,11 @@
           "items": {
             "$ref": "#/definitions/EnderecoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -7991,6 +8230,11 @@
           "$ref": "#/definitions/EnderecoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8013,6 +8257,11 @@
           "items": {
             "$ref": "#/definitions/FaixaDescontoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8050,6 +8299,11 @@
           "$ref": "#/definitions/FaixaDescontoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8072,6 +8326,11 @@
           "items": {
             "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8110,6 +8369,11 @@
           "$ref": "#/definitions/FaixaDescontoTaxistaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8133,6 +8397,11 @@
             "$ref": "#/definitions/FaixaDescontoTaxistaSummary"
           }
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8155,6 +8424,11 @@
           "items": {
             "$ref": "#/definitions/FavoritoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8197,6 +8471,11 @@
           "$ref": "#/definitions/FavoritoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8219,6 +8498,11 @@
           "items": {
             "$ref": "#/definitions/FormaPagamentoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8252,6 +8536,11 @@
           "$ref": "#/definitions/FormaPagamentoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8274,6 +8563,11 @@
           "items": {
             "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8312,6 +8606,11 @@
           "$ref": "#/definitions/FormaPagamentoTaxistaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8335,6 +8634,11 @@
             "$ref": "#/definitions/FormaPagamentoTaxistaSummary"
           }
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8357,6 +8661,11 @@
           "items": {
             "$ref": "#/definitions/FotoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8396,6 +8705,11 @@
         "data": {
           "$ref": "#/definitions/FotoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8456,6 +8770,11 @@
             "$ref": "#/definitions/GrupoUsuarioSummary"
           }
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8491,6 +8810,11 @@
           "$ref": "#/definitions/GrupoUsuarioSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8513,6 +8837,11 @@
           "items": {
             "$ref": "#/definitions/LocalizacaoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8559,6 +8888,11 @@
           "$ref": "#/definitions/LocalizacaoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8572,27 +8906,16 @@
         }
       }
     },
-    "Response[IEnumerable[Guid]]": {
+    "Pagination": {
       "type": "object",
       "properties": {
-        "data": {
-          "description": "Dados vinculados à resposta da operação (de qualquer formato)",
-          "type": "array",
-          "items": {
-            "format": "uuid",
-            "type": "string"
-          }
+        "page": {
+          "format": "int32",
+          "type": "integer"
         },
-        "success": {
-          "description": "Indica se a operação foi bem sucedida",
-          "type": "boolean"
-        },
-        "notifications": {
-          "description": "Notificações do domínio.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Notification"
-          }
+        "itensPerPage": {
+          "format": "int32",
+          "type": "integer"
         }
       }
     },
@@ -8605,6 +8928,11 @@
           "items": {
             "$ref": "#/definitions/DetalhesMensagem"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8630,13 +8958,8 @@
           "format": "uuid",
           "type": "string"
         },
-        "idDestinatario": {
-          "format": "uuid",
-          "type": "string"
-        },
-        "idGrupo": {
-          "format": "uuid",
-          "type": "string"
+        "destinatarios": {
+          "$ref": "#/definitions/DestinatariosMensagem"
         },
         "assunto": {
           "type": "string"
@@ -8655,6 +8978,36 @@
         "dataLeitura": {
           "format": "date-time",
           "type": "string"
+        }
+      }
+    },
+    "DestinatariosMensagem": {
+      "type": "object",
+      "properties": {
+        "idsUsuarios": {
+          "type": "array",
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "idsGruposUsuarios": {
+          "type": "array",
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ParametrosEnvio": {
+      "type": "object",
+      "properties": {
+        "mensagem": {
+          "$ref": "#/definitions/MensagemSummary"
+        },
+        "destinatarios": {
+          "$ref": "#/definitions/DestinatariosMensagem"
         }
       }
     },
@@ -8677,18 +9030,68 @@
         }
       }
     },
-    "MensagemMultiUsuarios": {
+    "Response[MensagemDestinatarioSummary]": {
       "type": "object",
       "properties": {
-        "mensagem": {
-          "$ref": "#/definitions/MensagemSummary"
+        "data": {
+          "$ref": "#/definitions/MensagemDestinatarioSummary",
+          "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
-        "ids_usuarios": {
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
+        "success": {
+          "description": "Indica se a operação foi bem sucedida",
+          "type": "boolean"
+        },
+        "notifications": {
+          "description": "Notificações do domínio.",
           "type": "array",
           "items": {
-            "format": "uuid",
-            "type": "string"
+            "$ref": "#/definitions/Notification"
           }
+        }
+      }
+    },
+    "MensagemDestinatarioSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idMensagem": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idUsuario": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "idGrupoUsuario": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "dataRecebimento": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "dataLeitura": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "format": "int32",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "type": "integer"
         }
       }
     },
@@ -8701,6 +9104,11 @@
           "items": {
             "$ref": "#/definitions/PassageiroSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8802,6 +9210,11 @@
           "$ref": "#/definitions/PassageiroSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8824,6 +9237,11 @@
           "items": {
             "$ref": "#/definitions/PontoTaxiSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8860,6 +9278,11 @@
           "$ref": "#/definitions/PontoTaxiSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8882,6 +9305,11 @@
           "items": {
             "$ref": "#/definitions/TaxistaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -8939,6 +9367,11 @@
             "$ref": "#/definitions/RotaSummary"
           }
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8968,6 +9401,11 @@
           "$ref": "#/definitions/RotaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -8990,6 +9428,11 @@
           "items": {
             "$ref": "#/definitions/SolicitacaoCorridaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9088,6 +9531,11 @@
           "$ref": "#/definitions/SolicitacaoCorridaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9110,6 +9558,11 @@
           "items": {
             "$ref": "#/definitions/TarifaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9157,6 +9610,11 @@
           "description": "Dados vinculados à resposta da operação (de qualquer formato)",
           "type": "number"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9177,6 +9635,11 @@
           "$ref": "#/definitions/TarifaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9196,6 +9659,11 @@
         "data": {
           "$ref": "#/definitions/TaxistaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9219,6 +9687,11 @@
           "items": {
             "$ref": "#/definitions/VeiculoTaxistaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9263,6 +9736,11 @@
             "$ref": "#/definitions/UsuarioSummary"
           }
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9282,6 +9760,11 @@
         "data": {
           "$ref": "#/definitions/UsuarioSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9305,6 +9788,11 @@
           "items": {
             "$ref": "#/definitions/UsuarioGrupoUsuarioSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9343,6 +9831,11 @@
           "$ref": "#/definitions/UsuarioGrupoUsuarioSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9365,6 +9858,11 @@
           "items": {
             "$ref": "#/definitions/VeiculoSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9418,6 +9916,11 @@
           "$ref": "#/definitions/VeiculoSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9440,6 +9943,11 @@
           "items": {
             "$ref": "#/definitions/MarcaVeiculo"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9475,6 +9983,11 @@
             "$ref": "#/definitions/ModeloVeiculo"
           }
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9508,6 +10021,11 @@
           "items": {
             "$ref": "#/definitions/AnoVersao"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
@@ -9546,6 +10064,11 @@
           "$ref": "#/definitions/VeiculoTaxistaSummary",
           "description": "Dados vinculados à resposta da operação (de qualquer formato)"
         },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
+        },
         "success": {
           "description": "Indica se a operação foi bem sucedida",
           "type": "boolean"
@@ -9568,6 +10091,11 @@
           "items": {
             "$ref": "#/definitions/VeiculoTaxistaSummary"
           }
+        },
+        "count": {
+          "format": "int32",
+          "description": "Utilizado para paginação de resultados",
+          "type": "integer"
         },
         "success": {
           "description": "Indica se a operação foi bem sucedida",

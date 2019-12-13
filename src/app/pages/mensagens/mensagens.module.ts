@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { MensagensComponent } from './mensagens.component';
 import { Routes, RouterModule } from '@angular/router';
-import { NbTabsetModule, NbLayoutModule, NbButtonModule, NbAccordionModule, NbAlertModule } from '@nebular/theme';
+import { NbTabsetModule, NbLayoutModule, NbButtonModule, NbAccordionModule, NbAlertModule, NbSelectModule, NbInputModule, NbWindowModule, NbDialogModule, NbCardModule, NbCheckboxModule } from '@nebular/theme';
 import { CompositorComponent } from './compositor/compositor.component';
+import { CaixaMensagensComponent } from './caixa-mensagens/caixa-mensagens.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 const routes: Routes = [
 	{
@@ -16,16 +20,30 @@ const routes: Routes = [
 @NgModule({
 	declarations: [
 		MensagensComponent,
-		CompositorComponent
+		CompositorComponent,
+		CaixaMensagensComponent
 	],
 	imports: [
 		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
 		RouterModule.forChild(routes),
 		NbTabsetModule,
 		NbButtonModule,
 		NbAccordionModule,
 		NbLayoutModule,
-		NbAlertModule
-	]
+		NbAlertModule,
+		NgxPaginationModule,
+		NbSelectModule,
+		AngularMultiSelectModule,
+		NbInputModule,
+		NbDialogModule.forChild(),
+		NbCardModule,
+		NbCheckboxModule
+	],
+	entryComponents:
+	[
+		CompositorComponent
+	],
 })
 export class MensagensModule { }

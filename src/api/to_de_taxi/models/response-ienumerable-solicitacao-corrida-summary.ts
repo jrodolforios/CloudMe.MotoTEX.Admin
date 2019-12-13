@@ -9,6 +9,11 @@ export interface ResponseIEnumerableSolicitacaoCorridaSummary {
   data?: Array<SolicitacaoCorridaSummary>;
 
   /**
+   * Utilizado para paginação de resultados
+   */
+  count?: number;
+
+  /**
    * Indica se a operação foi bem sucedida
    */
   success?: boolean;

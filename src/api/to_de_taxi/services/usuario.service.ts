@@ -22,6 +22,7 @@ class UsuarioService extends __BaseService {
   static readonly ApiV1UsuarioPostPath = '/api/v1/Usuario';
   static readonly ApiV1UsuarioByIdGetPath = '/api/v1/Usuario/{id}';
   static readonly ApiV1UsuarioByIdDeletePath = '/api/v1/Usuario/{id}';
+  static readonly ApiV1UsuarioByNameGetPath = '/api/v1/Usuario/by_name';
   static readonly ApiV1UsuarioAlteraCredenciaisByIdPostPath = '/api/v1/Usuario/altera_credenciais/{id}';
   static readonly ApiV1UsuarioBloquearByIdPostPath = '/api/v1/Usuario/bloquear/{id}';
 
@@ -206,6 +207,42 @@ class UsuarioService extends __BaseService {
   ApiV1UsuarioByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1UsuarioByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param name undefined
+   * @return Success
+   */
+  ApiV1UsuarioByNameGetResponse(name?: string): __Observable<__StrictHttpResponse<ResponseUsuarioSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (name != null) __params = __params.set('name', name.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Usuario/by_name`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseUsuarioSummary>;
+      })
+    );
+  }
+  /**
+   * @param name undefined
+   * @return Success
+   */
+  ApiV1UsuarioByNameGet(name?: string): __Observable<ResponseUsuarioSummary> {
+    return this.ApiV1UsuarioByNameGetResponse(name).pipe(
+      __map(_r => _r.body as ResponseUsuarioSummary)
     );
   }
 

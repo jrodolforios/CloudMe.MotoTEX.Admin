@@ -1,12 +1,12 @@
 /* tslint:disable */
-import { FormaPagamentoTaxistaSummary } from './forma-pagamento-taxista-summary';
+import { ContatoSummary } from './contato-summary';
 import { Notification } from './notification';
-export interface ResponseListFormaPagamentoTaxistaSummary {
+export interface ResponseContatoSummary {
 
   /**
    * Dados vinculados à resposta da operação (de qualquer formato)
    */
-  data?: Array<FormaPagamentoTaxistaSummary>;
+  data?: ContatoSummary;
 
   /**
    * Utilizado para paginação de resultados

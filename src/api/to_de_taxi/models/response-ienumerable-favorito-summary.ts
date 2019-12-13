@@ -9,6 +9,11 @@ export interface ResponseIEnumerableFavoritoSummary {
   data?: Array<FavoritoSummary>;
 
   /**
+   * Utilizado para paginação de resultados
+   */
+  count?: number;
+
+  /**
    * Indica se a operação foi bem sucedida
    */
   success?: boolean;

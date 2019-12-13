@@ -1,5 +1,5 @@
 <div class = "row p-3">
-    <button nbButton size="giant" hero status="success">Nova mensagem</button>
+    <button nbButton size="giant" hero status="success" (click)="comporNovaMensagem()">Nova mensagem</button>
 </div>
 <nb-tabset>
     <nb-tab tabTitle="Recebidas">
@@ -9,18 +9,22 @@
         </nb-alert>
         
         <div *ngIf="caixaEntrada && caixaEntrada.length > 0">
-            <nb-accordion>
-                <nb-accordion-item *ngFor="let mensagem of caixaEntrada">
-                    <nb-accordion-item-header class = "row">
-                        <div class="col-3">{{mensagem.nomeRemetente}}</div>
-                        <div class="col-7">{{mensagem.assunto}}</div>
-                        <div class="col-2">{{mensagem.dataEnvio}}</div>
-                    </nb-accordion-item-header>
-                    <nb-accordion-item-body>
-                        {{mensagem.corpo}}
-                    </nb-accordion-item-body>
-                </nb-accordion-item>
-            </nb-accordion>
+            <ngx-caixa-mensagens 
+                [mensagens]="caixaEntrada"
+                (requestPage)="obterMensagensRecebidas($event, paginacaoEntrada.itensPerPage)"
+                (itemsPerPageChange)="obterMensagensRecebidas(paginacaoEntrada.page, $event)"
+                [totalItems]="totalEntrada"
+                [currentPage]="paginacaoEntrada.page"
+                (messageOpened)="abrirMensagemEntrada($event)">
+                <ng-template #msg_summary let-mensagem>
+                    <div class="col-3">{{mensagem.nomeRemetente}}</div>
+                    <div class="col-7">{{mensagem.assunto}}</div>
+                    <div class="col-2">{{mensagem.dataEnvio}}</div>
+                </ng-template>
+                <ng-template #msg_body let-mensagem>
+                    {{mensagem.corpo}}
+                </ng-template>
+            </ngx-caixa-mensagens>
         </div>
 
     </nb-tab>
@@ -31,18 +35,21 @@
         </nb-alert>
         
         <div *ngIf="caixaSaida && caixaSaida.length > 0">
-            <nb-accordion>
-                <nb-accordion-item *ngFor="let mensagem of caixaSaida">
-                    <nb-accordion-item-header class = "row">
-                        <div class="col-3">{{mensagem.nomeRemetente}}</div>
-                        <div class="col-7">{{mensagem.assunto}}</div>
-                        <div class="col-2">{{mensagem.dataEnvio}}</div>
-                    </nb-accordion-item-header>
-                    <nb-accordion-item-body>
-                        {{mensagem.corpo}}
-                    </nb-accordion-item-body>
-                </nb-accordion-item>
-            </nb-accordion>
+            <ngx-caixa-mensagens 
+                [mensagens]="caixaSaida"
+                (requestPage)="obterMensagensEnviadas($event, paginacaoSaida.itensPerPage)"
+                (itemsPerPageChange)="obterMensagensEnviadas(paginacaoSaida.page, $event)"
+                [totalItems]="totalSaida"
+                [currentPage]="paginacaoSaida.page">
+                <ng-template #msg_summary let-mensagem>
+                    <div [ngClass]="{'nao_lida': mensagem.dataLeitura === null}" class="col-3">{{mensagem.formatarDestinatarios()}}</div>
+                    <div class="col-7">{{mensagem.assunto}}</div>
+                    <div class="col-2">{{mensagem.dataEnvio}}</div>
+                </ng-template>
+                <ng-template #msg_body let-mensagem>
+                    {{mensagem.corpo}}
+                </ng-template>
+            </ngx-caixa-mensagens>
         </div>
 
     </nb-tab>

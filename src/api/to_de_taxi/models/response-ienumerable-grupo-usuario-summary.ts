@@ -9,6 +9,11 @@ export interface ResponseIEnumerableGrupoUsuarioSummary {
   data?: Array<GrupoUsuarioSummary>;
 
   /**
+   * Utilizado para paginação de resultados
+   */
+  count?: number;
+
+  /**
    * Indica se a operação foi bem sucedida
    */
   success?: boolean;

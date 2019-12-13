@@ -8,6 +8,11 @@ export interface ResponseInt32 {
   data?: number;
 
   /**
+   * Utilizado para paginação de resultados
+   */
+  count?: number;
+
+  /**
    * Indica se a operação foi bem sucedida
    */
   success?: boolean;

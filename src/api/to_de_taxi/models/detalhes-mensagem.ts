@@ -1,9 +1,9 @@
 /* tslint:disable */
+import { DestinatariosMensagem } from './destinatarios-mensagem';
 export interface DetalhesMensagem {
   idMensagem?: string;
   idRemetente?: string;
-  idDestinatario?: string;
-  idGrupo?: string;
+  destinatarios?: DestinatariosMensagem;
   assunto?: string;
   corpo?: string;
   dataEnvio?: string;

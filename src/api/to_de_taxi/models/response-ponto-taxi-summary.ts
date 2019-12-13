@@ -9,6 +9,11 @@ export interface ResponsePontoTaxiSummary {
   data?: PontoTaxiSummary;
 
   /**
+   * Utilizado para paginação de resultados
+   */
+  count?: number;
+
+  /**
    * Indica se a operação foi bem sucedida
    */
   success?: boolean;

@@ -27,6 +27,8 @@ import { AuthGuard } from './auth/auth-guard.service';
 import { ErrorInterceptor } from './@core/utils/error-interceptor';
 import { CommonViewsModule } from './common-views/common-views.module';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
+import { NgxUidModule  } from 'ngx-uid';
+
 import { GlobaisService } from './globais.service';
 import { CatalogosService } from './catalogos/catalogos.service';
 import { CatalogoTaxistas } from './catalogos/catalogo-taxistas.service';
@@ -50,8 +52,8 @@ export function oAuthStorageFactory(): OAuthStorage
 
 /*export const options: Partial<IConfig> = {
 };*/
-// const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
-const toDeTaxiAPIBaseURL = 'http://localhost:5002';
+const toDeTaxiAPIBaseURL = 'https://api.todetaxi.com.br';
+// const toDeTaxiAPIBaseURL = 'http://localhost:5002';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -83,6 +85,7 @@ const toDeTaxiAPIBaseURL = 'http://localhost:5002';
 		}),
 		CoreModule.forRoot(),
 		ApiModule.forRoot({rootUrl: toDeTaxiAPIBaseURL}),
+		NgxUidModule.forRoot(),
 	],
 	providers: [
 		AuthGuard,
