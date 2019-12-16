@@ -93,21 +93,62 @@ export class CatalogoPassageiros extends ApiCatalog<PassageiroSummary>
 	{
 		const self = this;
 
-		if (!passageiro['foto'])
+		if (passageiro['carregandoFoto']) return;
+
+		passageiro['carregandoFoto'] = true;
+
+		const foto = await self.fotos.get(passageiro.idFoto);
+		passageiro['foto'] = foto;
+
+		passageiro['carregandoFoto'] = false;
+	}
+
+	liberarFoto(passageiro: PassageiroSummary) {
+		const self = this;
+
+		const foto = passageiro['foto'] as FotoSummary;
+
+		if (foto)
 		{
-			passageiro['carregandoFoto'] = true;
+			passageiro['foto'] = undefined;
+			self.fotos.remove([foto]);
+		}
+	}
 
-			var foto: FotoSummary = null;
+	protected mergeUpdate(original: PassageiroSummary, updated: PassageiroSummary)
+	{
+		const enderecoOriginal = original.endereco;
+		const enderecoUpdated = updated.endereco;
 
-			await this.fotoService.ApiV1FotoByIdGet(passageiro.idFoto).toPromise().then(x =>{
-				if(x.success){
-					foto = x.data;
-				}
-			})
-			
-			passageiro['foto'] = foto;
+		const usuarioOriginal = original.usuario;
+		const usuarioUpdated = updated.usuario;
 
-			passageiro['carregandoFoto'] = false;
+		super.mergeUpdate(original, updated);
+
+		// mescla endereço
+		if (enderecoOriginal)
+		{
+			if (!enderecoUpdated)
+			{
+				original.endereco = enderecoOriginal;
+			}
+		}
+		else
+		{
+			original.endereco = enderecoUpdated;
+		}
+
+		// mescla usuário
+		if (usuarioOriginal)
+		{
+			if (!usuarioUpdated)
+			{
+				original.usuario = usuarioOriginal;
+			}
+		}
+		else
+		{
+			original.usuario = usuarioUpdated;
 		}
 	}
 }

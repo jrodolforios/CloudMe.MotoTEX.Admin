@@ -45,8 +45,8 @@ export class MapaComponent implements OnInit, OnDestroy {
 		const self = this;
 		self.hubLocalizacaoTaxistas = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
 		self.hubLocalizacaoPassageiros = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
-		// self.hubLocalizacaoTaxistas = new HubWrapper('https://localhost:5002/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
-		// self.hubLocalizacaoPassageiros = new HubWrapper('https://localhost:5002/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
+		// self.hubLocalizacaoTaxistas = new HubWrapper('http://localhost:5002/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
+		// self.hubLocalizacaoPassageiros = new HubWrapper('http://localhost:5002/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
 	}
 
 	private adicionarLocalizacao(localizacao: LocalizacaoSummary)

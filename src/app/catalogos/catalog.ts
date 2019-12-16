@@ -72,7 +72,7 @@ export class Catalog<T>
 				{
 					// mescla os objetos
 					self.currentChanges.oldItems.push(target);
-					Object.assign(target, target, updated_item);
+					this.mergeUpdate(target, updated_item);
 				}
 			});
 
@@ -80,6 +80,11 @@ export class Catalog<T>
 
 			self.notifyChanges();
 		}
+	}
+
+	protected mergeUpdate(original: T, updated: T)
+	{
+		Object.assign(original, original, updated);
 	}
 
 	private itemAdded(item: T): boolean

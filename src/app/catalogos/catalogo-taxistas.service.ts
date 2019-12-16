@@ -78,6 +78,8 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 	async recuperarFoto(taxista: TaxistaSummary) {
 		const self = this;
 
+		if (taxista['carregandoFoto']) return;
+
 		taxista['carregandoFoto'] = true;
 
 		const foto = await self.fotos.get(taxista.idFoto);
@@ -91,9 +93,47 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 
 		const foto = taxista['foto'] as FotoSummary;
 
-		if (foto) {
+		if (foto)
+		{
 			taxista['foto'] = undefined;
 			self.fotos.remove([foto]);
+		}
+	}
+
+	protected mergeUpdate(original: TaxistaSummary, updated: TaxistaSummary)
+	{
+		const enderecoOriginal = original.endereco;
+		const enderecoUpdated = updated.endereco;
+
+		const usuarioOriginal = original.usuario;
+		const usuarioUpdated = updated.usuario;
+
+		super.mergeUpdate(original, updated);
+
+		// mescla endereço
+		if (enderecoOriginal)
+		{
+			if (!enderecoUpdated)
+			{
+				original.endereco = enderecoOriginal;
+			}
+		}
+		else
+		{
+			original.endereco = enderecoUpdated;
+		}
+
+		// mescla usuário
+		if (usuarioOriginal)
+		{
+			if (!usuarioUpdated)
+			{
+				original.usuario = usuarioOriginal;
+			}
+		}
+		else
+		{
+			original.usuario = usuarioUpdated;
 		}
 	}
 }

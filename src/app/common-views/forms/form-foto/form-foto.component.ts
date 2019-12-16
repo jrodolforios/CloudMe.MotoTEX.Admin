@@ -28,10 +28,10 @@ export class FormFotoComponent implements OnInit {
 		});
 
 	@Input() desabilitarControles: boolean = true;
-	@Input() alturaImagem: string = '200px';
 
 	@Input()
-	set foto(value: FotoSummary) {
+	set foto(value: FotoSummary)
+	{
 		const self = this;
 
 		self.form.reset();
@@ -41,7 +41,8 @@ export class FormFotoComponent implements OnInit {
 		self.alterado = false;
 	}
 
-	get foto(): FotoSummary {
+	get foto(): FotoSummary
+	{
 		return this._foto;
 	}
 
@@ -49,40 +50,21 @@ export class FormFotoComponent implements OnInit {
 
 	constructor(private fotoSrv: FotoService) { }
 
-	ngOnInit() {
-	}
+	ngOnInit() {}
 
-	private async carregarFoto() {
+	private async carregarFoto()
+	{
 		const self = this;
 		self.busyStackFoto.push();
 
-		if (!self._foto) {
+		if (!self._foto)
+		{
 			self.nomeFoto = '';
 			self.nomeArquivoFoto = '';
 			self.dadosFoto = null;
 		}
-		else {
-			/*if (!self._foto.dados) // dados ainda não carregados
-			{
-				if (self._foto.id)
-				{
-					// obtém do servidor
-					await self.fotoSrv.ApiV1FotoByIdGet(self._foto.id).toPromise().then(resp =>
-					{
-						if (resp && resp.success)
-						{
-							self._foto.dados = resp.data.dados;
-							self._foto.nome = resp.data.nome;
-							self._foto.nomeArquivo = resp.data.nomeArquivo;
-						}
-					});
-				}
-				else
-				{
-					return;
-				}
-			}*/
-
+		else
+		{
 			self.nomeFoto = self._foto.nome;
 			self.nomeArquivoFoto = self._foto.nomeArquivo;
 			self.dadosFoto = self._foto.dados;
@@ -95,22 +77,26 @@ export class FormFotoComponent implements OnInit {
 	imageChangedEvent: any = '';
 	croppedImage: any = '';
 
-	fileChangeEvent(event: any): void {
+	fileChangeEvent(event: any): void
+	{
 		this.imageChangedEvent = event;
 		this.edit = true;
 	}
-	imageCropped(event: ImageCroppedEvent) {
-		this.croppedImage = event.base64;
 
+	imageCropped(event: ImageCroppedEvent)
+	{
 		const self = this;
 
-		self.dadosFoto = btoa(this.croppedImage);
+		self.croppedImage = event.base64;
+
+		self.dadosFoto = btoa(self.croppedImage);
 		self.nomeArquivoFoto = "foto_Taxista.png";
 		self.nomeFoto = "foto_Taxista";
 		self.alterado = true;
 	}
 
-	stopEdit() {
+	stopEdit()
+	{
 		this.edit = false;
 		this.alterado = true;
 	}
@@ -127,7 +113,8 @@ export class FormFotoComponent implements OnInit {
 
 	public obterAlteracoes(): FotoSummary {
 		const self = this;
-		self._foto = {
+		self._foto =
+		{
 			id: self._foto ? self._foto.id : undefined,
 			dados: self.dadosFoto,
 			nome: self.nomeFoto,
@@ -137,19 +124,29 @@ export class FormFotoComponent implements OnInit {
 		return self._foto;
 	}
 
-	public redefinir(reset: Boolean = false) {
+	public redefinir(reset: Boolean = false)
+	{
 		const self = this;
-		if(reset)
+		if (reset)
+		{
 			self._foto = {};
+		}
 
 		self.foto = self._foto;
 		if (self._foto)
-			try {
-				this.croppedImage = self._foto.dados ? atob(self._foto.dados) : undefined;
-			} catch (err) {
-				this.croppedImage = self._foto.dados ? self._foto.dados : undefined;
+		{
+			try
+			{
+				self.croppedImage = self._foto.dados ? atob(self._foto.dados) : undefined;
 			}
+			catch (err)
+			{
+				self.croppedImage = self._foto.dados ? self._foto.dados : undefined;
+			}
+		}
 		else
-			this.croppedImage = undefined;
+		{
+			self.croppedImage = undefined;
+		}
 	}
 }

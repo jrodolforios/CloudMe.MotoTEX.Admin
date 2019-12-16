@@ -83,12 +83,17 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.formFoto.alterado);
 	}
 
+	// paginação
+	itemsPerPage: number = 10;
+	currentPage: number = 1;
+
 	constructor(
 		private dialogSrv: NbDialogService,
 		private catalogosSrv: CatalogosService,
 		private usuarioSrv: UsuarioService,
 		private fotoSrv: FotoService,
 		private enderecoSrv: EnderecoService,
+		private taxistaSrv: TaxistaService,
 		private toastSrv: NbToastrService)
 	{
 	}
@@ -223,9 +228,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 		await self.obterTaxistas();
 
-		if (!self.taxista || !self.taxistas.find(tx => tx.id === self.taxista.id))
+		if (!self.taxista || !self.taxistasPesquisa.find(tx => tx.id === self.taxista.id))
 		{
-			self.taxista = self.taxistas.length > 0 ? self.taxistas[0] : null;
+			self.taxista = self.taxistasPesquisa.length > 0 ? self.taxistasPesquisa[0] : null;
 		}
 	}
 
@@ -237,6 +242,10 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.taxistas = self.catalogosSrv.taxistas.items.sort((tx1, tx2) =>
 		{
+			if (!tx1.usuario || !tx2.usuario)
+			{
+				return tx1.usuario ? 1 : (tx2.usuario ? -1 : 0);
+			}
 			return tx1.usuario.nome.localeCompare(tx2.usuario.nome);
 		});
 
@@ -502,15 +511,26 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			const foto = self.formFoto.obterAlteracoes();
 
 			// cria o registro do taxista
-			await self.catalogosSrv.taxistas.post(self.taxista).then(async resultado =>
+			await self.taxistaSrv.ApiV1TaxistaPost(self.taxista).toPromise().then(async resultado =>
 			{
-				if (resultado)
+				if (resultado && resultado.success)
 				{
 					if (foto)
 					{
-						await self.catalogosSrv.fotos.post(foto);
+						const taxista = self.catalogosSrv.taxistas.findItem(resultado.data);
+						if (taxista)
+						{
+							foto.id = taxista.idFoto;
+							await self.fotoSrv.ApiV1FotoPut(foto).toPromise().then(resp =>
+							{
+								if (resp && resp.success)
+								{
+									self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
+									self.catalogosSrv.taxistas.recuperarFoto(taxista);
+								}
+							}).catch(() => { contemErros = true; });
+						}
 					}
-					self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
 				}
 			}).catch(() => { contemErros = true; });
 		}

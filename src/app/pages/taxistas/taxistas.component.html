@@ -1,12 +1,12 @@
-<nb-layout class="overlay">
-  <nb-layout-column class="overlay">
-    <div class="row">
+<nb-layout class="m-0 p-0">
+  <nb-layout-column class="m-0 p-0">
+    <div class="row mp-0">
       <div class="col-md-5">
         <base-card #card_listagem>
           <div header>TAXISTAS ({{quantidadeTaxistas}})</div>
-          <div body class="container">
+          <div body class="container m-0">
             <div class="row actions">
-              <nb-actions size="small" class="col-auto">
+              <nb-actions size="small" class="col-auto offset-md-0">
                 <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
                 <nb-action nbTooltip="Adicionar taxista" [disabled]="!podeCriar" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
               </nb-actions>
@@ -43,15 +43,34 @@
                   </div>
               </form>
             </div>
+            <div class="row p-3 align-items-center">
+              <div class="col p-0">
+                <label>Taxistas por página</label><br>
+                <nb-select class="col-auto" [(selected)]="itemsPerPage">
+                    <nb-option [value]="+10">10</nb-option>
+                    <nb-option [value]="+50">50</nb-option>
+                    <nb-option [value]="+100">100</nb-option>
+                    <!--nb-option value="-1">Todas</nb-option-->
+                </nb-select>
+              </div>
+              <div class="col p-0">
+                <pagination-controls class="pg_ctrl col-auto" 
+                  id="paginator"
+                  (pageChange)="currentPage = $event"
+                  nextLabel=""
+                  previousLabel="">
+                </pagination-controls>  
+              </div>
+            </div>
             <div class="row">
               <nb-list class="col own-scroll"
                 nbInfiniteList
                 [threshold]="500">
-                <nb-list-item *ngFor="let taxista of taxistasPesquisa">
-                  <div class="container">
+                <nb-list-item class="p-2" *ngFor="let taxista of taxistasPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
+                  <div class="container p-0 m-0">
                     <div class="row h4 nome">
                       <div class="col-8 nome_taxista" (click)="visualizar(taxista)">
-                        {{taxista.usuario ? taxista.usuario.nome : "Desconhecido" }}
+                        {{taxista.usuario ? taxista.usuario.nome : ''}}
                       </div>
                       <div class="col-4">
                         <nb-actions class="actions_taxista" size="small">
@@ -65,21 +84,21 @@
                     <div class="row sumario">
                       <div class="col propriedade">
                         <div class="nome_propriedade">RG</div>
-                        <div class="valor_propriedade">{{ taxista.usuario.rg }}</div>
+                        <div class="valor_propriedade">{{taxista.usuario ? taxista.usuario.rg: ''}}</div>
                       </div>
                       <div class="col propriedade">
                         <div class="nome_propriedade">CPF</div>
-                        <div class="valor_propriedade">{{ taxista.usuario.cpf }}</div>
+                        <div class="valor_propriedade">{{taxista.usuario ? taxista.usuario.cpf: ''}}</div>
                       </div>
                       <div class="col propriedade">
                         <div class="nome_propriedade">TELEFONE</div>
-                        <div class="valor_propriedade">{{ taxista.usuario.telefone }}</div>
+                        <div class="valor_propriedade">{{taxista.usuario ? taxista.usuario.telefone: ''}}</div>
                       </div>
                       <div class="col">
                         <nb-user
-                          size="giant"
+                          size="medium"
                           [picture]="taxista['foto']?.dados"
-                          onlyPicture="taxista['foto'] !== undefined"
+                          onlyPicture
                           shape="rectangle">
                         </nb-user>
                       </div>
@@ -101,7 +120,7 @@
           <div header>DETALHES DE {{taxista && taxista.usuario ? taxista.usuario.nome.toUpperCase() : "NOVO TAXISTA"}}</div>
           <div class="container" body>
             <nb-actions size="small" >
-              <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="checkmark-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+              <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="save-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
               <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
               <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
               <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
@@ -151,7 +170,6 @@
                 </nb-accordion-item-header>
                 <nb-accordion-item-body>
                   <ngx-form-foto class="formulario" #formFoto
-                    [alturaImagem]="200"
                     [desabilitarControles]="desabilitarControles"
                     [foto]="foto">
                   </ngx-form-foto>

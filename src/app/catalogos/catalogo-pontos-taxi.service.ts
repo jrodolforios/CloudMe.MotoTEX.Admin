@@ -86,4 +86,26 @@ export class CatalogoPontosTaxi extends ApiCatalog<PontoTaxiSummary>
 	{
 		super(oauthService, new PontoTaxiApiInterface(pontoTaxiSrv), 'ponto_taxi', 'ponto_taxi');
 	}
+
+	protected mergeUpdate(original: PontoTaxiSummary, updated: PontoTaxiSummary)
+	{
+		const enderecoOriginal = original.endereco;
+		const enderecoUpdated = updated.endereco;
+
+		super.mergeUpdate(original, updated);
+
+		// mescla endereço
+		if (enderecoOriginal)
+		{
+			if (!enderecoUpdated)
+			{
+				original.endereco = enderecoOriginal;
+			}
+		}
+		else
+		{
+			original.endereco = enderecoUpdated;
+		}
+	}
+
 }

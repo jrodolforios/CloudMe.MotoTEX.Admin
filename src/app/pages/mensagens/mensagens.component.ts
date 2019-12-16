@@ -65,15 +65,10 @@ export class MensagemExt implements DetalhesMensagem
 	formatarDestinatarios()
 	{
 		const self  = this;
-		const strInfoUsrs = self.infoDestinatarios.infosUsuarios.map(info_usr => info_usr.nome).join(', ');
-		const strInfoGrpUsrs = self.infoDestinatarios.infosGruposUsuarios.map(info_usr => info_usr.nome).join(', ');
-		let result = strInfoUsrs;
-		if (strInfoGrpUsrs)
-		{
-			result = result + ', ' + strInfoGrpUsrs;
-		}
 
-		return result;
+		return self.infoDestinatarios.infosUsuarios.concat(self.infoDestinatarios.infosGruposUsuarios)
+			.map(info_usr => info_usr.nome)
+			.join(', ');
 	}
 }
 

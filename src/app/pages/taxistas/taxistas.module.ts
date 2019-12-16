@@ -8,6 +8,7 @@ import { CommonViewsModule } from '../../common-views/common-views.module';
 import { VeiculosTaxistaComponent } from './veiculos-taxista/veiculos-taxista.component';
 import { PontoTaxiComponent } from './ponto-taxi/ponto-taxi.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
 	declarations: [
@@ -34,7 +35,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 		NbUserModule,
 		NbSelectModule,
 		NbAccordionModule,
-		NbButtonModule
+		NbButtonModule,
+		NgxPaginationModule,
 	],
 })
 export class TaxistasModule { }

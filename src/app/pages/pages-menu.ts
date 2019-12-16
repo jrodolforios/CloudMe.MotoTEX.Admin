@@ -30,11 +30,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		icon: 'briefcase-outline',
 		link: '/pages/passageiros',
 	},
-	{
+	/*{
 		title: 'Mensagens',
 		icon: 'email-outline',
 		link: '/pages/mensagens',
-	},
+	},*/
 	{
 		title: 'CONFIGURAÇÕES',
 		group: true,
@@ -53,7 +53,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		icon: 'map-outline',
 		link: '/pages/mapa',
 	},
-	{
+	/*{
 		title: 'SUPORTE',
 		group: true,
 	},
@@ -61,5 +61,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		title: 'Solicitações de contato',
 		icon: 'message-square-outline',
 		link: '/pages/contactSuport',
-	},
+	},*/
 ];

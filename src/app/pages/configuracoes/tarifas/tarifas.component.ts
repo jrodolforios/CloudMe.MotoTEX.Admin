@@ -79,8 +79,17 @@ export class TarifasComponent implements OnInit, AfterViewInit, OnDestroy {
 	{
 		const self = this;
 
+		const novaTarifa: TarifaSummary =
+		{
+			id: '',
+			bandeirada: 0,
+			kmRodadoBandeira1: 0,
+			kmRodadoBandeira2: 0,
+			horaParada: 0
+		};
+
 		const tarifas = self.catalogosSrv.tarifas.items;
-		const tarifa = tarifas.length > 0 ? tarifas[0] : {};
+		const tarifa = tarifas.length > 0 ? tarifas[0] : novaTarifa;
 		self.tarifasForm.setValue(tarifa);
 	}
 
