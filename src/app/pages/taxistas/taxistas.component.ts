@@ -10,8 +10,8 @@ import { FormUsuarioComponent } from '../../common-views/forms/form-usuario/form
 import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
 import { TaxistaSummary, PontoTaxiSummary } from '../../../api/to_de_taxi/models';
 import { BusyStack } from '../../@core/utils/busy_stack';
-import { SendMessageComponent } from '../../common-views/send-message/send-message.component';
 import { CatalogosService } from '../../catalogos/catalogos.service';
+import { CompositorMensagemComponent } from '../../common-views/compositor-mensagem/compositor-mensagem.component';
 
 export enum Modo
 {
@@ -108,6 +108,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 		//self.taxistasSub.unsubscribe();
 		self.taxistasChangesSub.unsubscribe();
+		self.busyStackDetalhesSub.unsubscribe();
+		self.busyStackListagemSub.unsubscribe();
 	}
 
 	ngAfterViewInit(): void
@@ -145,7 +147,10 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.atualizar();
 		});
 
-		/*self.taxistasSub = self.catalogosSrv.taxistas.itemsSubject.subscribe(() =>
+		/*self.taxistasSub = self.() =>
+		{
+			self.atualizar();
+		}catalogosSrv.taxistas.itemsSubject.subscribe(() =>
 		{
 			self.atualizar();
 		});*/
@@ -323,7 +328,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 				if (resultado)
 				{
 					self.toastSrv.success('Registro removido com sucesso!', 'Taxistas');
-					self.atualizar();
+					// self.atualizar();
 
 					// busca novamente associações com:
 					// - Veículos
@@ -370,7 +375,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 						{
 							// taxista.ativo = ativo;
 							self.toastSrv.success( `Taxista ${taxista.usuario.nome} ${ativo ? 'ativado' : 'desativado'} com sucesso!`, 'Taxistas');
-							self.atualizar();
+							//self.atualizar();
 						}
 					}).catch(() => {});
 
@@ -383,12 +388,12 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 		await self.dialogSrv.open(
-			SendMessageComponent,
+			CompositorMensagemComponent,
 			{
 				context:
 				{
-					destinatario: taxista.usuario
-				},
+					destinatariosUsr: [taxista.usuario],
+				}
 			})
 			.onClose.toPromise().then(async result =>
 			{
@@ -515,21 +520,18 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			{
 				if (resultado && resultado.success)
 				{
-					if (foto)
+					const taxista = self.catalogosSrv.taxistas.findItem(resultado.data); // obtém os atualizados dados do servidor
+					if (taxista && foto)
 					{
-						const taxista = self.catalogosSrv.taxistas.findItem(resultado.data);
-						if (taxista)
+						foto.id = taxista.idFoto;
+						await self.fotoSrv.ApiV1FotoPut(foto).toPromise().then(async resp =>
 						{
-							foto.id = taxista.idFoto;
-							await self.fotoSrv.ApiV1FotoPut(foto).toPromise().then(resp =>
+							if (resp && resp.success)
 							{
-								if (resp && resp.success)
-								{
-									self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
-									self.catalogosSrv.taxistas.recuperarFoto(taxista);
-								}
-							}).catch(() => { contemErros = true; });
-						}
+								self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
+								// self.catalogosSrv.taxistas.get(taxista.id); // obtém os atualizados dados do servidor
+							}
+						}).catch(() => { contemErros = true; });
 					}
 				}
 			}).catch(() => { contemErros = true; });
@@ -578,26 +580,27 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 			if (self.formFoto.alterado)
 			{
-				await self.fotoSrv.ApiV1FotoPut(self.formFoto.obterAlteracoes()).toPromise().then(resp =>
+				await self.fotoSrv.ApiV1FotoPut(self.formFoto.obterAlteracoes()).toPromise().then(async resp =>
 				{
 					if (resp && resp.success)
 					{
 						atualizou = true;
+						await self.catalogosSrv.taxistas.recuperarFoto(self.taxista, true);
 						self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
 					}
 				}).catch((e) => { console.log(JSON.stringify(e)); contemErros = true; });
 			}
 
-			/*if (atualizou)
+			if (atualizou)
 			{
 				self.catalogosSrv.taxistas.get(self.taxista.id); // obtém os atualizados dados do servidor
-			}*/
+			}
 		}
 
 		if (!contemErros)
 		{
 			self.redefinir();
-			self.atualizar();
+			//self.atualizar();
 			self.setModo(Modo.mdVisualizacao);
 		}
 

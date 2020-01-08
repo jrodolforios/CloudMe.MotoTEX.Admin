@@ -45,7 +45,7 @@
                       </div>
                       <div class="col-4">
                         <nb-actions class="actions_passageiro" size="small">
-                          <nb-action nbTooltip="Enviar mensagem" icon="message-circle-outline" (click)="enviarMensagem(passageiro)"></nb-action>
+                          <!--nb-action nbTooltip="Enviar mensagem" icon="message-circle-outline" (click)="enviarMensagem(passageiro)"></nb-action-->
                           <nb-action [nbTooltip]="passageiro.ativo ? 'Desativar' : 'Ativar'" [icon]="passageiro.ativo ? 'toggle-right' : 'toggle-left-outline'" (click)="ativar(passageiro, !passageiro.ativo)"></nb-action>
                         </nb-actions>
                       </div>

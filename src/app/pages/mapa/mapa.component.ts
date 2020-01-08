@@ -43,10 +43,10 @@ export class MapaComponent implements OnInit, OnDestroy {
 		private toastSrv: NbToastrService)
 	{
 		const self = this;
-		self.hubLocalizacaoTaxistas = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
-		self.hubLocalizacaoPassageiros = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
-		// self.hubLocalizacaoTaxistas = new HubWrapper('http://localhost:5002/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
-		// self.hubLocalizacaoPassageiros = new HubWrapper('http://localhost:5002/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
+		// self.hubLocalizacaoTaxistas = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
+		// self.hubLocalizacaoPassageiros = new HubWrapper('https://api.todetaxi.com.br/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
+		self.hubLocalizacaoTaxistas = new HubWrapper('http://localhost:5002/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
+		self.hubLocalizacaoPassageiros = new HubWrapper('http://localhost:5002/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
 	}
 
 	private adicionarLocalizacao(localizacao: LocalizacaoSummary)
@@ -164,7 +164,7 @@ export class MapaComponent implements OnInit, OnDestroy {
 		{
 			self.hubLocalizacaoTaxistas.hubConnection.on('EnviarLocalizacao', () =>
 			{
-				self.toastSrv.info('Servidor solicitou localização de taxistas', 'Mapas');
+				//self.toastSrv.info('Servidor solicitou localização de taxistas', 'Mapas');
 			});
 		});
 
@@ -172,7 +172,7 @@ export class MapaComponent implements OnInit, OnDestroy {
 		{
 			self.hubLocalizacaoPassageiros.hubConnection.on('EnviarLocalizacao', () =>
 			{
-				self.toastSrv.info('Servidor solicitou localização de passageiros', 'Mapas');
+				//self.toastSrv.info('Servidor solicitou localização de passageiros', 'Mapas');
 			});
 
 			self.hubLocalizacaoTaxistas.hubConnection.on('panico', (emergencia: EmergenciaSummary) =>

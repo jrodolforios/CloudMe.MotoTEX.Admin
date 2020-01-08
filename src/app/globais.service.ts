@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { NbToastrService } from '@nebular/theme';
 import { CatalogosService } from './catalogos/catalogos.service';
+import { UsuarioService } from '../api/to_de_taxi/services';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class GlobaisService
@@ -15,36 +17,29 @@ export class GlobaisService
 	constructor(
 		private oauthService: OAuthService,
 		// private toastSrv: NbToastrService,
-		private catalogosSrv: CatalogosService)
+		private usuarioSrv: UsuarioService,
+		private catalogosSrv: CatalogosService,
+		private router: Router)
 	{
-		const self = this;
-
-		if (self.oauthService.hasValidIdToken() || self.oauthService.hasValidAccessToken())
-		{
-			self.carregarPerfilUsuario();
-		}
-
-		self.oauthService.events.subscribe(async event =>
-		{
-			// toastSrv.info(event.type, 'Auth');
-			if (event.type === 'token_received')
-			{
-				await self.carregarPerfilUsuario();
-			}
-		});
 	}
 
 	async carregarPerfilUsuario()
 	{
 		const self = this;
 
-		self.oauthService.loadUserProfile().then(profile =>
+		await self.oauthService.loadUserProfile().then(async profile =>
 		{
-			self.usuario.next({
-				id: profile['sub'],
-				nome: profile['nome'],
-				email: profile['email'],
-			});
+			const idUsr =  profile['sub'];
+			if (idUsr)
+			{
+				await self.usuarioSrv.ApiV1UsuarioByIdGet(idUsr).toPromise().then(resultado =>
+				{
+					if (resultado && resultado.success)
+					{
+						self.usuario.next(resultado.data);
+					}
+				}).catch(() => {});
+			}
 
 			//self.catalogosSrv.carregar();
 		});

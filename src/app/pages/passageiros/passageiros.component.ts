@@ -8,8 +8,8 @@ import { FormUsuarioComponent } from '../../common-views/forms/form-usuario/form
 import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
 import { PassageiroSummary, PontoTaxiSummary } from '../../../api/to_de_taxi/models';
 import { BusyStack } from '../../@core/utils/busy_stack';
-import { SendMessageComponent } from '../../common-views/send-message/send-message.component';
 import { CatalogosService } from '../../catalogos/catalogos.service';
+import { CompositorMensagemComponent } from '../../common-views/compositor-mensagem/compositor-mensagem.component';
 
 @Component({
 	selector: 'ngx-passageiros',
@@ -178,13 +178,12 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 	async enviarMensagem(passageiro: PassageiroSummary)
 	{
 		const self = this;
-		await self.dialogSrv.open(
-			SendMessageComponent,
+		await self.dialogSrv.open(CompositorMensagemComponent,
 			{
 				context:
 				{
-					destinatario: passageiro.usuario
-				},
+					destinatariosUsr: [passageiro.usuario],
+				}
 			})
 			.onClose.toPromise().then(async result =>
 			{

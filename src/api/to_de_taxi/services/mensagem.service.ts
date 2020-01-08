@@ -314,7 +314,7 @@ module MensagemService {
    * Parameters for ApiV1MensagemAlterarStatusPost
    */
   export interface ApiV1MensagemAlterarStatusPostParams {
-    status?: 0 | 1 | 2 | 3 | 4;
+    status?: 0 | 1 | 2 | 3 | 4 | 5;
     idUsuario?: string;
     idMensagem?: string;
   }

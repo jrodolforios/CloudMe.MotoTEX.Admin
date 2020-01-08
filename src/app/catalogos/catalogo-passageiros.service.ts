@@ -89,11 +89,11 @@ export class CatalogoPassageiros extends ApiCatalog<PassageiroSummary>
 		super(oauthService, new PassageiroApiInterface(passageiroSrv), 'passageiro', 'passageiro');
 	}
 
-	async recuperarFoto(passageiro: PassageiroSummary)
+	async recuperarFoto(passageiro: PassageiroSummary, forcar: boolean = false)
 	{
 		const self = this;
 
-		if (passageiro['carregandoFoto']) return;
+		if (passageiro['carregandoFoto'] || (passageiro['foto'] && !forcar)) return;
 
 		passageiro['carregandoFoto'] = true;
 

@@ -15,6 +15,11 @@ const routes: Routes = [
 			.then(m => m.CarregamentoModule),
 	},
 	{
+		path: 'nao_autorizado',
+		loadChildren: () => import('./pages/nao-autorizado/nao-autorizado.module')
+			.then(m => m.NaoAutorizadoModule),
+	},
+	{
 		path: 'auth',
 		loadChildren: () => import('./auth/auth.module')
 			.then(m => m.AuthModule),

@@ -1,13 +1,9 @@
 <nb-accordion>
     <nb-accordion-item (click)="openMessage(mensagem)" *ngFor="let mensagem of mensagens | paginate: { id: paginatorId, itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: totalItems }">
-        <nb-accordion-item-header [ngClass]="{'msg_lida': mensagemLida(mensagem), 'msg_nao_lida': !mensagemLida(mensagem)}" class = "row">
+        <nb-accordion-item-header [ngClass]="{'msg_lida': mensagemLida(mensagem), 'msg_nao_lida': !mensagemLida(mensagem)}" class = "row align-items-center">
+            <!--ng-container class="col" *ngTemplateOutlet="msg_summary, context: { $implicit: mensagem }"></ng-container-->
+            <nb-checkbox class="col-auto" [(value)]="mensagem.selecionada"></nb-checkbox>
             <ng-container class="col" *ngTemplateOutlet="msg_summary, context: { $implicit: mensagem }"></ng-container>
-            <!--div class="row">
-                <nb-checkbox class="col-auto" [(value)]="mensagem.selecionada"></nb-checkbox>
-                <div class="col" style="width: 100%;">
-                    <ng-container class="col" *ngTemplateOutlet="msg_summary, context: { $implicit: mensagem }"></ng-container>
-                </div>
-            </div-->
         </nb-accordion-item-header>
         <nb-accordion-item-body>
             <ng-container *ngTemplateOutlet="msg_body, context: { $implicit: mensagem }"></ng-container>

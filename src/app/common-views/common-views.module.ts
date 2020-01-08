@@ -12,9 +12,10 @@ import { FormUsuarioComponent } from './forms/form-usuario/form-usuario.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { NgxMaskModule } from 'ngx-mask';
-import { SendMessageComponent } from './send-message/send-message.component';
 import { MasterDetailComponent } from './master-detail/master-detail.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { CompositorMensagemComponent } from './compositor-mensagem/compositor-mensagem.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 const COMMON_VIEWS_COMPS = [
 	BaseCardComponent,
@@ -24,7 +25,7 @@ const COMMON_VIEWS_COMPS = [
 	FormFotoComponent,
 	FormCredenciaisComponent,
 	FormUsuarioComponent,
-	SendMessageComponent,
+	CompositorMensagemComponent,
 ];
 
 @NgModule({
@@ -42,7 +43,8 @@ const COMMON_VIEWS_COMPS = [
 		NbIconModule,
 		NgxMaskModule,
 		NbToastrModule,
-		ShowHidePasswordModule
+		ShowHidePasswordModule,
+		AngularMultiSelectModule,
 	],
 	declarations: [
 		...COMMON_VIEWS_COMPS,
@@ -53,7 +55,7 @@ const COMMON_VIEWS_COMPS = [
 	],
 	entryComponents: [
 		ConfirmDialogComponent,
-		SendMessageComponent
+		CompositorMensagemComponent
 	]
 })
 export class CommonViewsModule {

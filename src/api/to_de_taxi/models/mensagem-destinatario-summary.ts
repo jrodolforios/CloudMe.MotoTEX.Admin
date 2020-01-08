@@ -6,5 +6,5 @@ export interface MensagemDestinatarioSummary {
   idGrupoUsuario?: string;
   dataRecebimento?: string;
   dataLeitura?: string;
-  status?: 0 | 1 | 2 | 3 | 4;
+  status?: 0 | 1 | 2 | 3 | 4 | 5;
 }

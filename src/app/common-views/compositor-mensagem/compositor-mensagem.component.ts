@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { UsuarioSummary, GrupoUsuarioSummary } from '../../../../api/to_de_taxi/models';
-import { UsuarioService, GrupoUsuarioService, TaxistaService, PontoTaxiService, MensagemService } from '../../../../api/to_de_taxi/services';
-import { CatalogosService } from '../../../catalogos/catalogos.service';
-import { SendMessageComponent } from '../../../common-views/send-message/send-message.component';
+import { Component, OnInit, Input } from '@angular/core';
 import { NbDialogRef, NbToastrService } from '@nebular/theme';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GlobaisService } from '../../../globais.service';
+import { GrupoUsuarioSummary, UsuarioSummary } from '../../../api/to_de_taxi/models';
+import { UsuarioService, GrupoUsuarioService, MensagemService } from '../../../api/to_de_taxi/services';
+import { CatalogosService } from '../../catalogos/catalogos.service';
+import { GlobaisService } from '../../globais.service';
 
 @Component({
-	selector: 'ngx-compositor',
-	templateUrl: './compositor.component.html',
-	styleUrls: ['./compositor.component.scss']
+	selector: 'ngx-compositor-mensagem',
+	templateUrl: './compositor-mensagem.component.html',
+	styleUrls: ['./compositor-mensagem.component.scss']
 })
-export class CompositorComponent implements OnInit {
+export class CompositorMensagemComponent implements OnInit {
 
 	dropdownList = [];
 	selectedItems = [];
+
+	@Input() destinatariosUsr: UsuarioSummary[] = [];
+	@Input() destinatariosGrpUsr: GrupoUsuarioSummary[] = [];
 
 	dropdownSettings: {};
 
@@ -26,10 +28,13 @@ export class CompositorComponent implements OnInit {
 	});
 
 	get assunto() { return this.form.get('assunto'); }
+	@Input() set assuntoMensagem(value: string) { this.form.patchValue({'assunto': value}); }
+
 	get corpo() { return this.form.get('corpo'); }
+	@Input() set corpoMensagem(value: string) { this.form.patchValue({'corpo': value}); }
 
 	constructor(
-		protected ref: NbDialogRef<SendMessageComponent>,
+		protected ref: NbDialogRef<CompositorMensagemComponent>,
 		private usuarioSrv: UsuarioService,
 		private grupoUsuarioSrv: GrupoUsuarioService,
 		private catalogosSrv: CatalogosService,
@@ -72,43 +77,17 @@ export class CompositorComponent implements OnInit {
 			}
 		}).catch(() => {});
 
-		/*
-		// obtém o grupo de taxistas
-		await self.grupoUsuarioSrv.ApiV1GrupoUsuarioByNameGet('Taxistas').toPromise().then(resultado =>
-		{
-			if (resultado && resultado.success && resultado.data)
-			{
-				gruposUsuarios.push(resultado.data);
-			}
-		}).catch(() => {});
-
-		// obtém o grupo de passageiros
-		await self.grupoUsuarioSrv.ApiV1GrupoUsuarioByNameGet('Passageiros').toPromise().then(resultado =>
-		{
-			if (resultado && resultado.success && resultado.data)
-			{
-				gruposUsuarios.push(resultado.data);
-			}
-		}).catch(() => {});
-
-		// obtém os grupos de usuários associados aos pontos de taxi
-		for (const ptTx of self.catalogosSrv.pontosTaxi.items)
-		{
-			await self.grupoUsuarioSrv.ApiV1GrupoUsuarioByNameGet(ptTx.nome).toPromise().then(resultado =>
-			{
-				if (resultado && resultado.success && resultado.data)
-				{
-					gruposUsuarios.push(resultado.data);
-				}
-			}).catch(() => {});
-		}
-		*/
-
 		// obtém todos os taxistas
 		usuarios.push(...self.catalogosSrv.taxistas.items.map(x => x.usuario));
 
 		// TODO: obtém todos os usuários administradores
-
+		await self.usuarioSrv.ApiV1UsuarioAdminsGet().toPromise().then(resultado =>
+		{
+			if (resultado && resultado.success && resultado.data)
+			{
+				usuarios.push(...resultado.data);
+			}
+		}).catch(() => {});
 
 		const items: any[] = [];
 
@@ -129,6 +108,19 @@ export class CompositorComponent implements OnInit {
 		}));
 
 		self.dropdownList = items;
+
+		const destinatarios = [];
+		// seleciona os destinatários desejados (usuários independentes)
+		self.destinatariosUsr.forEach(destinatario => {
+			destinatarios.push(...items.filter(x => x.id === destinatario.id && !x.grupo));
+		});
+
+		// seleciona os destinatários desejados (grupos de usuários)
+		self.destinatariosGrpUsr.forEach(destinatario => {
+			destinatarios.push(...items.filter(x => x.id === destinatario.id && x.grupo === true));
+		});
+
+		self.selectedItems = destinatarios;
 	}
 
 	enviar()
@@ -178,11 +170,11 @@ export class CompositorComponent implements OnInit {
 			resultadoEnvio = false;
 		});
 
-		self.ref.close(resultadoEnvio);
+		this.ref.close(true);
 	}
 
 	cancelar()
 	{
-		this.ref.close();
+		this.ref.close(false);
 	}
 }

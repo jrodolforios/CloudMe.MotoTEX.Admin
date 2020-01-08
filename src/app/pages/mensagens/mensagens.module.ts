@@ -4,7 +4,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MensagensComponent } from './mensagens.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NbTabsetModule, NbLayoutModule, NbButtonModule, NbAccordionModule, NbAlertModule, NbSelectModule, NbInputModule, NbWindowModule, NbDialogModule, NbCardModule, NbCheckboxModule } from '@nebular/theme';
-import { CompositorComponent } from './compositor/compositor.component';
 import { CaixaMensagensComponent } from './caixa-mensagens/caixa-mensagens.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
@@ -20,7 +19,6 @@ const routes: Routes = [
 @NgModule({
 	declarations: [
 		MensagensComponent,
-		CompositorComponent,
 		CaixaMensagensComponent
 	],
 	imports: [
@@ -40,10 +38,6 @@ const routes: Routes = [
 		NbDialogModule.forChild(),
 		NbCardModule,
 		NbCheckboxModule
-	],
-	entryComponents:
-	[
-		CompositorComponent
 	],
 })
 export class MensagensModule { }

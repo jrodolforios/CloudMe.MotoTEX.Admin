@@ -32,16 +32,21 @@ const routes: Routes = [{
 			loadChildren: () => import('./passageiros/passageiros.module')
 				.then(m => m.PassageirosModule),
 		},
-		/*{
+		{
+			path: 'admins',
+			loadChildren: () => import('./usuarios/usuarios.module')
+				.then(m => m.UsuariosModule),
+		},
+		{
 			path: 'contactSuport',
 			loadChildren: () => import('./contact-support/contact-support.module')
 				.then(m => m.ContactSupportModule),
-		},*/
-		/*{
+		},
+		{
 			path: 'mensagens',
 			loadChildren: () => import('./mensagens/mensagens.module')
 				.then(m => m.MensagensModule),
-		},*/
+		},
 		{
 			path: 'mapa',
 			loadChildren: () => import('./mapa/mapa.module')

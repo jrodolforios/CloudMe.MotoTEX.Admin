@@ -75,10 +75,13 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 		super(oauthService, new TaxistaApiInterface(taxistaSrv), 'taxista', 'taxista');
 	}
 
-	async recuperarFoto(taxista: TaxistaSummary) {
+	async recuperarFoto(taxista: TaxistaSummary, forcar: boolean = false) {
 		const self = this;
 
-		if (taxista['carregandoFoto']) return;
+		const carregando = taxista['carregandoFoto'] !== undefined ? taxista['carregandoFoto'] : false;
+		const temFoto = taxista['foto'] !== undefined && taxista['foto']['dados'] !== undefined;
+
+		if (carregando || (temFoto && !forcar)) return;
 
 		taxista['carregandoFoto'] = true;
 
@@ -108,6 +111,9 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 		const usuarioOriginal = original.usuario;
 		const usuarioUpdated = updated.usuario;
 
+		const fotoOriginal = original['foto'];
+		const fotoUpdated = updated['foto'];
+
 		super.mergeUpdate(original, updated);
 
 		// mescla endereço
@@ -134,6 +140,19 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 		else
 		{
 			original.usuario = usuarioUpdated;
+		}
+
+		// mescla foto
+		if (fotoOriginal)
+		{
+			if (!fotoUpdated)
+			{
+				original['foto'] = fotoOriginal;
+			}
+		}
+		else
+		{
+			original['foto'] = fotoUpdated;
 		}
 	}
 }

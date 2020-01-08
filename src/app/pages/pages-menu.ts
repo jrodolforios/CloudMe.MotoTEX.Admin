@@ -30,11 +30,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		icon: 'briefcase-outline',
 		link: '/pages/passageiros',
 	},
-	/*{
+	{
 		title: 'Mensagens',
 		icon: 'email-outline',
 		link: '/pages/mensagens',
-	},*/
+	},
 	{
 		title: 'CONFIGURAÇÕES',
 		group: true,
@@ -43,6 +43,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		title: 'Financeiro',
 		icon: 'activity-outline',
 		link: '/pages/configuracoes',
+	},
+	{
+		title: 'Administradores',
+		icon: 'person-done-outline',
+		link: '/pages/admins',
 	},
 	{
 		title: 'OPERAÇÕES',

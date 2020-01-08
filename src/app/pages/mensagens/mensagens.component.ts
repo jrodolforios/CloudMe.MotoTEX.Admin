@@ -5,8 +5,8 @@ import { UsuarioSummary, DestinatariosMensagem, DetalhesMensagem, Pagination, Gr
 import { NbToastrService, NbDialogService } from '@nebular/theme';
 import { UsuarioService, MensagemService, GrupoUsuarioService } from '../../../api/to_de_taxi/services';
 import { GlobaisService } from '../../globais.service';
-import { CompositorComponent } from './compositor/compositor.component';
 import * as moment from 'moment';
+import { CompositorMensagemComponent } from '../../common-views/compositor-mensagem/compositor-mensagem.component';
 
 export interface InfoDestinatarioMensagem
 {
@@ -76,7 +76,7 @@ export class MensagemExt implements DetalhesMensagem
 	selector: 'ngx-mensagens',
 	templateUrl: './mensagens.component.html',
 	styleUrls: ['./mensagens.component.scss'],
-	entryComponents: [CompositorComponent]
+	//entryComponents: [CompositorComponent]
 })
 export class MensagensComponent implements OnInit, OnDestroy {
 
@@ -111,8 +111,8 @@ export class MensagensComponent implements OnInit, OnDestroy {
 		private dialogSrv: NbDialogService)
 	{
 		const self = this;
-		self.hubMensagens = new HubWrapper('https://api.todetaxi.com.br/notifications/mensagens', () => self.oauthService.getAccessToken());
-		// self.hubMensagens = new HubWrapper('http://localhost:5002/notifications/mensagens', () => self.oauthService.getAccessToken());
+		// self.hubMensagens = new HubWrapper('https://api.todetaxi.com.br/notifications/mensagens', () => self.oauthService.getAccessToken());
+		self.hubMensagens = new HubWrapper('http://localhost:5002/notifications/mensagens', () => self.oauthService.getAccessToken());
 	}
 
 	async ngOnInit()
@@ -350,7 +350,14 @@ export class MensagensComponent implements OnInit, OnDestroy {
 
 	comporNovaMensagem()
 	{
-		this.dialogSrv.open(CompositorComponent).onClose.toPromise().then(async result =>
+		this.dialogSrv.open(CompositorMensagemComponent,
+		{
+			context:
+			{
+				destinatariosUsr: [],
+				destinatariosGrpUsr: [],
+			}
+		}).onClose.toPromise().then(async result =>
 		{
 		}).catch(() => {});
 	}

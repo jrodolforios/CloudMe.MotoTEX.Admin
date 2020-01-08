@@ -17,9 +17,11 @@
                 [currentPage]="paginacaoEntrada.page"
                 (messageOpened)="abrirMensagemEntrada($event)">
                 <ng-template #msg_summary let-mensagem>
-                    <div class="col-3">{{mensagem.nomeRemetente}}</div>
-                    <div class="col-7">{{mensagem.assunto}}</div>
-                    <div class="col-2">{{mensagem.dataEnvio}}</div>
+                    <div class="row">
+                        <div class="col-3">{{mensagem.nomeRemetente}}</div>
+                        <div class="col-7">{{mensagem.assunto}}</div>
+                        <div class="col-2">{{mensagem.dataEnvio}}</div>
+                    </div>
                 </ng-template>
                 <ng-template #msg_body let-mensagem>
                     {{mensagem.corpo}}
@@ -42,9 +44,11 @@
                 [totalItems]="totalSaida"
                 [currentPage]="paginacaoSaida.page">
                 <ng-template #msg_summary let-mensagem>
-                    <div [ngClass]="{'nao_lida': mensagem.dataLeitura === null}" class="col-3">{{mensagem.formatarDestinatarios()}}</div>
-                    <div class="col-7">{{mensagem.assunto}}</div>
-                    <div class="col-2">{{mensagem.dataEnvio}}</div>
+                    <div class="row align-items-center">
+                        <div class="col-3">{{mensagem.formatarDestinatarios()}}</div>
+                        <div class="col-7">{{mensagem.assunto}}</div>
+                        <div class="col-2">{{mensagem.dataEnvio}}</div>
+                    </div>
                 </ng-template>
                 <ng-template #msg_body let-mensagem>
                     {{mensagem.corpo}}
