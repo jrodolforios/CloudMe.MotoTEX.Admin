@@ -7,16 +7,23 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableFormaPagamentoTaxistaSummary } from '../models/response-ienumerable-forma-pagamento-taxista-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { FormaPagamentoTaxistaSummary } from '../models/forma-pagamento-taxista-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseFormaPagamentoTaxistaSummary } from '../models/response-forma-pagamento-taxista-summary';
+import { ResponseListFormaPagamentoTaxistaSummary } from '../models/response-list-forma-pagamento-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
 class FormaPagamentoTaxistaService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/FormaPagamentoTaxista';
-  static readonly PutPath = '/api/v1/FormaPagamentoTaxista';
-  static readonly PostPath = '/api/v1/FormaPagamentoTaxista';
-  static readonly GetPath = '/api/v1/FormaPagamentoTaxista/{id}';
-  static readonly DeletePath = '/api/v1/FormaPagamentoTaxista/{id}';
+  static readonly ApiV1FormaPagamentoTaxistaGetPath = '/api/v1/FormaPagamentoTaxista';
+  static readonly ApiV1FormaPagamentoTaxistaPutPath = '/api/v1/FormaPagamentoTaxista';
+  static readonly ApiV1FormaPagamentoTaxistaPostPath = '/api/v1/FormaPagamentoTaxista';
+  static readonly ApiV1FormaPagamentoTaxistaByIdGetPath = '/api/v1/FormaPagamentoTaxista/{id}';
+  static readonly ApiV1FormaPagamentoTaxistaByIdDeletePath = '/api/v1/FormaPagamentoTaxista/{id}';
+  static readonly ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetPath = '/api/v1/FormaPagamentoTaxista/consulta_id_taxista/{id}';
+  static readonly ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDeletePath = '/api/v1/FormaPagamentoTaxista/Deletar_por_taxista/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +35,7 @@ class FormaPagamentoTaxistaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<FormaPagamentoTaxistaSummary>>> {
+  ApiV1FormaPagamentoTaxistaGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableFormaPagamentoTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +52,28 @@ class FormaPagamentoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<FormaPagamentoTaxistaSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableFormaPagamentoTaxistaSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<FormaPagamentoTaxistaSummary>> {
-    return this.GetAllResponse().pipe(
-      __map(_r => _r.body as Array<FormaPagamentoTaxistaSummary>)
+  ApiV1FormaPagamentoTaxistaGet(): __Observable<ResponseIEnumerableFormaPagamentoTaxistaSummary> {
+    return this.ApiV1FormaPagamentoTaxistaGetResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableFormaPagamentoTaxistaSummary)
     );
   }
 
   /**
-   * @param formaPagamentoTaxistaSummary Modified FormaPagamentoTaxista list's properties summary
+   * @param FormaPagamentoTaxistaSummary Modified FormaPagamentoTaxista list's properties summary
    * @return Success
    */
-  PutResponse(formaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FormaPagamentoTaxistaPutResponse(FormaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = formaPagamentoTaxistaSummary;
+    __body = FormaPagamentoTaxistaSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/FormaPagamentoTaxista`,
@@ -74,34 +81,35 @@ class FormaPagamentoTaxistaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param formaPagamentoTaxistaSummary Modified FormaPagamentoTaxista list's properties summary
+   * @param FormaPagamentoTaxistaSummary Modified FormaPagamentoTaxista list's properties summary
    * @return Success
    */
-  Put(formaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<boolean> {
-    return this.PutResponse(formaPagamentoTaxistaSummary).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1FormaPagamentoTaxistaPut(FormaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1FormaPagamentoTaxistaPutResponse(FormaPagamentoTaxistaSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param formaPagamentoTaxistaSummary FormaPagamentoTaxista's summary
+   * @param FormaPagamentoTaxistaSummary FormaPagamentoTaxista's summary
+   * @return Success
    */
-  PostResponse(formaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1FormaPagamentoTaxistaPostResponse(FormaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = formaPagamentoTaxistaSummary;
+    __body = FormaPagamentoTaxistaSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/FormaPagamentoTaxista`,
@@ -115,16 +123,17 @@ class FormaPagamentoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param formaPagamentoTaxistaSummary FormaPagamentoTaxista's summary
+   * @param FormaPagamentoTaxistaSummary FormaPagamentoTaxista's summary
+   * @return Success
    */
-  Post(formaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<null> {
-    return this.PostResponse(formaPagamentoTaxistaSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1FormaPagamentoTaxistaPost(FormaPagamentoTaxistaSummary?: FormaPagamentoTaxistaSummary): __Observable<ResponseGuid> {
+    return this.ApiV1FormaPagamentoTaxistaPostResponse(FormaPagamentoTaxistaSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +141,7 @@ class FormaPagamentoTaxistaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<FormaPagamentoTaxistaSummary>> {
+  ApiV1FormaPagamentoTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseFormaPagamentoTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +159,7 @@ class FormaPagamentoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<FormaPagamentoTaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseFormaPagamentoTaxistaSummary>;
       })
     );
   }
@@ -158,9 +167,9 @@ class FormaPagamentoTaxistaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<FormaPagamentoTaxistaSummary> {
-    return this.GetResponse(id).pipe(
-      __map(_r => _r.body as FormaPagamentoTaxistaSummary)
+  ApiV1FormaPagamentoTaxistaByIdGet(id: string): __Observable<ResponseFormaPagamentoTaxistaSummary> {
+    return this.ApiV1FormaPagamentoTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseFormaPagamentoTaxistaSummary)
     );
   }
 
@@ -168,7 +177,7 @@ class FormaPagamentoTaxistaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FormaPagamentoTaxistaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +189,13 @@ class FormaPagamentoTaxistaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,9 +203,81 @@ class FormaPagamentoTaxistaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1FormaPagamentoTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1FormaPagamentoTaxistaByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseListFormaPagamentoTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/FormaPagamentoTaxista/consulta_id_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseListFormaPagamentoTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseListFormaPagamentoTaxistaSummary> {
+    return this.ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseListFormaPagamentoTaxistaSummary)
+    );
+  }
+
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/v1/FormaPagamentoTaxista/Deletar_por_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param id Id from taxist
+   * @return Success
+   */
+  ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1FormaPagamentoTaxistaDeletarPorTaxistaByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

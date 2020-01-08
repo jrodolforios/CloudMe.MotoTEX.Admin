@@ -101,19 +101,6 @@ $nb-themes: nb-register-theme((
   color-primary-1000: #505050,
   color-primary-1100: #404040,
     
-  color-success-100: #ffffaa,
-  color-success-200: #ffff88,
-  color-success-300: #ffff66,
-  color-success-400: #ffff44,
-  color-success-500: #ffff22,
-  color-success-600: #ffff00,
-  color-success-700: #eeee00,
-  color-success-800: #d0d000,
-  color-success-900: #b3b300,
-  color-success-1000: #969600,
-  color-success-1100: #797900,
-
-  header-background-color: #000000,
   header-text-color: #ffff00,
 
   sidebar-background-color: #404040,
@@ -122,13 +109,14 @@ $nb-themes: nb-register-theme((
   sidebar-scrollbar-background-color: #303030,
   sidebar-scrollbar-color: #505050,
   
-  text-hint-color: #E0E0E0,
+  text-hint-color: white,
+  text-hint-color-theme: #303030,
 
   card-header-primary-text-color: #ffff00,
   card-header-primary-background-color: #404040,
 
   menu-background-color: transparent,
-  menu-text-color: text-hint-color,
+  menu-text-color: #E0E0E0,
   menu-item-active-text-color: #ffff00,
   menu-item-icon-active-color: #ffff00,
   menu-item-divider-color:#303030,
@@ -152,9 +140,24 @@ $nb-themes: nb-register-theme((
   card-header-with-select-padding-top: 0.5rem,
   card-header-with-select-padding-bottom: 0.5rem,
 
+  user-name-text-color: white,
+  user-title-text-color: rgba(255, 255, 255, 0.8),
+  user-picture-box-background-color: #ffff00,
+  user-picture-box-border-color: black,
+  user-initials-text-color: black,
+
   select-min-width: 6rem,
 
   slide-out-background: linear-gradient(270deg, #edf1f7 0%, #e4e9f2 100%),
   slide-out-shadow-color: 0 4px 14px 0 #8f9bb3,
   slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3,
+
+  actions-icon-color: #222222,
+
+  spinner-background-color: rgba(0, 0, 0, 0.8),
+  spinner-circle-filled-color: #ffff00,
+  spinner-text-color: white,
+
+  //accordion-item-background-color: #808080,
+  //accordion-header-text-color: #ffff00,
 ), to_de_taxi, corporate);

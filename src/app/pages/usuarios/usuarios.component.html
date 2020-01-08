@@ -1,0 +1,126 @@
+<nb-layout class="m-0 p-0">
+    <nb-layout-column class="m-0 p-0">
+      <div class="row mp-0">
+        <div class="col-md-5">
+          <base-card #card_listagem>
+            <div header>USUÁRIOS ({{quantidadeUsuarios}})</div>
+            <div body class="container m-0">
+              <div class="row actions">
+                <nb-actions size="small" class="col-auto offset-md-0">
+                  <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
+                  <nb-action nbTooltip="Adicionar usuário" [disabled]="!podeCriar" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
+                </nb-actions>
+              </div>
+              <div class="row filtros" *ngIf="exibirFiltros">
+                <form class="container">
+                    <div class="row">
+                      <label class="label col-sm-3">Nome</label>
+                      <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaUsuario fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
+                      <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaUsuario.value"></nb-action>
+                    </div>
+                    <div class="row">
+                      <div class="offset-sm-3 col-sm-9">
+                        <button nbButton fullWidth status="info" shape="semi-round" (click)="limparFiltros()">Limpar filtros</button>
+                      </div>
+                    </div>
+                </form>
+              </div>
+              <div class="row p-3 align-items-center">
+                <div class="col p-0">
+                  <label>Usuários por página</label><br>
+                  <nb-select class="col-auto" [(selected)]="itemsPerPage">
+                      <nb-option [value]="+10">10</nb-option>
+                      <nb-option [value]="+50">50</nb-option>
+                      <nb-option [value]="+100">100</nb-option>
+                      <!--nb-option value="-1">Todas</nb-option-->
+                  </nb-select>
+                </div>
+                <div class="col p-0">
+                  <pagination-controls class="pg_ctrl col-auto" 
+                    id="paginator"
+                    (pageChange)="currentPage = $event"
+                    nextLabel=""
+                    previousLabel="">
+                  </pagination-controls>  
+                </div>
+              </div>
+              <div class="row">
+                <nb-list class="col own-scroll">
+                  <nb-list-item class="p-2" *ngFor="let usuario of usuariosPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
+                    <div class="container p-0 m-0">
+                      <div class="row nome">
+                        <div class="col-8 h5 nome_usuario" (click)="visualizar(usuario)">
+                          {{usuario ? usuario.nome : ''}}
+                        </div>
+                        <div class="col-4">
+                          <nb-actions fullwidth class="actions_usuario" size="small">
+                            <nb-action *ngIf="usuario.id !== usuarioLogado.id" class="p-1" nbTooltip="Enviar mensagem" icon="message-circle-outline" (click)="enviarMensagem(usuario)"></nb-action>
+                            <nb-action *ngIf="usuario.id !== usuarioLogado.id" class="p-1" nbTooltip="Remover" icon="trash-2-outline" (click)="deletar(usuario)"></nb-action>
+                            <nb-action class="p-1" nbTooltip="Modificar" [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(usuario)"></nb-action>
+                          </nb-actions>
+                        </div>
+                      </div>
+                    </div>
+                  </nb-list-item>
+                </nb-list>
+              </div>
+              <br/>
+              <br/>
+              <nb-alert status="info" *ngIf="usuarios.length === 0 || usuarios == null || usuarios == undefined">
+                Sem registros para exibir
+              </nb-alert>
+            </div>
+          </base-card>
+        </div>
+        <div class="col-md-7">
+          <base-card #card_detalhes>
+            <div header>DETALHES DE {{usuario && usuario.nome ? usuario.nome.toUpperCase() : "NOVO USUÁRIO"}}</div>
+            <div class="container" body>
+              <nb-actions size="small" >
+                <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="save-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+                <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+                <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
+                <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
+              </nb-actions><br>
+  
+              <nb-accordion multi #abas>
+                <nb-accordion-item>
+                  <nb-accordion-item-header>
+                      Informações pessoais
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <ngx-form-usuario class="formulario" #formUsuario
+                      [desabilitarControles]="desabilitarControles"
+                      [usuario]="usuario">
+                    </ngx-form-usuario>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+  
+                <nb-accordion-item [hidden]="modo === enumModo.mdVisualizacao">
+                  <nb-accordion-item-header>
+                      Credenciais
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <ngx-form-credenciais class="formulario" #formCredenciais
+                      [desabilitarControles]="desabilitarControles"
+                      [validarSenhaAnterior]="validarSenhaAnterior"
+                      [credenciais]="credenciais">
+                    </ngx-form-credenciais>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+        
+              </nb-accordion>
+        
+            </div>
+            <div footer>
+              <span>* (campo obrigatório)</span>
+            </div>
+          </base-card>
+        </div>
+      </div>
+    </nb-layout-column>
+  </nb-layout>
+  
+  
+  
+  

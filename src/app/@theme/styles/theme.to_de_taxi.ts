@@ -2,7 +2,7 @@ import { NbJSThemeOptions, CORPORATE_THEME as baseTheme } from '@nebular/theme';
 
 const baseThemeVariables = baseTheme.variables;
 
-export const TODETAXI_THEME = {
+export const MOTOTEX_THEME = {
   name: 'to_de_taxi',
   base: 'corporate',
   variables: {

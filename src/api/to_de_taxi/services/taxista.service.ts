@@ -7,16 +7,28 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableTaxistaSummary } from '../models/response-ienumerable-taxista-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { TaxistaSummary } from '../models/taxista-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseTaxistaSummary } from '../models/response-taxista-summary';
+import { ResponseInt32 } from '../models/response-int-32';
+import { LocalizacaoSummary } from '../models/localizacao-summary';
+import { ResponseIEnumerableVeiculoTaxistaSummary } from '../models/response-ienumerable-veiculo-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
 class TaxistaService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Taxista';
-  static readonly PutPath = '/api/v1/Taxista';
-  static readonly PostPath = '/api/v1/Taxista';
-  static readonly GetPath = '/api/v1/Taxista/{id}';
-  static readonly DeletePath = '/api/v1/Taxista/{id}';
+  static readonly ApiV1TaxistaGetPath = '/api/v1/Taxista';
+  static readonly ApiV1TaxistaPutPath = '/api/v1/Taxista';
+  static readonly ApiV1TaxistaPostPath = '/api/v1/Taxista';
+  static readonly ApiV1TaxistaByIdGetPath = '/api/v1/Taxista/{id}';
+  static readonly ApiV1TaxistaByIdDeletePath = '/api/v1/Taxista/{id}';
+  static readonly ApiV1TaxistaConsultaIdTaxistaByIdGetPath = '/api/v1/Taxista/consulta_id_taxista/{id}';
+  static readonly ApiV1TaxistaMarcarTaxistaDisponivelByIdGetPath = '/api/v1/Taxista/marcar_taxista_disponivel/{id}';
+  static readonly ApiV1TaxistaClassificacaoTaxistaByIdGetPath = '/api/v1/Taxista/classificacao_taxista/{id}';
+  static readonly ApiV1TaxistaInformarLocalizacaoByIdPostPath = '/api/v1/Taxista/informar_localizacao/{id}';
+  static readonly ApiV1TaxistaByIdVeiculosGetPath = '/api/v1/Taxista/{id}/veiculos';
 
   constructor(
     config: __Configuration,
@@ -28,7 +40,7 @@ class TaxistaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<TaxistaSummary>>> {
+  ApiV1TaxistaGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,16 +57,16 @@ class TaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<TaxistaSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableTaxistaSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<TaxistaSummary>> {
-    return this.GetAllResponse().pipe(
-      __map(_r => _r.body as Array<TaxistaSummary>)
+  ApiV1TaxistaGet(): __Observable<ResponseIEnumerableTaxistaSummary> {
+    return this.ApiV1TaxistaGetResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableTaxistaSummary)
     );
   }
 
@@ -62,7 +74,7 @@ class TaxistaService extends __BaseService {
    * @param taxistaSummary Modified Taxista list's properties summary
    * @return Success
    */
-  PutResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1TaxistaPutResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -74,13 +86,13 @@ class TaxistaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -88,16 +100,17 @@ class TaxistaService extends __BaseService {
    * @param taxistaSummary Modified Taxista list's properties summary
    * @return Success
    */
-  Put(taxistaSummary?: TaxistaSummary): __Observable<boolean> {
-    return this.PutResponse(taxistaSummary).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1TaxistaPut(taxistaSummary?: TaxistaSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1TaxistaPutResponse(taxistaSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
    * @param taxistaSummary Taxista's summary
+   * @return Success
    */
-  PostResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1TaxistaPostResponse(taxistaSummary?: TaxistaSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -115,16 +128,17 @@ class TaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
    * @param taxistaSummary Taxista's summary
+   * @return Success
    */
-  Post(taxistaSummary?: TaxistaSummary): __Observable<null> {
-    return this.PostResponse(taxistaSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1TaxistaPost(taxistaSummary?: TaxistaSummary): __Observable<ResponseGuid> {
+    return this.ApiV1TaxistaPostResponse(taxistaSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +146,7 @@ class TaxistaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<TaxistaSummary>> {
+  ApiV1TaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +164,7 @@ class TaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<TaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseTaxistaSummary>;
       })
     );
   }
@@ -158,9 +172,9 @@ class TaxistaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<TaxistaSummary> {
-    return this.GetResponse(id).pipe(
-      __map(_r => _r.body as TaxistaSummary)
+  ApiV1TaxistaByIdGet(id: string): __Observable<ResponseTaxistaSummary> {
+    return this.ApiV1TaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseTaxistaSummary)
     );
   }
 
@@ -168,7 +182,7 @@ class TaxistaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1TaxistaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +194,13 @@ class TaxistaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,14 +208,240 @@ class TaxistaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1TaxistaByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1TaxistaByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/consulta_id_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseTaxistaSummary> {
+    return this.ApiV1TaxistaConsultaIdTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseTaxistaSummary)
+    );
+  }
+
+  /**
+   * @param params The `TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams` containing the following parameters:
+   *
+   * - `id`: User Id from taxist
+   *
+   * - `disponivel`:
+   *
+   * @return Success
+   */
+  ApiV1TaxistaMarcarTaxistaDisponivelByIdGetResponse(params: TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.disponivel != null) __params = __params.set('disponivel', params.disponivel.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/marcar_taxista_disponivel/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams` containing the following parameters:
+   *
+   * - `id`: User Id from taxist
+   *
+   * - `disponivel`:
+   *
+   * @return Success
+   */
+  ApiV1TaxistaMarcarTaxistaDisponivelByIdGet(params: TaxistaService.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams): __Observable<ResponseBoolean> {
+    return this.ApiV1TaxistaMarcarTaxistaDisponivelByIdGetResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaClassificacaoTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseInt32>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/classificacao_taxista/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseInt32>;
+      })
+    );
+  }
+  /**
+   * @param id User Id from taxist
+   * @return Success
+   */
+  ApiV1TaxistaClassificacaoTaxistaByIdGet(id: string): __Observable<ResponseInt32> {
+    return this.ApiV1TaxistaClassificacaoTaxistaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseInt32)
+    );
+  }
+
+  /**
+   * @param params The `TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `localizacao`: Sumário da nova localização do taxista (necessário apenas latitude e longitude)
+   *
+   * @return Success
+   */
+  ApiV1TaxistaInformarLocalizacaoByIdPostResponse(params: TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.localizacao;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Taxista/informar_localizacao/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `localizacao`: Sumário da nova localização do taxista (necessário apenas latitude e longitude)
+   *
+   * @return Success
+   */
+  ApiV1TaxistaInformarLocalizacaoByIdPost(params: TaxistaService.ApiV1TaxistaInformarLocalizacaoByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1TaxistaInformarLocalizacaoByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param id ID do taxista
+   * @return Success
+   */
+  ApiV1TaxistaByIdVeiculosGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Taxista/${id}/veiculos`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>;
+      })
+    );
+  }
+  /**
+   * @param id ID do taxista
+   * @return Success
+   */
+  ApiV1TaxistaByIdVeiculosGet(id: string): __Observable<ResponseIEnumerableVeiculoTaxistaSummary> {
+    return this.ApiV1TaxistaByIdVeiculosGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseIEnumerableVeiculoTaxistaSummary)
     );
   }
 }
 
 module TaxistaService {
+
+  /**
+   * Parameters for ApiV1TaxistaMarcarTaxistaDisponivelByIdGet
+   */
+  export interface ApiV1TaxistaMarcarTaxistaDisponivelByIdGetParams {
+
+    /**
+     * User Id from taxist
+     */
+    id: string;
+    disponivel?: boolean;
+  }
+
+  /**
+   * Parameters for ApiV1TaxistaInformarLocalizacaoByIdPost
+   */
+  export interface ApiV1TaxistaInformarLocalizacaoByIdPostParams {
+    id: string;
+
+    /**
+     * Sumário da nova localização do taxista (necessário apenas latitude e longitude)
+     */
+    localizacao?: LocalizacaoSummary;
+  }
 }
 
 export { TaxistaService }

@@ -7,16 +7,23 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableSolicitacaoCorridaSummary } from '../models/response-ienumerable-solicitacao-corrida-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { SolicitacaoCorridaSummary } from '../models/solicitacao-corrida-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseSolicitacaoCorridaSummary } from '../models/response-solicitacao-corrida-summary';
+import { ResponseIListSolicitacaoCorridaSummary } from '../models/response-ilist-solicitacao-corrida-summary';
 @Injectable({
   providedIn: 'root',
 })
 class SolicitacaoCorridaService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/SolicitacaoCorrida';
-  static readonly PutPath = '/api/v1/SolicitacaoCorrida';
-  static readonly PostPath = '/api/v1/SolicitacaoCorrida';
-  static readonly GetPath = '/api/v1/SolicitacaoCorrida/{id}';
-  static readonly DeletePath = '/api/v1/SolicitacaoCorrida/{id}';
+  static readonly ApiV1SolicitacaoCorridaGetPath = '/api/v1/SolicitacaoCorrida';
+  static readonly ApiV1SolicitacaoCorridaPutPath = '/api/v1/SolicitacaoCorrida';
+  static readonly ApiV1SolicitacaoCorridaPostPath = '/api/v1/SolicitacaoCorrida';
+  static readonly ApiV1SolicitacaoCorridaByIdGetPath = '/api/v1/SolicitacaoCorrida/{id}';
+  static readonly ApiV1SolicitacaoCorridaByIdDeletePath = '/api/v1/SolicitacaoCorrida/{id}';
+  static readonly ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostPath = '/api/v1/SolicitacaoCorrida/acao_taxista/{id}';
+  static readonly ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPostPath = '/api/v1/SolicitacaoCorrida/recuperar_solicitacoes_em_espera';
 
   constructor(
     config: __Configuration,
@@ -28,7 +35,7 @@ class SolicitacaoCorridaService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<SolicitacaoCorridaSummary>>> {
+  ApiV1SolicitacaoCorridaGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableSolicitacaoCorridaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +52,28 @@ class SolicitacaoCorridaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<SolicitacaoCorridaSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableSolicitacaoCorridaSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<SolicitacaoCorridaSummary>> {
-    return this.GetAllResponse().pipe(
-      __map(_r => _r.body as Array<SolicitacaoCorridaSummary>)
+  ApiV1SolicitacaoCorridaGet(): __Observable<ResponseIEnumerableSolicitacaoCorridaSummary> {
+    return this.ApiV1SolicitacaoCorridaGetResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableSolicitacaoCorridaSummary)
     );
   }
 
   /**
-   * @param solicitacaoCorridaSummary Modified SolicitacaoCorrida list's properties summary
+   * @param SolicitacaoCorridaSummary Modified SolicitacaoCorrida list's properties summary
    * @return Success
    */
-  PutResponse(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1SolicitacaoCorridaPutResponse(SolicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = solicitacaoCorridaSummary;
+    __body = SolicitacaoCorridaSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/SolicitacaoCorrida`,
@@ -74,34 +81,35 @@ class SolicitacaoCorridaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param solicitacaoCorridaSummary Modified SolicitacaoCorrida list's properties summary
+   * @param SolicitacaoCorridaSummary Modified SolicitacaoCorrida list's properties summary
    * @return Success
    */
-  Put(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<boolean> {
-    return this.PutResponse(solicitacaoCorridaSummary).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1SolicitacaoCorridaPut(SolicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1SolicitacaoCorridaPutResponse(SolicitacaoCorridaSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param solicitacaoCorridaSummary SolicitacaoCorrida's summary
+   * @param SolicitacaoCorridaSummary SolicitacaoCorrida's summary
+   * @return Success
    */
-  PostResponse(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1SolicitacaoCorridaPostResponse(SolicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = solicitacaoCorridaSummary;
+    __body = SolicitacaoCorridaSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/SolicitacaoCorrida`,
@@ -115,16 +123,17 @@ class SolicitacaoCorridaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param solicitacaoCorridaSummary SolicitacaoCorrida's summary
+   * @param SolicitacaoCorridaSummary SolicitacaoCorrida's summary
+   * @return Success
    */
-  Post(solicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<null> {
-    return this.PostResponse(solicitacaoCorridaSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1SolicitacaoCorridaPost(SolicitacaoCorridaSummary?: SolicitacaoCorridaSummary): __Observable<ResponseGuid> {
+    return this.ApiV1SolicitacaoCorridaPostResponse(SolicitacaoCorridaSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +141,7 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<SolicitacaoCorridaSummary>> {
+  ApiV1SolicitacaoCorridaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseSolicitacaoCorridaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +159,7 @@ class SolicitacaoCorridaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<SolicitacaoCorridaSummary>;
+        return _r as __StrictHttpResponse<ResponseSolicitacaoCorridaSummary>;
       })
     );
   }
@@ -158,9 +167,9 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<SolicitacaoCorridaSummary> {
-    return this.GetResponse(id).pipe(
-      __map(_r => _r.body as SolicitacaoCorridaSummary)
+  ApiV1SolicitacaoCorridaByIdGet(id: string): __Observable<ResponseSolicitacaoCorridaSummary> {
+    return this.ApiV1SolicitacaoCorridaByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseSolicitacaoCorridaSummary)
     );
   }
 
@@ -168,7 +177,7 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1SolicitacaoCorridaByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +189,13 @@ class SolicitacaoCorridaService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,14 +203,129 @@ class SolicitacaoCorridaService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1SolicitacaoCorridaByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1SolicitacaoCorridaByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param params The `SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `id_taxista`: Id do taxista
+   *
+   * - `id_solicitacao`: Id da solicitação
+   *
+   * - `acao`: Ação tomada pelo taxista na solicitação
+   *
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostResponse(params: SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.idTaxista != null) __params = __params.set('id_taxista', params.idTaxista.toString());
+    if (params.idSolicitacao != null) __params = __params.set('id_solicitacao', params.idSolicitacao.toString());
+    if (params.acao != null) __params = __params.set('acao', params.acao.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/SolicitacaoCorrida/acao_taxista/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `id_taxista`: Id do taxista
+   *
+   * - `id_solicitacao`: Id da solicitação
+   *
+   * - `acao`: Ação tomada pelo taxista na solicitação
+   *
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaAcaoTaxistaByIdPost(params: SolicitacaoCorridaService.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @param IdTaxista undefined
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPostResponse(IdTaxista?: string): __Observable<__StrictHttpResponse<ResponseIListSolicitacaoCorridaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (IdTaxista != null) __params = __params.set('IdTaxista', IdTaxista.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/SolicitacaoCorrida/recuperar_solicitacoes_em_espera`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIListSolicitacaoCorridaSummary>;
+      })
+    );
+  }
+  /**
+   * @param IdTaxista undefined
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPost(IdTaxista?: string): __Observable<ResponseIListSolicitacaoCorridaSummary> {
+    return this.ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPostResponse(IdTaxista).pipe(
+      __map(_r => _r.body as ResponseIListSolicitacaoCorridaSummary)
     );
   }
 }
 
 module SolicitacaoCorridaService {
+
+  /**
+   * Parameters for ApiV1SolicitacaoCorridaAcaoTaxistaByIdPost
+   */
+  export interface ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostParams {
+    id: string;
+
+    /**
+     * Id do taxista
+     */
+    idTaxista?: string;
+
+    /**
+     * Id da solicitação
+     */
+    idSolicitacao?: string;
+
+    /**
+     * Ação tomada pelo taxista na solicitação
+     */
+    acao?: 0 | 1 | 2 | 3;
+  }
 }
 
 export { SolicitacaoCorridaService }

@@ -7,16 +7,20 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableFormaPagamentoSummary } from '../models/response-ienumerable-forma-pagamento-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { FormaPagamentoSummary } from '../models/forma-pagamento-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseFormaPagamentoSummary } from '../models/response-forma-pagamento-summary';
 @Injectable({
   providedIn: 'root',
 })
 class FormaPagamentoService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/FormaPagamento';
-  static readonly PutPath = '/api/v1/FormaPagamento';
-  static readonly PostPath = '/api/v1/FormaPagamento';
-  static readonly GetPath = '/api/v1/FormaPagamento/{id}';
-  static readonly DeletePath = '/api/v1/FormaPagamento/{id}';
+  static readonly ApiV1FormaPagamentoGetPath = '/api/v1/FormaPagamento';
+  static readonly ApiV1FormaPagamentoPutPath = '/api/v1/FormaPagamento';
+  static readonly ApiV1FormaPagamentoPostPath = '/api/v1/FormaPagamento';
+  static readonly ApiV1FormaPagamentoByIdGetPath = '/api/v1/FormaPagamento/{id}';
+  static readonly ApiV1FormaPagamentoByIdDeletePath = '/api/v1/FormaPagamento/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +32,7 @@ class FormaPagamentoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<FormaPagamentoSummary>>> {
+  ApiV1FormaPagamentoGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableFormaPagamentoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +49,28 @@ class FormaPagamentoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<FormaPagamentoSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableFormaPagamentoSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<FormaPagamentoSummary>> {
-    return this.GetAllResponse().pipe(
-      __map(_r => _r.body as Array<FormaPagamentoSummary>)
+  ApiV1FormaPagamentoGet(): __Observable<ResponseIEnumerableFormaPagamentoSummary> {
+    return this.ApiV1FormaPagamentoGetResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableFormaPagamentoSummary)
     );
   }
 
   /**
-   * @param formaPagamentoSummary Modified FormaPagamento list's properties summary
+   * @param FormaPagamentoSummary Modified FormaPagamento list's properties summary
    * @return Success
    */
-  PutResponse(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FormaPagamentoPutResponse(FormaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = formaPagamentoSummary;
+    __body = FormaPagamentoSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/FormaPagamento`,
@@ -74,34 +78,35 @@ class FormaPagamentoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param formaPagamentoSummary Modified FormaPagamento list's properties summary
+   * @param FormaPagamentoSummary Modified FormaPagamento list's properties summary
    * @return Success
    */
-  Put(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<boolean> {
-    return this.PutResponse(formaPagamentoSummary).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1FormaPagamentoPut(FormaPagamentoSummary?: FormaPagamentoSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1FormaPagamentoPutResponse(FormaPagamentoSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param formaPagamentoSummary FormaPagamento's summary
+   * @param FormaPagamentoSummary FormaPagamento's summary
+   * @return Success
    */
-  PostResponse(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1FormaPagamentoPostResponse(FormaPagamentoSummary?: FormaPagamentoSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = formaPagamentoSummary;
+    __body = FormaPagamentoSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/FormaPagamento`,
@@ -115,16 +120,17 @@ class FormaPagamentoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param formaPagamentoSummary FormaPagamento's summary
+   * @param FormaPagamentoSummary FormaPagamento's summary
+   * @return Success
    */
-  Post(formaPagamentoSummary?: FormaPagamentoSummary): __Observable<null> {
-    return this.PostResponse(formaPagamentoSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1FormaPagamentoPost(FormaPagamentoSummary?: FormaPagamentoSummary): __Observable<ResponseGuid> {
+    return this.ApiV1FormaPagamentoPostResponse(FormaPagamentoSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +138,7 @@ class FormaPagamentoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<FormaPagamentoSummary>> {
+  ApiV1FormaPagamentoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseFormaPagamentoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +156,7 @@ class FormaPagamentoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<FormaPagamentoSummary>;
+        return _r as __StrictHttpResponse<ResponseFormaPagamentoSummary>;
       })
     );
   }
@@ -158,9 +164,9 @@ class FormaPagamentoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<FormaPagamentoSummary> {
-    return this.GetResponse(id).pipe(
-      __map(_r => _r.body as FormaPagamentoSummary)
+  ApiV1FormaPagamentoByIdGet(id: string): __Observable<ResponseFormaPagamentoSummary> {
+    return this.ApiV1FormaPagamentoByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseFormaPagamentoSummary)
     );
   }
 
@@ -168,7 +174,7 @@ class FormaPagamentoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FormaPagamentoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +186,13 @@ class FormaPagamentoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,9 +200,9 @@ class FormaPagamentoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1FormaPagamentoByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1FormaPagamentoByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

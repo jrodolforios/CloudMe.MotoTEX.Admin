@@ -3,31 +3,40 @@ import { CommonModule } from '@angular/common';
 import { TaxistasComponent } from './taxistas.component';
 import { ThemeModule } from '../../@theme/theme.module';
 import { TaxistasRoutingModule } from './taxistas-routing.module';
-import { ListagemComponent } from './listagem/listagem.component';
-import { DetalhesComponent } from './detalhes/detalhes.component';
-import { NbCardModule, NbListModule, NbInputModule, NbIconModule, NbActionsModule } from '@nebular/theme';
-import { ItemListagemComponent } from './listagem/item-listagem/item-listagem.component';
-import { NewsService } from '../layout/news.service';
+import { NbCardModule, NbListModule, NbInputModule, NbIconModule, NbActionsModule, NbDialogModule, NbSpinnerModule, NbAlertModule, NbUserModule, NbTooltipModule, NbLayoutModule, NbSelectModule, NbAccordionModule, NbButtonModule } from '@nebular/theme';
+import { CommonViewsModule } from '../../common-views/common-views.module';
+import { VeiculosTaxistaComponent } from './veiculos-taxista/veiculos-taxista.component';
+import { PontoTaxiComponent } from './ponto-taxi/ponto-taxi.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
 	declarations: [
 		TaxistasComponent,
-		ListagemComponent,
-		ItemListagemComponent,
-		DetalhesComponent
+		VeiculosTaxistaComponent,
+		PontoTaxiComponent,
 	],
 	imports: [
 		CommonModule,
 		ThemeModule,
+		FormsModule,
+		ReactiveFormsModule,
+		NbLayoutModule,
+		NbTooltipModule,
+		CommonViewsModule,
+		NbAlertModule,
 		TaxistasRoutingModule,
 		NbCardModule,
 		NbListModule,
 		NbInputModule,
 		NbIconModule,
-		NbActionsModule
-	],
-	providers: [
-		NewsService,
+		NbActionsModule,
+		NbSpinnerModule,
+		NbUserModule,
+		NbSelectModule,
+		NbAccordionModule,
+		NbButtonModule,
+		NgxPaginationModule,
 	],
 })
 export class TaxistasModule { }

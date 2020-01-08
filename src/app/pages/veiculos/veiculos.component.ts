@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import {Ng2SmartTableComponent} from 'ng2-smart-table/ng2-smart-table.component';
-import { MarcaVeiculoService, ModeloVeiculoService } from '../../../api/fipe/services';
-import { VeiculoSummary, FotoSummary } from '../../../api/to_de_taxi/models';
+import { VeiculoSummary, FotoSummary, TaxistaSummary } from '../../../api/to_de_taxi/models';
 import { VeiculoService, FotoService } from '../../../api/to_de_taxi/services';
 import { UUID } from 'angular2-uuid';
 import { VeiculosService, VeiculoSummaryExt } from './veiculos.service';
@@ -15,6 +13,15 @@ import { CapacidadeEditorComponent } from './capacidade/capacidade-editor.compon
 import { FotoEditorComponent } from './foto/foto-editor.component';
 import { FotoViewComponent } from './foto/foto-view.component';
 import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
+import { BusyStack } from '../../@core/utils/busy_stack';
+import { Subscription } from 'rxjs';
+import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
+import { CorViewComponent } from './cor/cor-view.component';
+import { CorEditorComponent } from './cor/cor-editor.component';
+import { CatalogosService } from '../../catalogos/catalogos.service';
+import { SeletorAnoViewComponent } from './ano/seletor-ano-view.component';
+import { SeletorAnoEditorComponent } from './ano/seletor-ano-editor.component';
 
 @Component({
 	selector: 'ngx-veiculos',
@@ -28,13 +35,38 @@ import { BaseCardComponent } from '../../common-views/base-card/base-card.compon
 		PlacaEditorComponent,
 		CapacidadeEditorComponent,
 		FotoEditorComponent,
-		FotoViewComponent
+		FotoViewComponent,
+		CorEditorComponent,
+		CorViewComponent,
+		SeletorAnoViewComponent,
+		SeletorAnoEditorComponent
 	]
 })
-export class VeiculosComponent implements OnInit {
+export class VeiculosComponent implements OnInit, AfterViewInit, OnDestroy {
 
-	@ViewChild('base_card', null) baseCard: BaseCardComponent;
-	@ViewChild('table', null) table: Ng2SmartTableComponent;
+	@ViewChild('baseCard', null) baseCard: BaseCardComponent;
+
+	busyStack = new BusyStack();
+	busyStackSub: Subscription = null;
+	veicsSub: Subscription = null;
+
+	_veiculoSelecionado: VeiculoSummary = null;
+	set veiculoSelecionado(value: VeiculoSummary)
+	{
+		const self = this;
+		if (self._veiculoSelecionado !== value)
+		{
+			self._veiculoSelecionado = value;
+
+			self.taxistasVeiculo = self.veiculoSelecionado['taxistas'];
+		}
+	}
+	get veiculoSelecionado(): VeiculoSummary
+	{
+		return this._veiculoSelecionado;
+	}
+
+	taxistasVeiculo: TaxistaSummary[] = [];
 
 	grid_settings = {
 		noDataMessage: 'Sem registros para exibição.',
@@ -91,16 +123,34 @@ export class VeiculosComponent implements OnInit {
 					component: PlacaEditorComponent
 				}
 			},
-			capacidade: {
-				title: 'Passageiros',
+			ano: {
+				title: 'Ano',
 				type: 'text',
+				renderComponent: SeletorAnoViewComponent,
 				editor:
 				{
 					type: 'custom',
-					component: CapacidadeEditorComponent
+					component: SeletorAnoEditorComponent
 				}
 			},
-			foto: {
+			idCorVeiculo: {
+				title: 'Cor',
+				type: 'custom',
+				renderComponent: CorViewComponent,
+				editor:
+				{
+					type: 'custom',
+					component: CorEditorComponent
+				}
+			},
+			num_taxistas: {
+				title: 'Número de taxistas',
+				type: 'text',
+				editable: false,
+				addable: false,
+
+			}
+			/*foto: {
 				title: 'Foto',
 				type: 'custom',
 				renderComponent: FotoViewComponent,
@@ -108,41 +158,106 @@ export class VeiculosComponent implements OnInit {
 				{
 					type: 'custom',
 					component: FotoEditorComponent
-				}
-			},
+				},
+			},*/
 		},
 	};
 
 	source: LocalDataSource = new LocalDataSource();
 
 	constructor(
-		private marcasVeicSrv: MarcaVeiculoService,
 		private veiculoSrv: VeiculoService,
 		private fotoSrv: FotoService,
-		private veiculosSrv: VeiculosService)
+		private veiculosSrv: VeiculosService,
+		private dialogSrv: NbDialogService,
+		private toastSrv: NbToastrService,
+		private catalogosSrv: CatalogosService)
 	{
 		const data = [];
 		this.source.load(data);
 	}
 
+
 	async ngOnInit()
 	{
 		const self = this;
-		await self.marcasVeicSrv.GetAll().toPromise().then(marcas => {
-			self.veiculosSrv.marcasVeiculos.next(marcas);
-		});
 
-		await self.veiculoSrv.GetAll().toPromise().then(veics => {
-			/*const veicsEx: VeiculoSummaryExt[] = [];
-			veics.forEach(veic => {
-				veicsEx.push();
-			});
-			this.source.load(veicsEx);*/
-			this.source.load(veics);
+		self.busyStackSub = self.busyStack.busy.subscribe(count =>
+		{
+			if (self.baseCard)
+			{
+				self.baseCard.toggleRefresh(count > 0);
+			}
 		});
 	}
 
-	async enviarFoto(veiculoSummary: VeiculoSummaryExt)
+	async ngAfterViewInit()
+	{
+		const self = this;
+
+		self.busyStack.push();
+
+		await self.veiculoSrv.ApiV1VeiculoMarcasGet().toPromise().then(resp_marcas => {
+			if (resp_marcas && resp_marcas.success)
+			{
+				self.veiculosSrv.marcasVeiculos.next(resp_marcas.data);
+			}
+		}).catch(() => {});
+
+		self.obterVeiculos();
+
+		self.veicsSub = self.catalogosSrv.veiculos.changesSubject.subscribe(() =>
+		{
+			self.obterVeiculos();
+		});
+
+		/*await self.veiculoSrv.ApiV1VeiculoGet().toPromise().then(resp =>
+		{
+			if (resp)
+			{
+				this.source.load(resp.data);
+			}
+		});*/
+
+		self.busyStack.pop();
+	}
+
+	obterVeiculos()
+	{
+		const self = this;
+
+		const veics = self.catalogosSrv.veiculos.items;
+		veics.forEach(veic =>
+		{
+			let taxistas: TaxistaSummary[] = [];
+
+			const veicsTxs = self.catalogosSrv.veiculosTaxistas.items.filter(veic_tx =>
+			{
+				return veic_tx.idVeiculo === veic.id;
+			});
+
+			if (veicsTxs)
+			{
+				taxistas = self.catalogosSrv.taxistas.items.filter(tx =>
+				{
+					return veicsTxs.find(veic_tx => veic_tx.idTaxista === tx.id) !== undefined;
+				});
+			}
+
+			veic['taxistas'] = taxistas;
+			veic['num_taxistas'] = taxistas ? taxistas.length : 0;
+		});
+		self.source.load([...veics]);
+	}
+
+	ngOnDestroy(): void
+	{
+		const self = this;
+		self.busyStackSub.unsubscribe();
+		self.veicsSub.unsubscribe();
+	}
+
+	/*async enviarFoto(veiculoSummary: VeiculoSummaryExt)
 	{
 		const self = this;
 
@@ -151,40 +266,49 @@ export class VeiculosComponent implements OnInit {
 			return;
 		}
 
-		if (veiculoSummary.fotoSummaryRef.id)
+		self.busyStack.push();
+		if (veiculoSummary.fotoSummaryRef.id &&
+			veiculoSummary.novaFotoSummaryRef.nomeArquivo !== veiculoSummary.fotoSummaryRef.nomeArquivo)
 		{
-			await self.fotoSrv.Put(veiculoSummary.fotoSummaryRef).toPromise().then(_ => {});
+			await self.fotoSrv.ApiV1FotoPut(veiculoSummary.novaFotoSummaryRef).toPromise().then(_ => {});
 		}
 		else
 		{
-			/*veiculoSummary.fotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
-			await self.fotoSrv.Post(veiculoSummary.fotoSummaryRef).toPromise().then(id_foto => {
-				veiculoSummary.idFoto = id_foto;
-			});*/
-
-			await self.fotoSrv.Upload(veiculoSummary.arquivoFoto).toPromise().then(id_foto => {
-				veiculoSummary.veicRef.idFoto = id_foto;
+			veiculoSummary.novaFotoSummaryRef.id = UUID.UUID(); // para serializalçao do parâmetro
+			await self.fotoSrv.ApiV1FotoPost(veiculoSummary.novaFotoSummaryRef).toPromise().then(resp =>
+			{
+				if (resp && resp.success)
+				{
+					veiculoSummary.veicRef.idFoto = resp.data;
+				}
 			});
-		}
-	}
 
-	async removerFoto(fotoSummary: FotoSummary, veiculoSummary: VeiculoSummary)
+			//await self.fotoSrv.Upload(veiculoSummary.arquivoFoto).toPromise().then(id_foto => {
+			//	veiculoSummary.veicRef.idFoto = id_foto;
+			//});
+		}
+		self.busyStack.pop();
+	}*/
+
+	/*async removerFoto(veiculoSummary: VeiculoSummaryExt)
 	{
 		const self = this;
-		if (fotoSummary && fotoSummary.id)
+		self.busyStack.push();
+		if (veiculoSummary.fotoSummaryRef.id)
 		{
-			await self.fotoSrv.Delete(fotoSummary.id).toPromise().then(_ => {
-				veiculoSummary.idFoto = '';
+			await self.fotoSrv.ApiV1FotoByIdGet(veiculoSummary.fotoSummaryRef.id).toPromise().then(_ => {
+				veiculoSummary.veicRef.idFoto = '';
 			});
 		}
-	}
+		self.busyStack.pop();
+	}*/
 
 	async onCreateConfirm(event)
 	{
 		const self = this;
 
 
-		await this.enviarFoto(event.newData.veicExt);
+		//await this.enviarFoto(event.newData.veicExt);
 
 		const novo_veic = event.newData as VeiculoSummary;
 		novo_veic.id = UUID.UUID();
@@ -193,34 +317,28 @@ export class VeiculosComponent implements OnInit {
 			id: novo_veic.id,
 			marca: novo_veic.marca,
 			modelo: novo_veic.modelo,
+			ano: novo_veic.ano,
+			idCorVeiculo: novo_veic.idCorVeiculo,
 			placa: novo_veic.placa,
-			capacidade: novo_veic.capacidade,
-			cor: novo_veic.cor,
-			idFoto: novo_veic.idFoto
 		};
 
-
-		await self.veiculoSrv.Post(sumarioVeic).toPromise().then(async id_veic => {
-			if (id_veic)
+		self.busyStack.push();
+		await self.catalogosSrv.veiculos.post(sumarioVeic).then(async resultado =>
+		{
+			if (resultado)
 			{
-				novo_veic.id = id_veic;
-				/*await self.fotoSrv.Post(data).toPromise().then*/
-				event.confirm.resolve(novo_veic);
+				self.toastSrv.success('Veículo criado com sucesso!', 'Veículos');
+				event.confirm.resolve(null);
 			}
 			else
 			{
-				/*const alert = await this.alertController.create({
-					header: 'Gerenciamento de usuários',
-					subHeader: 'Cadastro não realizado',
-					message: resultado.msg,
-					buttons: ['OK']
-				});
-
-				await alert.present();*/
-
 				event.confirm.reject();
 			}
-		});
+		}).catch(reason => {});
+
+		self.obterVeiculos();
+
+		self.busyStack.pop();
 	}
 
 	async onEditConfirm(event)
@@ -228,32 +346,39 @@ export class VeiculosComponent implements OnInit {
 		// altera informações do usuário (login, senha, admin)
 		const self = this;
 
-		await this.enviarFoto(event.newData.veicExt);
+		// await this.enviarFoto(event.newData.veicExt);
 
-		const newVeic = event.newData as VeiculoSummary;
+		// const origVeic = event.data as VeiculoSummary;
+		const editedVeic = event.newData as VeiculoSummary;
 
 		const sumarioVeic: VeiculoSummary = {
-			id: newVeic.id,
-			marca: newVeic.marca,
-			modelo: newVeic.modelo,
-			placa: newVeic.placa,
-			capacidade: newVeic.capacidade,
-			cor: newVeic.cor,
-			idFoto: newVeic.idFoto
+			id: editedVeic.id,
+			marca: editedVeic.marca,
+			modelo: editedVeic.modelo,
+			ano: editedVeic.ano,
+			idCorVeiculo: editedVeic.idCorVeiculo,
+			placa: editedVeic.placa,
 		};
 
-		await self.veiculoSrv.Put(sumarioVeic).toPromise().then(async resultado => {
+		self.busyStack.push();
+		await self.catalogosSrv.veiculos.put(sumarioVeic).then(async resultado => {
 			if (resultado)
 			{
-				// TODO: tem que usar event.newData!!!
-
-				event.confirm.resolve();
+				self.toastSrv.success('Veículo atualizado com sucesso!', 'Veículos');
+				event.confirm.resolve(null);
 			}
 			else
 			{
 				event.confirm.reject();
 			}
+		}).catch(reason =>
+		{
+			event.confirm.reject();
 		});
+
+		self.obterVeiculos();
+
+		self.busyStack.pop();
 	}
 
 	async onDeleteConfirm(event)
@@ -262,19 +387,46 @@ export class VeiculosComponent implements OnInit {
 
 		const veic = event.data as VeiculoSummary;
 
-		if (window.confirm('Confirma exclusão do veículo?'))
-		{
-			await self.veiculoSrv.Delete(veic.id).toPromise().then(resultado => {
-				if (resultado)
+		await self.dialogSrv.open(
+			ConfirmDialogComponent,
+			{
+				context:
 				{
-					event.confirm.resolve();
+					title: 'Veículos',
+					prompt: 'A remoção do registro implicará no rompimento de outras associações/agrupamentos no sistema. Confirma remoção?'
+				},
+			})
+			.onClose.toPromise().then(async result =>
+			{
+				if (result)
+				{
+					self.busyStack.push();
+					await self.catalogosSrv.veiculos.delete(veic.id).then(async resultado => {
+						if (resultado)
+						{
+							event.confirm.resolve();
+							self.toastSrv.success('Registro removido com sucesso!', 'Veículos');
+
+							// busca novamente associações com:
+							// - Taxistas
+							await self.catalogosSrv.veiculosTaxistas.getAll();
+						}
+						else
+						{
+							event.confirm.reject();
+						}
+					}).catch(reason =>
+					{
+						event.confirm.reject();
+					});
+
+					self.busyStack.pop();
 				}
 				else
 				{
 					event.confirm.reject();
 				}
-			});
-		}
+			}).catch(() => {});
 	}
 
 	onCustomAction(event)
@@ -286,5 +438,11 @@ export class VeiculosComponent implements OnInit {
 			this.visualizarDashboardUsuario(info_usr.usuario);
 		}
 		*/
+	}
+
+	selectRow(event: any)
+	{
+		const self = this;
+		self.veiculoSelecionado = event.data;
 	}
 }

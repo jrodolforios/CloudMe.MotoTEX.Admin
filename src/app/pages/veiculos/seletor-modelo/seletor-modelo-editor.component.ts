@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { DefaultEditor } from 'ng2-smart-table';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { ModeloVeiculo, MarcaVeiculo } from '../../../../api/fipe/models';
-import { ModeloVeiculoService } from '../../../../api/fipe/services';
 import { VeiculoSummaryExt } from '../veiculos.service';
+import { ModeloVeiculo } from '../../../../api/to_de_taxi/models';
+import { VeiculoService } from '../../../../api/to_de_taxi/services';
 
 @Component({
 	template:
@@ -25,7 +25,7 @@ export class SeletorModeloEditorComponent extends DefaultEditor implements OnIni
 	veic: any = null;
 	veicExt: VeiculoSummaryExt = null;
 
-	constructor(private modelosVeicSrv: ModeloVeiculoService){ super(); }
+	constructor(private veiculoSrv: VeiculoService){ super(); }
 
 	ngOnInit(): void
 	{
@@ -38,7 +38,7 @@ export class SeletorModeloEditorComponent extends DefaultEditor implements OnIni
 		self.veic = this.cell.getRow().getData();
 		if (!self.veic.veicExt)
 		{
-			self.veic.veicExt = new VeiculoSummaryExt(self.veic);
+			self.veic.veicExt = new VeiculoSummaryExt(/*self.veic*/);
 		}
 		self.veicExt = self.veic.veicExt;
 
@@ -50,9 +50,12 @@ export class SeletorModeloEditorComponent extends DefaultEditor implements OnIni
 
 				if (marca)
 				{
-					await self.modelosVeicSrv.GetAll(marca.codigo).toPromise().then(info_marca => {
-						self.modelos = info_marca.modelos;
-						self.veicExt.modeloRef.next(info_marca.modelos.find(modelo => modelo.nome === self.cell.newValue as string));
+					await self.veiculoSrv.ApiV1VeiculoModelosByCodigoMarcaGet(marca.codigo).toPromise().then(resp_info_marca => {
+						if (resp_info_marca && resp_info_marca.success)
+						{
+							self.modelos = resp_info_marca.data;
+							self.veicExt.modeloRef.next(self.modelos.find(modelo => modelo.nome === self.cell.newValue as string));
+						}
 					});
 				}
 				else

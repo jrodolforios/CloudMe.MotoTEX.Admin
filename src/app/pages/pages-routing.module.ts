@@ -1,19 +1,16 @@
-import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-
+import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ECommerceComponent } from './e-commerce/e-commerce.component';
-import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+
 
 const routes: Routes = [{
 	path: '',
 	component: PagesComponent,
 	children: [
 		{
-			path: 'tarifas',
-			loadChildren: () => import('./tarifas/tarifas.module')
-				.then(m => m.TarifasModule),
+			path: 'configuracoes',
+			loadChildren: () => import('./configuracoes/configuracoes.module')
+				.then(m => m.ConfiguracoesModule),
 		},
 		{
 			path: 'taxistas',
@@ -26,72 +23,35 @@ const routes: Routes = [{
 				.then(m => m.VeiculosModule),
 		},
 		{
-			path: 'dashboard',
-			component: ECommerceComponent,
+			path: 'pontos-taxi',
+			loadChildren: () => import('./pontos-taxi/pontos-taxi.module')
+				.then(m => m.PontosTaxiModule),
 		},
 		{
-			path: 'iot-dashboard',
-			component: DashboardComponent,
+			path: 'passageiros',
+			loadChildren: () => import('./passageiros/passageiros.module')
+				.then(m => m.PassageirosModule),
 		},
 		{
-			path: 'layout',
-			loadChildren: () => import('./layout/layout.module')
-				.then(m => m.LayoutModule),
+			path: 'admins',
+			loadChildren: () => import('./usuarios/usuarios.module')
+				.then(m => m.UsuariosModule),
 		},
 		{
-			path: 'forms',
-			loadChildren: () => import('./forms/forms.module')
-				.then(m => m.FormsModule),
+			path: 'mensagens',
+			loadChildren: () => import('./mensagens/mensagens.module')
+				.then(m => m.MensagensModule),
 		},
 		{
-			path: 'ui-features',
-			loadChildren: () => import('./ui-features/ui-features.module')
-				.then(m => m.UiFeaturesModule),
-		},
-		{
-			path: 'modal-overlays',
-			loadChildren: () => import('./modal-overlays/modal-overlays.module')
-				.then(m => m.ModalOverlaysModule),
-		},
-		{
-			path: 'extra-components',
-			loadChildren: () => import('./extra-components/extra-components.module')
-				.then(m => m.ExtraComponentsModule),
-		},
-		{
-			path: 'maps',
-			loadChildren: () => import('./maps/maps.module')
-				.then(m => m.MapsModule),
-		},
-		{
-			path: 'charts',
-			loadChildren: () => import('./charts/charts.module')
-				.then(m => m.ChartsModule),
-		},
-		{
-			path: 'editors',
-			loadChildren: () => import('./editors/editors.module')
-				.then(m => m.EditorsModule),
-		},
-		{
-			path: 'tables',
-			loadChildren: () => import('./tables/tables.module')
-				.then(m => m.TablesModule),
-		},
-		{
-			path: 'miscellaneous',
-			loadChildren: () => import('./miscellaneous/miscellaneous.module')
-				.then(m => m.MiscellaneousModule),
+			path: 'mapa',
+			loadChildren: () => import('./mapa/mapa.module')
+				.then(m => m.MapaModule),
 		},
 		{
 			path: '',
 			redirectTo: 'dashboard',
 			pathMatch: 'full',
-		},
-		{
-			path: '**',
-			component: NotFoundComponent,
-		},
+		}
 	],
 }];
 

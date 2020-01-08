@@ -1,0 +1,50 @@
+<agm-map 
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  [zoomControl]="true"
+  [fullscreenControl]="false"
+  [streetViewControl]="false">
+  <agm-marker *ngFor="let locTaxista of taxistas" 
+    [title]="locTaxista.taxista.usuario.nome"
+    [latitude]="locTaxista.localizacao.latitude"
+    [longitude]="locTaxista.localizacao.longitude"
+    iconUrl="/assets/images/taxista_pin.png">
+  </agm-marker>
+  <agm-marker *ngFor="let locPassageiro of passageiros" 
+    [title]="locPassageiro.passageiro.usuario.nome"
+    [latitude]="locPassageiro.localizacao.latitude"
+    [longitude]="locPassageiro.localizacao.longitude"
+    iconUrl="/assets/images/passageiro_pin.png">
+  </agm-marker>
+</agm-map>
+
+<!--nb-layout class="overlay">
+  <nb-layout-column class="overlay">
+    <base-card #card_listagem>
+      <div header>MAPA</div>
+      <div body>
+        <agm-map 
+          [latitude]="lat"
+          [longitude]="lng"
+          [zoom]="zoom"
+          [zoomControl]="true"
+          [fullscreenControl]="false"
+          [streetViewControl]="false">
+          <agm-marker *ngFor="let locTaxista of taxistas" 
+            [title]="locTaxista.taxista.usuario.nome"
+            [latitude]="locTaxista.localizacao.latitude"
+            [longitude]="locTaxista.localizacao.longitude"
+            iconUrl="/assets/images/taxista_pin.png">
+          </agm-marker>
+          <agm-marker *ngFor="let locPassageiro of passageiros" 
+            [title]="locPassageiro.passageiro.usuario.nome"
+            [latitude]="locPassageiro.localizacao.latitude"
+            [longitude]="locPassageiro.localizacao.longitude"
+            iconUrl="/assets/images/passageiro_pin.png">
+          </agm-marker>
+        </agm-map>
+      </div>
+    </base-card>
+  </nb-layout-column>
+</nb-layout-->

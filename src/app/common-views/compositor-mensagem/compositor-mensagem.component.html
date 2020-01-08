@@ -1,0 +1,32 @@
+<nb-card class="container">
+    <nb-card-header>NOVA MENSAGEM</nb-card-header>
+    <nb-card-body>
+
+        <div class="row p-2">
+            <label>Selecione o(s) destinatário(s):</label>
+            <angular2-multiselect #destinatariosSelect style="width: 100%;" nbInput
+                [data]="dropdownList"
+                [(ngModel)]="selectedItems"
+                [settings]="dropdownSettings" >
+            </angular2-multiselect>
+        </div>
+
+        <form class="row p-2" [formGroup]="form">
+            <label>Assunto:</label>
+            <input #assuntoInput nbInput class="form-control" fullWidth placeholder="Assunto da mensagem..." formControlName="assunto"/>
+            <div *ngIf="assunto.invalid && (assunto.dirty || assunto.touched)" class="alert alert-danger">
+                <div *ngIf="assunto.errors.required">É necessário um assunto</div>
+            </div>
+            
+            <label>Digite sua mensagem:</label>
+            <textarea #corpoInput nbInput class="form-control" fullWidth placeholder="Digite aqui o conteúdo da mensagem..." formControlName="corpo"></textarea>
+            <div *ngIf="corpo.invalid && (corpo.dirty || corpo.touched)" class="alert alert-danger">
+                <div *ngIf="corpo.errors.required">O conteúdo da mensagem não pode estar em branco</div>
+            </div>
+        </form>
+    </nb-card-body>
+    <nb-card-footer>
+        <button class="m-1" nbButton status="danger" (click)="cancelar()">Cancelar</button>
+        <button class="m-1"nbButton status="success" (click)="enviar()"[disabled]="!form.valid">Enviar</button>
+    </nb-card-footer>
+</nb-card>

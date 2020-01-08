@@ -18,7 +18,8 @@ import { DefaultEditor } from 'ng2-smart-table';
 				nbInput
 				class='col'
 				type='text'
-				mask='0000'
+				mask='0A00'
+				oninput='this.value = this.value.toUpperCase()'
 				[(ngModel)]='placa_codigo'/>
 		</div>
 	</div>

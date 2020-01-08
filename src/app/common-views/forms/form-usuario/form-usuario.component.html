@@ -1,0 +1,48 @@
+<form [formGroup]="form" class="container">
+  <fieldset [disabled]="desabilitarControles">
+    <div class="row">
+      <div class="col">
+        <label>Nome*</label>
+        <input type="text" nbInput fullWidth placeholder="Nome" class="form-control" formControlName="nome">
+        <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
+          <div *ngIf="nome.errors.required">Nome é obrigatório.</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>RG*</label>
+        <input type="text" nbInput fullWidth placeholder="RG" class="form-control" formControlName="rg">
+        <div *ngIf="rg.invalid && (rg.dirty || rg.touched)" class="alert alert-danger">
+          <div *ngIf="rg.errors.required">RG é obrigatório.</div>
+        </div>
+      </div>
+      <div class="col">
+        <label>CPF*</label>
+        <input type="text" nbInput mask='000.000.000-00' fullWidth placeholder="CPF" class="form-control" formControlName="cpf">
+        <div *ngIf="(cpf.dirty || cpf.touched)">
+          <div *ngIf="cpf.errors?.required" class="alert alert-danger">CPF é obrigatório.</div>
+          <div *ngIf="cpf.invalid || cpf.errors?.cpfNotValid" class="alert alert-danger">CPF inválido.</div>
+          </div>
+      </div>
+    </div>  
+    <div class="row">
+      <div class="col">
+        <label>Email</label>
+        <input type="text" nbInput fullWidth placeholder="Email" class="form-control" formControlName="email">
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+          <div *ngIf="email.errors.required">Email é obrigatório.</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label>Celular*</label>
+        <input type="text" nbInput mask='(00) 0 0000-0000' fullWidth placeholder="Celular" class="form-control" formControlName="telefone">
+        <div *ngIf="telefone.invalid && (telefone.dirty || telefone.touched)" class="alert alert-danger">
+          <div *ngIf="telefone.errors.required">Telefone é obrigatório.</div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>

@@ -1,0 +1,40 @@
+<form [formGroup]="form" class="container">
+  <fieldset [disabled]="desabilitarControles">
+    <div class="col">
+      <label>Login*</label>
+      <input type="text" nbInput fullWidth placeholder="Login" class="form-control" formControlName="login">
+      <div *ngIf="login.invalid && (login.dirty || login.touched)" class="alert alert-danger">
+        <div *ngIf="login.errors.required">Informe um login.</div>
+      </div>
+
+      <div *ngIf="validarSenhaAnterior">
+        <label>Senha Anterior*</label>
+        <show-hide-password size="md" btnStyle="primary" [btnOutline]="false">
+          <input type="password" nbInput placeholder="Senha anterior"  class="form-control" formControlName="senha_anterior">
+        </show-hide-password>
+        <div *ngIf="senha_anterior.invalid && (senha_anterior.dirty || senha_anterior.touched)" class="alert alert-danger">
+          <div *ngIf="senha_anterior.errors.required">Informe a senha anterior</div>
+        </div>
+      </div>
+
+      <label>Senha*</label>      
+      <show-hide-password size="md" btnStyle="primary" [btnOutline]="false">
+        <input type="password" nbInput placeholder="Senha"  class="form-control" formControlName="senha">
+      </show-hide-password>
+      <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="alert alert-danger">
+        <div *ngIf="senha.errors.required">Informe a senha.</div>
+      </div>
+
+      <label>Conferir senha*</label>
+      <show-hide-password size="md" btnStyle="primary" [btnOutline]="false">
+        <input type="password" nbInput placeholder="Conferir senha" class="form-control" formControlName="conferir_senha">
+      </show-hide-password>
+      <div *ngIf="conferir_senha.invalid && (conferir_senha.dirty || conferir_senha.touched)" class="alert alert-danger">
+        <div *ngIf="conferir_senha.errors.required">Repita a senha.</div>
+      </div>
+      <div *ngIf="form.errors?.senhasDiferentes && (form.touched || form.dirty)" class="alert alert-danger">
+        Senhas não são equivalentes.
+      </div>
+    </div>  
+  </fieldset>
+</form>

@@ -1,0 +1,103 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+  .overlay {
+    padding: 0%;
+    margin: 0%;
+  }
+
+  ngx-ponto-taxi{
+    height: 400px;
+  } 
+
+  .pg_ctrl {
+    text-align: end;
+  }
+
+  .sumario {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    justify-content: flex-start;
+    border-left: none;
+    border-right: none;
+  }
+
+  .inputSearch::placeholder { /* Firefox, Chrome, Opera */ 
+    color: #404040;
+  } 
+  
+  .inputSearch:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+      color: #404040; 
+  } 
+    
+  .inputSearch::-ms-input-placeholder { /* Microsoft Edge */ 
+      color: #404040; 
+  } 
+
+  nb-action{
+    color: #404040;
+  }
+
+  .nome_taxista
+  {
+    padding: 0;
+    /*:hover
+    {
+      color: yellow      
+    }*/
+  }
+
+  .actions
+  {
+    margin: 0.5rem 0;
+  }
+
+  .actions_taxista nb-action{
+    padding: 0.5rem 0
+  }
+
+  .nome
+  {
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+
+  .propriedade
+  {
+    padding: 0.5rem
+  }
+
+  .nome_propriedade
+  {
+    font-size: 0.75rem;
+  }
+
+  .valor_propriedade
+  {
+    font-size:  0.6rem
+  }
+  
+  .deletar
+  {
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  
+  nb-accordion-item-header
+  {
+    background-color: #909090;
+    color: yellow;
+  }
+
+  .filtros
+  {
+    .row
+    {
+      padding: 0.5rem;
+    }
+  }
+}

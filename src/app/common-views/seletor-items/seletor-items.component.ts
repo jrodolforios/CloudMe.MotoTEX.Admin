@@ -81,8 +81,8 @@ export class SeletorItemComponent implements OnInit, OnDestroy, OnChanges {
 	{
 		const self = this;
 
-		self.itemsPesquisa = self.items.filter(cliente => {
-			return cliente.nome.toUpperCase().includes(filter.toUpperCase());
+		self.itemsPesquisa = self.items.filter(item => {
+			return self.getItemLabel(item).toUpperCase().includes(filter.toUpperCase());
 		});
 	}
 

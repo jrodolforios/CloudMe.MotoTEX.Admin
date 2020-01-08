@@ -7,16 +7,20 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { ResponseIEnumerableFavoritoSummary } from '../models/response-ienumerable-favorito-summary';
+import { ResponseBoolean } from '../models/response-boolean';
 import { FavoritoSummary } from '../models/favorito-summary';
+import { ResponseGuid } from '../models/response-guid';
+import { ResponseFavoritoSummary } from '../models/response-favorito-summary';
 @Injectable({
   providedIn: 'root',
 })
 class FavoritoService extends __BaseService {
-  static readonly GetAllPath = '/api/v1/Favorito';
-  static readonly PutPath = '/api/v1/Favorito';
-  static readonly PostPath = '/api/v1/Favorito';
-  static readonly GetPath = '/api/v1/Favorito/{id}';
-  static readonly DeletePath = '/api/v1/Favorito/{id}';
+  static readonly ApiV1FavoritoGetPath = '/api/v1/Favorito';
+  static readonly ApiV1FavoritoPutPath = '/api/v1/Favorito';
+  static readonly ApiV1FavoritoPostPath = '/api/v1/Favorito';
+  static readonly ApiV1FavoritoByIdGetPath = '/api/v1/Favorito/{id}';
+  static readonly ApiV1FavoritoByIdDeletePath = '/api/v1/Favorito/{id}';
 
   constructor(
     config: __Configuration,
@@ -28,7 +32,7 @@ class FavoritoService extends __BaseService {
   /**
    * @return Success
    */
-  GetAllResponse(): __Observable<__StrictHttpResponse<Array<FavoritoSummary>>> {
+  ApiV1FavoritoGetResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableFavoritoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -45,28 +49,28 @@ class FavoritoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<FavoritoSummary>>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableFavoritoSummary>;
       })
     );
   }
   /**
    * @return Success
    */
-  GetAll(): __Observable<Array<FavoritoSummary>> {
-    return this.GetAllResponse().pipe(
-      __map(_r => _r.body as Array<FavoritoSummary>)
+  ApiV1FavoritoGet(): __Observable<ResponseIEnumerableFavoritoSummary> {
+    return this.ApiV1FavoritoGetResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableFavoritoSummary)
     );
   }
 
   /**
-   * @param favoritoSummary Modified Favorito list's properties summary
+   * @param FavoritoSummary Modified Favorito list's properties summary
    * @return Success
    */
-  PutResponse(favoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FavoritoPutResponse(FavoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = favoritoSummary;
+    __body = FavoritoSummary;
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/v1/Favorito`,
@@ -74,34 +78,35 @@ class FavoritoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
   /**
-   * @param favoritoSummary Modified Favorito list's properties summary
+   * @param FavoritoSummary Modified Favorito list's properties summary
    * @return Success
    */
-  Put(favoritoSummary?: FavoritoSummary): __Observable<boolean> {
-    return this.PutResponse(favoritoSummary).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1FavoritoPut(FavoritoSummary?: FavoritoSummary): __Observable<ResponseBoolean> {
+    return this.ApiV1FavoritoPutResponse(FavoritoSummary).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 
   /**
-   * @param favoritoSummary Favorito's summary
+   * @param FavoritoSummary Favorito's summary
+   * @return Success
    */
-  PostResponse(favoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<null>> {
+  ApiV1FavoritoPostResponse(FavoritoSummary?: FavoritoSummary): __Observable<__StrictHttpResponse<ResponseGuid>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = favoritoSummary;
+    __body = FavoritoSummary;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/v1/Favorito`,
@@ -115,16 +120,17 @@ class FavoritoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<ResponseGuid>;
       })
     );
   }
   /**
-   * @param favoritoSummary Favorito's summary
+   * @param FavoritoSummary Favorito's summary
+   * @return Success
    */
-  Post(favoritoSummary?: FavoritoSummary): __Observable<null> {
-    return this.PostResponse(favoritoSummary).pipe(
-      __map(_r => _r.body as null)
+  ApiV1FavoritoPost(FavoritoSummary?: FavoritoSummary): __Observable<ResponseGuid> {
+    return this.ApiV1FavoritoPostResponse(FavoritoSummary).pipe(
+      __map(_r => _r.body as ResponseGuid)
     );
   }
 
@@ -132,7 +138,7 @@ class FavoritoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  GetResponse(id: string): __Observable<__StrictHttpResponse<FavoritoSummary>> {
+  ApiV1FavoritoByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseFavoritoSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,7 +156,7 @@ class FavoritoService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<FavoritoSummary>;
+        return _r as __StrictHttpResponse<ResponseFavoritoSummary>;
       })
     );
   }
@@ -158,9 +164,9 @@ class FavoritoService extends __BaseService {
    * @param id undefined
    * @return Success
    */
-  Get(id: string): __Observable<FavoritoSummary> {
-    return this.GetResponse(id).pipe(
-      __map(_r => _r.body as FavoritoSummary)
+  ApiV1FavoritoByIdGet(id: string): __Observable<ResponseFavoritoSummary> {
+    return this.ApiV1FavoritoByIdGetResponse(id).pipe(
+      __map(_r => _r.body as ResponseFavoritoSummary)
     );
   }
 
@@ -168,7 +174,7 @@ class FavoritoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  DeleteResponse(id: string): __Observable<__StrictHttpResponse<boolean>> {
+  ApiV1FavoritoByIdDeleteResponse(id: string): __Observable<__StrictHttpResponse<ResponseBoolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,13 +186,13 @@ class FavoritoService extends __BaseService {
       {
         headers: __headers,
         params: __params,
-        responseType: 'text'
+        responseType: 'json'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+        return _r as __StrictHttpResponse<ResponseBoolean>;
       })
     );
   }
@@ -194,9 +200,9 @@ class FavoritoService extends __BaseService {
    * @param id DialList's ID
    * @return Success
    */
-  Delete(id: string): __Observable<boolean> {
-    return this.DeleteResponse(id).pipe(
-      __map(_r => _r.body as boolean)
+  ApiV1FavoritoByIdDelete(id: string): __Observable<ResponseBoolean> {
+    return this.ApiV1FavoritoByIdDeleteResponse(id).pipe(
+      __map(_r => _r.body as ResponseBoolean)
     );
   }
 }

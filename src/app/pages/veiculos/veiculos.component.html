@@ -1,13 +1,42 @@
-<base-card>
-	<div header>VEÍCULOS</div>
-	<div body>
-		<ng2-smart-table #table
-			[settings]="grid_settings" 
-			[source]="source" 
-			(createConfirm)="onCreateConfirm($event)"
-			(editConfirm)="onEditConfirm($event)"
-			(deleteConfirm)="onDeleteConfirm($event)"
-			(custom)="onCustomAction($event)">
-		</ng2-smart-table>
+<div class="container">
+	<div class="row">
+		<base-card #baseCard>
+			<div header>VEÍCULOS</div>
+			<div body>
+				<ng2-smart-table #table
+					[settings]="grid_settings" 
+					[source]="source" 
+					(createConfirm)="onCreateConfirm($event)"
+					(editConfirm)="onEditConfirm($event)"
+					(deleteConfirm)="onDeleteConfirm($event)"
+					(custom)="onCustomAction($event)"
+					(userRowSelect)="selectRow($event)">
+				</ng2-smart-table>
+			</div>
+		</base-card>
 	</div>
-</base-card>
+	<div class="row">
+		<base-card class="col">
+			<div header>{{veiculoSelecionado ? 'TAXISTAS ASSOCIADOS A ' + veiculoSelecionado.placa : 'SELECIONE UM VEÍCULO'}}</div>
+			<div body>
+				<nb-alert status="info" *ngIf="!taxistasVeiculo || taxistasVeiculo.length === 0">
+					Sem registros para exibir
+				</nb-alert>
+			
+				<nb-list>
+					<nb-list-item *ngFor="let taxista of taxistasVeiculo">
+						<div class="row">
+						<nb-user class="col-auto"
+							size="medium"
+							[picture]="taxista['foto']?.dados"
+							onlyPicture="taxista['foto'] !== undefined">
+						</nb-user>
+						<span class="h6 col">{{taxista.usuario.nome}}</span>
+						</div>
+					</nb-list-item>
+				</nb-list>
+			</div>
+		</base-card>
+		<ngx-controle-cores class="col"></ngx-controle-cores>
+	</div>
+</div>

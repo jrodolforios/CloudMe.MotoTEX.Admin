@@ -8,8 +8,9 @@ import { VeiculoSummaryExt } from '../veiculos.service';
 @Component({
 	template:
 `
-<img [src]="veicExt ? veicExt.fotoSummaryRef.dados : null" height="50"/>
+<img [src]="imgSrc" height="50"/>
 <label class="image-upload-container btn btn-bwm">
+teste
   <span>Select Image</span>
   <input #imageInput
          type="file"
@@ -23,6 +24,7 @@ export class FotoEditorComponent extends DefaultEditor implements OnInit, AfterV
 
 	veic: any = null;
 	veicExt: VeiculoSummaryExt = null;
+	imgSrc: any = null;
 
 	constructor(private sanitizer: DomSanitizer) { super(); }
 
@@ -37,7 +39,7 @@ export class FotoEditorComponent extends DefaultEditor implements OnInit, AfterV
 		self.veic = self.cell.getRow().getData();
 		if (!self.veic.veicExt)
 		{
-			self.veic.veicExt = new VeiculoSummaryExt(self.veic);
+			self.veic.veicExt = new VeiculoSummaryExt(/*self.veic*/);
 		}
 		self.veicExt = self.veic.veicExt;
 	}
@@ -52,10 +54,10 @@ export class FotoEditorComponent extends DefaultEditor implements OnInit, AfterV
 		self.veicExt.arquivoFoto = file;
 
 		const listenAsURL = (event: any) => {
-
-			self.veicExt.fotoSummaryRef.dados = event.target.result;
-			self.veicExt.fotoSummaryRef.nomeArquivo = file.name;
-			self.veicExt.fotoSummaryRef.nome = file.name;
+			self.imgSrc = event.target.result;
+			self.veicExt.novaFotoSummaryRef.dados = btoa(event.target.result);
+			self.veicExt.novaFotoSummaryRef.nomeArquivo = file.name;
+			self.veicExt.novaFotoSummaryRef.nome = file.name;
 		};
 
 		reader.addEventListener('load', listenAsURL);
