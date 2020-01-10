@@ -7,15 +7,16 @@
     padding-top: nb-theme(layout-padding-top);
   }
   .header {
-    border-image: url('/assets/images/taxi_border.png');
-    border-image-slice: 33.33%;
-    border-image-repeat: round;
-    border-image-width: 1;
+    // border-image: url('/assets/images/taxi_border.png');
+    // border-image-slice: 33.33%;
+    // border-image-repeat: round;
+    // border-image-width: 1;
     border-top: 0;
     border-right: 0;
     border-left: 0;
     border-bottom: 10px;
-    border-style: solid;  
-    background-color: #404040;
+    border-style: solid;
+    border-color: #0E4B67 ;
+    background-color: whitesmoke;
   }
 }

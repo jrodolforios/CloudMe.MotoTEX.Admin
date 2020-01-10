@@ -83,7 +83,7 @@ export class ThemeModule {
       providers: [
         ...NbThemeModule.forRoot(
           {
-            name: 'to_de_taxi',
+            name: 'default',
           },
           [ DEFAULT_THEME, COSMIC_THEME, CORPORATE_THEME, DARK_THEME, MOTOTEX_THEME ],
         ).providers,
