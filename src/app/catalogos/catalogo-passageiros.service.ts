@@ -101,12 +101,18 @@ export class CatalogoPassageiros extends ApiCatalog<PassageiroSummary>
 		passageiro['foto'] = foto;
 
 		passageiro['carregandoFoto'] = false;
+
+		if(passageiro['foto'])
+		{
+			passageiro['foto'].dados = btoa(passageiro['foto'].dados);
+		}
 	}
 
 	liberarFoto(passageiro: PassageiroSummary) {
 		const self = this;
 
 		const foto = passageiro['foto'] as FotoSummary;
+		
 
 		if (foto)
 		{

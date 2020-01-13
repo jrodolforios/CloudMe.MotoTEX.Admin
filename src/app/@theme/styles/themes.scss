@@ -4,6 +4,18 @@
 @import '~@nebular/theme/styles/themes';
 
 $nb-themes: nb-register-theme((
+  color-primary-100: rgb(131, 180, 202), // <- primary violet shades
+  color-primary-200: rgb(87, 146, 173),
+  color-primary-300: rgb(53, 118, 148),
+  color-primary-400: rgb(28, 90, 119),
+  color-primary-500: #0E4B67,
+  color-primary-600: rgb(9, 62, 87),
+  color-primary-700: rgb(6, 51, 71),
+  color-primary-800: rgb(5, 44, 61),
+  color-primary-900: rgb(2, 32, 44),
+
+  user-picture-box-border-color: #0E4B67,
+
   layout-padding-top: 2.25rem,
 
   menu-item-icon-margin: 0 0.5rem 0 0,

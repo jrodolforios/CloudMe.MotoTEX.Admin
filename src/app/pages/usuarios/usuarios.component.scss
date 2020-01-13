@@ -81,8 +81,8 @@
   
   nb-accordion-item-header
   {
-    background-color: #909090;
-    color: yellow;
+    background-color: nb-theme(color-primary-400);
+    color: nb-theme(slide-out-background);
   }
 
   .filtros
