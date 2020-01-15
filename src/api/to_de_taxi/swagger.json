@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "version": "v1",
-    "title": "CloudMe ToDeTaxi API"
+    "title": "CloudMe MotoTEX API"
   },
   "paths": {
     "/api/v1/Contato": {
@@ -14964,9 +14964,9 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "https://auth.todetaxi.com.br/connect/authorize",
+      "authorizationUrl": "https://auth.mototex.cloudme.com.br/connect/authorize",
       "scopes": {
-        "todetaxiapi": "TOdeTaxiAPI"
+        "mototexapi": "MotoTEXAPI"
       },
       "type": "oauth2"
     }
