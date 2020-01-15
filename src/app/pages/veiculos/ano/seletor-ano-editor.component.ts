@@ -57,7 +57,7 @@ export class SeletorAnoEditorComponent extends DefaultEditor implements OnInit, 
 					}).toPromise().then(resp_anos_versoes => {
 						if (resp_anos_versoes && resp_anos_versoes.success)
 						{
-							const distinct_anos = new Set(resp_anos_versoes.data.map(x => x.ano));
+							const distinct_anos = new Set(resp_anos_versoes.data.map(x => x.nome));
 							self.anos = [];
 							distinct_anos.forEach(ano => {
 								self.anos.push(ano);
