@@ -12,6 +12,7 @@ import { TaxistaSummary, PontoTaxiSummary } from '../../../api/to_de_taxi/models
 import { BusyStack } from '../../@core/utils/busy_stack';
 import { CatalogosService } from '../../catalogos/catalogos.service';
 import { CompositorMensagemComponent } from '../../common-views/compositor-mensagem/compositor-mensagem.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 export enum Modo
 {
@@ -70,6 +71,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	busyStackListagemSub: Subscription = null;
 	busyStackDetalhesSub: Subscription = null;
 	busyStackFotoSub: Subscription = null;
+	numeroAlterado: boolean = false;
 
 	get registroAlterado(): boolean
 	{
@@ -80,7 +82,12 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.formUsuario.alterado ||
 			self.formEndereco.alterado ||
 			self.formCredenciais.alterado ||
+			self.numeroAlterado ||
 			self.formFoto.alterado);
+	}
+
+	numeroTaxistaAlterado(){
+		this.numeroAlterado = true;
 	}
 
 	// paginação
@@ -258,7 +265,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.taxistas.forEach(async tx =>
 		{
-			await self.catalogosSrv.taxistas.recuperarFoto(tx);
+			self.catalogosSrv.taxistas.recuperarFoto(tx);
 		});
 
 		self.busyStackListagem.pop();
@@ -267,6 +274,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	selecionar(taxista: TaxistaSummary)
 	{
 		this.taxista = taxista;
+		this.form.patchValue({
+			numeroIdentificacao: this.taxista.numeroIdentificacao
+		})
 	}
 
 	async visualizar(taxista: TaxistaSummary)
@@ -291,6 +301,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			if (result)
 			{
 				self.selecionar(taxista);
+				self.form.patchValue({
+					numeroIdentificacao: self.taxista.numeroIdentificacao
+				})
 
 				self.expandir();
 			}
@@ -498,6 +511,12 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		}).catch(() => {});
 	}
 
+	form: FormGroup = new FormGroup(
+		{
+			'numeroIdentificacao': new FormControl('',),
+
+		});
+
 	public async confirmarEdicao()
 	{
 		const self = this;
@@ -512,6 +531,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.taxista.usuario = self.formUsuario.obterAlteracoes();
 			self.taxista.endereco = self.formEndereco.obterAlteracoes();
 			self.taxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
+
+			self.taxista.numeroIdentificacao = +this.form.get('numeroIdentificacao');
 
 			const foto = self.formFoto.obterAlteracoes();
 
@@ -538,6 +559,12 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		else if (self.modo === Modo.mdEdicao)
 		{
+			self.taxista.numeroIdentificacao = +this.form.get('numeroIdentificacao').value;
+
+			await self.taxistaSrv.ApiV1TaxistaPut(self.taxista).toPromise()
+			.then(resp =>{
+			}).catch(() => { contemErros = true; });
+
 			let atualizou = false;
 			if (self.formUsuario.alterado)
 			{
@@ -645,6 +672,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		self.formEndereco.redefinir();
 		self.formCredenciais.redefinir();
 		self.formFoto.redefinir();
+		self.numeroAlterado = false;
 	}
 
 	get formulariosValidos(): boolean

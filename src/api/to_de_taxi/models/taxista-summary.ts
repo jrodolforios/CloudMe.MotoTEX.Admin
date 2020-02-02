@@ -3,6 +3,7 @@ import { UsuarioSummary } from './usuario-summary';
 import { EnderecoSummary } from './endereco-summary';
 export interface TaxistaSummary {
   id?: string;
+  numeroIdentificacao?: number;
   ativo?: boolean;
   disponivel?: boolean;
   idFoto?: string;

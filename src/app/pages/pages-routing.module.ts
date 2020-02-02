@@ -48,6 +48,11 @@ const routes: Routes = [{
 				.then(m => m.MapaModule),
 		},
 		{
+			path: 'faturamento',
+			loadChildren: () => import('./faturamento/faturamento.module')
+				.then(m => m.FaturamentoModule),
+		},
+		{
 			path: '',
 			redirectTo: 'dashboard',
 			pathMatch: 'full',

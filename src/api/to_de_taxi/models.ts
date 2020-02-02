@@ -28,6 +28,12 @@ export { ResponseIEnumerableFaixaDescontoTaxistaSummary } from './models/respons
 export { FaixaDescontoTaxistaSummary } from './models/faixa-desconto-taxista-summary';
 export { ResponseFaixaDescontoTaxistaSummary } from './models/response-faixa-desconto-taxista-summary';
 export { ResponseListFaixaDescontoTaxistaSummary } from './models/response-list-faixa-desconto-taxista-summary';
+export { ResponseIEnumerableFaturamentoSummary } from './models/response-ienumerable-faturamento-summary';
+export { FaturamentoSummary } from './models/faturamento-summary';
+export { ResponseFaturamentoSummary } from './models/response-faturamento-summary';
+export { ResponseIEnumerableFaturamentoTaxistaSummary } from './models/response-ienumerable-faturamento-taxista-summary';
+export { FaturamentoTaxistaSummary } from './models/faturamento-taxista-summary';
+export { ResponseFaturamentoTaxistaSummary } from './models/response-faturamento-taxista-summary';
 export { ResponseIEnumerableFavoritoSummary } from './models/response-ienumerable-favorito-summary';
 export { FavoritoSummary } from './models/favorito-summary';
 export { ResponseFavoritoSummary } from './models/response-favorito-summary';

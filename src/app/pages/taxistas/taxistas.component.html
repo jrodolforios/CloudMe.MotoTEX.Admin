@@ -7,66 +7,72 @@
           <div body class="container m-0">
             <div class="row actions">
               <nb-actions size="small" class="col-auto offset-md-0">
-                <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
-                <nb-action nbTooltip="Adicionar taxista" [disabled]="!podeCriar" nbButton class="col-auto" icon="plus-square-outline" (click)="criar()"></nb-action>
+                <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto"
+                  icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
+                <nb-action nbTooltip="Adicionar taxista" [disabled]="!podeCriar" nbButton class="col-auto"
+                  icon="plus-square-outline" (click)="criar()"></nb-action>
               </nb-actions>
             </div>
             <div class="row filtros" *ngIf="exibirFiltros">
               <form class="container">
-                  <div class="row">
-                    <label class="label col-sm-3">Nome</label>
-                    <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaTaxista fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
-                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaTaxista.value"></nb-action>
+                <div class="row">
+                  <label class="label col-sm-3">Nome</label>
+                  <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaTaxista fullWidth type="text" nbInput
+                    shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="filtroPesquisa">
+                  <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''"
+                    [disabled]="!pesquisaTaxista.value"></nb-action>
+                </div>
+                <div class="row">
+                  <label class="label col-sm-3">Situação</label>
+                  <nb-select class="col" placeholder="Filtrar por situação" filled status="primary" fullWidth
+                    shape="semi-round" [(selected)]="filtroSituacao">
+                    <nb-option [value]="null">Todos</nb-option>
+                    <nb-option [value]="true">Ativos</nb-option>
+                    <nb-option [value]="false">Inativos</nb-option>
+                  </nb-select>
+                  <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline"
+                    (click)="filtroSituacao=null" [disabled]="filtroSituacao === null"></nb-action>
+                </div>
+                <div class="row">
+                  <label class="label col-sm-3">Ponto de táxi</label>
+                  <nb-select class="col" placeholder="Filtrar por ponto de táxi" filled status="primary" fullWidth
+                    shape="semi-round" [(selected)]="filtroPontoTaxi">
+                    <nb-option [value]="null">Nenhum</nb-option>
+                    <nb-option [value]="todosPontosTaxi">Todos</nb-option>
+                    <nb-option *ngFor="let ptTx of pontosTaxi" [value]="ptTx">{{ptTx.nome}}</nb-option>
+                  </nb-select>
+                  <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline"
+                    (click)="filtroPontoTaxi=undefined" [disabled]="filtroPontoTaxi === undefined"></nb-action>
+                </div>
+                <div class="row">
+                  <div class="offset-sm-3 col-sm-9">
+                    <button nbButton fullWidth status="info" shape="semi-round" (click)="limparFiltros()">Limpar
+                      filtros</button>
                   </div>
-                  <div class="row">
-                    <label class="label col-sm-3">Situação</label>
-                    <nb-select class="col" placeholder="Filtrar por situação" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroSituacao">
-                      <nb-option [value]="null">Todos</nb-option>
-                      <nb-option [value]="true">Ativos</nb-option>
-                      <nb-option [value]="false">Inativos</nb-option>
-                    </nb-select>
-                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroSituacao=null" [disabled]="filtroSituacao === null"></nb-action>
-                  </div>                              
-                  <div class="row">
-                    <label class="label col-sm-3">Ponto de táxi</label>
-                    <nb-select class="col" placeholder="Filtrar por ponto de táxi" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroPontoTaxi">
-                      <nb-option [value]="null">Nenhum</nb-option>
-                      <nb-option [value]="todosPontosTaxi">Todos</nb-option>
-                      <nb-option *ngFor="let ptTx of pontosTaxi" [value]="ptTx">{{ptTx.nome}}</nb-option>
-                    </nb-select>
-                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPontoTaxi=undefined" [disabled]="filtroPontoTaxi === undefined"></nb-action>
-                  </div>                              
-                  <div class="row">
-                    <div class="offset-sm-3 col-sm-9">
-                      <button nbButton fullWidth status="info" shape="semi-round" (click)="limparFiltros()">Limpar filtros</button>
-                    </div>
-                  </div>
+                </div>
               </form>
             </div>
             <div class="row p-3 align-items-center">
               <div class="col p-0">
                 <label>Taxistas por página</label><br>
                 <nb-select class="col-auto" [(selected)]="itemsPerPage">
-                    <nb-option [value]="+10">10</nb-option>
-                    <nb-option [value]="+50">50</nb-option>
-                    <nb-option [value]="+100">100</nb-option>
-                    <!--nb-option value="-1">Todas</nb-option-->
+                  <nb-option [value]="+10">10</nb-option>
+                  <nb-option [value]="+50">50</nb-option>
+                  <nb-option [value]="+100">100</nb-option>
+                  <!--nb-option value="-1">Todas</nb-option-->
                 </nb-select>
               </div>
               <div class="col p-0">
-                <pagination-controls class="pg_ctrl col-auto" 
-                  id="paginator"
-                  (pageChange)="currentPage = $event"
-                  nextLabel=""
-                  previousLabel="">
-                </pagination-controls>  
+                <pagination-controls class="pg_ctrl col-auto" id="paginator" (pageChange)="currentPage = $event"
+                  nextLabel="" previousLabel="">
+                </pagination-controls>
               </div>
             </div>
             <div class="row">
-              <nb-list class="col own-scroll"
-                nbInfiniteList
-                [threshold]="500">
-                <nb-list-item class="p-2" *ngFor="let taxista of taxistasPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
+              <nb-list class="col own-scroll" nbInfiniteList [threshold]="500">
+                <nb-list-item class="p-2"
+                  *ngFor="let taxista of taxistasPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
                   <div class="container p-0 m-0">
                     <div class="row h4 nome">
                       <div class="col-8 nome_taxista" (click)="visualizar(taxista)">
@@ -74,10 +80,14 @@
                       </div>
                       <div class="col-4">
                         <nb-actions class="actions_taxista" size="small">
-                          <nb-action nbTooltip="Enviar mensagem" icon="message-circle-outline" (click)="enviarMensagem(taxista)"></nb-action>
+                          <nb-action nbTooltip="Enviar mensagem" icon="message-circle-outline"
+                            (click)="enviarMensagem(taxista)"></nb-action>
                           <nb-action nbTooltip="Remover" icon="trash-2-outline" (click)="deletar(taxista)"></nb-action>
-                          <nb-action nbTooltip="Modificar" [disabled]="!podeEditar" icon="edit-2-outline" (click)="editar(taxista)"></nb-action>
-                          <nb-action [nbTooltip]="taxista.ativo ? 'Desativar' : 'Ativar'" [icon]="taxista.ativo ? 'toggle-right' : 'toggle-left-outline'" (click)="ativar(taxista, !taxista.ativo)"></nb-action>
+                          <nb-action nbTooltip="Modificar" [disabled]="!podeEditar" icon="edit-2-outline"
+                            (click)="editar(taxista)"></nb-action>
+                          <nb-action [nbTooltip]="taxista.ativo ? 'Desativar' : 'Ativar'"
+                            [icon]="taxista.ativo ? 'toggle-right' : 'toggle-left-outline'"
+                            (click)="ativar(taxista, !taxista.ativo)"></nb-action>
                         </nb-actions>
                       </div>
                     </div>
@@ -95,11 +105,7 @@
                         <div class="valor_propriedade">{{taxista.usuario ? taxista.usuario.telefone: ''}}</div>
                       </div>
                       <div class="col">
-                        <nb-user
-                          size="medium"
-                          [picture]="taxista['foto']?.dados"
-                          onlyPicture
-                          shape="rectangle">
+                        <nb-user size="medium" [picture]="taxista['foto']?.dados" onlyPicture shape="rectangle">
                         </nb-user>
                       </div>
                     </div>
@@ -107,8 +113,8 @@
                 </nb-list-item>
               </nb-list>
             </div>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <nb-alert status="info" *ngIf="taxistas.length === 0 || taxistas == null || taxistas == undefined">
               Sem registros para exibir
             </nb-alert>
@@ -117,23 +123,40 @@
       </div>
       <div class="col-md-7">
         <base-card #card_detalhes>
-          <div header>DETALHES DE {{taxista && taxista.usuario ? taxista.usuario.nome.toUpperCase() : "NOVO TAXISTA"}}</div>
+          <div header>DETALHES DE {{taxista && taxista.usuario ? taxista.usuario.nome.toUpperCase() : "NOVO TAXISTA"}}
+          </div>
           <div class="container" body>
-            <nb-actions size="small" >
-              <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="save-outline" (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
-              <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline" (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
-              <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
-              <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
+            <nb-actions size="small">
+              <nb-action [disabled]="!podeConfirmar" nbTooltip="Salvar alterações" icon="save-outline"
+                (click)="confirmarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+              <nb-action [disabled]="!podeCancelar" nbTooltip="Descartar alterações" icon="close-outline"
+                (click)="cancelarEdicao()" ng-show="modo !== Modo.mdVisualizacao"></nb-action>
+              <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas" (click)="expandir()"></nb-action>
+              <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas" (click)="encolher()"></nb-action>
             </nb-actions><br>
 
             <nb-accordion multi #abas>
               <nb-accordion-item>
                 <nb-accordion-item-header>
-                    Informações pessoais
+                  Informações pessoais
                 </nb-accordion-item-header>
                 <nb-accordion-item-body>
-                  <ngx-form-usuario class="formulario" #formUsuario
-                    [desabilitarControles]="desabilitarControles"
+                  <div class="row">
+                    <div class="col">
+                      <form [formGroup]="form" class="container">
+                        <fieldset [disabled]="desabilitarControles">
+                          <label>Número</label>
+                          <input type="number" nbInput placeholder="Número Mototaxista"
+                            (change)="numeroTaxistaAlterado()" class="form-control"
+                            formControlName="numeroIdentificacao">
+                        </fieldset>
+                      </form>
+                      <!-- <div *ngIf="rg.invalid && (rg.dirty || rg.touched)" class="alert alert-danger">
+                        <div *ngIf="rg.errors.required">Número de identificação é obrigatório</div>
+                      </div> -->
+                    </div>
+                  </div>
+                  <ngx-form-usuario class="formulario" #formUsuario [desabilitarControles]="desabilitarControles"
                     [usuario]="usuario">
                   </ngx-form-usuario>
                 </nb-accordion-item-body>
@@ -141,11 +164,10 @@
 
               <nb-accordion-item>
                 <nb-accordion-item-header>
-                    Endereço
+                  Endereço
                 </nb-accordion-item-header>
                 <nb-accordion-item-body>
-                  <ngx-form-endereco class="formulario" #formEndereco
-                    [desabilitarControles]="desabilitarControles"
+                  <ngx-form-endereco class="formulario" #formEndereco [desabilitarControles]="desabilitarControles"
                     [endereco]="endereco">
                   </ngx-form-endereco>
                 </nb-accordion-item-body>
@@ -153,12 +175,11 @@
 
               <nb-accordion-item [hidden]="modo === enumModo.mdVisualizacao">
                 <nb-accordion-item-header>
-                    Credenciais
+                  Credenciais
                 </nb-accordion-item-header>
                 <nb-accordion-item-body>
                   <ngx-form-credenciais class="formulario" #formCredenciais
-                    [desabilitarControles]="desabilitarControles"
-                    [validarSenhaAnterior]="validarSenhaAnterior"
+                    [desabilitarControles]="desabilitarControles" [validarSenhaAnterior]="validarSenhaAnterior"
                     [credenciais]="credenciais">
                   </ngx-form-credenciais>
                 </nb-accordion-item-body>
@@ -166,11 +187,10 @@
 
               <nb-accordion-item>
                 <nb-accordion-item-header>
-                    Foto
+                  Foto
                 </nb-accordion-item-header>
                 <nb-accordion-item-body>
-                  <ngx-form-foto class="formulario" #formFoto
-                    [desabilitarControles]="desabilitarControles"
+                  <ngx-form-foto class="formulario" #formFoto [desabilitarControles]="desabilitarControles"
                     [foto]="foto">
                   </ngx-form-foto>
                 </nb-accordion-item-body>
@@ -178,7 +198,7 @@
 
               <nb-accordion-item [hidden]="modo !== enumModo.mdVisualizacao">
                 <nb-accordion-item-header>
-                    Veículos associados
+                  Veículos associados
                 </nb-accordion-item-header>
                 <nb-accordion-item-body>
                   <ngx-veiculos-taxista [taxista]="taxista"></ngx-veiculos-taxista>
@@ -187,16 +207,16 @@
 
               <nb-accordion-item [hidden]="modo !== enumModo.mdVisualizacao">
                 <nb-accordion-item-header>
-                    Ponto de táxi
+                  Ponto de táxi
                 </nb-accordion-item-header>
                 <nb-accordion-item-body>
                   <ngx-ponto-taxi [taxista]="taxista"></ngx-ponto-taxi>
                 </nb-accordion-item-body>
               </nb-accordion-item>
-  
+
             </nb-accordion>
-            
-      
+
+
             <!--nb-card>
               <nb-card-header>Informações pessoais</nb-card-header>
               <nb-card-body>
@@ -240,7 +260,7 @@
               </div>
               </nb-card-body>
             </nb-card-->
-      
+
           </div>
           <div footer>
             <span>* (campo obrigatório)</span>
@@ -250,6 +270,3 @@
     </div>
   </nb-layout-column>
 </nb-layout>
-
-
-

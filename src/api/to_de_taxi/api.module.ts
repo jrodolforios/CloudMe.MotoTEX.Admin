@@ -11,6 +11,8 @@ import { EmergenciaService } from './services/emergencia.service';
 import { EnderecoService } from './services/endereco.service';
 import { FaixaDescontoService } from './services/faixa-desconto.service';
 import { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
+import { FaturamentoService } from './services/faturamento.service';
+import { FaturamentoTaxistaService } from './services/faturamento-taxista.service';
 import { FavoritoService } from './services/favorito.service';
 import { FormaPagamentoService } from './services/forma-pagamento.service';
 import { FormaPagamentoTaxistaService } from './services/forma-pagamento-taxista.service';
@@ -51,6 +53,8 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     EnderecoService,
     FaixaDescontoService,
     FaixaDescontoTaxistaService,
+    FaturamentoService,
+    FaturamentoTaxistaService,
     FavoritoService,
     FormaPagamentoService,
     FormaPagamentoTaxistaService,

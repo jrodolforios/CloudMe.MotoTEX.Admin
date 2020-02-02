@@ -6,6 +6,8 @@ export { EmergenciaService } from './services/emergencia.service';
 export { EnderecoService } from './services/endereco.service';
 export { FaixaDescontoService } from './services/faixa-desconto.service';
 export { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
+export { FaturamentoService } from './services/faturamento.service';
+export { FaturamentoTaxistaService } from './services/faturamento-taxista.service';
 export { FavoritoService } from './services/favorito.service';
 export { FormaPagamentoService } from './services/forma-pagamento.service';
 export { FormaPagamentoTaxistaService } from './services/forma-pagamento-taxista.service';

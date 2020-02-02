@@ -25,8 +25,8 @@ interface LocalizacaoPassageiro
 })
 export class MapaComponent implements OnInit, OnDestroy {
 
-	lat: number = -17.8588;
-	lng: number = -41.509;
+	lat: number = -17.5408586;
+	lng: number = -39.7510053;
 	zoom = 15;
 
 	localizacaoChangeSub: Subscription = null;
