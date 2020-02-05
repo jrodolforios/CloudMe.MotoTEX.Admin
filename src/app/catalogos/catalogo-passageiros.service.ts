@@ -14,65 +14,65 @@ class PassageiroApiInterface implements CatalogApiInterface<PassageiroSummary>
 		this.passageiroSrv = passageiroSrv;
 	}
 
-	async get(id: string): Promise<PassageiroSummary>
+	get(id: string): Promise<PassageiroSummary>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.passageiroSrv.ApiV1PassageiroByIdGet(id).toPromise().then(resp =>
+			self.passageiroSrv.ApiV1PassageiroByIdGet(id).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<PassageiroSummary>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async getAll(): Promise<PassageiroSummary[]>
+	getAll(): Promise<PassageiroSummary[]>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.passageiroSrv.ApiV1PassageiroGet().toPromise().then(resp =>
+			self.passageiroSrv.ApiV1PassageiroGet().toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<PassageiroSummary[]>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async post(item: PassageiroSummary): Promise<string>
+	post(item: PassageiroSummary): Promise<string>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.passageiroSrv.ApiV1PassageiroPost(item).toPromise().then(resp =>
+			self.passageiroSrv.ApiV1PassageiroPost(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<string>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async put(item: PassageiroSummary): Promise<boolean>
+	put(item: PassageiroSummary): Promise<boolean>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.passageiroSrv.ApiV1PassageiroPut(item).toPromise().then(resp =>
+			self.passageiroSrv.ApiV1PassageiroPut(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async delete(id: string): Promise<boolean>
+	delete(id: string): Promise<boolean>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.passageiroSrv.ApiV1PassageiroByIdDelete(id).toPromise().then(resp =>
+			self.passageiroSrv.ApiV1PassageiroByIdDelete(id).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
 			}).catch(reason => reject(reason));
@@ -89,30 +89,35 @@ export class CatalogoPassageiros extends ApiCatalog<PassageiroSummary>
 		super(oauthService, new PassageiroApiInterface(passageiroSrv), 'passageiro', 'passageiro');
 	}
 
-	async recuperarFoto(passageiro: PassageiroSummary, forcar: boolean = false)
+	recuperarFoto(passageiro: PassageiroSummary, forcar: boolean = false)
 	{
 		const self = this;
 
-		if (passageiro['carregandoFoto'] || (passageiro['foto'] && !forcar)) return;
+		const carregando = passageiro['carregandoFoto'] !== undefined ? passageiro['carregandoFoto'] : false;
+		const temFoto = passageiro['foto'] !== undefined && passageiro['foto']['dados'] !== undefined;
+
+		if (carregando || (temFoto && !forcar)) return;
 
 		passageiro['carregandoFoto'] = true;
 
-		const foto = await self.fotos.get(passageiro.idFoto);
-		passageiro['foto'] = foto;
+		self.fotos.get(passageiro.idFoto).then(foto =>
+			{
+				passageiro['foto'] = foto;
 
-		passageiro['carregandoFoto'] = false;
+				if (foto)
+				{
+					foto.dados = 'data:image/jpeg;base64,' + btoa(foto.dados); // TODO: remover isso no futuro
+				}
 
-		if(passageiro['foto'])
-		{
-			passageiro['foto'].dados = btoa(passageiro['foto'].dados);
-		}
+				passageiro['carregandoFoto'] = false;
+			});
+
 	}
 
 	liberarFoto(passageiro: PassageiroSummary) {
 		const self = this;
 
 		const foto = passageiro['foto'] as FotoSummary;
-		
 
 		if (foto)
 		{

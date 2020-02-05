@@ -13,14 +13,16 @@ export class AuthLoginCallbackComponent implements OnInit {
 	{
 		this.oauthService.loadDiscoveryDocumentAndTryLogin().then(_ =>
 		{
-			if (!this.oauthService.hasValidIdToken() && !this.oauthService.hasValidAccessToken())
-			{
-				this.oauthService.initImplicitFlow('login');
-			}
-			else
-			{
-				this.router.navigate(['/load_resources']);
-			}
+			setTimeout(() => {
+				if (!this.oauthService.hasValidIdToken() && !this.oauthService.hasValidAccessToken())
+				{
+					this.oauthService.initCodeFlow(); // reinicia o processo de login
+				}
+				else
+				{
+					this.router.navigate(['/load_resources']);
+				}
+			}, 1000);
 		});
 	}
 }

@@ -98,6 +98,10 @@ export class GlobaisService
 		self.itemCarregamento = 'Localizações';
 		await self.catalogosSrv.localizacoes.getAll();
 		self.catalogosSrv.localizacoes.startTrackingChanges();
+
+		self.itemCarregamento = 'Solicitações de Contato';
+		await self.catalogosSrv.solicitacoesContato.getAll();
+		self.catalogosSrv.solicitacoesContato.startTrackingChanges();
 	}
 
 	async encerrarCatalogos()
@@ -117,5 +121,6 @@ export class GlobaisService
 		self.catalogosSrv.formasPagamento.stopTrackingChanges();
 		self.catalogosSrv.formasPagamentoTaxistas.stopTrackingChanges();
 		self.catalogosSrv.localizacoes.stopTrackingChanges();
+		self.catalogosSrv.solicitacoesContato.stopTrackingChanges();
 	}
 }

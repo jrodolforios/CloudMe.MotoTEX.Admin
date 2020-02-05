@@ -1,19 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThemeModule } from '../../@theme/theme.module';
-import { TaxistasRoutingModule } from './passageiros-routing.module';
+import { SolicitacaoContatoComponent } from './solicitacao-contato.component';
+import { Routes, RouterModule } from '@angular/router';
 import { NbCardModule, NbListModule, NbInputModule, NbIconModule, NbActionsModule, NbDialogModule, NbSpinnerModule, NbAlertModule, NbUserModule, NbTooltipModule, NbLayoutModule, NbSelectModule, NbAccordionModule, NbButtonModule } from '@nebular/theme';
-import { CommonViewsModule } from '../../common-views/common-views.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PassageirosComponent } from './passageiros.component';
+import { CommonViewsModule } from '../../common-views/common-views.module';
+import { ThemeModule } from '../../@theme/theme.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+const routes: Routes = [
+	{
+		path: '',
+		component: SolicitacaoContatoComponent,
+	},
+];
+
 @NgModule({
-	declarations: [
-		PassageirosComponent,
-	],
-	imports: [
-		CommonModule,
+  declarations: [SolicitacaoContatoComponent],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+
+    CommonModule,
 		ThemeModule,
 		FormsModule,
 		ReactiveFormsModule,
@@ -21,7 +29,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 		NbTooltipModule,
 		CommonViewsModule,
 		NbAlertModule,
-		TaxistasRoutingModule,
 		NbCardModule,
 		NbListModule,
 		NbInputModule,
@@ -33,6 +40,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 		NbAccordionModule,
 		NbButtonModule,
 		NgxPaginationModule
-	],
+  ]
 })
-export class PassageirosModule { }
+export class SolicitacaoContatoModule { }

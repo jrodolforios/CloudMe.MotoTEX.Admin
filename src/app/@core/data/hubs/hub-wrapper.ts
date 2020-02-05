@@ -36,6 +36,11 @@ export class HubWrapper
 		const self = this;
 		self.intentionalTrackingStop = false;
 
+		if (self.hubConnection.state === signalR.HubConnectionState.Connected)
+		{
+			return;
+		}
+
 		return new Promise(async (resolve, reject) =>
 		{
 			await self.hubConnection.start()
@@ -54,6 +59,7 @@ export class HubWrapper
 	private reconnect()
 	{
 		const self = this;
+
 		setTimeout(async () =>
 		{
 			await self.connect();
@@ -65,6 +71,11 @@ export class HubWrapper
 	{
 		const self = this;
 		self.intentionalTrackingStop = true;
+
+		if (self.hubConnection.state === signalR.HubConnectionState.Disconnected)
+		{
+			return;
+		}
 
 		return self.hubConnection.stop();
 	}

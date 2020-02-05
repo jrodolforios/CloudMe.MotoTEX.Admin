@@ -52,7 +52,7 @@ export class CarregamentoComponent implements OnInit  {
 		*/
 
 
-		if (usr.tipo > 1) // não é administrador nem usuário master
+		if (!usr || usr.tipo > 1) // não é administrador nem usuário master
 		{
 			self.router.navigate(['/nao_autorizado']);
 		}

@@ -5,6 +5,8 @@ import { NbCardModule, NbLayoutModule } from '@nebular/theme';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { Routes, RouterModule } from '@angular/router';
 
+import { CookieService } from 'ngx-cookie-service';
+
 const routes: Routes = [
 	{
 		path: '',
@@ -22,6 +24,7 @@ const routes: Routes = [
 		RouterModule.forChild(routes),
 		NbLayoutModule,
 		NbCardModule
-	]
+	],
+	providers: [CookieService]
 })
 export class NaoAutorizadoModule { }

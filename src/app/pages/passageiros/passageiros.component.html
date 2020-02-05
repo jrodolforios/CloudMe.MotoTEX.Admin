@@ -18,6 +18,11 @@
                     <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaPassageiro.value"></nb-action>
                   </div>
                   <div class="row">
+                    <label class="label col-sm-3">CPF</label>
+                    <input class="col inputSearch" nbTooltip="Digite o CPF" fullWidth type="text" nbInput shape="semi-round" placeholder="Digite o CPF..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroCPF">
+                    <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroCPF=''" [disabled]="!filtroCPF"></nb-action>
+                  </div>
+                  <div class="row">
                     <label class="label col-sm-3">Situação</label>
                     <nb-select class="col" placeholder="Filtrar por situação" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroSituacao">
                       <nb-option [value]="null">Todos</nb-option>
@@ -32,16 +37,34 @@
                     </div>
                   </div>
               </form>
-            </div>
+            </div>            
+            <div class="row p-3 align-items-center">
+              <div class="col p-0">
+                <label>Passageiros por página</label><br>
+                <nb-select class="col-auto" [(selected)]="itemsPerPage">
+                    <nb-option [value]="+10">10</nb-option>
+                    <nb-option [value]="+50">50</nb-option>
+                    <nb-option [value]="+100">100</nb-option>
+                </nb-select>
+              </div>
+              <div class="col p-0">
+                <pagination-controls class="pg_ctrl col-auto" 
+                  id="paginator"
+                  (pageChange)="currentPage = $event"
+                  nextLabel=""
+                  previousLabel="">
+                </pagination-controls>  
+              </div>
+            </div>            
             <div class="row">
               <nb-list class="col own-scroll"
                 nbInfiniteList
                 [threshold]="500">
-                <nb-list-item *ngFor="let passageiro of passageirosPesquisa">
+                <nb-list-item *ngFor="let passageiro of passageirosPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
                   <div class="container">
                     <div class="row h4 nome">
                       <div class="col-8 nome_passageiro" (click)="visualizar(passageiro)">
-                        {{passageiro.usuario ? passageiro.usuario.nome : "Desconhecido" }}
+                        {{passageiro.usuario ? passageiro.usuario.nome : "Desconhecido" }} ({{(passageiro.usuario && passageiro.usuario.credenciais) ? passageiro.usuario.credenciais.login : ''}})
                       </div>
                       <div class="col-4">
                         <nb-actions class="actions_passageiro" size="small">
@@ -65,9 +88,9 @@
                       </div>
                       <div class="col">
                         <nb-user
-                          size="giant"
-                          [picture]="'data:image/jpeg;base64,' + passageiro['foto']?.dados"
-                          onlyPicture="true"
+                          size="medium"
+                          [picture]="passageiro['foto']?.dados"
+                          onlyPicture
                           shape="rectangle">
                         </nb-user>
                       </div>

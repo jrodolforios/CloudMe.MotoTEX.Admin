@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
 	selector: 'ngx-nao-autorizado',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NaoAutorizadoComponent implements OnInit {
 
-	constructor() { }
+	constructor(private cookieService: CookieService) { }
 
-	ngOnInit() {
+	ngOnInit()
+	{
+		this.cookieService.deleteAll();
 	}
 
 }

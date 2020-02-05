@@ -40,8 +40,8 @@ export interface CatalogApiInterface<T>
 	delete(id: string): Promise<boolean>;
 }
 
-const baseEndpointUrl: string = 'https://api.mototex.cloudme.com.br/notifications';
-// const baseEndpointUrl = 'http://localhost:5002/notifications';
+// const baseEndpointUrl: string = 'https://api.mototex.cloudme.com.br/notifications';
+const baseEndpointUrl = 'http://localhost:5002/notifications';
 
 export class ApiCatalog<T> extends Catalog<T>
 {
@@ -122,7 +122,7 @@ export class ApiCatalog<T> extends Catalog<T>
 		const self = this;
 		return new Promise(async (resolve, reject) =>
 		{
-			await self.apiInterface.get(id).then(result =>
+			self.apiInterface.get(id).then(result =>
 			{
 				const item = self.findItem(id);
 				if (!item)
@@ -149,7 +149,7 @@ export class ApiCatalog<T> extends Catalog<T>
 
 		return new Promise(async (resolve, reject) =>
 		{
-			await self.apiInterface.getAll().then(new_items =>
+			self.apiInterface.getAll().then(new_items =>
 			{
 				self.load(new_items);
 				resolve(new_items);
@@ -167,7 +167,7 @@ export class ApiCatalog<T> extends Catalog<T>
 
 		return new Promise(async (resolve, reject) =>
 		{
-			await self.apiInterface.post(item).then(async id =>
+			self.apiInterface.post(item).then(async id =>
 			{
 				await self.get(id); // obtém do server o objeto criado
 				resolve(id ? true : false);
@@ -185,7 +185,7 @@ export class ApiCatalog<T> extends Catalog<T>
 
 		return new Promise(async (resolve, reject) =>
 		{
-			await self.apiInterface.put(item).then(async result =>
+			self.apiInterface.put(item).then(async result =>
 			{
 				await self.get(item['id']); // obtém do server as alterações realizadas
 				resolve(result);
@@ -210,7 +210,7 @@ export class ApiCatalog<T> extends Catalog<T>
 
 		return new Promise(async (resolve, reject) =>
 		{
-			await self.apiInterface.delete(id).then(result =>
+			self.apiInterface.delete(id).then(result =>
 			{
 				self.remove([item]);
 				resolve(result);

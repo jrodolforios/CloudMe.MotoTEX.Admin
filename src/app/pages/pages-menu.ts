@@ -41,7 +41,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
 	},
 	{
 		title: 'Financeiro',
-		icon: 'layers-outline',
+		icon: 'activity-outline',
 		link: '/pages/configuracoes',
 	},
 	{
@@ -65,7 +65,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
 	{
 		title: 'Solicitações de contato',
 		icon: 'message-square-outline',
-		link: '/pages/contactSuport',
+		link: '/pages/contato',
 	},
 		{
 		title: 'FINANCEIRO',

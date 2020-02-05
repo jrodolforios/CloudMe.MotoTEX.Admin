@@ -53,6 +53,11 @@ const routes: Routes = [{
 				.then(m => m.FaturamentoModule),
 		},
 		{
+			path: 'contato',
+			loadChildren: () => import('./solicitacao-contato/solicitacao-contato.module')
+				.then(m => m.SolicitacaoContatoModule),
+		},
+		{
 			path: '',
 			redirectTo: 'dashboard',
 			pathMatch: 'full',

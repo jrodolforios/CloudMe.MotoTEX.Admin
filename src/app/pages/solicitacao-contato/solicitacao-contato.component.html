@@ -1,0 +1,151 @@
+<nb-layout class="overlay">
+    <nb-layout-column class="overlay">
+      <div class="row">
+        <div class="col-md-5">
+          <base-card #card_listagem>
+            <div header>CONTATOS ({{quantidadeContatos}})</div>
+            <div body class="container">
+              <div class="row actions">
+                <nb-actions size="small" class="col-auto">
+                  <nb-action [nbTooltip]="exibirFiltros ? 'Ocultar filtros' : 'Exibir filtros'" class="col-auto" icon="funnel-outline" (click)="exibirFiltros = !exibirFiltros"></nb-action>
+                </nb-actions>
+              </div>
+              <div class="row filtros" *ngIf="exibirFiltros">
+                <form class="container">
+                    <div class="row">
+                      <label class="label col-sm-3">Nome</label>
+                      <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaContato fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
+                      <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaContato.value"></nb-action>
+                    </div>
+                    <div class="row">
+                      <label class="label col-sm-3">CPF</label>
+                      <input class="col inputSearch" nbTooltip="Digite o CPF" fullWidth type="text" nbInput shape="semi-round" placeholder="Digite o CPF..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroCPF">
+                      <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroCPF=''" [disabled]="!filtroCPF"></nb-action>
+                    </div>
+                    <div class="row">
+                      <label class="label col-sm-3">Situação</label>
+                      <nb-select class="col" placeholder="Filtrar por situação" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroSituacao">
+                        <nb-option [value]="null">Todos</nb-option>
+                        <nb-option [value]="true">Ativos</nb-option>
+                        <nb-option [value]="false">Inativos</nb-option>
+                      </nb-select>
+                      <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroSituacao=null" [disabled]="filtroSituacao === null"></nb-action>
+                    </div>                              
+                    <div class="row">
+                      <div class="offset-sm-3 col-sm-9">
+                        <button nbButton fullWidth status="info" shape="semi-round" (click)="limparFiltros()">Limpar filtros</button>
+                      </div>
+                    </div>
+                </form>
+              </div>            
+              <div class="row p-3 align-items-center">
+                <div class="col p-0">
+                  <label>Contatos por página</label><br>
+                  <nb-select class="col-auto" [(selected)]="itemsPerPage">
+                      <nb-option [value]="+10">10</nb-option>
+                      <nb-option [value]="+50">50</nb-option>
+                      <nb-option [value]="+100">100</nb-option>
+                  </nb-select>
+                </div>
+                <div class="col p-0">
+                  <pagination-controls class="pg_ctrl col-auto" 
+                    id="paginator"
+                    (pageChange)="currentPage = $event"
+                    nextLabel=""
+                    previousLabel="">
+                  </pagination-controls>  
+                </div>
+              </div>            
+              <div class="row">
+                <nb-list class="col own-scroll"
+                  nbInfiniteList
+                  [threshold]="500">
+                  <nb-list-item *ngFor="let contato of contatoPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
+                    <div class="container">
+                      <div class="row h4 nome">
+                        <div class="col-8 nome_contato" (click)="visualizar(contato)">
+                          {{ contato.assunto }}
+                        </div>
+                        <div class="col-4">
+                        </div>
+                      </div>
+                      <div class="row sumario">
+                        <div class="col propriedade">
+                          <div class="nome_propriedade">Nome</div>
+                          <div class="valor_propriedade">{{ contato.nome }}</div>
+                        </div>
+                        <div class="col propriedade">
+                          <div class="nome_propriedade">E-mail</div>
+                          <div class="valor_propriedade">{{ contato.email }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </nb-list-item>
+                </nb-list>
+              </div>
+              <br/>
+              <br/>
+              <nb-alert status="info" *ngIf="contatoPesquisa.length === 0 || contatoPesquisa == null || contatoPesquisa == undefined">
+                Sem registros para exibir
+              </nb-alert>
+            </div>
+          </base-card>
+        </div>
+        <div class="col-md-7">
+          <base-card #card_detalhes>
+            <div header>DETALHES DE {{contato ? contato.assunto : ''}}</div>
+            <div class="container" body>
+              <nb-actions size="small" >
+                <nb-action icon="arrowhead-down-outline" nbTooltip="Expandir abas"  (click)="expandir()"></nb-action>
+                <nb-action icon="arrowhead-up-outline" nbTooltip="Encolher abas"  (click)="encolher()"></nb-action>
+              </nb-actions><br>
+  
+              <nb-accordion multi #abas>
+                <nb-accordion-item>
+                  <nb-accordion-item-header>
+                      Dados do solicitante
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <div class="row sumario">
+                        <div class="col propriedade">
+                          <div class="nome_propriedade">Nome</div>
+                          <div class="valor_propriedade">{{contato ? contato.nome : 'nenhum'}}</div>
+                        </div>
+                        <div class="col propriedade">
+                          <div class="nome_propriedade">E-mail</div>
+                          <div class="valor_propriedade">{{contato ? contato.email : 'nenhum'}}</div>
+                        </div>
+                      </div>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+  
+                <nb-accordion-item>
+                  <nb-accordion-item-header>
+                      Contato
+                  </nb-accordion-item-header>
+                  <nb-accordion-item-body>
+                    <div class="row sumario">
+                        <div class="col propriedade">
+                          <div class="nome_propriedade">Assunto</div>
+                          <div class="valor_propriedade">{{contato ? contato.assunto : 'nenhum'}}</div>
+                        </div>
+                      </div>
+                      <div class="row sumario">
+                        <div class="col propriedade">
+                          <div class="nome_propriedade">Conteudo</div>
+                          <div class="valor_propriedade">{{contato ? contato.conteudo : 'nenhum'}}</div>
+                        </div>
+                      </div>
+                  </nb-accordion-item-body>
+                </nb-accordion-item>
+              </nb-accordion>
+            </div>
+          </base-card>
+        </div>
+      </div>
+    </nb-layout-column>
+  </nb-layout>
+  
+  
+  
+  

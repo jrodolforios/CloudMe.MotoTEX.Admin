@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { CredenciaisUsuario } from '../../../../api/to_de_taxi/models';
+import { UsuarioService } from '../../../../api/to_de_taxi/services';
 
 export const conferirSenhaValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null =>
 {
@@ -63,6 +64,11 @@ export class FormCredenciaisComponent implements OnInit, OnDestroy {
 
 	ngOnInit()
 	{
+		const self = this;
+		self.form.patchValue(
+			{
+				login: self._credenciais ? self._credenciais.login : '',
+			});
 	}
 
 	ngOnDestroy(): void

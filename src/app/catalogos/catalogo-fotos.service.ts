@@ -21,13 +21,13 @@ class FotoApiInterface implements CatalogApiInterface<FotoSummary>
 		}
 	}
 
-	async get(id: string): Promise<FotoSummary>
+	get(id: string): Promise<FotoSummary>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.fotoSrv.ApiV1FotoByIdGet(id).toPromise().then(resp =>
+			self.fotoSrv.ApiV1FotoByIdGet(id).toPromise().then(resp =>
 			{
 				if (resp && resp.data)
 				{
@@ -38,13 +38,13 @@ class FotoApiInterface implements CatalogApiInterface<FotoSummary>
 		});
 	}
 
-	async getAll(): Promise<FotoSummary[]>
+	getAll(): Promise<FotoSummary[]>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.fotoSrv.ApiV1FotoGet().toPromise().then(resp =>
+			self.fotoSrv.ApiV1FotoGet().toPromise().then(resp =>
 			{
 				if (resp && resp.data)
 				{
@@ -58,39 +58,39 @@ class FotoApiInterface implements CatalogApiInterface<FotoSummary>
 		});
 	}
 
-	async post(item: FotoSummary): Promise<string>
+	post(item: FotoSummary): Promise<string>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.fotoSrv.ApiV1FotoPost(item).toPromise().then(resp =>
+			self.fotoSrv.ApiV1FotoPost(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<string>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async put(item: FotoSummary): Promise<boolean>
+	put(item: FotoSummary): Promise<boolean>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.fotoSrv.ApiV1FotoPut(item).toPromise().then(resp =>
+			self.fotoSrv.ApiV1FotoPut(item).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async delete(id: string): Promise<boolean>
+	delete(id: string): Promise<boolean>
 	{
 		const self = this;
 
-		return new Promise(async (resolve, reject) =>
+		return new Promise((resolve, reject) =>
 		{
-			await self.fotoSrv.ApiV1FotoByIdDelete(id).toPromise().then(resp =>
+			self.fotoSrv.ApiV1FotoByIdDelete(id).toPromise().then(resp =>
 			{
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
 			}).catch(reason => reject(reason));

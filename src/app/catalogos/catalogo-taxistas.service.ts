@@ -14,51 +14,51 @@ class TaxistaApiInterface implements CatalogApiInterface<TaxistaSummary>
 		this.taxistaSrv = taxistaSrv;
 	}
 
-	async get(id: string): Promise<TaxistaSummary> {
+	get(id: string): Promise<TaxistaSummary> {
 		const self = this;
 
-		return new Promise(async (resolve, reject) => {
-			await self.taxistaSrv.ApiV1TaxistaByIdGet(id).toPromise().then(resp => {
+		return new Promise((resolve, reject) => {
+			self.taxistaSrv.ApiV1TaxistaByIdGet(id).toPromise().then(resp => {
 				processResponse(resp as ApiResponse<TaxistaSummary>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async getAll(): Promise<TaxistaSummary[]> {
+	getAll(): Promise<TaxistaSummary[]> {
 		const self = this;
 
-		return new Promise(async (resolve, reject) => {
-			await self.taxistaSrv.ApiV1TaxistaGet().toPromise().then(resp => {
+		return new Promise((resolve, reject) => {
+			self.taxistaSrv.ApiV1TaxistaGet().toPromise().then(resp => {
 				processResponse(resp as ApiResponse<TaxistaSummary[]>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async post(item: TaxistaSummary): Promise<string> {
+	post(item: TaxistaSummary): Promise<string> {
 		const self = this;
 
-		return new Promise(async (resolve, reject) => {
-			await self.taxistaSrv.ApiV1TaxistaPost(item).toPromise().then(resp => {
+		return new Promise((resolve, reject) => {
+			self.taxistaSrv.ApiV1TaxistaPost(item).toPromise().then(resp => {
 				processResponse(resp as ApiResponse<string>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async put(item: TaxistaSummary): Promise<boolean> {
+	put(item: TaxistaSummary): Promise<boolean> {
 		const self = this;
 
-		return new Promise(async (resolve, reject) => {
-			await self.taxistaSrv.ApiV1TaxistaPut(item).toPromise().then(resp => {
+		return new Promise((resolve, reject) => {
+			self.taxistaSrv.ApiV1TaxistaPut(item).toPromise().then(resp => {
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
 	}
 
-	async delete(id: string): Promise<boolean> {
+	delete(id: string): Promise<boolean> {
 		const self = this;
 
-		return new Promise(async (resolve, reject) => {
-			await self.taxistaSrv.ApiV1TaxistaByIdDelete(id).toPromise().then(resp => {
+		return new Promise((resolve, reject) => {
+			self.taxistaSrv.ApiV1TaxistaByIdDelete(id).toPromise().then(resp => {
 				processResponse(resp as ApiResponse<boolean>, resolve, reject);
 			}).catch(reason => reject(reason));
 		});
@@ -75,7 +75,7 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 		super(oauthService, new TaxistaApiInterface(taxistaSrv), 'taxista', 'taxista');
 	}
 
-	async recuperarFoto(taxista: TaxistaSummary, forcar: boolean = false) {
+	recuperarFoto(taxista: TaxistaSummary, forcar: boolean = false) {
 		const self = this;
 
 		const carregando = taxista['carregandoFoto'] !== undefined ? taxista['carregandoFoto'] : false;
@@ -85,10 +85,12 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 
 		taxista['carregandoFoto'] = true;
 
-		const foto = await self.fotos.get(taxista.idFoto);
-		taxista['foto'] = foto;
+		self.fotos.get(taxista.idFoto).then(foto =>
+		{
+			taxista['foto'] = foto;
 
-		taxista['carregandoFoto'] = false;
+			taxista['carregandoFoto'] = false;
+		});
 	}
 
 	liberarFoto(taxista: TaxistaSummary) {

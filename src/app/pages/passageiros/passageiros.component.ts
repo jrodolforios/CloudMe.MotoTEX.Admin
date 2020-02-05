@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ElementRef } fr
 import { BaseCardComponent } from '../../common-views/base-card/base-card.component';
 import { Subscription } from 'rxjs';
 import { NbDialogService, NbToastrService, NbAccordionComponent } from '@nebular/theme';
-import { PassageiroService } from '../../../api/to_de_taxi/services';
+import { PassageiroService, UsuarioService } from '../../../api/to_de_taxi/services';
 import { FormEnderecoComponent } from '../../common-views/forms/form-endereco/form-endereco.component';
 import { FormUsuarioComponent } from '../../common-views/forms/form-usuario/form-usuario.component';
 import { ConfirmDialogComponent } from '../../common-views/confirm-dialog/confirm-dialog.component';
@@ -47,10 +47,15 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 	busyStackListagemSub: Subscription = null;
 	busyStackDetalhesSub: Subscription = null;
 
+	// paginação
+	itemsPerPage: number = 10;
+	currentPage: number = 1;
+
 	constructor(
 		private dialogSrv: NbDialogService,
 		private catalogosSrv: CatalogosService,
-		private toastSrv: NbToastrService)
+		private toastSrv: NbToastrService,
+		private usuarioSrv: UsuarioService)
 	{
 	}
 
@@ -112,12 +117,23 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.passageiros = self.catalogosSrv.passageiros.items.sort((passg1, passg2) =>
 		{
+			if (!passg1.usuario || !passg2.usuario)
+			{
+				return passg1.usuario ? 1 : (passg2.usuario ? -1 : 0);
+			}
 			return passg1.usuario.nome.localeCompare(passg2.usuario.nome);
 		});
 
+		// await self.passageiros.forEach(async x =>{
+		// 	await self.usuarioSrv.ApiV1UsuarioByIdGet(x.usuario.id).toPromise().then(y =>{
+		// 		if(y.success)
+		// 			x.usuario.credenciais = y.data.credenciais;
+		// 	})
+		// });
+
 		self.passageiros.forEach(async tx =>
 			{
-				await self.catalogosSrv.passageiros.recuperarFoto(tx);
+				self.catalogosSrv.passageiros.recuperarFoto(tx);
 			});
 
 		self.filtrarPassageiros();
@@ -206,6 +222,18 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 		return this._filtroSituacao;
 	}
 
+	_filtroCPF: string = null;
+	set filtroCPF(value: string)
+	{
+		const self = this;
+		self._filtroCPF = value;
+		self.filtrarPassageiros();
+	}
+	get filtroCPF(): string
+	{
+		return this._filtroCPF;
+	}
+
 	_filtroPesquisa: string = '';
 	set filtroPesquisa(value: string)
 	{
@@ -244,6 +272,11 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 				passa_filtro = passageiro.usuario.nome.toUpperCase().includes(self.filtroPesquisa.toUpperCase());
 			}
 
+			if (self.filtroCPF)
+			{
+				passa_filtro = passageiro.usuario.cpf.toUpperCase().includes(self.filtroCPF.toUpperCase());
+			}
+
 			if (self.filtroSituacao !== null)
 			{
 				passa_filtro = passa_filtro && passageiro.ativo === self.filtroSituacao;
@@ -257,6 +290,7 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		const self = this;
 		self.filtroPesquisa = '';
+		self.filtroCPF = '';
 		self.filtroSituacao = null;
 		self.filtroPontoTaxi = self.todosPontosTaxi;
 

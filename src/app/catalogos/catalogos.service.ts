@@ -12,6 +12,7 @@ import { CatalogoCorVeiculos } from './catalogo-cores-veiculos.service';
 import { CatalogoPassageiros } from './catalogo-passageiros.service';
 import { CatalogoFotos } from './catalogo-fotos.service';
 import { CatalogoLocalizacoes } from './catalogo-localizacoes.service';
+import { CatalogoContatos } from './catalogo-Contatos.service';
 
 @Injectable()
 export class CatalogosService
@@ -31,7 +32,8 @@ export class CatalogosService
 		public formasPagamentoTaxistas: CatalogoFormasPagamentoTaxistas,
 		public tarifas: CatalogoTarifas,
 		public cores: CatalogoCorVeiculos,
-		public localizacoes: CatalogoLocalizacoes)
+		public localizacoes: CatalogoLocalizacoes,
+		public solicitacoesContato: CatalogoContatos)
 	{
 	}
 }

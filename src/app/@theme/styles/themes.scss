@@ -166,9 +166,9 @@ $nb-themes: nb-register-theme((
 
   actions-icon-color: #222222,
 
-  spinner-background-color: rgba(0, 0, 0, 0.8),
-  spinner-circle-filled-color: #ffff00,
-  spinner-text-color: white,
+  spinner-basic-background-color: rgba(0, 0, 0, 0.8),
+  spinner-basic-circle-filled-color: #ffff00,
+  spinner-text-color: 'white',
 
   //accordion-item-background-color: #808080,
   //accordion-header-text-color: #ffff00,
