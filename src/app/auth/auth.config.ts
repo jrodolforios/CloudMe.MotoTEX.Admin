@@ -2,8 +2,8 @@ import { AuthConfig } from 'angular-oauth2-oidc';
 
 export const authConfig: AuthConfig =
 {
-	issuer: 'http://localhost:5000',
-	// issuer: 'https://auth.mototex.cloudme.com.br',
+	// issuer: 'http://localhost:5000',
+	issuer: 'https://auth.mototex.cloudme.com.br',
 	clientId: 'MotoTEXAPI_admin',
 	redirectUri: window.location.origin + '/auth/callback',
 	postLogoutRedirectUri: window.location.origin,
