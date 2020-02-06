@@ -137,9 +137,10 @@
                       <form [formGroup]="form" class="container">
                         <fieldset [disabled]="desabilitarControles">
                           <label>Número</label>
-                          <input type="number" nbInput placeholder="Número Mototaxista"
-                            (change)="numeroTaxistaAlterado()" class="form-control"
-                            formControlName="numeroIdentificacao">
+                          <input type="number" nbInput placeholder="Número Mototaxista" class="form-control" formControlName="numeroIdentificacao">
+                          <div *ngIf="numeroIdentificacao.invalid && (numeroIdentificacao.dirty || numeroIdentificacao.touched)" class="alert alert-danger">
+                            <div *ngIf="numeroIdentificacao.errors.required">Número do taxista obrigatório.</div>
+                          </div>
                         </fieldset>
                       </form>
                       <!-- <div *ngIf="rg.invalid && (rg.dirty || rg.touched)" class="alert alert-danger">

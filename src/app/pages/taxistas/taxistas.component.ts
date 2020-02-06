@@ -12,7 +12,7 @@ import { TaxistaSummary, PontoTaxiSummary } from '../../../api/to_de_taxi/models
 import { BusyStack } from '../../@core/utils/busy_stack';
 import { CatalogosService } from '../../catalogos/catalogos.service';
 import { CompositorMensagemComponent } from '../../common-views/compositor-mensagem/compositor-mensagem.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export enum Modo
 {
@@ -41,6 +41,24 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	@ViewChild('formEndereco', null) formEndereco: FormEnderecoComponent;
 	@ViewChild('formCredenciais', null) formCredenciais: FormCredenciaisComponent;
 	@ViewChild('formFoto', null) formFoto: FormFotoComponent;
+
+	form: FormGroup = new FormGroup(
+	{
+		'numeroIdentificacao': new FormControl('', [Validators.required]),
+	});
+
+	get numeroIdentificacao() { return this.form.get('numeroIdentificacao') }
+	get numeroAlterado(): boolean
+	{
+		const self = this;
+
+		if (self.taxista)
+		{
+			return ( self.taxista.numeroIdentificacao !== self.numeroIdentificacao.value );
+		}
+
+		return (self.numeroIdentificacao.touched && self.numeroIdentificacao.dirty);
+	}
 
 	exibirFiltros = false;
 
@@ -71,7 +89,6 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 	busyStackListagemSub: Subscription = null;
 	busyStackDetalhesSub: Subscription = null;
 	busyStackFotoSub: Subscription = null;
-	numeroAlterado: boolean = false;
 
 	get registroAlterado(): boolean
 	{
@@ -84,10 +101,6 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.formCredenciais.alterado ||
 			self.numeroAlterado ||
 			self.formFoto.alterado);
-	}
-
-	numeroTaxistaAlterado(){
-		this.numeroAlterado = true;
 	}
 
 	// paginação
@@ -511,11 +524,6 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		}).catch(() => {});
 	}
 
-	form: FormGroup = new FormGroup(
-		{
-			'numeroIdentificacao': new FormControl('',),
-
-		});
 
 	public async confirmarEdicao()
 	{
@@ -532,7 +540,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			self.taxista.endereco = self.formEndereco.obterAlteracoes();
 			self.taxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
 
-			self.taxista.numeroIdentificacao = +this.form.get('numeroIdentificacao');
+			self.taxista.numeroIdentificacao = +self.numeroIdentificacao.value;
 
 			const foto = self.formFoto.obterAlteracoes();
 
@@ -559,13 +567,19 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		else if (self.modo === Modo.mdEdicao)
 		{
-			self.taxista.numeroIdentificacao = +this.form.get('numeroIdentificacao').value;
-
-			await self.taxistaSrv.ApiV1TaxistaPut(self.taxista).toPromise()
-			.then(resp =>{
-			}).catch(() => { contemErros = true; });
-
 			let atualizou = false;
+			if (self.numeroAlterado)
+			{
+				self.taxista.numeroIdentificacao = +self.numeroIdentificacao.value;
+				await self.taxistaSrv.ApiV1TaxistaPut(self.taxista).toPromise().then(resp =>
+				{
+					if (resp && resp.success)
+					{
+						atualizou = true;
+						self.toastSrv.success('Número do taxista alterado com sucesso!', 'Taxistas');
+					}
+				}).catch(() => { contemErros = true; });
+			}
 			if (self.formUsuario.alterado)
 			{
 				await self.usuarioSrv.ApiV1UsuarioPut(self.formUsuario.obterAlteracoes()).toPromise().then(resp =>
@@ -672,7 +686,9 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		self.formEndereco.redefinir();
 		self.formCredenciais.redefinir();
 		self.formFoto.redefinir();
-		self.numeroAlterado = false;
+		self.form.patchValue({
+			numeroIdentificacao: self.taxista.numeroIdentificacao
+		})
 	}
 
 	get formulariosValidos(): boolean
@@ -682,7 +698,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			(self.formUsuario.form.valid) &&
 			(self.formEndereco.form.valid) &&
 			(!self.formCredenciais.form.touched || self.formCredenciais.form.valid) &&
-			(self.formFoto.form.valid));
+			(self.formFoto.form.valid) &&
+			self.form.valid);
 		/*return (
 			self.formUsuario.form.valid &&
 			self.formEndereco.form.valid &&
