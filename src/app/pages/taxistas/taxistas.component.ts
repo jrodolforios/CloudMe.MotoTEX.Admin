@@ -534,18 +534,19 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		let contemErros = false;
 
+		const dadosTaxista = Object.assign({}, self.taxista);
+
 		if (self.modo === Modo.mdCriacao)
 		{
-			self.taxista.usuario = self.formUsuario.obterAlteracoes();
-			self.taxista.endereco = self.formEndereco.obterAlteracoes();
-			self.taxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
-
-			self.taxista.numeroIdentificacao = +self.numeroIdentificacao.value;
+			dadosTaxista.usuario = self.formUsuario.obterAlteracoes();
+			dadosTaxista.endereco = self.formEndereco.obterAlteracoes();
+			dadosTaxista.usuario.credenciais = self.formCredenciais.obterAlteracoes();
+			dadosTaxista.numeroIdentificacao = +self.numeroIdentificacao.value;
 
 			const foto = self.formFoto.obterAlteracoes();
 
 			// cria o registro do taxista
-			await self.taxistaSrv.ApiV1TaxistaPost(self.taxista).toPromise().then(async resultado =>
+			await self.taxistaSrv.ApiV1TaxistaPost(dadosTaxista).toPromise().then(async resultado =>
 			{
 				if (resultado && resultado.success)
 				{
@@ -570,8 +571,8 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 			let atualizou = false;
 			if (self.numeroAlterado)
 			{
-				self.taxista.numeroIdentificacao = +self.numeroIdentificacao.value;
-				await self.taxistaSrv.ApiV1TaxistaPut(self.taxista).toPromise().then(resp =>
+				dadosTaxista.numeroIdentificacao = +self.numeroIdentificacao.value;
+				await self.taxistaSrv.ApiV1TaxistaPut(dadosTaxista).toPromise().then(resp =>
 				{
 					if (resp && resp.success)
 					{
