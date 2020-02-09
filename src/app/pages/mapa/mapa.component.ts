@@ -123,7 +123,7 @@ export class MapaComponent implements OnInit, OnDestroy {
 
 		// self.hubNotificacoesAdmin = new HubWrapper('http://localhost:5002/notifications/admin', () => self.oauthService.getAccessToken());
 		// self.hubNotificacoesAdmin = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
-		self.hubNotificacoesAdmin = new HubWrapper('https://apihom.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
+		self.hubNotificacoesAdmin = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
 	}
 
 	async ngOnInit()

@@ -112,7 +112,7 @@ export class MensagensComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 		// self.hubMensagens = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/mensagens', () => self.oauthService.getAccessToken());
-		self.hubMensagens = new HubWrapper('https://apihom.mototex.cloudme.com.br/notifications/mensagens', () => self.oauthService.getAccessToken());
+		self.hubMensagens = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/mensagens', () => self.oauthService.getAccessToken());
 		// self.hubMensagens = new HubWrapper('http://localhost:5002/notifications/mensagens', () => self.oauthService.getAccessToken());
 	}
 

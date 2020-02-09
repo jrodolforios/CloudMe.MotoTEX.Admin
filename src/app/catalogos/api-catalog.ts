@@ -41,7 +41,7 @@ export interface CatalogApiInterface<T>
 }
 
 // const baseEndpointUrl: string = 'https://api.mototex.cloudme.com.br/notifications';
-const baseEndpointUrl: string = 'https://apihom.mototex.cloudme.com.br/notifications';
+const baseEndpointUrl: string = 'https://api.mototex.cloudme.com.br/notifications';
 // const baseEndpointUrl = 'http://localhost:5002/notifications';
 
 export class ApiCatalog<T> extends Catalog<T>

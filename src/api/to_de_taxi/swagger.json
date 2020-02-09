@@ -16407,7 +16407,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "https://authhom.mototex.cloudme.com.br/connect/authorize",
+      "authorizationUrl": "https://auth.mototex.cloudme.com.br/connect/authorize",
       "scopes": {
         "mototexapi": "mototexapi"
       },

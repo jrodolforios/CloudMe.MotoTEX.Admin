@@ -4,7 +4,7 @@ export const authConfig: AuthConfig =
 {
 	// issuer: 'http://localhost:5000',
 	// issuer: 'https://auth.mototex.cloudme.com.br',
-	issuer: 'https://authhom.mototex.cloudme.com.br',
+	issuer: 'https://auth.mototex.cloudme.com.br',
 	clientId: 'MotoTEXAPI_admin',
 	redirectUri: window.location.origin + '/auth/callback',
 	postLogoutRedirectUri: window.location.origin,

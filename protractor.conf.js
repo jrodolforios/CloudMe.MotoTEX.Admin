@@ -16,7 +16,7 @@ exports.config = {
   },
   directConnect: true,
   // baseUrl: 'http://localhost:4200/',
-  baseUrl: 'https://adminhom.mototex.cloudme.com.br/',
+  baseUrl: 'https://admin.mototex.cloudme.com.br/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
