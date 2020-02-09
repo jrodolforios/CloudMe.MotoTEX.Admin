@@ -12,7 +12,6 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { VeiculoTaxistaSummary } from '../models/veiculo-taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseVeiculoTaxistaSummary } from '../models/response-veiculo-taxista-summary';
-import { ResponseListVeiculoTaxistaSummary } from '../models/response-list-veiculo-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -212,7 +211,7 @@ class VeiculoTaxistaService extends __BaseService {
    * @param id User Id from taxist
    * @return Success
    */
-  ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseListVeiculoTaxistaSummary>> {
+  ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -230,7 +229,7 @@ class VeiculoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseListVeiculoTaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableVeiculoTaxistaSummary>;
       })
     );
   }
@@ -238,9 +237,9 @@ class VeiculoTaxistaService extends __BaseService {
    * @param id User Id from taxist
    * @return Success
    */
-  ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGet(id: string): __Observable<ResponseListVeiculoTaxistaSummary> {
+  ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGet(id: string): __Observable<ResponseIEnumerableVeiculoTaxistaSummary> {
     return this.ApiV1VeiculoTaxistaConsultaVeiculosDeTaxistasByIdGetResponse(id).pipe(
-      __map(_r => _r.body as ResponseListVeiculoTaxistaSummary)
+      __map(_r => _r.body as ResponseIEnumerableVeiculoTaxistaSummary)
     );
   }
 }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 import { Notification } from './notification';
-import { FormaPagamentoTaxistaSummary } from './forma-pagamento-taxista-summary';
-export interface ResponseListFormaPagamentoTaxistaSummary {
+import { FaixaAtivacaoSummary } from './faixa-ativacao-summary';
+export interface ResponseFaixaAtivacaoSummary {
 
   /**
    * Indica se a operação foi bem sucedida
@@ -16,7 +16,7 @@ export interface ResponseListFormaPagamentoTaxistaSummary {
   /**
    * Dados vinculados à resposta da operação (de qualquer formato)
    */
-  data?: Array<FormaPagamentoTaxistaSummary>;
+  data?: FaixaAtivacaoSummary;
 
   /**
    * Utilizado para paginação de resultados

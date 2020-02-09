@@ -12,7 +12,6 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { FaixaDescontoTaxistaSummary } from '../models/faixa-desconto-taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseFaixaDescontoTaxistaSummary } from '../models/response-faixa-desconto-taxista-summary';
-import { ResponseListFaixaDescontoTaxistaSummary } from '../models/response-list-faixa-desconto-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -213,7 +212,7 @@ class FaixaDescontoTaxistaService extends __BaseService {
    * @param id Id from taxist
    * @return Success
    */
-  ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseListFaixaDescontoTaxistaSummary>> {
+  ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseIEnumerableFaixaDescontoTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -231,7 +230,7 @@ class FaixaDescontoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseListFaixaDescontoTaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableFaixaDescontoTaxistaSummary>;
       })
     );
   }
@@ -239,9 +238,9 @@ class FaixaDescontoTaxistaService extends __BaseService {
    * @param id Id from taxist
    * @return Success
    */
-  ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseListFaixaDescontoTaxistaSummary> {
+  ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseIEnumerableFaixaDescontoTaxistaSummary> {
     return this.ApiV1FaixaDescontoTaxistaConsultaIdTaxistaByIdGetResponse(id).pipe(
-      __map(_r => _r.body as ResponseListFaixaDescontoTaxistaSummary)
+      __map(_r => _r.body as ResponseIEnumerableFaixaDescontoTaxistaSummary)
     );
   }
 

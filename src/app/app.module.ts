@@ -45,6 +45,7 @@ import { CatalogoPassageiros } from './catalogos/catalogo-passageiros.service';
 import { CatalogoFotos } from './catalogos/catalogo-fotos.service';
 import { CatalogoLocalizacoes } from './catalogos/catalogo-localizacoes.service';
 import { CatalogoContatos } from './catalogos/catalogo-Contatos.service';
+import { CatalogoSolicitacoesCorrida } from './catalogos/catalogo-solicitacoes-corrida';
 
 export function oAuthStorageFactory(): OAuthStorage
 {
@@ -53,7 +54,8 @@ export function oAuthStorageFactory(): OAuthStorage
 
 /*export const options: Partial<IConfig> = {
 };*/
-const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
+// const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
+const motoTexAPIBaseURL = 'https://apihom.mototex.cloudme.com.br';
 // const motoTexAPIBaseURL = 'http://localhost:5002';
 
 @NgModule({
@@ -106,6 +108,7 @@ const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
 		CatalogoCorVeiculos,
 		CatalogoLocalizacoes,
 		CatalogoContatos,
+		CatalogoSolicitacoesCorrida,
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: ErrorInterceptor,

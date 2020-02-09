@@ -95,13 +95,16 @@ export class GlobaisService
 		await self.catalogosSrv.formasPagamentoTaxistas.getAll();
 		self.catalogosSrv.formasPagamentoTaxistas.startTrackingChanges();
 
-		self.itemCarregamento = 'Localizações';
+		/*self.itemCarregamento = 'Localizações';
 		await self.catalogosSrv.localizacoes.getAll();
-		self.catalogosSrv.localizacoes.startTrackingChanges();
+		self.catalogosSrv.localizacoes.startTrackingChanges();*/
 
 		self.itemCarregamento = 'Solicitações de Contato';
 		await self.catalogosSrv.solicitacoesContato.getAll();
 		self.catalogosSrv.solicitacoesContato.startTrackingChanges();
+
+		self.itemCarregamento = 'Solicitações de corrida';
+		self.catalogosSrv.solicitacoesCorrida.startTrackingChanges();
 	}
 
 	async encerrarCatalogos()
@@ -120,7 +123,8 @@ export class GlobaisService
 		self.catalogosSrv.faixasDescontoTaxistas.stopTrackingChanges();
 		self.catalogosSrv.formasPagamento.stopTrackingChanges();
 		self.catalogosSrv.formasPagamentoTaxistas.stopTrackingChanges();
-		self.catalogosSrv.localizacoes.stopTrackingChanges();
+		//self.catalogosSrv.localizacoes.stopTrackingChanges();
 		self.catalogosSrv.solicitacoesContato.stopTrackingChanges();
+		self.catalogosSrv.solicitacoesCorrida.stopTrackingChanges();
 	}
 }

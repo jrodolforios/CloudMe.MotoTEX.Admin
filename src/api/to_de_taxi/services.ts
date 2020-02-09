@@ -4,6 +4,7 @@ export { CorridaService } from './services/corrida.service';
 export { CorVeiculoService } from './services/cor-veiculo.service';
 export { EmergenciaService } from './services/emergencia.service';
 export { EnderecoService } from './services/endereco.service';
+export { FaixaAtivacaoService } from './services/faixa-ativacao.service';
 export { FaixaDescontoService } from './services/faixa-desconto.service';
 export { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
 export { FaturamentoService } from './services/faturamento.service';

@@ -1,7 +1,7 @@
 /* tslint:disable */
 import { Notification } from './notification';
-import { VeiculoTaxistaSummary } from './veiculo-taxista-summary';
-export interface ResponseListVeiculoTaxistaSummary {
+import { FaixaAtivacaoSummary } from './faixa-ativacao-summary';
+export interface ResponseIEnumerableFaixaAtivacaoSummary {
 
   /**
    * Indica se a operação foi bem sucedida
@@ -16,7 +16,7 @@ export interface ResponseListVeiculoTaxistaSummary {
   /**
    * Dados vinculados à resposta da operação (de qualquer formato)
    */
-  data?: Array<VeiculoTaxistaSummary>;
+  data?: Array<FaixaAtivacaoSummary>;
 
   /**
    * Utilizado para paginação de resultados

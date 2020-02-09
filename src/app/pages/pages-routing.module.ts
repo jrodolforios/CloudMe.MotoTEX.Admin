@@ -48,9 +48,19 @@ const routes: Routes = [{
 				.then(m => m.MapaModule),
 		},
 		{
+			path: 'dashboard',
+			loadChildren: () => import('./dashboard/dashboard.module')
+				.then(m => m.DashboardModule),
+		},
+		{
 			path: 'faturamento',
 			loadChildren: () => import('./faturamento/faturamento.module')
 				.then(m => m.FaturamentoModule),
+		},
+		{
+			path: 'faixas_ativacao',
+			loadChildren: () => import('./faixas-ativacao/faixas-ativacao.module')
+				.then(m => m.FaixasAtivacaoModule),
 		},
 		{
 			path: 'contato',

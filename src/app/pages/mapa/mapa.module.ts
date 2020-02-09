@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapaComponent } from './mapa.component';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 import { CommonViewsModule } from '../../common-views/common-views.module';
-import { NbLayoutModule, NbToastrService, NbToastrModule } from '@nebular/theme';
+import { NbLayoutModule, NbToastrModule } from '@nebular/theme';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
@@ -24,7 +25,8 @@ const routes: Routes = [
 		AgmCoreModule.forRoot(
 		{
 			apiKey: 'AIzaSyAP_Xy-1QSclKYAvxSmAZO2BuFAWWAlOZQ'
-		})
+		}),
+		AgmDirectionModule
 	]
 })
 export class MapaModule { }

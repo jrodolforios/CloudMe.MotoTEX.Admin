@@ -50,6 +50,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		link: '/pages/admins',
 	},
 	{
+		title: 'Faixas de Ativação',
+		icon: 'radio-button-on-outline',
+		link: '/pages/faixas_ativacao',
+	},
+	{
 		title: 'OPERAÇÕES',
 		group: true,
 	},

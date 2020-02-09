@@ -24,6 +24,7 @@ class SolicitacaoCorridaService extends __BaseService {
   static readonly ApiV1SolicitacaoCorridaByIdDeletePath = '/api/v1/SolicitacaoCorrida/{id}';
   static readonly ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostPath = '/api/v1/SolicitacaoCorrida/acao_taxista/{id}';
   static readonly ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPostPath = '/api/v1/SolicitacaoCorrida/recuperar_solicitacoes_em_espera';
+  static readonly ApiV1SolicitacaoCorridaRecuperarSolicitacoesAtivasPostPath = '/api/v1/SolicitacaoCorrida/recuperar_solicitacoes_ativas';
 
   constructor(
     config: __Configuration,
@@ -299,6 +300,39 @@ class SolicitacaoCorridaService extends __BaseService {
   ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPost(IdTaxista?: string): __Observable<ResponseIListSolicitacaoCorridaSummary> {
     return this.ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPostResponse(IdTaxista).pipe(
       __map(_r => _r.body as ResponseIListSolicitacaoCorridaSummary)
+    );
+  }
+
+  /**
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaRecuperarSolicitacoesAtivasPostResponse(): __Observable<__StrictHttpResponse<ResponseIEnumerableSolicitacaoCorridaSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/SolicitacaoCorrida/recuperar_solicitacoes_ativas`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseIEnumerableSolicitacaoCorridaSummary>;
+      })
+    );
+  }
+  /**
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaRecuperarSolicitacoesAtivasPost(): __Observable<ResponseIEnumerableSolicitacaoCorridaSummary> {
+    return this.ApiV1SolicitacaoCorridaRecuperarSolicitacoesAtivasPostResponse().pipe(
+      __map(_r => _r.body as ResponseIEnumerableSolicitacaoCorridaSummary)
     );
   }
 }

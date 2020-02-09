@@ -12,6 +12,7 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { LocalizacaoSummary } from '../models/localizacao-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseLocalizacaoSummary } from '../models/response-localizacao-summary';
+import { ResponseInt32 } from '../models/response-int-32';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +22,9 @@ class LocalizacaoService extends __BaseService {
   static readonly ApiV1LocalizacaoPostPath = '/api/v1/Localizacao';
   static readonly ApiV1LocalizacaoByIdGetPath = '/api/v1/Localizacao/{id}';
   static readonly ApiV1LocalizacaoByIdDeletePath = '/api/v1/Localizacao/{id}';
+  static readonly ApiV1LocalizacaoGetQtTaxistasOnlineGetPath = '/api/v1/Localizacao/get_qt_taxistas_online';
+  static readonly ApiV1LocalizacaoGetLocalizacaoUsuarioGetPath = '/api/v1/Localizacao/get_localizacao_usuario';
+  static readonly ApiV1LocalizacaoGetLocalizacaoTaxistaGetPath = '/api/v1/Localizacao/get_localizacao_taxista';
 
   constructor(
     config: __Configuration,
@@ -203,6 +207,111 @@ class LocalizacaoService extends __BaseService {
   ApiV1LocalizacaoByIdDelete(id: string): __Observable<ResponseBoolean> {
     return this.ApiV1LocalizacaoByIdDeleteResponse(id).pipe(
       __map(_r => _r.body as ResponseBoolean)
+    );
+  }
+
+  /**
+   * @return Success
+   */
+  ApiV1LocalizacaoGetQtTaxistasOnlineGetResponse(): __Observable<__StrictHttpResponse<ResponseInt32>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Localizacao/get_qt_taxistas_online`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseInt32>;
+      })
+    );
+  }
+  /**
+   * @return Success
+   */
+  ApiV1LocalizacaoGetQtTaxistasOnlineGet(): __Observable<ResponseInt32> {
+    return this.ApiV1LocalizacaoGetQtTaxistasOnlineGetResponse().pipe(
+      __map(_r => _r.body as ResponseInt32)
+    );
+  }
+
+  /**
+   * @param IdUsuario undefined
+   * @return Success
+   */
+  ApiV1LocalizacaoGetLocalizacaoUsuarioGetResponse(IdUsuario?: string): __Observable<__StrictHttpResponse<ResponseLocalizacaoSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (IdUsuario != null) __params = __params.set('IdUsuario', IdUsuario.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Localizacao/get_localizacao_usuario`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseLocalizacaoSummary>;
+      })
+    );
+  }
+  /**
+   * @param IdUsuario undefined
+   * @return Success
+   */
+  ApiV1LocalizacaoGetLocalizacaoUsuarioGet(IdUsuario?: string): __Observable<ResponseLocalizacaoSummary> {
+    return this.ApiV1LocalizacaoGetLocalizacaoUsuarioGetResponse(IdUsuario).pipe(
+      __map(_r => _r.body as ResponseLocalizacaoSummary)
+    );
+  }
+
+  /**
+   * @param IdTaxista undefined
+   * @return Success
+   */
+  ApiV1LocalizacaoGetLocalizacaoTaxistaGetResponse(IdTaxista?: string): __Observable<__StrictHttpResponse<ResponseLocalizacaoSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (IdTaxista != null) __params = __params.set('IdTaxista', IdTaxista.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/Localizacao/get_localizacao_taxista`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseLocalizacaoSummary>;
+      })
+    );
+  }
+  /**
+   * @param IdTaxista undefined
+   * @return Success
+   */
+  ApiV1LocalizacaoGetLocalizacaoTaxistaGet(IdTaxista?: string): __Observable<ResponseLocalizacaoSummary> {
+    return this.ApiV1LocalizacaoGetLocalizacaoTaxistaGetResponse(IdTaxista).pipe(
+      __map(_r => _r.body as ResponseLocalizacaoSummary)
     );
   }
 }

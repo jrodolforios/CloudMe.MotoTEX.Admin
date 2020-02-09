@@ -561,9 +561,11 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 								self.toastSrv.success('Registro criado com sucesso!', 'Taxistas');
 								// self.catalogosSrv.taxistas.get(taxista.id); // obtém os atualizados dados do servidor
 							}
+							else contemErros = true;
 						}).catch(() => { contemErros = true; });
 					}
 				}
+				else contemErros = true;
 			}).catch(() => { contemErros = true; });
 		}
 		else if (self.modo === Modo.mdEdicao)
@@ -579,6 +581,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 						atualizou = true;
 						self.toastSrv.success('Número do taxista alterado com sucesso!', 'Taxistas');
 					}
+					else contemErros = true;
 				}).catch(() => { contemErros = true; });
 			}
 			if (self.formUsuario.alterado)
@@ -590,6 +593,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 						atualizou = true;
 						self.toastSrv.success('Informações pessoais alteradas com sucesso!', 'Taxistas');
 					}
+					else contemErros = true;
 				}).catch(() => { contemErros = true; });
 			}
 
@@ -602,6 +606,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 						atualizou = true;
 						self.toastSrv.success('Endereço alterado com sucesso!', 'Taxistas');
 					}
+					else contemErros = true;
 				}).catch(() => { contemErros = true; });
 			}
 
@@ -617,6 +622,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 						atualizou = true;
 						self.toastSrv.success('Credenciais alteradas com sucesso!', 'Taxistas');
 					}
+					else contemErros = true;
 				}).catch(() => { contemErros = true; });
 			}
 
@@ -630,6 +636,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 						await self.catalogosSrv.taxistas.recuperarFoto(self.taxista, true);
 						self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
 					}
+					else contemErros = true;
 				}).catch((e) => { console.log(JSON.stringify(e)); contemErros = true; });
 			}
 

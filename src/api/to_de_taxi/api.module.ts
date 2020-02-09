@@ -9,6 +9,7 @@ import { CorridaService } from './services/corrida.service';
 import { CorVeiculoService } from './services/cor-veiculo.service';
 import { EmergenciaService } from './services/emergencia.service';
 import { EnderecoService } from './services/endereco.service';
+import { FaixaAtivacaoService } from './services/faixa-ativacao.service';
 import { FaixaDescontoService } from './services/faixa-desconto.service';
 import { FaixaDescontoTaxistaService } from './services/faixa-desconto-taxista.service';
 import { FaturamentoService } from './services/faturamento.service';
@@ -51,6 +52,7 @@ import { VeiculoTaxistaService } from './services/veiculo-taxista.service';
     CorVeiculoService,
     EmergenciaService,
     EnderecoService,
+    FaixaAtivacaoService,
     FaixaDescontoService,
     FaixaDescontoTaxistaService,
     FaturamentoService,

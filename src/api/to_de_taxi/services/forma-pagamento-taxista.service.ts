@@ -12,7 +12,6 @@ import { ResponseBoolean } from '../models/response-boolean';
 import { FormaPagamentoTaxistaSummary } from '../models/forma-pagamento-taxista-summary';
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseFormaPagamentoTaxistaSummary } from '../models/response-forma-pagamento-taxista-summary';
-import { ResponseListFormaPagamentoTaxistaSummary } from '../models/response-list-forma-pagamento-taxista-summary';
 @Injectable({
   providedIn: 'root',
 })
@@ -213,7 +212,7 @@ class FormaPagamentoTaxistaService extends __BaseService {
    * @param id Id from taxist
    * @return Success
    */
-  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseListFormaPagamentoTaxistaSummary>> {
+  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetResponse(id: string): __Observable<__StrictHttpResponse<ResponseIEnumerableFormaPagamentoTaxistaSummary>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -231,7 +230,7 @@ class FormaPagamentoTaxistaService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<ResponseListFormaPagamentoTaxistaSummary>;
+        return _r as __StrictHttpResponse<ResponseIEnumerableFormaPagamentoTaxistaSummary>;
       })
     );
   }
@@ -239,9 +238,9 @@ class FormaPagamentoTaxistaService extends __BaseService {
    * @param id Id from taxist
    * @return Success
    */
-  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseListFormaPagamentoTaxistaSummary> {
+  ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGet(id: string): __Observable<ResponseIEnumerableFormaPagamentoTaxistaSummary> {
     return this.ApiV1FormaPagamentoTaxistaConsultaIdTaxistaByIdGetResponse(id).pipe(
-      __map(_r => _r.body as ResponseListFormaPagamentoTaxistaSummary)
+      __map(_r => _r.body as ResponseIEnumerableFormaPagamentoTaxistaSummary)
     );
   }
 

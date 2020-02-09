@@ -52,6 +52,7 @@
     "@nebular/theme": "^4.5.0",
     "@ng-select/ng-select": "^3.6.0",
     "@swimlane/ngx-charts": "^10.1.0",
+    "agm-direction": "^0.7.9",
     "angular-oauth2-oidc": "^8.0.4",
     "angular-resizable-element": "^3.2.6",
     "angular-split": "^3.0.2",

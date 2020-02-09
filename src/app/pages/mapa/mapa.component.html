@@ -5,46 +5,47 @@
   [zoomControl]="true"
   [fullscreenControl]="false"
   [streetViewControl]="false">
-  <agm-marker *ngFor="let locTaxista of taxistas" 
-    [title]="locTaxista.taxista.usuario.nome"
-    [latitude]="locTaxista.localizacao.latitude"
-    [longitude]="locTaxista.localizacao.longitude"
-    iconUrl="/assets/images/taxista_pin.png">
+  <agm-marker *ngFor="let taxista of taxistas" 
+    [title]="taxista.usuario.nome"
+    [latitude]="taxista['localizacao'].latitude"
+    [longitude]="taxista['localizacao'].longitude"
+    iconUrl="/assets/images/taxista_pin.png"
+    [opacity]="taxistaOnLine(taxista) ? 1 : 0.3">
   </agm-marker>
-  <agm-marker *ngFor="let locPassageiro of passageiros" 
-    [title]="locPassageiro.passageiro.usuario.nome"
-    [latitude]="locPassageiro.localizacao.latitude"
-    [longitude]="locPassageiro.localizacao.longitude"
-    iconUrl="/assets/images/passageiro_pin.png">
-  </agm-marker>
+  <div *ngFor="let passageiro of passageiros">
+    <agm-marker *ngIf="passageiro['localizacao']" 
+      [title]="passageiro.usuario.nome"
+      [latitude]="passageiro['localizacao'].latitude"
+      [longitude]="passageiro['localizacao'].longitude"
+      iconUrl="/assets/images/passageiro_pin.png"
+      [opacity]="passageiroOnLine(passageiro) ? 1 : 0.3">
+    </agm-marker>
+  </div>
+  <div *ngFor="let infoSol of infoSolicitacoes">
+    <agm-circle
+      [latitude]="infoSol.faixaAtual.origem.latitude"
+      [longitude]="infoSol.faixaAtual.origem.longitude"
+      [radius]="infoSol.faixaAtual.radius"
+      [fillColor]="infoSol.faixaAtual.fillColor"
+      [fillOpacity]="infoSol.faixaAtual.fillOpacity"></agm-circle>
+    <agm-polyline *ngFor="let cnxTxSol of infoSol.conexoes_taxistas"
+      [strokeColor]="cnxTxSol.linha.strokeColor"
+      [strokeOpacity]="cnxTxSol.linha.strokeOpacity"
+      [strokeWeight]="cnxTxSol.linha.strokeWeight">
+      <agm-polyline-point
+        [latitude]="cnxTxSol.linha.inicio.latitude"
+        [longitude]="cnxTxSol.linha.inicio.longitude">
+      </agm-polyline-point>
+      <agm-polyline-point
+        [latitude]="cnxTxSol.linha.fim.latitude"
+        [longitude]="cnxTxSol.linha.fim.longitude">
+      </agm-polyline-point>
+    </agm-polyline>
+    <agm-direction 
+      [origin]="{lat: infoSol.origem.latitude, lng: infoSol.origem.longitude}"
+      [destination]="{lat: infoSol.destino.latitude, lng: infoSol.destino.longitude}"
+      [renderOptions]="{suppressMarkers: true}"
+      [markerOptions]="{origin: {icon: '/assets/images/start.png'}, destination: {icon: '/assets/images/end.png'}}"
+      ></agm-direction>
+  </div>
 </agm-map>
-
-<!--nb-layout class="overlay">
-  <nb-layout-column class="overlay">
-    <base-card #card_listagem>
-      <div header>MAPA</div>
-      <div body>
-        <agm-map 
-          [latitude]="lat"
-          [longitude]="lng"
-          [zoom]="zoom"
-          [zoomControl]="true"
-          [fullscreenControl]="false"
-          [streetViewControl]="false">
-          <agm-marker *ngFor="let locTaxista of taxistas" 
-            [title]="locTaxista.taxista.usuario.nome"
-            [latitude]="locTaxista.localizacao.latitude"
-            [longitude]="locTaxista.localizacao.longitude"
-            iconUrl="/assets/images/taxista_pin.png">
-          </agm-marker>
-          <agm-marker *ngFor="let locPassageiro of passageiros" 
-            [title]="locPassageiro.passageiro.usuario.nome"
-            [latitude]="locPassageiro.localizacao.latitude"
-            [longitude]="locPassageiro.localizacao.longitude"
-            iconUrl="/assets/images/passageiro_pin.png">
-          </agm-marker>
-        </agm-map>
-      </div>
-    </base-card>
-  </nb-layout-column>
-</nb-layout-->
