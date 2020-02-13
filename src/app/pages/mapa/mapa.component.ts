@@ -8,6 +8,10 @@ import { NbToastrService } from '@nebular/theme';
 import { SolicitacaoCorridaService, FaixaAtivacaoService, LocalizacaoService } from '../../../api/to_de_taxi/services';
 import { CatalogChanges } from '../../catalogos/catalog';
 
+
+//    [iconUrl]="{url: '/assets/images/pin.svg',  rotation: taxista['localizacao'].angulo}"
+
+
 enum StatusMonitoramentoSolicitacaoCorrida
 {
 	Indefinido      = 0,
@@ -122,8 +126,8 @@ export class MapaComponent implements OnInit, OnDestroy {
 		//self.hubLocalizacaoPassageiros = new HubWrapper('http://localhost:5002/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
 
 		// self.hubNotificacoesAdmin = new HubWrapper('http://localhost:5002/notifications/admin', () => self.oauthService.getAccessToken());
-		// self.hubNotificacoesAdmin = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
 		self.hubNotificacoesAdmin = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
+		// self.hubNotificacoesAdmin = new HubWrapper('https://apihom.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
 	}
 
 	async ngOnInit()
@@ -272,7 +276,10 @@ export class MapaComponent implements OnInit, OnDestroy {
 				{
 					taxista['localizacao'].latitude = dados.lat;
 					taxista['localizacao'].longitude = dados.lgt;
+					taxista['localizacao'].angulo = -dados.angulo; // o ângulo é considerado no sentido horário (diferentemente do sistema cartesiano)
 					taxista['last_upd'] = +new Date;
+
+					self.catalogosSrv.taxistas.recuperarFoto(taxista);
 				}
 			});
 
@@ -286,6 +293,7 @@ export class MapaComponent implements OnInit, OnDestroy {
 					passageiro['last_upd'] = +new Date;
 				}
 
+				self.catalogosSrv.passageiros.recuperarFoto(passageiro);
 				//self.passageiros = self.catalogosSrv.passageiros.items;
 			});
 		});
@@ -303,11 +311,12 @@ export class MapaComponent implements OnInit, OnDestroy {
 				taxista['localizacao'] =
 				{
 					latitude: 0,
-					longitude: 0
+					longitude: 0,
+					angulo: 0
 				};
 			}
 		});
-}
+	}
 
 	atualizarPassageiros()
 	{
@@ -325,7 +334,7 @@ export class MapaComponent implements OnInit, OnDestroy {
 				};
 			}
 		});
-}
+	}
 
 	passageiroOnLine(passageiro: PassageiroSummary): boolean
 	{

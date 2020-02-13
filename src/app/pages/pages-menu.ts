@@ -39,11 +39,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 		title: 'CONFIGURAÇÕES',
 		group: true,
 	},
-	{
+	/*{
 		title: 'Financeiro',
 		icon: 'activity-outline',
 		link: '/pages/configuracoes',
-	},
+	},*/
 	{
 		title: 'Administradores',
 		icon: 'person-done-outline',

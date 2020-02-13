@@ -7,11 +7,11 @@ const routes: Routes = [{
 	path: '',
 	component: PagesComponent,
 	children: [
-		{
+		/*{
 			path: 'configuracoes',
 			loadChildren: () => import('./configuracoes/configuracoes.module')
 				.then(m => m.ConfiguracoesModule),
-		},
+		},*/
 		{
 			path: 'taxistas',
 			loadChildren: () => import('./taxistas/taxistas.module')

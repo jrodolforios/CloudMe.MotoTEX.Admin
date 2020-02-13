@@ -7859,6 +7859,59 @@
         ]
       }
     },
+    "/api/v1/Usuario/informar_device_token/{id}": {
+      "post": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Informa token do dispositivo de um usuário.",
+        "operationId": "ApiV1UsuarioInformar_device_tokenByIdPost",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Token de dispositivo",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Response[Boolean]"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "demo_api"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/UsuarioGrupoUsuario": {
       "get": {
         "tags": [
@@ -12867,6 +12920,10 @@
         "latitude": {
           "type": "string"
         },
+        "angulo": {
+          "format": "double",
+          "type": "number"
+        },
         "nomePublico": {
           "type": "string"
         }
@@ -16407,7 +16464,7 @@
   "securityDefinitions": {
     "oauth2": {
       "flow": "implicit",
-      "authorizationUrl": "https://auth.mototex.cloudme.com.br/connect/authorize",
+      "authorizationUrl": "http://localhost:5000/connect/authorize",
       "scopes": {
         "mototexapi": "mototexapi"
       },

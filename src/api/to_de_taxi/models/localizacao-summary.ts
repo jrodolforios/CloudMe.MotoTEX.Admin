@@ -5,5 +5,6 @@ export interface LocalizacaoSummary {
   endereco?: string;
   longitude?: string;
   latitude?: string;
+  angulo?: number;
   nomePublico?: string;
 }

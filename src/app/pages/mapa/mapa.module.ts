@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { MapaComponent } from './mapa.component';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
+import { AgmOverlays } from "agm-overlays";
 import { CommonViewsModule } from '../../common-views/common-views.module';
-import { NbLayoutModule, NbToastrModule } from '@nebular/theme';
+import { NbLayoutModule, NbToastrModule, NbUserModule } from '@nebular/theme';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
@@ -26,7 +27,9 @@ const routes: Routes = [
 		{
 			apiKey: 'AIzaSyAP_Xy-1QSclKYAvxSmAZO2BuFAWWAlOZQ'
 		}),
-		AgmDirectionModule
+		AgmDirectionModule,
+		AgmOverlays,
+		NbUserModule
 	]
 })
 export class MapaModule { }

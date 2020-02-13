@@ -5,13 +5,29 @@
   [zoomControl]="true"
   [fullscreenControl]="false"
   [streetViewControl]="false">
-  <agm-marker *ngFor="let taxista of taxistas" 
+  <agm-overlay *ngFor="let taxista of taxistas" 
+    [latitude]="taxista['localizacao'].latitude"
+    [longitude]="taxista['localizacao'].longitude">
+    <img src="/assets/images/taxista_pin.png" [style.transform]="'rotate(' + taxista['localizacao'].angulo + 'deg)'"/>
+    <agm-info-window>
+      <nb-user
+        size="medium"
+        [name]="taxista.usuario? taxista.usuario.nome: ''"
+        [picture]="taxista['foto']?.dados"
+        shape="circle">
+      </nb-user>
+    </agm-info-window>
+  </agm-overlay>
+
+  <!--agm-marker *ngFor="let taxista of taxistas" 
     [title]="taxista.usuario.nome"
     [latitude]="taxista['localizacao'].latitude"
     [longitude]="taxista['localizacao'].longitude"
-    iconUrl="/assets/images/taxista_pin.png"
+    iconUrl="/assets/images/transp.png"
+    [style.transform]="'rotate(' + taxista['localizacao'].angulo + 'deg)'"
     [opacity]="taxistaOnLine(taxista) ? 1 : 0.3">
-  </agm-marker>
+    <img src="/assets/images/taxista_pin.png"/>
+  </agm-marker-->
   <div *ngFor="let passageiro of passageiros">
     <agm-marker *ngIf="passageiro['localizacao']" 
       [title]="passageiro.usuario.nome"
@@ -19,6 +35,14 @@
       [longitude]="passageiro['localizacao'].longitude"
       iconUrl="/assets/images/passageiro_pin.png"
       [opacity]="passageiroOnLine(passageiro) ? 1 : 0.3">
+      <agm-info-window>
+        <nb-user
+          size="medium"
+          [name]="passageiro.usuario? passageiro.usuario.nome: ''"
+          [picture]="passageiro['foto']?.dados"
+          shape="circle">
+        </nb-user>
+      </agm-info-window>
     </agm-marker>
   </div>
   <div *ngFor="let infoSol of infoSolicitacoes">

@@ -26,6 +26,7 @@ class UsuarioService extends __BaseService {
   static readonly ApiV1UsuarioLoginDisponivelGetPath = '/api/v1/Usuario/login_disponivel';
   static readonly ApiV1UsuarioAlteraCredenciaisByIdPostPath = '/api/v1/Usuario/altera_credenciais/{id}';
   static readonly ApiV1UsuarioBloquearByIdPostPath = '/api/v1/Usuario/bloquear/{id}';
+  static readonly ApiV1UsuarioInformarDeviceTokenByIdPostPath = '/api/v1/Usuario/informar_device_token/{id}';
 
   constructor(
     config: __Configuration,
@@ -373,6 +374,53 @@ class UsuarioService extends __BaseService {
       __map(_r => _r.body as ResponseBoolean)
     );
   }
+
+  /**
+   * @param params The `UsuarioService.ApiV1UsuarioInformarDeviceTokenByIdPostParams` containing the following parameters:
+   *
+   * - `id`: ID do usuário
+   *
+   * - `token`: Token de dispositivo
+   *
+   * @return Success
+   */
+  ApiV1UsuarioInformarDeviceTokenByIdPostResponse(params: UsuarioService.ApiV1UsuarioInformarDeviceTokenByIdPostParams): __Observable<__StrictHttpResponse<ResponseBoolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.token != null) __params = __params.set('token', params.token.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Usuario/informar_device_token/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseBoolean>;
+      })
+    );
+  }
+  /**
+   * @param params The `UsuarioService.ApiV1UsuarioInformarDeviceTokenByIdPostParams` containing the following parameters:
+   *
+   * - `id`: ID do usuário
+   *
+   * - `token`: Token de dispositivo
+   *
+   * @return Success
+   */
+  ApiV1UsuarioInformarDeviceTokenByIdPost(params: UsuarioService.ApiV1UsuarioInformarDeviceTokenByIdPostParams): __Observable<ResponseBoolean> {
+    return this.ApiV1UsuarioInformarDeviceTokenByIdPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseBoolean)
+    );
+  }
 }
 
 module UsuarioService {
@@ -403,6 +451,22 @@ module UsuarioService {
      * Indica se o usuário será ou não bloqueado
      */
     bloquear?: boolean;
+  }
+
+  /**
+   * Parameters for ApiV1UsuarioInformarDeviceTokenByIdPost
+   */
+  export interface ApiV1UsuarioInformarDeviceTokenByIdPostParams {
+
+    /**
+     * ID do usuário
+     */
+    id: string;
+
+    /**
+     * Token de dispositivo
+     */
+    token?: string;
   }
 }
 

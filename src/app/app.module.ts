@@ -54,8 +54,8 @@ export function oAuthStorageFactory(): OAuthStorage
 
 /*export const options: Partial<IConfig> = {
 };*/
-// const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
 const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
+// const motoTexAPIBaseURL = 'https://apihom.mototex.cloudme.com.br';
 // const motoTexAPIBaseURL = 'http://localhost:5002';
 
 @NgModule({
