@@ -251,6 +251,9 @@ export class MapaComponent implements OnInit, OnDestroy {
 					if (cnxTxSol)
 					{
 						switch (dados.acao_taxista) {
+							case AcaoTaxistaSolicitacaoCorrida.Indefinido:
+								cnxTxSol.linha.strokeColor = 'oranged';
+								break;
 							case AcaoTaxistaSolicitacaoCorrida.Aceita:
 								cnxTxSol.linha.strokeColor = 'green';
 								cnxTxSol.linha.strokeWeight = 2;
@@ -260,7 +263,6 @@ export class MapaComponent implements OnInit, OnDestroy {
 								break;
 							case AcaoTaxistaSolicitacaoCorrida.Ignorada:
 								cnxTxSol.linha.strokeColor = 'white';
-								cnxTxSol.linha.strokeOpacity = 0.4;
 								break;
 							default:
 								break;
@@ -295,6 +297,23 @@ export class MapaComponent implements OnInit, OnDestroy {
 
 				self.catalogosSrv.passageiros.recuperarFoto(passageiro);
 				//self.passageiros = self.catalogosSrv.passageiros.items;
+			});
+
+			self.hubNotificacoesAdmin.hubConnection.on('sol_receb_tx', dados =>
+			{
+				// procura a conexão do taxista com a solicitação e muda a cor da linha, dependendo da ação do taxista
+				const infoSol = self.infoSolicitacoes.find(info =>
+				{
+					return info.idSolicitacao === dados.id_solicitacao;
+				});
+
+				if (infoSol)
+				{
+					const cnxTxSol = infoSol.conexoes_taxistas.find(cnx => cnx.taxista.id === dados.id_taxista);
+					if (cnxTxSol)
+					{
+					}
+				}
 			});
 		});
 	}
