@@ -252,7 +252,7 @@ export class MapaComponent implements OnInit, OnDestroy {
 					{
 						switch (dados.acao_taxista) {
 							case AcaoTaxistaSolicitacaoCorrida.Indefinido:
-								cnxTxSol.linha.strokeColor = 'oranged';
+								cnxTxSol.linha.strokeColor = 'aqua';
 								break;
 							case AcaoTaxistaSolicitacaoCorrida.Aceita:
 								cnxTxSol.linha.strokeColor = 'green';

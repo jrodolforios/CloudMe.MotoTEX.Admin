@@ -8,7 +8,9 @@
   <agm-overlay *ngFor="let taxista of taxistas" 
     [latitude]="taxista['localizacao'].latitude"
     [longitude]="taxista['localizacao'].longitude">
-    <img src="/assets/images/taxista_pin.png" [style.transform]="'rotate(' + taxista['localizacao'].angulo + 'deg)'"/>
+    <img src="/assets/images/taxista_pin.png" 
+      [style.transform]="'rotate(' + taxista['localizacao'].angulo + 'deg)'"
+      [style.opacity]="taxistaOnLine(taxista) ? 1 : 0.3"/>
     <agm-info-window>
       <nb-user
         size="medium"
