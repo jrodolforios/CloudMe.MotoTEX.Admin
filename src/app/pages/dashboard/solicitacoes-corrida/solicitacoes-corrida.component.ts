@@ -23,7 +23,7 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 	}
 	public set startDateTime(value: Date) {
 		this._startDateTime = value;
-		this.atualizarEstatisticas();
+		//this.atualizarEstatisticas();
 	}
 
 	private _endDateTime = new Date();
@@ -32,7 +32,7 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 	}
 	public set endDateTime(value: Date) {
 		this._endDateTime = value;
-		this.atualizarEstatisticas();
+		//this.atualizarEstatisticas();
 	}
 
 	constructor(
@@ -42,7 +42,10 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 	ngOnInit()
 	{
 		const self = this;
-		self.atualizarEstatisticas();
+		self.timeout = setInterval(() =>
+		{
+			self.atualizarEstatisticas();
+		}, 2000);
 	}
 
 	ngOnDestroy()
@@ -50,7 +53,7 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 		const self = this;
 		if (self.timeout)
 		{
-			clearTimeout(self.timeout);
+			clearInterval(self.timeout);
 		}
 	}
 
@@ -77,10 +80,5 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 				self.valorMedio = resultado.data.valorMedio;
 			}
 		});
-
-		self.timeout = setTimeout(() =>
-		{
-			self.atualizarEstatisticas();
-		}, 2000);
 	}
 }
