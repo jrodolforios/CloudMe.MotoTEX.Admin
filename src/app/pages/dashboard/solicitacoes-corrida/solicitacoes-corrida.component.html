@@ -1,0 +1,53 @@
+<nb-card size="giant">
+  <nb-card-header>Solicitações de corrida</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col">
+        <label>
+          Data início:
+          <input fullWidth nbInput [owlDateTime]="dtInicio" [owlDateTimeTrigger]="dtInicio" placeholder="Início" [(ngModel)]="startDateTime">
+          <owl-date-time #dtInicio></owl-date-time>
+        </label>
+      </div>
+      <div class="col">
+        <label>
+          Data fim:
+          <input fullWidth nbInput [owlDateTime]="dtFim" [owlDateTimeTrigger]="dtFim" placeholder="Fim" [(ngModel)]="endDateTime">
+          <owl-date-time #dtFim></owl-date-time>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col progress-info">
+        <div class="subtitle">Total de solicitações</div>
+        <div class="h3">{{totalSolicitacoes}}</div>
+      </div>
+      <div class="col progress-info">
+        <div class="subtitle">Valor médio</div>
+        <div class="h3">R$ {{valorMedio | number:'1.2-2'}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col progress-info">
+        <div class="subtitle">Agendadas</div>
+        <div class="h3">{{solAgendadas}}</div>
+      </div>
+      <div class="col progress-info">
+        <div class="subtitle">Interurbanas</div>
+        <div class="h3">{{solInterurbanas}}</div>
+      </div>
+    </div>
+
+    <div class="justify-content-center flex-grow-1" style="width: 100%;">
+      <ngx-charts-pie-chart
+        [results]="pieChartData"
+        scheme="forest"
+        [gradient]="true"
+        [legend]="false"
+        [labels]="true"
+        >
+      </ngx-charts-pie-chart>
+    </div>
+</nb-card-body>
+
+</nb-card>

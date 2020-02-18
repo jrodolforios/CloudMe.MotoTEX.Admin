@@ -5,7 +5,7 @@
  */
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpRequest } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
@@ -46,6 +46,8 @@ import { CatalogoFotos } from './catalogos/catalogo-fotos.service';
 import { CatalogoLocalizacoes } from './catalogos/catalogo-localizacoes.service';
 import { CatalogoContatos } from './catalogos/catalogo-Contatos.service';
 import { CatalogoSolicitacoesCorrida } from './catalogos/catalogo-solicitacoes-corrida';
+import { registerLocaleData } from '@angular/common';
+import br from '@angular/common/locales/br';
 
 export function oAuthStorageFactory(): OAuthStorage
 {
@@ -54,9 +56,11 @@ export function oAuthStorageFactory(): OAuthStorage
 
 /*export const options: Partial<IConfig> = {
 };*/
-const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
+// const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
 // const motoTexAPIBaseURL = 'https://apihom.mototex.cloudme.com.br';
-// const motoTexAPIBaseURL = 'http://localhost:5002';
+const motoTexAPIBaseURL = 'http://localhost:5002';
+
+registerLocaleData(br, 'pt-BR');
 
 @NgModule({
 	declarations: [AppComponent],
@@ -114,7 +118,8 @@ const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
 			useClass: ErrorInterceptor,
 			multi: true
 		},
-		{ provide: OAuthStorage, useFactory: oAuthStorageFactory }
+		{ provide: OAuthStorage, useFactory: oAuthStorageFactory },
+		{provide: LOCALE_ID, useValue: 'pt-BR' }
 	],
 	bootstrap: [AppComponent],
 })

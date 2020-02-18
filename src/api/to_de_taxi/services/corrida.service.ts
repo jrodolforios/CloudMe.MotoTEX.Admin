@@ -14,6 +14,7 @@ import { ResponseGuid } from '../models/response-guid';
 import { ResponseCorridaSummary } from '../models/response-corrida-summary';
 import { ResponseInt32 } from '../models/response-int-32';
 import { ResponseListCorridaSummary } from '../models/response-list-corrida-summary';
+import { ResponseEstatisticasCorridas } from '../models/response-estatisticas-corridas';
 @Injectable({
   providedIn: 'root',
 })
@@ -31,6 +32,7 @@ class CorridaService extends __BaseService {
   static readonly ApiV1CorridaPausarCorridaByIdPostPath = '/api/v1/Corrida/pausar_corrida/{id}';
   static readonly ApiV1CorridaRecuperarApartirDeDataByDataPostPath = '/api/v1/Corrida/recuperar_apartir_de_data/{data}';
   static readonly ApiV1CorridaRetomarCorridaByIdPostPath = '/api/v1/Corrida/retomar_corrida/{id}';
+  static readonly ApiV1CorridaObterEstatisticasPostPath = '/api/v1/Corrida/obter_estatisticas';
 
   constructor(
     config: __Configuration,
@@ -525,6 +527,53 @@ class CorridaService extends __BaseService {
       __map(_r => _r.body as ResponseBoolean)
     );
   }
+
+  /**
+   * @param params The `CorridaService.ApiV1CorridaObterEstatisticasPostParams` containing the following parameters:
+   *
+   * - `inicio`:
+   *
+   * - `fim`:
+   *
+   * @return Success
+   */
+  ApiV1CorridaObterEstatisticasPostResponse(params: CorridaService.ApiV1CorridaObterEstatisticasPostParams): __Observable<__StrictHttpResponse<ResponseEstatisticasCorridas>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.inicio != null) __params = __params.set('inicio', params.inicio.toString());
+    if (params.fim != null) __params = __params.set('fim', params.fim.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/Corrida/obter_estatisticas`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseEstatisticasCorridas>;
+      })
+    );
+  }
+  /**
+   * @param params The `CorridaService.ApiV1CorridaObterEstatisticasPostParams` containing the following parameters:
+   *
+   * - `inicio`:
+   *
+   * - `fim`:
+   *
+   * @return Success
+   */
+  ApiV1CorridaObterEstatisticasPost(params: CorridaService.ApiV1CorridaObterEstatisticasPostParams): __Observable<ResponseEstatisticasCorridas> {
+    return this.ApiV1CorridaObterEstatisticasPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseEstatisticasCorridas)
+    );
+  }
 }
 
 module CorridaService {
@@ -543,6 +592,14 @@ module CorridaService {
   export interface ApiV1CorridaClassificarPassageiroByIdGetParams {
     id: string;
     classificacao?: number;
+  }
+
+  /**
+   * Parameters for ApiV1CorridaObterEstatisticasPost
+   */
+  export interface ApiV1CorridaObterEstatisticasPostParams {
+    inicio?: string;
+    fim?: string;
   }
 }
 

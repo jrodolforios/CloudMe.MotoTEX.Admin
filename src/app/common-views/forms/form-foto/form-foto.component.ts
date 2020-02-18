@@ -16,6 +16,9 @@ export class FormFotoComponent implements OnInit {
 	dadosFoto: any = null;
 	nomeFoto: string = '';
 	nomeArquivoFoto: string = '';
+
+	@Input() readOnly = false;
+
 	public edit = false;
 
 	busyStackFoto = new BusyStack();

@@ -253,10 +253,11 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 		const self = this;
 		await self.obterTaxistas();
 
+		/*self.taxista = null;
 		if (!self.taxista || !self.taxistasPesquisa.find(tx => tx.id === self.taxista.id))
 		{
 			self.taxista = self.taxistasPesquisa.length > 0 ? self.taxistasPesquisa[0] : null;
-		}
+		}*/
 	}
 
 	private async obterTaxistas()
@@ -276,20 +277,24 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 
 		self.filtrarTaxistas();
 
-		self.taxistas.forEach(async tx =>
+		/*self.taxistas.forEach(async tx =>
 		{
 			self.catalogosSrv.taxistas.recuperarFoto(tx);
-		});
+		});*/
 
 		self.busyStackListagem.pop();
 	}
 
 	selecionar(taxista: TaxistaSummary)
 	{
-		this.taxista = taxista;
-		this.form.patchValue({
-			numeroIdentificacao: this.taxista.numeroIdentificacao
-		})
+		const self = this;
+		self.taxista = taxista;
+		self.form.patchValue(
+		{
+			numeroIdentificacao: self.taxista.numeroIdentificacao
+		});
+
+		self.catalogosSrv.taxistas.recuperarFoto(self.taxista);
 	}
 
 	async visualizar(taxista: TaxistaSummary)
@@ -633,7 +638,7 @@ export class TaxistasComponent implements OnInit, AfterViewInit, OnDestroy
 					if (resp && resp.success)
 					{
 						atualizou = true;
-						await self.catalogosSrv.taxistas.recuperarFoto(self.taxista, true);
+						//await self.catalogosSrv.taxistas.recuperarFoto(self.taxista, true);
 						self.toastSrv.success('Foto alterada com sucesso!', 'Taxistas');
 					}
 					else contemErros = true;

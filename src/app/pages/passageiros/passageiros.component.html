@@ -17,11 +17,11 @@
                     <input class="col inputSearch" nbTooltip="Pesquisar" #pesquisaPassageiro fullWidth type="text" nbInput shape="semi-round" placeholder="Pesquisar..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroPesquisa">
                     <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroPesquisa=''" [disabled]="!pesquisaPassageiro.value"></nb-action>
                   </div>
-                  <div class="row">
+                  <!--div class="row">
                     <label class="label col-sm-3">CPF</label>
                     <input class="col inputSearch" nbTooltip="Digite o CPF" fullWidth type="text" nbInput shape="semi-round" placeholder="Digite o CPF..." [ngModelOptions]="{standalone: true}" [(ngModel)]="filtroCPF">
                     <nb-action nbTooltip="Limpar filtro" class="col-auto" icon="close-outline" (click)="filtroCPF=''" [disabled]="!filtroCPF"></nb-action>
-                  </div>
+                  </div-->
                   <div class="row">
                     <label class="label col-sm-3">Situação</label>
                     <nb-select class="col" placeholder="Filtrar por situação" filled status="primary" fullWidth shape="semi-round" [(selected)]="filtroSituacao">
@@ -60,11 +60,11 @@
               <nb-list class="col own-scroll"
                 nbInfiniteList
                 [threshold]="500">
-                <nb-list-item *ngFor="let passageiro of passageirosPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
-                  <div class="container">
+                <nb-list-item class="p-2" *ngFor="let passageiro of passageirosPesquisa | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage }">
+                  <div class="container p-0 m-0">
                     <div class="row h4 nome">
                       <div class="col-8 nome_passageiro" (click)="visualizar(passageiro)">
-                        {{passageiro.usuario ? passageiro.usuario.nome : "Desconhecido" }} ({{(passageiro.usuario && passageiro.usuario.credenciais) ? passageiro.usuario.credenciais.login : ''}})
+                        {{passageiro.usuario ? passageiro.usuario.nome : "Desconhecido" }}
                       </div>
                       <div class="col-4">
                         <nb-actions class="actions_passageiro" size="small">
@@ -73,7 +73,7 @@
                         </nb-actions>
                       </div>
                     </div>
-                    <div class="row sumario">
+                    <!--div class="row sumario">
                       <div class="col propriedade">
                         <div class="nome_propriedade">RG</div>
                         <div class="valor_propriedade">{{ passageiro.usuario.rg }}</div>
@@ -94,7 +94,7 @@
                           shape="rectangle">
                         </nb-user>
                       </div>
-                    </div>
+                    </div-->
                   </div>
                 </nb-list-item>
               </nb-list>
@@ -129,7 +129,7 @@
                 </nb-accordion-item-body>
               </nb-accordion-item>
 
-              <nb-accordion-item>
+              <!--nb-accordion-item>
                 <nb-accordion-item-header>
                     Endereço
                 </nb-accordion-item-header>
@@ -139,7 +139,21 @@
                     [endereco]="endereco">
                   </ngx-form-endereco>
                 </nb-accordion-item-body>
+              </nb-accordion-item-->
+
+              <nb-accordion-item>
+                <nb-accordion-item-header>
+                  Foto
+                </nb-accordion-item-header>
+                <nb-accordion-item-body>
+                  <ngx-form-foto class="formulario" #formFoto
+                    [desabilitarControles]="true"
+                    [foto]="foto"
+                    [readOnly]="true">
+                  </ngx-form-foto>
+                </nb-accordion-item-body>
               </nb-accordion-item>
+
             </nb-accordion>
           </div>
         </base-card>

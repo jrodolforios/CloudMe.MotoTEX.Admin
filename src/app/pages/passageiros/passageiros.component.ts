@@ -131,10 +131,10 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 		// 	})
 		// });
 
-		self.passageiros.forEach(async tx =>
-			{
-				self.catalogosSrv.passageiros.recuperarFoto(tx);
-			});
+		/*self.passageiros.forEach(async tx =>
+		{
+			self.catalogosSrv.passageiros.recuperarFoto(tx);
+		});*/
 
 		self.filtrarPassageiros();
 
@@ -143,7 +143,9 @@ export class PassageirosComponent implements OnInit, AfterViewInit, OnDestroy
 
 	selecionar(passageiro: PassageiroSummary)
 	{
-		this.passageiro = passageiro;
+		const self = this;
+		self.passageiro = passageiro;
+		self.catalogosSrv.passageiros.recuperarFoto(self.passageiro);
 	}
 
 	async visualizar(passageiro: PassageiroSummary)

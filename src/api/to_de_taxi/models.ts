@@ -12,6 +12,8 @@ export { CorridaSummary } from './models/corrida-summary';
 export { ResponseCorridaSummary } from './models/response-corrida-summary';
 export { ResponseInt32 } from './models/response-int-32';
 export { ResponseListCorridaSummary } from './models/response-list-corrida-summary';
+export { ResponseEstatisticasCorridas } from './models/response-estatisticas-corridas';
+export { EstatisticasCorridas } from './models/estatisticas-corridas';
 export { ResponseIEnumerableCorVeiculoSummary } from './models/response-ienumerable-cor-veiculo-summary';
 export { CorVeiculoSummary } from './models/cor-veiculo-summary';
 export { ResponseCorVeiculoSummary } from './models/response-cor-veiculo-summary';
@@ -80,6 +82,8 @@ export { ResponseIEnumerableSolicitacaoCorridaSummary } from './models/response-
 export { SolicitacaoCorridaSummary } from './models/solicitacao-corrida-summary';
 export { ResponseSolicitacaoCorridaSummary } from './models/response-solicitacao-corrida-summary';
 export { ResponseIListSolicitacaoCorridaSummary } from './models/response-ilist-solicitacao-corrida-summary';
+export { ResponseEstatisticasSolicitacoesCorrida } from './models/response-estatisticas-solicitacoes-corrida';
+export { EstatisticasSolicitacoesCorrida } from './models/estatisticas-solicitacoes-corrida';
 export { ResponseIEnumerableTarifaSummary } from './models/response-ienumerable-tarifa-summary';
 export { TarifaSummary } from './models/tarifa-summary';
 export { ResponseDecimal } from './models/response-decimal';

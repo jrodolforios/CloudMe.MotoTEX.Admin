@@ -13,6 +13,7 @@ import { SolicitacaoCorridaSummary } from '../models/solicitacao-corrida-summary
 import { ResponseGuid } from '../models/response-guid';
 import { ResponseSolicitacaoCorridaSummary } from '../models/response-solicitacao-corrida-summary';
 import { ResponseIListSolicitacaoCorridaSummary } from '../models/response-ilist-solicitacao-corrida-summary';
+import { ResponseEstatisticasSolicitacoesCorrida } from '../models/response-estatisticas-solicitacoes-corrida';
 @Injectable({
   providedIn: 'root',
 })
@@ -25,6 +26,7 @@ class SolicitacaoCorridaService extends __BaseService {
   static readonly ApiV1SolicitacaoCorridaAcaoTaxistaByIdPostPath = '/api/v1/SolicitacaoCorrida/acao_taxista/{id}';
   static readonly ApiV1SolicitacaoCorridaRecuperarSolicitacoesEmEsperaPostPath = '/api/v1/SolicitacaoCorrida/recuperar_solicitacoes_em_espera';
   static readonly ApiV1SolicitacaoCorridaRecuperarSolicitacoesAtivasPostPath = '/api/v1/SolicitacaoCorrida/recuperar_solicitacoes_ativas';
+  static readonly ApiV1SolicitacaoCorridaObterEstatisticasPostPath = '/api/v1/SolicitacaoCorrida/obter_estatisticas';
 
   constructor(
     config: __Configuration,
@@ -335,6 +337,53 @@ class SolicitacaoCorridaService extends __BaseService {
       __map(_r => _r.body as ResponseIEnumerableSolicitacaoCorridaSummary)
     );
   }
+
+  /**
+   * @param params The `SolicitacaoCorridaService.ApiV1SolicitacaoCorridaObterEstatisticasPostParams` containing the following parameters:
+   *
+   * - `inicio`:
+   *
+   * - `fim`:
+   *
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaObterEstatisticasPostResponse(params: SolicitacaoCorridaService.ApiV1SolicitacaoCorridaObterEstatisticasPostParams): __Observable<__StrictHttpResponse<ResponseEstatisticasSolicitacoesCorrida>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.inicio != null) __params = __params.set('inicio', params.inicio.toString());
+    if (params.fim != null) __params = __params.set('fim', params.fim.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/v1/SolicitacaoCorrida/obter_estatisticas`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ResponseEstatisticasSolicitacoesCorrida>;
+      })
+    );
+  }
+  /**
+   * @param params The `SolicitacaoCorridaService.ApiV1SolicitacaoCorridaObterEstatisticasPostParams` containing the following parameters:
+   *
+   * - `inicio`:
+   *
+   * - `fim`:
+   *
+   * @return Success
+   */
+  ApiV1SolicitacaoCorridaObterEstatisticasPost(params: SolicitacaoCorridaService.ApiV1SolicitacaoCorridaObterEstatisticasPostParams): __Observable<ResponseEstatisticasSolicitacoesCorrida> {
+    return this.ApiV1SolicitacaoCorridaObterEstatisticasPostResponse(params).pipe(
+      __map(_r => _r.body as ResponseEstatisticasSolicitacoesCorrida)
+    );
+  }
 }
 
 module SolicitacaoCorridaService {
@@ -359,6 +408,14 @@ module SolicitacaoCorridaService {
      * Ação tomada pelo taxista na solicitação
      */
     acao?: 0 | 1 | 2 | 3;
+  }
+
+  /**
+   * Parameters for ApiV1SolicitacaoCorridaObterEstatisticasPost
+   */
+  export interface ApiV1SolicitacaoCorridaObterEstatisticasPostParams {
+    inicio?: string;
+    fim?: string;
   }
 }
 
