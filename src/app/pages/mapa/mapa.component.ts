@@ -125,8 +125,8 @@ export class MapaComponent implements OnInit, OnDestroy {
 		//self.hubLocalizacaoTaxistas = new HubWrapper('http://localhost:5002/notifications/localizacao_taxista', () => self.oauthService.getAccessToken());
 		//self.hubLocalizacaoPassageiros = new HubWrapper('http://localhost:5002/notifications/localizacao_passageiro', () => self.oauthService.getAccessToken());
 
-		self.hubNotificacoesAdmin = new HubWrapper('http://localhost:5002/notifications/admin', () => self.oauthService.getAccessToken());
-		// self.hubNotificacoesAdmin = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
+		// self.hubNotificacoesAdmin = new HubWrapper('http://localhost:5002/notifications/admin', () => self.oauthService.getAccessToken());
+		self.hubNotificacoesAdmin = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
 		// self.hubNotificacoesAdmin = new HubWrapper('https://apihom.mototex.cloudme.com.br/notifications/admin', () => self.oauthService.getAccessToken());
 	}
 

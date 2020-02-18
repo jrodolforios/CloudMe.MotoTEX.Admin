@@ -15,6 +15,8 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 	solInterurbanas: number = 0;
 	valorMedio: number = 0;
 
+	timeout: NodeJS.Timer = null;
+
 	private _startDateTime = new Date(new Date().getFullYear(), 0, 1, 0, 0);
 	public get startDateTime(): Date{
 		return this._startDateTime;
@@ -45,6 +47,11 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 
 	ngOnDestroy()
 	{
+		const self = this;
+		if (self.timeout)
+		{
+			clearTimeout(self.timeout);
+		}
 	}
 
 	async atualizarEstatisticas()
@@ -71,7 +78,7 @@ export class SolicitacoesCorridaComponent implements OnInit, OnDestroy
 			}
 		});
 
-		setTimeout(() =>
+		self.timeout = setTimeout(() =>
 		{
 			self.atualizarEstatisticas();
 		}, 2000);
