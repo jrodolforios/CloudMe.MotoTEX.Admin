@@ -54,11 +54,9 @@ export function oAuthStorageFactory(): OAuthStorage
 	return localStorage;
 }
 
-/*export const options: Partial<IConfig> = {
-};*/
-const motoTexAPIBaseURL = 'https://api.mototex.cloudme.com.br';
-// const motoTexAPIBaseURL = 'https://apihom.mototex.cloudme.com.br';
-// const motoTexAPIBaseURL = 'http://localhost:5002';
+// const baseAPIUrl = 'https://api.mototex.cloudme.com.br';
+const baseAPIUrl = 'https://apihom.mototex.cloudme.com.br';
+// const baseAPIUrl = 'http://localhost:5002';
 
 registerLocaleData(br, 'pt-BR');
 
@@ -91,7 +89,7 @@ registerLocaleData(br, 'pt-BR');
 			messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
 		}),
 		CoreModule.forRoot(),
-		ApiModule.forRoot({rootUrl: motoTexAPIBaseURL}),
+		ApiModule.forRoot({rootUrl: baseAPIUrl}),
 		NgxUidModule.forRoot(),
 	],
 	providers: [

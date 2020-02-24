@@ -6,21 +6,63 @@ import { NbToastrService } from '@nebular/theme';
 import { CatalogosService } from './catalogos/catalogos.service';
 import { UsuarioService } from '../api/to_de_taxi/services';
 import { Router } from '@angular/router';
+import { HubWrapper } from './@core/data/hubs/hub-wrapper';
+
+// const hubBaseEndpointUrl: string = 'https://api.mototex.cloudme.com.br';
+const hubBaseEndpointUrl: string = 'https://apihom.mototex.cloudme.com.br';
+// const hubBaseEndpointUrl = 'http://localhost:5002';
 
 @Injectable()
 export class GlobaisService
 {
-	itemCarregamento: string = '';
-
 	usuario = new BehaviorSubject<UsuarioSummary>(null);
+
+	hubNotificacoes: HubWrapper = null;
+	hubNotificacoesAdmin: HubWrapper = null;
 
 	constructor(
 		private oauthService: OAuthService,
 		// private toastSrv: NbToastrService,
 		private usuarioSrv: UsuarioService,
-		private catalogosSrv: CatalogosService,
 		private router: Router)
 	{
+		const self = this;
+		self.hubNotificacoes = new HubWrapper(hubBaseEndpointUrl + '/notifications', () => self.oauthService.getAccessToken());
+		self.hubNotificacoesAdmin = new HubWrapper(hubBaseEndpointUrl + '/notifications/admin', () => self.oauthService.getAccessToken());
+	}
+
+	async connectHubs()
+	{
+		const self = this;
+		await self.hubNotificacoes.connect().then(() =>
+		{
+			console.info(`Notificações: Connection started`);
+		})
+		.catch(err =>
+		{
+			console.error(`Notificações: Error while starting connection: ${err}`);
+		});
+
+		await self.hubNotificacoesAdmin.connect().then(() =>
+		{
+			console.info(`Notificações (admin): Connection started`);
+		})
+		.catch(err =>
+		{
+			console.error(`Notificações (admin): Error while starting connection: ${err}`);
+		});
+	}
+
+	async disconnectHubs()
+	{
+		const self = this;
+		self.hubNotificacoes.disconnect()
+			.then(() => console.info(`Notificações: Connection stopped`))
+			.catch(err => console.error(`Notificações: Error while stopping connection: ${err}`));
+
+		self.hubNotificacoesAdmin.disconnect()
+			.then(() => console.info(`Notificações (admin): Connection stopped`))
+			.catch(err => console.error(`Notificações (admin): Error while stopping connection: ${err}`));
 	}
 
 	async carregarPerfilUsuario()
@@ -43,88 +85,5 @@ export class GlobaisService
 
 			//self.catalogosSrv.carregar();
 		});
-	}
-
-	async iniciarCatalogos()
-	{
-		const self = this;
-		self.itemCarregamento = 'Taxistas';
-		await self.catalogosSrv.taxistas.getAll();
-		self.catalogosSrv.taxistas.startTrackingChanges();
-
-		self.itemCarregamento = 'Passageiros';
-		await self.catalogosSrv.passageiros.getAll();
-		self.catalogosSrv.passageiros.startTrackingChanges();
-
-		self.itemCarregamento = 'Fotos';
-		self.catalogosSrv.fotos.startTrackingChanges();
-
-		self.itemCarregamento = 'Pontos de táxi';
-		await self.catalogosSrv.pontosTaxi.getAll();
-		self.catalogosSrv.pontosTaxi.startTrackingChanges();
-
-		self.itemCarregamento = 'Veículos';
-		await self.catalogosSrv.veiculos.getAll();
-		self.catalogosSrv.veiculos.startTrackingChanges();
-
-		self.itemCarregamento = 'Cores de veículos';
-		await self.catalogosSrv.cores.getAll();
-		self.catalogosSrv.cores.startTrackingChanges();
-
-		self.itemCarregamento = 'Veículos/Taxistas';
-		await self.catalogosSrv.veiculosTaxistas.getAll();
-		self.catalogosSrv.veiculosTaxistas.startTrackingChanges();
-
-		self.itemCarregamento = 'Tarifas';
-		await self.catalogosSrv.tarifas.getAll();
-		self.catalogosSrv.tarifas.startTrackingChanges();
-
-		self.itemCarregamento = 'Faixas de desconto';
-		await self.catalogosSrv.faixasDesconto.getAll();
-		self.catalogosSrv.faixasDesconto.startTrackingChanges();
-
-		self.itemCarregamento = 'Faixas de desconto/Taxistas';
-		await self.catalogosSrv.faixasDescontoTaxistas.getAll();
-		self.catalogosSrv.faixasDescontoTaxistas.startTrackingChanges();
-
-		self.itemCarregamento = 'Forma de pagamento';
-		await self.catalogosSrv.formasPagamento.getAll();
-		self.catalogosSrv.formasPagamento.startTrackingChanges();
-
-		self.itemCarregamento = 'Formas de pagamento/Taxistas';
-		await self.catalogosSrv.formasPagamentoTaxistas.getAll();
-		self.catalogosSrv.formasPagamentoTaxistas.startTrackingChanges();
-
-		/*self.itemCarregamento = 'Localizações';
-		await self.catalogosSrv.localizacoes.getAll();
-		self.catalogosSrv.localizacoes.startTrackingChanges();*/
-
-		self.itemCarregamento = 'Solicitações de Contato';
-		await self.catalogosSrv.solicitacoesContato.getAll();
-		self.catalogosSrv.solicitacoesContato.startTrackingChanges();
-
-		self.itemCarregamento = 'Solicitações de corrida';
-		self.catalogosSrv.solicitacoesCorrida.startTrackingChanges();
-	}
-
-	async encerrarCatalogos()
-	{
-		const self = this;
-
-		self.catalogosSrv.taxistas.stopTrackingChanges();
-		self.catalogosSrv.passageiros.stopTrackingChanges();
-		self.catalogosSrv.fotos.stopTrackingChanges();
-		self.catalogosSrv.pontosTaxi.stopTrackingChanges();
-		self.catalogosSrv.veiculos.stopTrackingChanges();
-		self.catalogosSrv.cores.stopTrackingChanges();
-		self.catalogosSrv.veiculosTaxistas.stopTrackingChanges();
-		self.catalogosSrv.tarifas.stopTrackingChanges();
-		self.catalogosSrv.faixasDesconto.stopTrackingChanges();
-		self.catalogosSrv.faixasDescontoTaxistas.stopTrackingChanges();
-		self.catalogosSrv.formasPagamento.stopTrackingChanges();
-		self.catalogosSrv.formasPagamentoTaxistas.stopTrackingChanges();
-		//self.catalogosSrv.localizacoes.stopTrackingChanges();
-		self.catalogosSrv.solicitacoesContato.stopTrackingChanges();
-		self.catalogosSrv.solicitacoesCorrida.stopTrackingChanges();
 	}
 }

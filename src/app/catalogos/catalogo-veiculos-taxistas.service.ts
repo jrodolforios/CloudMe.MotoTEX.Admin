@@ -3,6 +3,7 @@ import { VeiculoTaxistaSummary } from '../../api/to_de_taxi/models';
 import { VeiculoTaxistaService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class VeiculoTaxistaApiInterface implements CatalogApiInterface<VeiculoTaxistaSummary>
 {
@@ -82,8 +83,8 @@ class VeiculoTaxistaApiInterface implements CatalogApiInterface<VeiculoTaxistaSu
 @Injectable()
 export class CatalogoVeiculosTaxistas extends ApiCatalog<VeiculoTaxistaSummary>
 {
-	constructor(private oauthService: OAuthService, private veiculoTaxistaSrv: VeiculoTaxistaService)
+	constructor(private oauthService: OAuthService, private veiculoTaxistaSrv: VeiculoTaxistaService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new VeiculoTaxistaApiInterface(veiculoTaxistaSrv), 'veiculo_taxista', 'veiculo_taxista');
+		super(oauthService, new VeiculoTaxistaApiInterface(veiculoTaxistaSrv), globaisSrv.hubNotificacoes, 'veiculo_taxista', 'veiculo_taxista');
 	}
 }

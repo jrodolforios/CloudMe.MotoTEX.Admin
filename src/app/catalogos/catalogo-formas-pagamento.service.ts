@@ -3,6 +3,7 @@ import { FormaPagamentoSummary } from '../../api/to_de_taxi/models';
 import { FormaPagamentoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class FormaPagamentoApiInterface implements CatalogApiInterface<FormaPagamentoSummary>
 {
@@ -82,8 +83,8 @@ class FormaPagamentoApiInterface implements CatalogApiInterface<FormaPagamentoSu
 @Injectable()
 export class CatalogoFormasPagamento extends ApiCatalog<FormaPagamentoSummary>
 {
-	constructor(private oauthService: OAuthService, private formaPagamentoSrv: FormaPagamentoService)
+	constructor(private oauthService: OAuthService, private formaPagamentoSrv: FormaPagamentoService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new FormaPagamentoApiInterface(formaPagamentoSrv), 'forma_pagamento', 'forma_pagamento');
+		super(oauthService, new FormaPagamentoApiInterface(formaPagamentoSrv), globaisSrv.hubNotificacoes, 'forma_pagamento', 'forma_pagamento');
 	}
 }

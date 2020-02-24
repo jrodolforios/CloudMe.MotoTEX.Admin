@@ -3,6 +3,7 @@ import { LocalizacaoSummary } from '../../api/to_de_taxi/models';
 import { LocalizacaoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class LocalizacaoApiInterface implements CatalogApiInterface<LocalizacaoSummary>
 {
@@ -82,8 +83,11 @@ class LocalizacaoApiInterface implements CatalogApiInterface<LocalizacaoSummary>
 @Injectable()
 export class CatalogoLocalizacoes extends ApiCatalog<LocalizacaoSummary>
 {
-	constructor(private oauthService: OAuthService, private tarifaSrv: LocalizacaoService)
+	constructor(
+		private oauthService: OAuthService,
+		private tarifaSrv: LocalizacaoService,
+		private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new LocalizacaoApiInterface(tarifaSrv), 'localizacao', 'localizacao');
+		super(oauthService, new LocalizacaoApiInterface(tarifaSrv), globaisSrv.hubNotificacoes, 'localizacao', 'localizacao');
 	}
 }

@@ -4,6 +4,7 @@ import { PassageiroService, FotoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { CatalogoFotos } from './catalogo-fotos.service';
+import { GlobaisService } from '../globais.service';
 
 class PassageiroApiInterface implements CatalogApiInterface<PassageiroSummary>
 {
@@ -84,9 +85,9 @@ class PassageiroApiInterface implements CatalogApiInterface<PassageiroSummary>
 export class CatalogoPassageiros extends ApiCatalog<PassageiroSummary>
 {
 	constructor(private oauthService: OAuthService, private passageiroSrv: PassageiroService,
-		private fotos: CatalogoFotos, private fotoService: FotoService)
+		private fotos: CatalogoFotos, private fotoService: FotoService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new PassageiroApiInterface(passageiroSrv), 'passageiro', 'passageiro');
+		super(oauthService, new PassageiroApiInterface(passageiroSrv), globaisSrv.hubNotificacoes, 'passageiro', 'passageiro');
 	}
 
 	recuperarFoto(passageiro: PassageiroSummary, forcar: boolean = false)

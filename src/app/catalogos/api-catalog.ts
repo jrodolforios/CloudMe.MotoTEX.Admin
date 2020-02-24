@@ -40,10 +40,6 @@ export interface CatalogApiInterface<T>
 	delete(id: string): Promise<boolean>;
 }
 
-const baseEndpointUrl: string = 'https://api.mototex.cloudme.com.br/notifications';
-// const baseEndpointUrl: string = 'https://apihom.mototex.cloudme.com.br/notifications';
-// const baseEndpointUrl = 'http://localhost:5002/notifications';
-
 export class ApiCatalog<T> extends Catalog<T>
 {
 	apiInterface: CatalogApiInterface<T> = null;
@@ -55,7 +51,7 @@ export class ApiCatalog<T> extends Catalog<T>
 
 	private _oauthService: OAuthService = null;
 
-	constructor(oauthService: OAuthService, apiInterface: CatalogApiInterface<T>, entry_track_endpoint: string, entry_tag: string)
+	constructor(oauthService: OAuthService, apiInterface: CatalogApiInterface<T>, hub: HubWrapper, entry_track_endpoint: string, entry_tag: string)
 	{
 		super();
 
@@ -64,58 +60,53 @@ export class ApiCatalog<T> extends Catalog<T>
 		self.apiInterface = apiInterface;
 		self.entryTrackEndpoint = entry_track_endpoint;
 		self.entryTag = entry_tag;
+		self.hub = hub;
 
-		self.hub = new HubWrapper(`${baseEndpointUrl}/${self.entryTrackEndpoint}`, () => self._oauthService.getAccessToken());
+		//self.hub = new HubWrapper(`${baseEndpointUrl}/${self.entryTrackEndpoint}`, () => self._oauthService.getAccessToken());
 	}
 
 	startTrackingChanges()
 	{
 		const self = this;
-		self.hub.connect()
-			.then(() =>
+
+		self.hub.hubConnection.on('inserted', (entry_tag, summary: T) =>
+		{
+			if (entry_tag === self.entryTag)
 			{
-				console.info(`Catálogo[${self.entryTag}]: Connection started`);
+				self.add([summary], true);
+			}
+		});
 
-				self.hub.hubConnection.on('inserted', (entry_tag, summary: T) =>
-				{
-					if (entry_tag === self.entryTag)
-					{
-						self.add([summary], true);
-					}
-				});
-
-				self.hub.hubConnection.on('updated', (entry_tag, summary: T) =>
-				{
-					if (entry_tag === self.entryTag)
-					{
-						self.update([summary], true);
-					}
-				});
-
-				self.hub.hubConnection.on('deleted', (entry_tag, id: string) =>
-				{
-					if (entry_tag === self.entryTag)
-					{
-						const item = self.findItem(id);
-						if (item)
-						{
-							self.remove([item], true);
-						}
-					}
-				});
-			})
-			.catch(err =>
+		self.hub.hubConnection.on('updated', (entry_tag, summary: T) =>
+		{
+			if (entry_tag === self.entryTag)
 			{
-				console.error(`Catálogo[${self.entryTag}]: Error while starting connection: ${err}`);
-			});
+				self.update([summary], true);
+			}
+		});
+
+		self.hub.hubConnection.on('deleted', (entry_tag, id: string) =>
+		{
+			if (entry_tag === self.entryTag)
+			{
+				const item = self.findItem(id);
+				if (item)
+				{
+					self.remove([item], true);
+				}
+			}
+		});
+		console.info(`Catálogo[${self.entryTag}]: Registered`);
 	}
 
 	stopTrackingChanges()
 	{
 		const self = this;
-		self.hub.disconnect()
-			.then(() => console.info(`Catálogo[${self.entryTag}]: Connection stopped`))
-			.catch(err => console.error(`Catálogo[${self.entryTag}]: Error while stopping connection: ${err}`));
+
+		self.hub.hubConnection.off('inserted');
+		self.hub.hubConnection.off('updated');
+		self.hub.hubConnection.off('deleted');
+		console.info(`Catálogo[${self.entryTag}]: Unregistered`);
 	}
 
 	async get(id: string): Promise<T>

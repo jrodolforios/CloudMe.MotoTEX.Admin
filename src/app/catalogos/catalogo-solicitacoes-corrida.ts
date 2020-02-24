@@ -3,6 +3,7 @@ import { SolicitacaoCorridaSummary } from '../../api/to_de_taxi/models';
 import { SolicitacaoCorridaService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class SolicitacaoCorridaApiInterface implements CatalogApiInterface<SolicitacaoCorridaSummary>
 {
@@ -82,8 +83,8 @@ class SolicitacaoCorridaApiInterface implements CatalogApiInterface<SolicitacaoC
 @Injectable()
 export class CatalogoSolicitacoesCorrida extends ApiCatalog<SolicitacaoCorridaSummary>
 {
-	constructor(private oauthService: OAuthService, private SolicitacaoCorridaSrv: SolicitacaoCorridaService)
+	constructor(private oauthService: OAuthService, private SolicitacaoCorridaSrv: SolicitacaoCorridaService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new SolicitacaoCorridaApiInterface(SolicitacaoCorridaSrv), 'solicitacao_corrida', 'solicitacao_corrida');
+		super(oauthService, new SolicitacaoCorridaApiInterface(SolicitacaoCorridaSrv), globaisSrv.hubNotificacoes, 'solicitacao_corrida', 'solicitacao_corrida');
 	}
 }

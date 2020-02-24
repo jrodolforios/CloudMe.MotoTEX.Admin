@@ -18,7 +18,7 @@ import { CatalogoSolicitacoesCorrida as CatalogoSolicitacoesCorrida } from './ca
 @Injectable()
 export class CatalogosService
 {
-	catalogoCarregamento = '';
+	itemCarregamento: string = '';
 
 	constructor(
 		public taxistas: CatalogoTaxistas,
@@ -37,5 +37,88 @@ export class CatalogosService
 		public solicitacoesCorrida: CatalogoSolicitacoesCorrida,
 		public solicitacoesContato: CatalogoContatos)
 	{
+	}
+
+	async iniciarCatalogos()
+	{
+		const self = this;
+		self.itemCarregamento = 'Taxistas';
+		await self.taxistas.getAll();
+		self.taxistas.startTrackingChanges();
+
+		self.itemCarregamento = 'Passageiros';
+		await self.passageiros.getAll();
+		self.passageiros.startTrackingChanges();
+
+		self.itemCarregamento = 'Fotos';
+		self.fotos.startTrackingChanges();
+
+		self.itemCarregamento = 'Pontos de táxi';
+		await self.pontosTaxi.getAll();
+		self.pontosTaxi.startTrackingChanges();
+
+		self.itemCarregamento = 'Veículos';
+		await self.veiculos.getAll();
+		self.veiculos.startTrackingChanges();
+
+		self.itemCarregamento = 'Cores de veículos';
+		await self.cores.getAll();
+		self.cores.startTrackingChanges();
+
+		self.itemCarregamento = 'Veículos/Taxistas';
+		await self.veiculosTaxistas.getAll();
+		self.veiculosTaxistas.startTrackingChanges();
+
+		self.itemCarregamento = 'Tarifas';
+		await self.tarifas.getAll();
+		self.tarifas.startTrackingChanges();
+
+		self.itemCarregamento = 'Faixas de desconto';
+		await self.faixasDesconto.getAll();
+		self.faixasDesconto.startTrackingChanges();
+
+		self.itemCarregamento = 'Faixas de desconto/Taxistas';
+		await self.faixasDescontoTaxistas.getAll();
+		self.faixasDescontoTaxistas.startTrackingChanges();
+
+		self.itemCarregamento = 'Forma de pagamento';
+		await self.formasPagamento.getAll();
+		self.formasPagamento.startTrackingChanges();
+
+		self.itemCarregamento = 'Formas de pagamento/Taxistas';
+		await self.formasPagamentoTaxistas.getAll();
+		self.formasPagamentoTaxistas.startTrackingChanges();
+
+		/*self.itemCarregamento = 'Localizações';
+		await self.localizacoes.getAll();
+		self.localizacoes.startTrackingChanges();*/
+
+		self.itemCarregamento = 'Solicitações de Contato';
+		await self.solicitacoesContato.getAll();
+		self.solicitacoesContato.startTrackingChanges();
+
+		self.itemCarregamento = 'Solicitações de corrida';
+		self.solicitacoesCorrida.startTrackingChanges();
+	}
+
+	async encerrarCatalogos()
+	{
+		const self = this;
+
+		self.taxistas.stopTrackingChanges();
+		self.passageiros.stopTrackingChanges();
+		self.fotos.stopTrackingChanges();
+		self.pontosTaxi.stopTrackingChanges();
+		self.veiculos.stopTrackingChanges();
+		self.cores.stopTrackingChanges();
+		self.veiculosTaxistas.stopTrackingChanges();
+		self.tarifas.stopTrackingChanges();
+		self.faixasDesconto.stopTrackingChanges();
+		self.faixasDescontoTaxistas.stopTrackingChanges();
+		self.formasPagamento.stopTrackingChanges();
+		self.formasPagamentoTaxistas.stopTrackingChanges();
+		//self.localizacoes.stopTrackingChanges();
+		self.solicitacoesContato.stopTrackingChanges();
+		self.solicitacoesCorrida.stopTrackingChanges();
 	}
 }

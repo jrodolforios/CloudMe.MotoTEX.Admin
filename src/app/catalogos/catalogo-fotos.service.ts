@@ -3,6 +3,7 @@ import { FotoSummary } from '../../api/to_de_taxi/models';
 import { FotoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class FotoApiInterface implements CatalogApiInterface<FotoSummary>
 {
@@ -101,8 +102,8 @@ class FotoApiInterface implements CatalogApiInterface<FotoSummary>
 @Injectable()
 export class CatalogoFotos extends ApiCatalog<FotoSummary>
 {
-	constructor(private oauthService: OAuthService, private fotoSrv: FotoService)
+	constructor(private oauthService: OAuthService, private fotoSrv: FotoService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new FotoApiInterface(fotoSrv), 'foto', 'foto');
+		super(oauthService, new FotoApiInterface(fotoSrv), globaisSrv.hubNotificacoes, 'foto', 'foto');
 	}
 }

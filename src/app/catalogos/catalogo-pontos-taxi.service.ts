@@ -3,6 +3,7 @@ import { PontoTaxiSummary } from '../../api/to_de_taxi/models';
 import { PontoTaxiService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class PontoTaxiApiInterface implements CatalogApiInterface<PontoTaxiSummary>
 {
@@ -82,9 +83,9 @@ class PontoTaxiApiInterface implements CatalogApiInterface<PontoTaxiSummary>
 @Injectable()
 export class CatalogoPontosTaxi extends ApiCatalog<PontoTaxiSummary>
 {
-	constructor(private oauthService: OAuthService, private pontoTaxiSrv: PontoTaxiService)
+	constructor(private oauthService: OAuthService, private pontoTaxiSrv: PontoTaxiService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new PontoTaxiApiInterface(pontoTaxiSrv), 'ponto_taxi', 'ponto_taxi');
+		super(oauthService, new PontoTaxiApiInterface(pontoTaxiSrv), globaisSrv.hubNotificacoes, 'ponto_taxi', 'ponto_taxi');
 	}
 
 	protected mergeUpdate(original: PontoTaxiSummary, updated: PontoTaxiSummary)

@@ -6,6 +6,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { Subscription } from 'rxjs';
 import { CatalogoFotos } from './catalogo-fotos.service';
 import { CatalogosService } from './catalogos.service';
+import { GlobaisService } from '../globais.service';
 
 class ContatoaApiInterface implements CatalogApiInterface<ContatoSummary>
 {
@@ -72,8 +73,9 @@ export class CatalogoContatos extends ApiCatalog<ContatoSummary>
 	constructor(
 		private oauthService: OAuthService,
 		private contatoService: ContatoService,
-		private fotos: CatalogoFotos) {
-		super(oauthService, new ContatoaApiInterface(contatoService), 'contato', 'contato');
+		private fotos: CatalogoFotos,
+		private globaisSrv: GlobaisService) {
+		super(oauthService, new ContatoaApiInterface(contatoService), globaisSrv.hubNotificacoes, 'contato', 'contato');
 	}
 
 	protected mergeUpdate(original: ContatoSummary, updated: ContatoSummary)

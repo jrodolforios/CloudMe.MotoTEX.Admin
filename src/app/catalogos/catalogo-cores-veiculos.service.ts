@@ -3,6 +3,7 @@ import { CorVeiculoSummary } from '../../api/to_de_taxi/models';
 import { CorVeiculoService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class CorVeiculoApiInterface implements CatalogApiInterface<CorVeiculoSummary>
 {
@@ -82,8 +83,8 @@ class CorVeiculoApiInterface implements CatalogApiInterface<CorVeiculoSummary>
 @Injectable()
 export class CatalogoCorVeiculos extends ApiCatalog<CorVeiculoSummary>
 {
-	constructor(private oauthService: OAuthService, private corVeiculoSrv: CorVeiculoService)
+	constructor(private oauthService: OAuthService, private corVeiculoSrv: CorVeiculoService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new CorVeiculoApiInterface(corVeiculoSrv), 'cor_veiculo', 'cor_veiculo');
+		super(oauthService, new CorVeiculoApiInterface(corVeiculoSrv), globaisSrv.hubNotificacoes, 'cor_veiculo', 'cor_veiculo');
 	}
 }

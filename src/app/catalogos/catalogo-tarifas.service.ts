@@ -3,6 +3,7 @@ import { TarifaSummary } from '../../api/to_de_taxi/models';
 import { TarifaService } from '../../api/to_de_taxi/services';
 import { ApiCatalog, CatalogApiInterface, ApiResponse, processResponse } from './api-catalog';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { GlobaisService } from '../globais.service';
 
 class TarifaApiInterface implements CatalogApiInterface<TarifaSummary>
 {
@@ -82,8 +83,8 @@ class TarifaApiInterface implements CatalogApiInterface<TarifaSummary>
 @Injectable()
 export class CatalogoTarifas extends ApiCatalog<TarifaSummary>
 {
-	constructor(private oauthService: OAuthService, private tarifaSrv: TarifaService)
+	constructor(private oauthService: OAuthService, private tarifaSrv: TarifaService, private globaisSrv: GlobaisService)
 	{
-		super(oauthService, new TarifaApiInterface(tarifaSrv), 'tarifa', 'tarifa');
+		super(oauthService, new TarifaApiInterface(tarifaSrv), globaisSrv.hubNotificacoes, 'tarifa', 'tarifa');
 	}
 }

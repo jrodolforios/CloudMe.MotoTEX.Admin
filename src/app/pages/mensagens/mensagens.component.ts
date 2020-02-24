@@ -80,8 +80,6 @@ export class MensagemExt implements DetalhesMensagem
 })
 export class MensagensComponent implements OnInit, OnDestroy {
 
-	hubMensagens: HubWrapper = null;
-
 	caixaEntrada: MensagemExt[] = [];
 	caixaSaida: MensagemExt[] = [];
 
@@ -110,10 +108,6 @@ export class MensagensComponent implements OnInit, OnDestroy {
 		private toastSrv: NbToastrService,
 		private dialogSrv: NbDialogService)
 	{
-		const self = this;
-		self.hubMensagens = new HubWrapper('https://api.mototex.cloudme.com.br/notifications/mensagens', () => self.oauthService.getAccessToken());
-		// self.hubMensagens = new HubWrapper('https://apihom.mototex.cloudme.com.br/notifications/mensagens', () => self.oauthService.getAccessToken());
-		// self.hubMensagens = new HubWrapper('http://localhost:5002/notifications/mensagens', () => self.oauthService.getAccessToken());
 	}
 
 	async ngOnInit()
@@ -128,28 +122,25 @@ export class MensagensComponent implements OnInit, OnDestroy {
 			await self.obterMensagensEnviadas(self.paginacaoSaida.page, self.paginacaoSaida.itensPerPage);
 		}
 
-		self.hubMensagens.connect().then(() =>
+		self.globaisSrv.hubNotificacoes.hubConnection.on('msg_usr', async (msg: DetalhesMensagem) =>
 		{
-			self.hubMensagens.hubConnection.on('msg_usr', async (msg: DetalhesMensagem) =>
-			{
-				const msgExt = await self.converterMensagem(msg);
-				self.toastSrv.info(msgExt.corpo, `Mensagem de: [${msgExt.nomeRemetente}] para: [${msgExt.formatarDestinatarios()}] com assunto: ${msg.assunto}`);
+			const msgExt = await self.converterMensagem(msg);
+			self.toastSrv.info(msgExt.corpo, `Mensagem de: [${msgExt.nomeRemetente}] para: [${msgExt.formatarDestinatarios()}] com assunto: ${msg.assunto}`);
 
-				self.caixaEntrada = [msgExt].concat(self.caixaEntrada);
-			});
+			self.caixaEntrada = [msgExt].concat(self.caixaEntrada);
+		});
 
-			self.hubMensagens.hubConnection.on('msg_grp_usr', async (msg: DetalhesMensagem) =>
-			{
-				const msgExt = await self.converterMensagem(msg);
-				self.toastSrv.info(msg.corpo, `Mensagem de: [${msgExt.nomeRemetente}] para: [${msgExt.formatarDestinatarios()}] com assunto: ${msg.assunto}`);
+		self.globaisSrv.hubNotificacoes.hubConnection.on('msg_grp_usr', async (msg: DetalhesMensagem) =>
+		{
+			const msgExt = await self.converterMensagem(msg);
+			self.toastSrv.info(msg.corpo, `Mensagem de: [${msgExt.nomeRemetente}] para: [${msgExt.formatarDestinatarios()}] com assunto: ${msg.assunto}`);
 
-				self.caixaEntrada = [msgExt].concat(self.caixaEntrada);
-			});
+			self.caixaEntrada = [msgExt].concat(self.caixaEntrada);
+		});
 
-			self.hubMensagens.hubConnection.on('msg_upd', async (msgDest: MensagemDestinatarioSummary) =>
-			{
-				self.atualizarMensagem(msgDest);
-			});
+		self.globaisSrv.hubNotificacoes.hubConnection.on('msg_upd', async (msgDest: MensagemDestinatarioSummary) =>
+		{
+			self.atualizarMensagem(msgDest);
 		});
 	}
 
@@ -393,6 +384,8 @@ export class MensagensComponent implements OnInit, OnDestroy {
 	{
 		const self = this;
 
-		self.hubMensagens.disconnect();
+		self.globaisSrv.hubNotificacoes.hubConnection.off('msg_usr');
+		self.globaisSrv.hubNotificacoes.hubConnection.off('msg_grp_usr');
+		self.globaisSrv.hubNotificacoes.hubConnection.off('msg_upd');
 	}
 }

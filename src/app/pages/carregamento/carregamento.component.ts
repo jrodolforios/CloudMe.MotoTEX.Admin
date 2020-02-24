@@ -13,7 +13,7 @@ export class CarregamentoComponent implements OnInit  {
 
 	get itemCarregamento(): string
 	{
-		return this.globaisSrv.itemCarregamento;
+		return this.catalogosSrv.itemCarregamento;
 	}
 
 	constructor(
@@ -58,7 +58,8 @@ export class CarregamentoComponent implements OnInit  {
 		}
 		else
 		{
-			await self.globaisSrv.iniciarCatalogos();
+			await self.globaisSrv.connectHubs();
+			await self.catalogosSrv.iniciarCatalogos();
 
 			self.router.navigate(['/pages/dashboard']);
 		}

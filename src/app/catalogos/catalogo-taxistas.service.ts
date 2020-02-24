@@ -5,6 +5,7 @@ import { ApiCatalog, CatalogApiInterface, processResponse, ApiResponse } from '.
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Subscription } from 'rxjs';
 import { CatalogoFotos } from './catalogo-fotos.service';
+import { GlobaisService } from '../globais.service';
 
 class TaxistaApiInterface implements CatalogApiInterface<TaxistaSummary>
 {
@@ -71,8 +72,9 @@ export class CatalogoTaxistas extends ApiCatalog<TaxistaSummary>
 	constructor(
 		private oauthService: OAuthService,
 		private taxistaSrv: TaxistaService,
-		private fotos: CatalogoFotos) {
-		super(oauthService, new TaxistaApiInterface(taxistaSrv), 'taxista', 'taxista');
+		private fotos: CatalogoFotos,
+		private globaisSrv: GlobaisService) {
+		super(oauthService, new TaxistaApiInterface(taxistaSrv), globaisSrv.hubNotificacoes, 'taxista', 'taxista');
 	}
 
 	recuperarFoto(taxista: TaxistaSummary, forcar: boolean = false) {

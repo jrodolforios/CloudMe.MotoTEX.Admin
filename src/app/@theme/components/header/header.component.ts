@@ -7,6 +7,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { GlobaisService } from '../../../globais.service';
 import { UsuarioSummary } from '../../../../api/to_de_taxi/models';
 import { LayoutService } from '../../../@core/utils/layout.service';
+import { CatalogosService } from '../../../catalogos/catalogos.service';
 
 @Component({
 	selector: 'ngx-header',
@@ -51,7 +52,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		private layoutService: LayoutService,
 		private breakpointService: NbMediaBreakpointsService,
 		private oauthService: OAuthService,
-		private globaisSrv: GlobaisService
+		private globaisSrv: GlobaisService,
+		private catalogosSrv: CatalogosService
 		) {
 	}
 
@@ -79,7 +81,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		self.menuService.onItemClick().pipe(filter(({ tag }) => tag === 'menu-sair')).subscribe(async item =>
 		{
 			//await self.authService.logout('oauth2_mototex');
-			await self.globaisSrv.encerrarCatalogos();
+			await self.globaisSrv.disconnectHubs();
+			await self.catalogosSrv.encerrarCatalogos();
 			self.oauthService.logOut();
 		});
 
