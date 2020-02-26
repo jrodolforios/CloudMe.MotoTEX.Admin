@@ -6,14 +6,14 @@
         <label>
           Data início:
           <input fullWidth nbInput [owlDateTime]="dtInicio" [owlDateTimeTrigger]="dtInicio" placeholder="Início" [(ngModel)]="startDateTime">
-          <owl-date-time #dtInicio></owl-date-time>
+          <owl-date-time [pickerMode]="'dialog'" #dtInicio></owl-date-time>
         </label>
       </div>
       <div class="col">
         <label>
           Data fim:
           <input fullWidth nbInput [owlDateTime]="dtFim" [owlDateTimeTrigger]="dtFim" placeholder="Fim" [(ngModel)]="endDateTime">
-          <owl-date-time #dtFim></owl-date-time>
+          <owl-date-time [pickerMode]="'dialog'" #dtFim></owl-date-time>
         </label>
       </div>
     </div>

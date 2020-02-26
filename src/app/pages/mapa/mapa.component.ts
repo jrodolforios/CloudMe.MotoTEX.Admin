@@ -158,49 +158,14 @@ export class MapaComponent implements OnInit, OnDestroy {
 		}).catch(() => {});
 
 
-		self.globaisSrv.hubNotificacoesAdmin.hubConnection.on('sol_corr_ativacao_tx', async dados =>
+		self.globaisSrv.hubNotificacoesAdmin.hubConnection.on('sol_corr_ativ_tx_hub', dados =>
 		{
-			// gera as conexões do taxista com a solicitação de corrida
+			self.gerarConexaoTaxista(dados, false);
+		});
 
-			let solicitCorrida = self.catalogosSrv.solicitacoesCorrida.findItem(dados.sol_corr.id);
-			if (!solicitCorrida)
-			{
-				solicitCorrida = dados.sol_corr;
-				self.catalogosSrv.solicitacoesCorrida.add([dados.sol_corr]);
-			}
-
-			let infoSol = self.infoSolicitacoes.find(info => info.idSolicitacao === dados.sol_corr.id);
-
-			if (!infoSol)
-			{
-				infoSol = await self.adicionarInfoSolicitacao(dados.sol_corr);
-			}
-
-			dados.taxistas.forEach(id_taxista =>
-			{
-				const taxista = self.catalogosSrv.taxistas.findItem(id_taxista);
-				if (!taxista) return;
-
-				const cnxTxSol: ConexaoSolicitacaoTaxista =
-				{
-					info_solicitacao: infoSol,
-					taxista,
-					linha:
-					{
-						inicio:
-						{
-							latitude: infoSol.origem.latitude,
-							longitude: infoSol.origem.longitude
-						} as CoordenadaGeografica,
-						fim: taxista['localizacao'],
-						strokeColor: 'yellow',
-						strokeWeight: 2,
-						strokeOpacity: 1
-					} as Linha
-				};
-
-				infoSol.conexoes_taxistas.push(cnxTxSol);
-			});
+		self.globaisSrv.hubNotificacoesAdmin.hubConnection.on('sol_corr_ativ_tx_push', dados =>
+		{
+			self.gerarConexaoTaxista(dados, true);
 		});
 
 		self.globaisSrv.hubNotificacoesAdmin.hubConnection.on('sol_corr_acao_tx', dados =>
@@ -283,6 +248,52 @@ export class MapaComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	async gerarConexaoTaxista(dados: any, push: boolean)
+	{
+		const self = this;
+		// gera as conexões do taxista com a solicitação de corrida
+
+		let solicitCorrida = self.catalogosSrv.solicitacoesCorrida.findItem(dados.sol_corr.id);
+		if (!solicitCorrida)
+		{
+			solicitCorrida = dados.sol_corr;
+			self.catalogosSrv.solicitacoesCorrida.add([dados.sol_corr]);
+		}
+
+		let infoSol = self.infoSolicitacoes.find(info => info.idSolicitacao === dados.sol_corr.id);
+
+		if (!infoSol)
+		{
+			infoSol = await self.adicionarInfoSolicitacao(dados.sol_corr);
+		}
+
+		dados.taxistas.forEach(id_taxista =>
+		{
+			const taxista = self.catalogosSrv.taxistas.findItem(id_taxista);
+			if (!taxista) return;
+
+			const cnxTxSol: ConexaoSolicitacaoTaxista =
+			{
+				info_solicitacao: infoSol,
+				taxista,
+				linha:
+				{
+					inicio:
+					{
+						latitude: infoSol.origem.latitude,
+						longitude: infoSol.origem.longitude
+					} as CoordenadaGeografica,
+					fim: taxista['localizacao'],
+					strokeColor: push ? 'magenta' : 'yellow',
+					strokeWeight: 2,
+					strokeOpacity: 1
+				} as Linha
+			};
+
+			infoSol.conexoes_taxistas.push(cnxTxSol);
+		});
+	}
+
 	atualizarTaxistas()
 	{
 		const self = this;
@@ -341,7 +352,8 @@ export class MapaComponent implements OnInit, OnDestroy {
 		self.taxistasChangeSub.unsubscribe();
 		self.passageirosChangeSub.unsubscribe();
 
-		self.globaisSrv.hubNotificacoesAdmin.hubConnection.off('sol_corr_ativacao_tx');
+		self.globaisSrv.hubNotificacoesAdmin.hubConnection.off('sol_corr_ativ_tx_hub');
+		self.globaisSrv.hubNotificacoesAdmin.hubConnection.off('sol_corr_ativ_tx_push');
 		self.globaisSrv.hubNotificacoesAdmin.hubConnection.off('sol_corr_acao_tx');
 		self.globaisSrv.hubNotificacoesAdmin.hubConnection.off('loc_tx');
 		self.globaisSrv.hubNotificacoesAdmin.hubConnection.off('loc_pass');
