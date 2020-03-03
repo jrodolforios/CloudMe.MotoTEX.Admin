@@ -8,8 +8,8 @@ import { UsuarioService } from '../api/to_de_taxi/services';
 import { Router } from '@angular/router';
 import { HubWrapper } from './@core/data/hubs/hub-wrapper';
 
-// const hubBaseEndpointUrl: string = 'https://api.mototex.cloudme.com.br';
-const hubBaseEndpointUrl: string = 'https://apihom.mototex.cloudme.com.br';
+const hubBaseEndpointUrl: string = 'https://api.mototex.cloudme.com.br';
+// const hubBaseEndpointUrl: string = 'https://apihom.mototex.cloudme.com.br';
 // const hubBaseEndpointUrl = 'http://localhost:5002';
 
 @Injectable()

@@ -54,8 +54,8 @@ export function oAuthStorageFactory(): OAuthStorage
 	return localStorage;
 }
 
-// const baseAPIUrl = 'https://api.mototex.cloudme.com.br';
-const baseAPIUrl = 'https://apihom.mototex.cloudme.com.br';
+const baseAPIUrl = 'https://api.mototex.cloudme.com.br';
+// const baseAPIUrl = 'https://apihom.mototex.cloudme.com.br';
 // const baseAPIUrl = 'http://localhost:5002';
 
 registerLocaleData(br, 'pt-BR');
